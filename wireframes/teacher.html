@@ -504,7 +504,6 @@ tr:hover td{background:var(--bg)}
       </select>
     </div>
     <div style="display:flex;gap:8px">
-      <button class="btn btn-blue" onclick="addSession()" style="font-weight:700">+ ახალი გაკვეთილი</button>
       <button class="btn btn-green" onclick="saveJournal()">💾 შენახვა</button>
       <button class="btn btn-outline" onclick="exportJournal()">⬇️ Excel-ში გადმოწერა</button>
     </div>
@@ -514,7 +513,7 @@ tr:hover td{background:var(--bg)}
     <span><span class="legend-dot" style="background:var(--green)"></span>ი — იყო</span>
     <span><span class="legend-dot" style="background:var(--red)"></span>არ — არ იყო</span>
     <span><span class="legend-dot" style="background:var(--amber)"></span>დ — დაგვიანება</span>
-    <span style="color:var(--muted);font-style:italic">· უჯრაზე კლიკი — სტატუსის შეცვლა &nbsp;|&nbsp; 📅 თარიღზე კლიკი — ჯგუფური შეყვანა</span>
+    <span style="color:var(--muted);font-style:italic">· მხოლოდ დღეს (02.07) შეიძლება დასწრების შეყვანა &nbsp;|&nbsp; 📅 დღევ. სვეტზე კლიკი — ჯგუფური შეყვანა</span>
   </div>
 
   <div class="card" style="overflow-x:auto">
@@ -535,7 +534,6 @@ tr:hover td{background:var(--bg)}
       <option>ნეირო-ანატომია — ჯგუფი 301</option>
       <option>კლინიკური ანატომია — ჯგუფი 401</option>
     </select>
-    <button class="btn btn-blue" onclick="addGradeCol()">+ შეფასების ველი</button>
     <button class="btn btn-green" onclick="saveGrades()">💾 შენახვა</button>
   </div>
 
@@ -1202,19 +1200,23 @@ function logout(){
 
 // ── JOURNAL ──
 const attCycle = ['ი','არ','დ','']
-let journalDates = ['03.06','06.06','10.06','13.06','17.06','20.06','24.06','27.06']
+const journalDates = ['03.06','06.06','10.06','13.06','17.06','20.06','24.06','27.06','01.07','02.07','06.07','08.07']
+const todayDate = '02.07'
 
 function buildJournal(){
   const head = document.getElementById('journal-head')
   const body = document.getElementById('journal-body')
   if(!head||!body) return
 
-  // build header row dynamically
+  // build header — today highlighted, only today column is editable
   head.innerHTML = '<tr>' +
     '<th style="min-width:160px">სტუდენტი</th>' +
-    journalDates.map((d,ai)=>
-      `<th style="cursor:pointer;white-space:nowrap" onclick="bulkMarkSession(${ai},'${d}')" title="ჯგუფური შეყვანა — ${d}">📅 ${d}</th>`
-    ).join('') +
+    journalDates.map((d,ai)=>{
+      const isT=d===todayDate;
+      return isT
+        ? `<th style="cursor:pointer;white-space:nowrap;background:var(--green-lt);color:var(--green);font-weight:800;border-bottom:2px solid var(--green)" onclick="bulkMarkSession(${ai},'${d}')" title="დღეს — ჯგუფური შეყვანა">📅 ${d} ●</th>`
+        : `<th style="white-space:nowrap;color:var(--muted)">${d}</th>`;
+    }).join('') +
     '<th>დასწრება %</th><th>შუალედური</th><th>საბოლოო</th><th>მოქმედება</th></tr>'
 
   // ensure att arrays have correct length
@@ -1226,7 +1228,8 @@ function buildJournal(){
     const attCells = journalDates.map((_,ai)=>{
       const a = s.att[ai]||''
       const cls = a==='ი'?'att-present':a==='არ'?'att-absent':a==='დ'?'att-late':'att-empty'
-      return `<td><div class="attendance-cell ${cls}" onclick="cycleAtt(${si},${ai})" id="att-${si}-${ai}" title="კლიკი — სტატუსის შეცვლა">${a||'·'}</div></td>`
+      const isT = journalDates[ai]===todayDate
+      return `<td><div class="attendance-cell ${cls}" ${isT?`onclick="cycleAtt(${si},${ai})" id="att-${si}-${ai}" title="კლიკი — სტატუსის შეცვლა"`:'style="opacity:0.55;cursor:default"'}>${a||'·'}</div></td>`
     }).join('')
     const filled = s.att.slice(0,journalDates.length).filter(a=>a==='ი'||a==='არ'||a==='დ').length
     const pct = filled ? Math.round(s.att.slice(0,journalDates.length).filter(a=>a==='ი').length / filled * 100) : 0
@@ -1251,52 +1254,7 @@ function cycleAtt(si,ai){
   cell.textContent = next||'·'
 }
 
-function addSession(){
-  const today = new Date()
-  const dd = String(today.getDate()).padStart(2,'0')
-  const mm = String(today.getMonth()+1).padStart(2,'0')
-  const defaultDate = dd+'.'+mm
-  showModal('ახალი გაკვეთილის დამატება',
-    `<div style="display:flex;flex-direction:column;gap:16px">
-      <div>
-        <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">გაკვეთილის თარიღი</label>
-        <input id="new-session-date" type="text" value="${defaultDate}" placeholder="დდ.თთ" style="width:100%;border:1.5px solid var(--border);border-radius:var(--radius);padding:9px 12px;font-size:14px;font-family:inherit;outline:none">
-      </div>
-      <div>
-        <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:8px">სწრაფი შეყვანა (შეგიძლიათ შემდეგ შეცვალოთ)</label>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px">
-            <input type="radio" name="bulk-mark" value="present" checked style="accent-color:var(--green)">
-            <span style="color:var(--green);font-weight:700">ი</span> ყველა სტუდენტი — დასწრებული
-          </label>
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px">
-            <input type="radio" name="bulk-mark" value="absent" style="accent-color:var(--red)">
-            <span style="color:var(--red);font-weight:700">არ</span> ყველა სტუდენტი — გამოუცხადებელი
-          </label>
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px">
-            <input type="radio" name="bulk-mark" value="empty" style="accent-color:var(--muted)">
-            ცარიელი — შემდეგ შეიყვანება ინდ.
-          </label>
-        </div>
-      </div>
-    </div>`,
-    `<button class="btn btn-ghost" onclick="closeModal()">გაუქმება</button>
-     <button class="btn btn-blue" onclick="confirmAddSession()">+ სვეტის დამატება</button>`
-  )
-}
 
-function confirmAddSession(){
-  const date = (document.getElementById('new-session-date').value||'').trim()
-  if(!date){toast('შეიყვანეთ თარიღი','error');return}
-  const mark = document.querySelector('input[name="bulk-mark"]:checked').value
-  journalDates.push(date)
-  const ai = journalDates.length-1
-  const val = mark==='present'?'ი':mark==='absent'?'არ':''
-  journalStudents.forEach(s=>{ s.att[ai]=val })
-  closeModal()
-  buildJournal()
-  toast(`გაკვეთილი ${date} დაემატა ✓`,'success')
-}
 
 function bulkMarkSession(ai, date){
   showModal(`ჯგუფური შეყვანა — ${date}`,
