@@ -1248,6 +1248,50 @@ function openLetter(id, el){
 
 function showLetterModal(id){ openLetter(id, document.getElementById('litem-'+id)||document.createElement('div')) }
 function archiveLetter(){closeModal();toast('წერილი არქივში გადაიტანა','success')}
+
+function showComposeModal(replyTo){
+  const teachers = [
+    {name:'ლია გოგიაშვილი', mod:'ანატომია'},
+    {name:'თამარ ჩხეიძე',    mod:'ფიზიოლოგია'},
+    {name:'მარინა ბერიძე',   mod:'ფარმაკოლოგია'},
+    {name:'ნინო ახვლედიანი', mod:'სამ. ეთიკა'},
+    {name:'ვასო ლომიძე',     mod:'კლინ. პრაქტიკა'},
+    {name:'ირინა კობახიძე',  mod:'ინგლისური ენა (ყოფ.)'},
+  ]
+  const opts = teachers.map(t=>`<option value="${t.name}"${replyTo===t.name?' selected':''}>${t.name} — ${t.mod}</option>`).join('')
+  showModal('ახალი წერილი',
+    `<div style="display:flex;flex-direction:column;gap:12px">
+       <div>
+         <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:6px">ვისთვის (პროფ. მასწავლებელი)</label>
+         <select id="compose-to" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
+           <option value="">--- მასწავლებლის შერჩევა ---</option>
+           ${opts}
+         </select>
+       </div>
+       <div>
+         <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:6px">სათაური</label>
+         <input id="compose-subj" type="text" placeholder="წერილის სათაური..." style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
+       </div>
+       <div>
+         <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:6px">ტექსტი</label>
+         <textarea id="compose-body" placeholder="შეიყვანეთ ტექსტი..." style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;min-height:110px;resize:vertical;outline:none"></textarea>
+       </div>
+       <div>
+         <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:6px">დანართი (მაქს. 100 MB)</label>
+         <input type="file" multiple style="font-size:13px">
+       </div>
+     </div>`,
+    `<button class="btn btn-n" onclick="closeModal()">მონახაზი</button>
+     <button class="btn btn-b" onclick="
+       const to=document.getElementById('compose-to').value;
+       const subj=document.getElementById('compose-subj').value;
+       if(!to){toast('მასწავლებელი არ შერჩეულა','error');return}
+       if(!subj.trim()){toast('სათაური ცარიელია','error');return}
+       closeModal();toast('წერილი გაიგზავნა ✓','success')
+     ">გაგზავნა ✉</button>`,
+    true
+  )
+}
 </script>
 
 <script>

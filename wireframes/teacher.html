@@ -1487,33 +1487,115 @@ function openMsg(i){
       </div>
     </div>`
 }
-function replyMsg(to){
-  showModal(`პასუხი: ${to}`,
-    `<div class="field"><label>ვისთვის</label><input value="${to}" readonly style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;background:var(--bg)"></div>
-     <div class="field"><label>შეტყობინება</label><textarea placeholder="თქვენი პასუხი..." style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;min-height:100px;resize:vertical;outline:none"></textarea></div>`,
-    `<button class="btn btn-ghost" onclick="closeModal()">გაუქმება</button>
-     <button class="btn btn-blue" onclick="closeModal();toast('პასუხი გაიგზავნა ✓','success')">გაგზავნა</button>`
-  )
+function replyMsg(to){ closeModal(); composeMsg(to) }
+// groups and students per group
+const msgGroups = {
+  'ჯგუფი 101': ['ბერიძე გიორგი','გოგია თამარ','ჯოჯუა ანა','მახარაძე ლევან','კვარაცხელია ლაშა','ჩხეიძე ნინო','ბუჩუკური ლელა','ჯაყელი სალომე'],
+  'ჯგუფი 102': ['ასათიანი მარიამ','ბახტაძე ნიკოლოზ','გოგბერაშვილი ნინო','დოლიძე ლუკა'],
+  'ჯგუფი 301': ['კვარაცხელია ლაშა','მდივანი სოფო','ნარიმანიძე გიორგი'],
+  'ჯგუფი 401': ['ხარაბაძე ანა','ჩიქოვანი ნათია','ყიფიანი ვახო'],
 }
-function composeMsg(){
+
+function composeMsg(replyTo){
   showModal('ახალი შეტყობინება',
-    `<div class="field">
-       <label>ვისთვის</label>
-       <select style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
-         <option>--- სტუდენტის შერჩევა ---</option>
-         <option>ბერიძე გიორგი — ჯგუფი 101</option>
-         <option>ჩხეიძე ნინო — ჯგუფი 101</option>
-         <option>კვარაცხელია ლაშა — ჯგუფი 301</option>
-         <option>ადმინისტრაცია</option>
-       </select>
-     </div>
-     <div class="field"><label>სათაური</label><input type="text" placeholder="შეტყობინების სათაური..." style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none"></div>
-     <div class="field"><label>შეტყობინება</label><textarea placeholder="შეიყვანეთ ტექსტი..." style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;min-height:100px;resize:vertical;outline:none"></textarea></div>
-     <div class="field"><label>დანართი (მაქსიმალური 100 MB)</label><input type="file" multiple style="font-size:13px"></div>`,
+    `<div style="display:flex;flex-direction:column;gap:12px">
+       <div>
+         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">გაგზავნის ტიპი</label>
+         <div style="display:flex;gap:8px">
+           <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;padding:8px 12px;border:1.5px solid var(--blue);border-radius:8px;flex:1">
+             <input type="radio" name="compose-type" value="group" checked onchange="updateComposeTarget()" style="accent-color:var(--blue)"> მთელი ჯგუფი
+           </label>
+           <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;flex:1">
+             <input type="radio" name="compose-type" value="student" onchange="updateComposeTarget()" style="accent-color:var(--blue)"> ერთი სტუდენტი
+           </label>
+         </div>
+       </div>
+       <div id="compose-group-row">
+         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">ჯგუფი</label>
+         <select id="compose-group-sel" onchange="updateComposeTarget()" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
+           <option value="">--- ჯგუფის შერჩევა ---</option>
+           <option>ჯგუფი 101</option>
+           <option>ჯგუფი 102</option>
+           <option>ჯგუფი 301</option>
+           <option>ჯგუფი 401</option>
+         </select>
+       </div>
+       <div id="compose-student-row" style="display:none">
+         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">სტუდენტი</label>
+         <select id="compose-student-sel" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
+           <option value="">--- ჯგუფი ჯერ შეარჩიეთ ---</option>
+         </select>
+       </div>
+       <div>
+         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">სათაური</label>
+         <input id="compose-subj" type="text" placeholder="შეტყობინების სათაური..." style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
+       </div>
+       <div>
+         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">შეტყობინება</label>
+         <textarea id="compose-body" placeholder="შეიყვანეთ ტექსტი..." style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;min-height:100px;resize:vertical;outline:none"></textarea>
+       </div>
+       <div>
+         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">დანართი (მაქს. 100 MB)</label>
+         <input type="file" multiple style="font-size:13px">
+       </div>
+     </div>`,
     `<button class="btn btn-ghost" onclick="closeModal()">მონახაზი</button>
-     <button class="btn btn-blue" onclick="closeModal();toast('შეტყობინება გაიგზავნა ✓','success')">გაგზავნა</button>`,
+     <button class="btn btn-blue" onclick="sendComposedMsg()">გაგზავნა ✉</button>`,
     true
   )
+  if(replyTo){
+    // pre-fill student match
+    setTimeout(()=>{
+      document.querySelector('input[name="compose-type"][value="student"]').checked=true
+      updateComposeTarget()
+      // find group with this student
+      for(const [grp,students] of Object.entries(msgGroups)){
+        if(students.includes(replyTo)){
+          document.getElementById('compose-group-sel').value=grp
+          updateComposeTarget()
+          setTimeout(()=>{
+            const sel=document.getElementById('compose-student-sel')
+            for(const o of sel.options){ if(o.value===replyTo){sel.value=replyTo;break} }
+          },10)
+          break
+        }
+      }
+    },10)
+  }
+}
+
+function updateComposeTarget(){
+  const type = document.querySelector('input[name="compose-type"]:checked')?.value
+  const grpRow = document.getElementById('compose-group-row')
+  const stuRow = document.getElementById('compose-student-row')
+  const grpSel = document.getElementById('compose-group-sel')
+  const stuSel = document.getElementById('compose-student-sel')
+  if(!grpRow||!stuRow||!grpSel||!stuSel) return
+  if(type==='student'){
+    stuRow.style.display='block'
+    const grp = grpSel.value
+    stuSel.innerHTML = grp
+      ? ['<option value="">--- სტუდენტის შერჩევა ---</option>',
+         ...(msgGroups[grp]||[]).map(n=>`<option value="${n}">${n}</option>`)].join('')
+      : '<option value="">--- ჯგუფი ჯერ შეარჩიეთ ---</option>'
+  } else {
+    stuRow.style.display='none'
+  }
+}
+
+function sendComposedMsg(){
+  const type = document.querySelector('input[name="compose-type"]:checked')?.value
+  const grp = document.getElementById('compose-group-sel')?.value
+  const stu = document.getElementById('compose-student-sel')?.value
+  const subj = document.getElementById('compose-subj')?.value?.trim()
+  const body = document.getElementById('compose-body')?.value?.trim()
+  if(!grp){toast('ჯგუფი არ შერჩეულა','error');return}
+  if(type==='student'&&!stu){toast('სტუდენტი არ შერჩეულა','error');return}
+  if(!subj){toast('სათაური ცარიელია','error');return}
+  if(!body){toast('ტექსტი ცარიელია','error');return}
+  const to = type==='group' ? grp : stu
+  closeModal()
+  toast(`შეტყობინება გაიგზავნა → ${to} ✓`,'success')
 }
 
 // ── MODULES ──
