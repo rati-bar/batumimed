@@ -855,10 +855,6 @@ tr:hover td{background:#FAFBFC}
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <input class="fi" id="lib-search" placeholder="🔍  სახელმძღვ., ავტ., ISBN..." style="flex:1;min-width:200px" oninput="filterBooks(this.value)">
         <select class="fi" style="width:auto" onchange="filterBooksCat(this.value)"><option value="">ყველა მოდული</option><option>ანატომია</option><option>ფიზიოლოგია</option><option>ფარმაკოლოგია</option></select>
-        <div style="display:flex;gap:4px">
-          <button class="chip on" id="lib-phys" onclick="libFilter('phys',this)">📚 ფიზ.</button>
-          <button class="chip" id="lib-dig" onclick="libFilter('dig',this)">💻 ელექტრონული</button>
-        </div>
       </div>
     </div>
   </div>
@@ -1440,7 +1436,7 @@ function renderBooks(data){
         ${isElec?'<span class="bd bd-g" style="margin-top:4px;display:inline-block;font-size:10px">💻 ელექტრონული</span>':'<div style="font-size:11px;color:var(--text3);margin-top:3px">📍 '+b.loc+' · '+b.code+'</div>'}
         ${!b.avail&&!isElec?'<span class="bd bd-r" style="margin-top:4px;display:inline-block;font-size:10px">სახ. არ.</span>':''}
       </div>
-      ${isElec?`<button class="btn btn-g btn-sm" onclick="toast('PDF ↓ «${b.title}»','success')">↓ PDF გადმოწერა</button>`:`<span class="bd ${b.avail?'bd-g':'bd-r'}" style="font-size:10px;white-space:nowrap">${b.avail?'ხელმისაწვდომია':'გასესხებულია'}</span>`}
+      ${isElec?`<button class="btn btn-g btn-sm" onclick="toast('PDF ↓ «${b.title}»','success')">↓ PDF გადმოწერა</button>`:''}
     </div>`;
   });
 }
@@ -1555,9 +1551,10 @@ surveysAll.forEach(sv=>{
     <div style="flex:1">
       <div style="font-size:13px;font-weight:600">${sv.name}</div>
       <div style="font-size:11px;color:var(--text3);margin-top:2px">${info}${sv.anon?' · ანონიმური':''}</div>
+      ${isActive&&sv.link?`<a href="${sv.link}" target="_blank" style="font-size:11px;color:var(--blue);text-decoration:underline;margin-top:3px;display:inline-block">${sv.link} ↗</a>`:''}
     </div>
     ${badge}
-    ${isActive?`<button class="btn btn-b btn-sm" onclick="openSurvey('${sv.link}','${sv.name}')">შევსება →</button>`:''}
+    ${isActive?`<a href="${sv.link}" target="_blank" class="btn btn-b btn-sm" style="text-decoration:none">შევსება →</a>`:''}
   </div>`;
 });
 function openSurvey(link,name){
@@ -1605,8 +1602,33 @@ function openNews(i){
         <div style="height:2px;background:var(--border);margin-bottom:16px"></div>
         <p style="font-size:15px;line-height:1.9;color:var(--text1)">${n.body}</p>
         <div style="margin-top:24px;display:flex;gap:8px">
-          <button class="btn btn-o btn-sm" onclick="toast('ბმა გაზიარდა','success')">↗ გაზიარება</button>
           <button class="btn btn-n btn-sm" onclick="toast('ბმა კოპირდა','success')">📋 კოპირება</button>
+        </div>
+        <div style="margin-top:32px">
+          <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--border)">💬 კომენტარები</div>
+          <div id="news-comments-${n.id||'0'}" style="margin-bottom:16px">
+            <div style="display:flex;gap:10px;margin-bottom:14px">
+              <div style="width:34px;height:34px;border-radius:50%;background:var(--blue-lt);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">👩</div>
+              <div style="flex:1;background:var(--bg);border-radius:10px;padding:10px 14px">
+                <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:3px">ანა მ. <span style="font-weight:400;color:var(--text3)">· 2 საათის წინ</span></div>
+                <div style="font-size:13px;color:var(--text1);line-height:1.6">ძალიან საინტერესო სიახლეა! მადლობა ინფორმაციისთვის.</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-bottom:14px">
+              <div style="width:34px;height:34px;border-radius:50%;background:var(--green-lt);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">👨</div>
+              <div style="flex:1;background:var(--bg);border-radius:10px;padding:10px 14px">
+                <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:3px">გიორგი ბ. <span style="font-weight:400;color:var(--text3)">· 5 საათის წინ</span></div>
+                <div style="font-size:13px;color:var(--text1);line-height:1.6">კარგია რომ ამ საკითხებზე ინფორმაცია ვრცელდება.</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <div style="width:34px;height:34px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;color:#fff">👤</div>
+            <div style="flex:1;display:flex;gap:8px">
+              <input class="fi" id="comment-input-${n.id||'0'}" placeholder="დაწერე კომენტარი..." style="flex:1">
+              <button class="btn btn-b btn-sm" onclick="addComment('${n.id||'0'}')">გაგზავნა</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>`;
@@ -1697,5 +1719,22 @@ function submitApp(){
     '<div style="text-align:center;padding:20px"><div style="font-size:40px;margin-bottom:12px">✓</div><p style="font-size:14px;color:var(--text2)">თქვენი განაცხადი მიღებულია. სტატუსი SMS/Email-ით შეგატყობინებთ 1-2 სამუშაო დღეში.</p></div>',
     '<button class="btn btn-b" onclick="closeModal()">კარგი</button>'
   );
+}
+function addComment(nid){
+  const inp=document.getElementById('comment-input-'+nid);
+  if(!inp||!inp.value.trim()){toast('დაწერეთ კომენტარი','error');return;}
+  const container=document.getElementById('news-comments-'+nid);
+  if(container){
+    const div=document.createElement('div');
+    div.style.cssText='display:flex;gap:10px;margin-bottom:14px';
+    div.innerHTML=`<div style="width:34px;height:34px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;color:#fff">👤</div>
+      <div style="flex:1;background:var(--bg);border-radius:10px;padding:10px 14px">
+        <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:3px">თქვენ <span style="font-weight:400;color:var(--text3)">· ახლა</span></div>
+        <div style="font-size:13px;color:var(--text1);line-height:1.6">${inp.value.trim()}</div>
+      </div>`;
+    container.appendChild(div);
+  }
+  inp.value='';
+  toast('კომენტარი გამოქვეყნდა','success');
 }
 </script>

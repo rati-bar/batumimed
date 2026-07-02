@@ -1217,7 +1217,7 @@ function buildJournal(){
         ? `<th style="cursor:pointer;white-space:nowrap;background:var(--green-lt);color:var(--green);font-weight:800;border-bottom:2px solid var(--green)" onclick="bulkMarkSession(${ai},'${d}')" title="დღეს — ჯგუფური შეყვანა">📅 ${d} ●</th>`
         : `<th style="white-space:nowrap;color:var(--muted)">${d}</th>`;
     }).join('') +
-    '<th>დასწრება %</th><th>შუალედური</th><th>საბოლოო</th><th>მოქმედება</th></tr>'
+    '<th>დასწრება %</th><th>მოქმედება</th></tr>'
 
   // ensure att arrays have correct length
   journalStudents.forEach(s=>{
@@ -1238,8 +1238,6 @@ function buildJournal(){
       <td>${s.name}</td>
       ${attCells}
       <td><span class="badge ${pctBadge}">${pct}%</span></td>
-      <td><input class="grade-input" type="number" min="0" max="100" value="${s.mid||''}" id="mid-${si}" onchange="toast('შეფასება შენახულია')"></td>
-      <td><input class="grade-input" type="number" min="0" max="100" value="${s.fin||''}" id="fin-${si}" onchange="toast('საბოლოო ნიშანი შენახულია')"></td>
       <td><button class="btn btn-ghost btn-sm" onclick="studentDetail(${si})">👤</button></td>
     </tr>`
   }).join('')
