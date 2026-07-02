@@ -504,6 +504,7 @@ tr:hover td{background:var(--bg)}
       </select>
     </div>
     <div style="display:flex;gap:8px">
+      <button class="btn btn-blue" onclick="addSession()" style="font-weight:700">+ ახალი გაკვეთილი</button>
       <button class="btn btn-green" onclick="saveJournal()">💾 შენახვა</button>
       <button class="btn btn-outline" onclick="exportJournal()">⬇️ Excel-ში გადმოწერა</button>
     </div>
@@ -513,19 +514,12 @@ tr:hover td{background:var(--bg)}
     <span><span class="legend-dot" style="background:var(--green)"></span>ი — იყო</span>
     <span><span class="legend-dot" style="background:var(--red)"></span>არ — არ იყო</span>
     <span><span class="legend-dot" style="background:var(--amber)"></span>დ — დაგვიანება</span>
-    <span style="color:var(--muted);font-style:italic">· კლიკი — სტატუსის შეცვლა</span>
+    <span style="color:var(--muted);font-style:italic">· უჯრაზე კლიკი — სტატუსის შეცვლა &nbsp;|&nbsp; 📅 თარიღზე კლიკი — ჯგუფური შეყვანა</span>
   </div>
 
   <div class="card" style="overflow-x:auto">
     <table id="journal-table">
-      <thead>
-        <tr>
-          <th style="min-width:160px">სტუდენტი</th>
-          <th>03.06</th><th>06.06</th><th>10.06</th><th>13.06</th><th>17.06</th>
-          <th>20.06</th><th>24.06</th><th>27.06</th>
-          <th>დასწრება %</th><th>შუალედური</th><th>საბოლოო</th><th>მოქმედება</th>
-        </tr>
-      </thead>
+      <thead id="journal-head"></thead>
       <tbody id="journal-body"></tbody>
     </table>
   </div>
@@ -1158,15 +1152,34 @@ function logout(){
 
 // ── JOURNAL ──
 const attCycle = ['ი','არ','დ','']
+let journalDates = ['03.06','06.06','10.06','13.06','17.06','20.06','24.06','27.06']
+
 function buildJournal(){
+  const head = document.getElementById('journal-head')
   const body = document.getElementById('journal-body')
-  if(!body) return
+  if(!head||!body) return
+
+  // build header row dynamically
+  head.innerHTML = '<tr>' +
+    '<th style="min-width:160px">სტუდენტი</th>' +
+    journalDates.map((d,ai)=>
+      `<th style="cursor:pointer;white-space:nowrap" onclick="bulkMarkSession(${ai},'${d}')" title="ჯგუფური შეყვანა — ${d}">📅 ${d}</th>`
+    ).join('') +
+    '<th>დასწრება %</th><th>შუალედური</th><th>საბოლოო</th><th>მოქმედება</th></tr>'
+
+  // ensure att arrays have correct length
+  journalStudents.forEach(s=>{
+    while(s.att.length < journalDates.length) s.att.push('')
+  })
+
   body.innerHTML = journalStudents.map((s,si)=>{
-    const attCells = s.att.map((a,ai)=>{
+    const attCells = journalDates.map((_,ai)=>{
+      const a = s.att[ai]||''
       const cls = a==='ი'?'att-present':a==='არ'?'att-absent':a==='დ'?'att-late':'att-empty'
-      return `<td><div class="attendance-cell ${cls}" onclick="cycleAtt(${si},${ai})" id="att-${si}-${ai}">${a||'·'}</div></td>`
+      return `<td><div class="attendance-cell ${cls}" onclick="cycleAtt(${si},${ai})" id="att-${si}-${ai}" title="კლიკი — სტატუსის შეცვლა">${a||'·'}</div></td>`
     }).join('')
-    const pct = Math.round(s.att.filter(a=>a==='ი').length / s.att.length * 100)
+    const filled = s.att.slice(0,journalDates.length).filter(a=>a==='ი'||a==='არ'||a==='დ').length
+    const pct = filled ? Math.round(s.att.slice(0,journalDates.length).filter(a=>a==='ი').length / filled * 100) : 0
     const pctBadge = pct>=80?'badge-green':pct>=75?'badge-amber':'badge-red'
     return `<tr>
       <td>${s.name}</td>
@@ -1178,15 +1191,89 @@ function buildJournal(){
     </tr>`
   }).join('')
 }
+
 function cycleAtt(si,ai){
-  const cur = journalStudents[si].att[ai]
+  const cur = journalStudents[si].att[ai]||''
   const next = attCycle[(attCycle.indexOf(cur)+1)%attCycle.length]
   journalStudents[si].att[ai] = next
   const cell = document.getElementById(`att-${si}-${ai}`)
   cell.className = 'attendance-cell '+(next==='ი'?'att-present':next==='არ'?'att-absent':next==='დ'?'att-late':'att-empty')
   cell.textContent = next||'·'
-  toast('დასწრება განახლდა')
 }
+
+function addSession(){
+  const today = new Date()
+  const dd = String(today.getDate()).padStart(2,'0')
+  const mm = String(today.getMonth()+1).padStart(2,'0')
+  const defaultDate = dd+'.'+mm
+  showModal('ახალი გაკვეთილის დამატება',
+    `<div style="display:flex;flex-direction:column;gap:16px">
+      <div>
+        <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">გაკვეთილის თარიღი</label>
+        <input id="new-session-date" type="text" value="${defaultDate}" placeholder="დდ.თთ" style="width:100%;border:1.5px solid var(--border);border-radius:var(--radius);padding:9px 12px;font-size:14px;font-family:inherit;outline:none">
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:8px">სწრაფი შეყვანა (შეგიძლიათ შემდეგ შეცვალოთ)</label>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px">
+            <input type="radio" name="bulk-mark" value="present" checked style="accent-color:var(--green)">
+            <span style="color:var(--green);font-weight:700">ი</span> ყველა სტუდენტი — დასწრებული
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px">
+            <input type="radio" name="bulk-mark" value="absent" style="accent-color:var(--red)">
+            <span style="color:var(--red);font-weight:700">არ</span> ყველა სტუდენტი — გამოუცხადებელი
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px">
+            <input type="radio" name="bulk-mark" value="empty" style="accent-color:var(--muted)">
+            ცარიელი — შემდეგ შეიყვანება ინდ.
+          </label>
+        </div>
+      </div>
+    </div>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">გაუქმება</button>
+     <button class="btn btn-blue" onclick="confirmAddSession()">+ სვეტის დამატება</button>`
+  )
+}
+
+function confirmAddSession(){
+  const date = (document.getElementById('new-session-date').value||'').trim()
+  if(!date){toast('შეიყვანეთ თარიღი','error');return}
+  const mark = document.querySelector('input[name="bulk-mark"]:checked').value
+  journalDates.push(date)
+  const ai = journalDates.length-1
+  const val = mark==='present'?'ი':mark==='absent'?'არ':''
+  journalStudents.forEach(s=>{ s.att[ai]=val })
+  closeModal()
+  buildJournal()
+  toast(`გაკვეთილი ${date} დაემატა ✓`,'success')
+}
+
+function bulkMarkSession(ai, date){
+  showModal(`ჯგუფური შეყვანა — ${date}`,
+    `<p style="font-size:13px;color:var(--muted);margin-bottom:14px">მონიშნეთ ყველა სტუდენტი ერთდროულად. შემდეგ შეგიძლიათ ინდივიდუალურად შეცვალოთ.</p>
+     <div style="display:flex;flex-direction:column;gap:8px">
+       <button class="btn btn-green" style="width:100%;justify-content:flex-start;gap:10px" onclick="applyBulkMark(${ai},'ი')"><strong>ი</strong> — ყველა სტუდენტი დასწრებულია</button>
+       <button class="btn btn-red" style="width:100%;justify-content:flex-start;gap:10px" onclick="applyBulkMark(${ai},'არ')"><strong>არ</strong> — ყველა გამოუცხადებელია</button>
+       <button class="btn btn-outline" style="width:100%;justify-content:flex-start;gap:10px" onclick="applyBulkMark(${ai},'დ')"><strong>დ</strong> — ყველა დაგვიანებულია</button>
+       <button class="btn btn-ghost" style="width:100%;justify-content:flex-start;gap:10px" onclick="applyBulkMark(${ai},'')">ცარიელი — გასუფთავება</button>
+     </div>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">დახურვა</button>`
+  )
+}
+
+function applyBulkMark(ai, val){
+  journalStudents.forEach((_,si)=>{
+    journalStudents[si].att[ai]=val
+    const cell = document.getElementById(`att-${si}-${ai}`)
+    if(cell){
+      cell.className='attendance-cell '+(val==='ი'?'att-present':val==='არ'?'att-absent':val==='დ'?'att-late':'att-empty')
+      cell.textContent=val||'·'
+    }
+  })
+  closeModal()
+  toast('ჯგუფური შეყვანა განახლდა ✓','success')
+}
+
 function loadJournal(){buildJournal()}
 function saveJournal(){toast('ჟურნალი შენახულია ✓','success')}
 function exportJournal(){
