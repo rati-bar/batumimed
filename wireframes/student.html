@@ -705,12 +705,13 @@ tr:hover td{background:#FAFBFC}
     <div class="card">
       <div class="ch"><div class="ct">მოდულები · II სემესტრი 2025–2026</div></div>
       <div class="cb">
-        <div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:0;align-items:center;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)">
+        <div style="display:grid;grid-template-columns:1fr 110px 52px 52px 72px 120px;gap:0;align-items:center;margin-bottom:8px;padding-bottom:8px;border-bottom:1.5px solid var(--border)">
           <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px">მოდული</div>
-          <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center;min-width:90px">დასწრება</div>
-          <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center;min-width:50px">შუალედური</div>
-          <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center;min-width:50px">საბოლოო</div>
-          <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center;min-width:60px">გამ.</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center;padding:0 8px">დასწრება</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center">შუალ.</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center">საბ.</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center">შეფ.</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center">გამოკითხვა</div>
         </div>
         <div id="subjects"></div>
       </div>
@@ -1297,13 +1298,13 @@ const jEl=document.getElementById('subjects');
 subjects.forEach((s,idx)=>{
   const pct=s.att,bc=pct>=80?'var(--green)':pct>=60?'var(--amber)':'var(--red)';
   const surveyCell=s.survey
-    ?`<div style="padding:0 6px"><a href="${s.surveyUrl}" target="_blank" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;padding:4px 8px;background:var(--blue-lt);color:var(--blue);border-radius:6px;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap" title="გამოკითხვაზე გადასვლა">📊 გამოკითხვა ↗</a></div>`
-    :`<div style="padding:0 6px"><span style="font-size:11px;color:var(--text3)">—</span></div>`;
-  jEl.innerHTML+=`<div style="display:grid;grid-template-columns:1fr auto auto auto auto auto;gap:0;align-items:center;padding:11px 0;border-bottom:1px solid #F0F4F8;cursor:pointer" onclick="showSubjectModal(${idx})">
+    ?`<div style="display:flex;justify-content:center;padding:0 4px"><a href="${s.surveyUrl}" target="_blank" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;padding:4px 8px;background:var(--blue-lt);color:var(--blue);border-radius:6px;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap" title="გამოკითხვაზე გადასვლა">📊 გამ. ↗</a></div>`
+    :`<div style="display:flex;justify-content:center;padding:0 4px"><span style="font-size:11px;color:var(--text3)">—</span></div>`;
+  jEl.innerHTML+=`<div style="display:grid;grid-template-columns:1fr 110px 52px 52px 72px 120px;gap:0;align-items:center;padding:11px 0;border-bottom:1px solid #F0F4F8;cursor:pointer" onclick="showSubjectModal(${idx})">
     <div><div style="font-size:13px;font-weight:600">${s.name}</div><div style="font-size:11px;color:var(--text3)">პროფ. მასწავლებელი: ${s.lect}</div></div>
-    <div style="min-width:90px;padding:0 8px"><div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${bc};border-radius:3px"></div></div><span style="font-size:12px;font-variant-numeric:tabular-nums;color:var(--text2);width:30px;text-align:right">${pct}%</span></div></div>
-    <div style="padding:0 6px">${gradeBox(s.mid)}</div><div style="padding:0 6px">${gradeBox(s.fin)}</div>
-    <div style="padding:0 6px"><span class="bd ${s.mid>=85?'bd-g':s.mid>=70?'bd-a':'bd-r'}" style="font-size:10px">${s.mid>=85?'კარგი':s.mid>=70?'საშუალო':'სუსტი'}</span></div>
+    <div style="padding:0 8px"><div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${bc};border-radius:3px"></div></div><span style="font-size:12px;font-variant-numeric:tabular-nums;color:var(--text2);width:30px;text-align:right">${pct}%</span></div></div>
+    <div style="display:flex;justify-content:center">${gradeBox(s.mid)}</div><div style="display:flex;justify-content:center">${gradeBox(s.fin)}</div>
+    <div style="display:flex;justify-content:center"><span class="bd ${s.mid>=85?'bd-g':s.mid>=70?'bd-a':'bd-r'}" style="font-size:10px">${s.mid>=85?'კარგი':s.mid>=70?'საშუალო':'სუსტი'}</span></div>
     ${surveyCell}
   </div>`;
 });
