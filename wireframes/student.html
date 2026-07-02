@@ -281,7 +281,7 @@ tr:hover td{background:#FAFBFC}
     <button class="ni" onclick="go('payments',this,'გადახდები')"><span class="ni-ic">💳</span>გადახდები</button>
     <button class="ni" onclick="go('apps',this,'განაცხადები')"><span class="ni-ic">📝</span>განაცხადები</button>
     <div class="sb-section">სწავლა</div>
-    <button class="ni" onclick="go('journal',this,'ელ. ჟურნალი')"><span class="ni-ic">📊</span>ელ. ჟურნალი</button>
+    <button class="ni" onclick="go('journal',this,'ელექტრონული ჟურნალი')"><span class="ni-ic">📊</span>ელექტრონული ჟურნალი</button>
     <button class="ni" onclick="go('sched',this,'სასწავლო ცხრილი')"><span class="ni-ic">📅</span>სასწავლო ცხრილი</button>
     <button class="ni" onclick="go('lib',this,'ბიბლიოთეკა')"><span class="ni-ic">📚</span>ბიბლიოთეკა</button>
     <div class="sb-section">კამპუსი</div>
@@ -303,7 +303,7 @@ tr:hover td{background:#FAFBFC}
         </button>
         <div class="notif-dd" id="notif-dd">
           <div class="notif-hd">შეტყობინებები <button class="btn-xs btn-n" onclick="markAllRead()">ყველა წაკ.</button></div>
-          <div class="nitem nitem-unread" onclick="goNotif('payments')"><div class="nitem-t">💳 გადახდის ვადა</div><div class="nitem-s">II სემ. — ვადა 15 ივლ. 2026</div></div>
+          <div class="nitem nitem-unread" onclick="goNotif('payments')"><div class="nitem-t">💳 გადახდის ვადა</div><div class="nitem-s">II სემესტრი — ვადა 15 ივლ. 2026</div></div>
           <div class="nitem nitem-unread" onclick="goNotif('journal')"><div class="nitem-t">📊 ახალი შეფასება</div><div class="nitem-s">ანატომია — 88 ქ. შეიყვანა</div></div>
           <div class="nitem nitem-unread li-mandatory" onclick="goNotif('letters')"><div class="nitem-t">⚠ აუცილებელი შეტყობინება</div><div class="nitem-s">ბრძ. — გამოცდების ცხრილი 2026</div></div>
         </div>
@@ -352,7 +352,7 @@ tr:hover td{background:#FAFBFC}
         <div class="cb">
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
             <span class="bd bd-p" style="font-size:12px;padding:4px 12px">სსმ — სპეციალური საჭ.</span>
-            <span class="bd bd-a" style="font-size:12px;padding:4px 12px">სოციალ. დახმ.</span>
+            <span class="bd bd-a" style="font-size:12px;padding:4px 12px">სოციალური დახმარება</span>
           </div>
           <div style="font-size:12px;color:var(--text3)">სტატუსები ადასტურებს ადმინისტრაცია. ცვლილებისთვის მიმართეთ სტუდ. სამსახურს.</div>
           <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px">
@@ -395,7 +395,7 @@ tr:hover td{background:#FAFBFC}
             <div class="stat-box"><div class="stat-num">87</div><div class="stat-lbl">GPA</div></div>
             <div class="stat-box"><div class="stat-num">92%</div><div class="stat-lbl">დასწრება</div></div>
             <div class="stat-box"><div class="stat-num">6</div><div class="stat-lbl">მოდული</div></div>
-            <div class="stat-box"><div class="stat-num">II</div><div class="stat-lbl">სასწ. წ.</div></div>
+            <div class="stat-box"><div class="stat-num">II</div><div class="stat-lbl">სასწავლო წ.</div></div>
           </div>
         </div>
       </div>
@@ -420,7 +420,7 @@ tr:hover td{background:#FAFBFC}
         </div>
         <div style="display:flex;gap:16px;align-items:center;position:relative;z-index:1">
           <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;border:2px solid rgba(255,255,255,.4)">ნ</div>
-          <div><div style="font-size:16px;font-weight:700">ნინო კვარაცხელია</div><div style="font-size:12px;opacity:.8;margin-top:2px">სამედიცინო ასისტენტი</div><div style="font-size:11px;opacity:.6;margin-top:1px">ჯგუფი: MA-24B · II სასწ. წელი</div></div>
+          <div><div style="font-size:16px;font-weight:700">ნინო კვარაცხელია</div><div style="font-size:12px;opacity:.8;margin-top:2px">სამედიცინო ასისტენტი</div><div style="font-size:11px;opacity:.6;margin-top:1px">ჯგუფი: MA-24B · II სასწავლო წელი</div></div>
         </div>
         <div style="display:flex;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.2);position:relative;z-index:1">
           <div><div style="font-size:10px;opacity:.6">სტუდ. ID</div><div style="font-size:13px;font-weight:700;font-variant-numeric:tabular-nums">STU-2024-0042</div></div>
@@ -470,11 +470,11 @@ tr:hover td{background:#FAFBFC}
       <table id="docs-table">
         <thead><tr><th>ფაილი</th><th>ტიპი</th><th>ზომა</th><th>თარიღი</th><th>სტატუსი</th><th></th></tr></thead>
         <tbody>
-          <tr data-type="system"><td>📄 ჩარიცხვის ბრძანება №42</td><td><span class="bd bd-b">სისტემური</span></td><td>245 KB</td><td>01.09.2024</td><td><span class="bd bd-g">ხელმისაწვდომი</span></td><td><button class="btn btn-o btn-sm" onclick="dlDoc('ჩარიცხვის ბრძანება №42')">↓ ჩამოტვ.</button></td></tr>
-          <tr data-type="system"><td>📄 ცნობა სწავლის შესახებ</td><td><span class="bd bd-b">სისტემური</span></td><td>189 KB</td><td>15.06.2026</td><td><span class="bd bd-g">ხელმისაწვდომი</span></td><td><button class="btn btn-o btn-sm" onclick="dlDoc('ცნობა სწავლის შესახებ')">↓ ჩამოტვ.</button></td></tr>
-          <tr data-type="upload"><td>🖼 პირადობის ასლი</td><td><span class="bd bd-n">ჩემი</span></td><td>1.2 MB</td><td>03.09.2024</td><td><span class="bd bd-g">დამტკიცებული</span></td><td><button class="btn btn-o btn-sm" onclick="dlDoc('პირადობის ასლი')">↓ ჩამოტვ.</button></td></tr>
-          <tr data-type="upload"><td>📄 სამედ. ცნობა №F-100</td><td><span class="bd bd-n">ჩემი</span></td><td>310 KB</td><td>12.01.2026</td><td><span class="bd bd-a">განხილვაშია</span></td><td><button class="btn btn-o btn-sm" onclick="dlDoc('სამ. ცნობა')">↓ ჩამოტვ.</button></td></tr>
-          <tr data-type="system"><td>📄 სასწავლო ხელშეკრულება</td><td><span class="bd bd-b">სისტემური</span></td><td>420 KB</td><td>01.09.2024</td><td><span class="bd bd-g">ხელმისაწვდომი</span></td><td><button class="btn btn-o btn-sm" onclick="dlDoc('სასწ. ხელშ.')">↓ ჩამოტვ.</button></td></tr>
+          <tr data-type="system"><td>📄 ჩარიცხვის ბრძანება №42</td><td><span class="bd bd-b">სისტემური</span></td><td>245 KB</td><td>01.09.2024</td><td><span class="bd bd-g">ხელმისაწვდომი</span></td><td><button class="btn btn-o btn-sm" onclick="dlDoc('ჩარიცხვის ბრძანება №42')">↓ ჩამოტვირთვა</button></td></tr>
+          <tr data-type="system"><td>📄 ცნობა სწავლის შესახებ</td><td><span class="bd bd-b">სისტემური</span></td><td>189 KB</td><td>15.06.2026</td><td><span class="bd bd-g">ხელმისაწვდომი</span></td><td><button class="btn btn-o btn-sm" onclick="dlDoc('ცნობა სწავლის შესახებ')">↓ ჩამოტვირთვა</button></td></tr>
+          <tr data-type="upload"><td>🖼 პირადობის ასლი</td><td><span class="bd bd-n">ჩემი</span></td><td>1.2 MB</td><td>03.09.2024</td><td><span class="bd bd-g">დამტკიცებული</span></td><td><button class="btn btn-o btn-sm" onclick="dlDoc('პირადობის ასლი')">↓ ჩამოტვირთვა</button></td></tr>
+          <tr data-type="upload"><td>📄 სამედ. ცნობა №F-100</td><td><span class="bd bd-n">ჩემი</span></td><td>310 KB</td><td>12.01.2026</td><td><span class="bd bd-a">განხილვაშია</span></td><td><button class="btn btn-o btn-sm" onclick="dlDoc('სამ. ცნობა')">↓ ჩამოტვირთვა</button></td></tr>
+          <tr data-type="system"><td>📄 სასწავლო ხელშეკრულება</td><td><span class="bd bd-b">სისტემური</span></td><td>420 KB</td><td>01.09.2024</td><td><span class="bd bd-g">ხელმისაწვდომი</span></td><td><button class="btn btn-o btn-sm" onclick="dlDoc('სასწავლო ხელშ.')">↓ ჩამოტვირთვა</button></td></tr>
         </tbody>
       </table>
     </div>
@@ -491,7 +491,7 @@ tr:hover td{background:#FAFBFC}
         <tbody>
           <tr><td style="font-variant-numeric:tabular-nums">ბ-042</td><td>ჩარიცხვის შესახებ — MA-24B</td><td>01.09.2024</td><td><button class="btn btn-n btn-xs" onclick="showVersions('ბ-042')">v3 ▾</button></td><td><span class="bd bd-b">ჩარიცხვა</span></td><td><span class="bd bd-g">ძალაშია</span></td><td><button class="btn btn-o btn-sm" onclick="showOrderModal('ბ-042','ჩარიცხვის შესახებ — MA-24B','01.09.2024','ბათუმის სამედიცინო აკადემია\n\nდირექტორის ბრძანება ჩარიცხვის შესახებ №ბ-042\n\nძალაში: 01.09.2024\n\nვბრძანებ:\n\n1. ჩარიცხული იქნეს სამედიცინო ასისტენტის საგანმანათლებლო პროგრამაზე:\n   • ნინო კვარაცხელია — ჯგუფი MA-24B\n\n2. სწავლა დაიწყოს 2024 წ. 1 სექტემბრიდან.\n\n3. სწავლის საფასური: 4 800 ₾ სასწავლო წელიწადში.\n\nდირექტორი: გ. ჩახავა')">ნახვა</button></td></tr>
           <tr><td style="font-variant-numeric:tabular-nums">შ-019</td><td>შვებულების შესახებ</td><td>10.03.2026</td><td><button class="btn btn-n btn-xs" onclick="showVersions('შ-019')">v1 ▾</button></td><td><span class="bd bd-a">შვებულება</span></td><td><span class="bd bd-a">განხილვაშია</span></td><td><button class="btn btn-o btn-sm" onclick="showOrderModal('შ-019','შვებულების შესახებ','10.03.2026','ბათუმის სამედ. აკადემია\n\nბრძ. №შ-019\n\n1. კვარაცხელიას მიეცეს შვებულება 15 მარტი — 15 მაისი 2026.\n\nდირექტ.: გ. ჩახავა')">ნახვა</button></td></tr>
-          <tr><td style="font-variant-numeric:tabular-nums">გ-007</td><td>II სასწ. წელზე გადაყვანა</td><td>01.09.2025</td><td><button class="btn btn-n btn-xs" onclick="showVersions('გ-007')">v2 ▾</button></td><td><span class="bd bd-g">გადაყვანა</span></td><td><span class="bd bd-g">ძალაშია</span></td><td><button class="btn btn-o btn-sm" onclick="showOrderModal('გ-007','II სასწ. წელზე გადაყვანა','01.09.2025','ბათ. სამ. აკ.\n\nბრძ. №გ-007\n\n1. კვარაცხელია გადავიდეს II სასწ. წელზე, ჯ. MA-24B.\nGPA: 87.3\n\nდირ.: გ. ჩახავა')">ნახვა</button></td></tr>
+          <tr><td style="font-variant-numeric:tabular-nums">გ-007</td><td>II სასწავლო წელზე გადაყვანა</td><td>01.09.2025</td><td><button class="btn btn-n btn-xs" onclick="showVersions('გ-007')">v2 ▾</button></td><td><span class="bd bd-g">გადაყვანა</span></td><td><span class="bd bd-g">ძალაშია</span></td><td><button class="btn btn-o btn-sm" onclick="showOrderModal('გ-007','II სასწავლო წელზე გადაყვანა','01.09.2025','ბათ. სამ. აკ.\n\nბრძ. №გ-007\n\n1. კვარაცხელია გადავიდეს II სასწავლო წელზე, ჯ. MA-24B.\nGPA: 87.3\n\nდირ.: გ. ჩახავა')">ნახვა</button></td></tr>
         </tbody>
       </table>
     </div>
@@ -518,7 +518,7 @@ tr:hover td{background:#FAFBFC}
       <div class="li-icon" style="background:var(--red-lt)">⚠</div>
       <div style="flex:1">
         <div style="font-size:11px;color:var(--red);font-weight:700;margin-bottom:2px">⚠ ᲐᲣᲪᲘᲚᲔᲑᲔᲚᲘ ᲬᲐᲡᲐᲙᲘᲗᲮᲘ</div>
-        <div class="li-subject">ადმ. — გამოცდების ცხრილი ივლ. 2026 (ბრძ. №ე-014)</div>
+        <div class="li-subject">ადმინისტრაცია — გამოცდების ცხრილი ივლ. 2026 (ბრძ. №ე-014)</div>
         <div class="li-preview">შუალედური გამოცდები ჩატარდება 2026 წ. 14–25 ივლ. MA-24B ჯგუფისთვის...</div>
       </div>
       <div class="li-meta">28 ივნ.<br><span class="bd bd-r">წაუკ.</span></div>
@@ -526,7 +526,7 @@ tr:hover td{background:#FAFBFC}
     <div class="letter-item unread" onclick="showLetterModal('teacher1')">
       <div class="li-icon">👨‍🏫</div>
       <div style="flex:1">
-        <div class="li-subject">ლ. გოგიაშვილი — სახელმძღვ. ანატომია VII თ.</div>
+        <div class="li-subject">ლია გოგიაშვილი — სახელმძღვანელო ანატომია VII თავი</div>
         <div class="li-preview">გამარჯობა, ნინო! გთხოვთ, გადახედოთ VII თავს და მოემზადოთ...</div>
       </div>
       <div class="li-meta">25 ივნ.<br><span class="bd bd-b">პირადი</span></div>
@@ -542,7 +542,7 @@ tr:hover td{background:#FAFBFC}
     <div class="letter-item" onclick="showLetterModal('admin2')">
       <div class="li-icon">✅</div>
       <div style="flex:1">
-        <div class="li-subject">სტ. სამ. — განაცხადი დამტკიცდა #24-089</div>
+        <div class="li-subject">სტუდენტი სამ. — განაცხადი დამტკიცდა #24-089</div>
         <div class="li-preview">თქვენი განაცხადი «ცნობა სწავლის შესახებ» (#24-089) დამტკ...</div>
       </div>
       <div class="li-meta">27 ივნ.<br><span class="bd bd-g">წაკ.</span></div>
@@ -562,7 +562,7 @@ tr:hover td{background:#FAFBFC}
     <div class="letter-item" onclick="showLetterModal('sent2')">
       <div class="li-icon" style="background:var(--blue-lt)">📤</div>
       <div style="flex:1">
-        <div class="li-subject">სტ. სამ. — ცნობის მოთხოვნა</div>
+        <div class="li-subject">სტუდენტი სამ. — ცნობის მოთხოვნა</div>
         <div class="li-preview">გამარჯობა! გთხოვთ, გამომიწეროთ ცნობა სწავლის შ...</div>
       </div>
       <div class="li-meta">26 ივნ.<br><span class="bd bd-g">გაიგზ.</span></div>
@@ -574,7 +574,7 @@ tr:hover td{background:#FAFBFC}
     <div class="letter-item" onclick="showLetterModal('draft1')">
       <div class="li-icon" style="background:var(--amber-lt)">📝</div>
       <div style="flex:1">
-        <div class="li-subject" style="color:var(--amber)">ლ. გოგიაშვილი — [დრაფტი] კითხვა ლექციის შ.</div>
+        <div class="li-subject" style="color:var(--amber)">ლია გოგიაშვილი — [დრაფტი] კითხვა ლექციის შესახებ</div>
         <div class="li-preview">გამარჯობა! მინდოდა გკითხოთ...</div>
       </div>
       <div class="li-meta">29 ივნ.<br><button class="btn btn-o btn-xs" onclick="event.stopPropagation();showComposeModal()">გაგრძელ.</button></div>
@@ -596,8 +596,8 @@ tr:hover td{background:#FAFBFC}
     <div class="letter-item" onclick="showLetterModal('gen1')">
       <div class="li-icon">📢</div>
       <div style="flex:1">
-        <div class="li-subject">ახ. სასწ. წლის ინფორმაცია — 2026–2027</div>
-        <div class="li-preview">ახ. სასწ. წელი დაიწყება 2026 წ. 1 სექტემბრიდან...</div>
+        <div class="li-subject">ახ. სასწავლო წლის ინფორმაცია — 2026–2027</div>
+        <div class="li-preview">ახ. სასწავლო წელი დაიწყება 2026 წ. 1 სექტემბრიდან...</div>
       </div>
       <div class="li-meta">01 ივლ.</div>
     </div>
@@ -620,7 +620,7 @@ tr:hover td{background:#FAFBFC}
   <div class="g4 mb16">
     <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)"><div style="font-size:12px;color:var(--text2);margin-bottom:4px">სრული საფასური</div><div style="font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--navy)">4,800₾</div></div>
     <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)"><div style="font-size:12px;color:var(--text2);margin-bottom:4px">გადახდილია</div><div style="font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--green)">2,400₾</div></div>
-    <div style="background:#fff;border:1px solid var(--amber-lt);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)"><div style="font-size:12px;color:var(--text2);margin-bottom:4px">დარჩენილი (ვ: 15 ივლ.)</div><div style="font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--amber)">2,400₾</div></div>
+    <div style="background:#fff;border:1px solid var(--amber-lt);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)"><div style="font-size:12px;color:var(--text2);margin-bottom:4px">დარჩენილი (ვადა: 15 ივლ.)</div><div style="font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--amber)">2,400₾</div></div>
     <div style="background:#fff;border:1px solid var(--green-lt);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)"><div style="font-size:12px;color:var(--text2);margin-bottom:4px">სტიპენდია</div><div style="font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--green)">200₾/თვ.</div></div>
   </div>
   <div class="card">
@@ -628,9 +628,9 @@ tr:hover td{background:#FAFBFC}
     <div class="cb" style="padding-top:0">
       <div class="tw"><table><thead><tr><th>თარიღი</th><th>№</th><th>დანიშნულება</th><th>თანხა</th><th>მეთოდი</th><th>სტატუსი</th><th></th></tr></thead>
       <tbody>
-        <tr><td>10.01.2026</td><td style="font-variant-numeric:tabular-nums">PAY-2026-011</td><td>სწ. საფ. · II სემ. 2025–26</td><td style="font-weight:700;font-variant-numeric:tabular-nums">2,400₾</td><td>ბარათი</td><td><span class="bd bd-g">გადახდილია</span></td><td><button class="btn btn-o btn-sm" onclick="dlReceipt('PAY-2026-011')">↓ ქვ.</button></td></tr>
-        <tr><td>05.09.2025</td><td style="font-variant-numeric:tabular-nums">PAY-2025-089</td><td>სწ. საფ. · I სემ. 2025–26</td><td style="font-weight:700;font-variant-numeric:tabular-nums">2,400₾</td><td>გადარ.</td><td><span class="bd bd-g">გადახდილია</span></td><td><button class="btn btn-o btn-sm" onclick="dlReceipt('PAY-2025-089')">↓ ქვ.</button></td></tr>
-        <tr style="background:var(--amber-lt)" id="pay-pending"><td>–</td><td>–</td><td>სწ. საფ. · II სემ. 2025–26</td><td style="font-weight:700;font-variant-numeric:tabular-nums;color:var(--amber)">2,400₾</td><td>–</td><td><span class="bd bd-a">მოლოდინი</span></td><td><button class="btn btn-b btn-sm" onclick="showPayModal()">გადახდა</button></td></tr>
+        <tr><td>10.01.2026</td><td style="font-variant-numeric:tabular-nums">PAY-2026-011</td><td>სასწავლო საფასური — II სემესტრი 2025–26</td><td style="font-weight:700;font-variant-numeric:tabular-nums">2,400₾</td><td>ბარათი</td><td><span class="bd bd-g">გადახდილია</span></td><td><button class="btn btn-o btn-sm" onclick="dlReceipt('PAY-2026-011')">↓ ქვითარი</button></td></tr>
+        <tr><td>05.09.2025</td><td style="font-variant-numeric:tabular-nums">PAY-2025-089</td><td>სასწავლო საფასური — I სემესტრი 2025–26</td><td style="font-weight:700;font-variant-numeric:tabular-nums">2,400₾</td><td>გადარიცხვა</td><td><span class="bd bd-g">გადახდილია</span></td><td><button class="btn btn-o btn-sm" onclick="dlReceipt('PAY-2025-089')">↓ ქვითარი</button></td></tr>
+        <tr style="background:var(--amber-lt)" id="pay-pending"><td>–</td><td>–</td><td>სასწავლო საფასური — II სემესტრი 2025–26</td><td style="font-weight:700;font-variant-numeric:tabular-nums;color:var(--amber)">2,400₾</td><td>–</td><td><span class="bd bd-a">მოლოდინი</span></td><td><button class="btn btn-b btn-sm" onclick="showPayModal()">გადახდა</button></td></tr>
       </tbody></table></div>
     </div>
   </div>
@@ -651,11 +651,11 @@ tr:hover td{background:#FAFBFC}
           <div id="tmpl-section">
             <div style="font-size:12px;color:var(--text2);margin-bottom:10px">შაბლონის არჩევა:</div>
             <div style="display:flex;flex-direction:column;gap:7px" id="tmpl-list">
-              <div class="tmpl on" onclick="pickTmpl(this,'ცნობა სწავლის შესახებ','BMA ადასტ., რომ ნინო კვ. II სასწ. წ. სტუდ. MA-24B ჯ.-ში.')">📋 ცნობა სწავლის შ.</div>
+              <div class="tmpl on" onclick="pickTmpl(this,'ცნობა სწავლის შესახებ','BMA ადასტუდენტი, რომ ნინო კვ. II სასწავლო წ. სტუდ. MA-24B ჯ.-ში.')">📋 ცნობა სწავლის შესახებ</div>
               <div class="tmpl" onclick="pickTmpl(this,'შვებულების შ.','სტუდ. ითხ. აკ. შვ. მითით. ვ.-ით.')">✈ შვებულების შ.</div>
-              <div class="tmpl" onclick="pickTmpl(this,'ჩარიცხვის ცნობა','სტ. ჩარ. 2024 სექ.-ში.')">📌 ჩარ. ცნობა</div>
-              <div class="tmpl" onclick="pickTmpl(this,'გამ. გადადება','სტ. ითხ. გამ. ვ. გადად.')">📆 გამ. გადადება</div>
-              <div class="tmpl" onclick="pickTmpl(this,'ინიციატივა','სტ. წ. ინიც. სასწ. პ. გ.-ს.')">💡 ინიციატივა</div>
+              <div class="tmpl" onclick="pickTmpl(this,'ჩარიცხვის ცნობა','სტუდენტი ჩარ. 2024 სექ.-ში.')">📌 ჩარიცხვის ცნობა</div>
+              <div class="tmpl" onclick="pickTmpl(this,'გამ. გადადება','სტუდენტი ითხ. გამ. ვ. გადად.')">📆 გამოცდის გადადება</div>
+              <div class="tmpl" onclick="pickTmpl(this,'ინიციატივა','სტუდენტი წ. ინიც. სასწავლო პ. გ.-ს.')">💡 ინიციატივა</div>
             </div>
           </div>
           <div id="free-section" style="display:none">
@@ -665,7 +665,7 @@ tr:hover td{background:#FAFBFC}
             <div class="fg mb0"><label class="fl">ან ატვირთეთ ფაილი (PDF/Word)</label>
               <div style="border:2px dashed var(--border);border-radius:var(--r);padding:20px;text-align:center;cursor:pointer;background:var(--bg)" onclick="toast('ფ. ატვ. ვინდოუ გაიხსნება','info')">
                 <div style="font-size:20px;margin-bottom:4px">📎</div>
-                <div style="font-size:12px;color:var(--text2)">PDF, Word — მაქს. 10 MB</div>
+                <div style="font-size:12px;color:var(--text2)">PDF, Word — მაქსიმალური 10 MB</div>
               </div>
             </div>
           </div>
@@ -684,11 +684,11 @@ tr:hover td{background:#FAFBFC}
     <div class="card" id="app-form-card">
       <div class="ch"><div class="ct" id="tmpl-title">ცნობა სწავლის შ.</div></div>
       <div class="cb">
-        <div style="background:var(--blue-lt);border-radius:6px;padding:14px;font-size:13px;color:var(--blue);margin-bottom:16px;line-height:1.6" id="tmpl-preview">BMA ადასტ., რომ ნინო კვ. II სასწ. წ. სტუდ. MA-24B.</div>
+        <div style="background:var(--blue-lt);border-radius:6px;padding:14px;font-size:13px;color:var(--blue);margin-bottom:16px;line-height:1.6" id="tmpl-preview">BMA ადასტუდენტი, რომ ნინო კვ. II სასწავლო წ. სტუდ. MA-24B.</div>
         <div class="fg2"><label class="fl">დანიშნ.</label><input class="fi" id="app-purpose" placeholder="მაგ: საბანკო დ."></div>
         <div class="fg2">
           <div><label class="fl">ენა</label><select class="fi"><option>ქართული</option><option>ინგლისური</option></select></div>
-          <div><label class="fl">გადაც. ფ.</label><select class="fi"><option>ელ. ფოსტ.</option><option>პირ.</option></select></div>
+          <div><label class="fl">გადაცემის ფორმა</label><select class="fi"><option>ელ. ფოსტუდენტი</option><option>პირადად</option></select></div>
         </div>
         <div class="fg"><label class="fl">შენიშვნა</label><textarea class="fi" placeholder="სურვ..."></textarea></div>
         <button class="btn btn-b btn-full" onclick="submitApp()">→ გაგ. განხ.</button>
@@ -701,18 +701,18 @@ tr:hover td{background:#FAFBFC}
 
 <!-- ── JOURNAL ── -->
 <div id="screen-journal" class="screen">
-  <div class="ph fb"><div><div class="pt">ელ. ჟურნალი</div><div class="ps">2025–2026 სასწ. წელი · II სასწ. წ. · MA-24B</div></div>
-    <button class="btn btn-o" onclick="toast('PDF მომ. ...','info')">↓ PDF</button>
+  <div class="ph fb"><div><div class="pt">ელექტრონული ჟურნალი</div><div class="ps">2025–2026 სასწავლო წელი · II სასწავლო წ. · MA-24B</div></div>
+    <button class="btn btn-o" onclick="toast('PDF მომ. ...','info')">↓ PDF გადმოწერა</button>
   </div>
   <div class="g2">
     <div class="card">
-      <div class="ch"><div class="ct">მოდულები · II სემ. 2025–2026</div></div>
+      <div class="ch"><div class="ct">მოდულები · II სემესტრი 2025–2026</div></div>
       <div class="cb">
         <div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:0;align-items:center;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)">
           <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px">მოდული</div>
           <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center;min-width:90px">დასწრება</div>
-          <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center;min-width:50px">შუალ.</div>
-          <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center;min-width:50px">საბ.</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center;min-width:50px">შუალედური</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center;min-width:50px">საბოლოო</div>
           <div style="font-size:11px;font-weight:700;color:var(--text3);text-align:center;min-width:60px">გამ.</div>
         </div>
         <div id="subjects"></div>
@@ -723,7 +723,7 @@ tr:hover td{background:#FAFBFC}
         <div class="ch"><div class="ct">GPA ინდ.</div></div>
         <div class="cb" style="text-align:center">
           <div style="font-size:48px;font-weight:800;color:var(--blue);font-variant-numeric:tabular-nums;line-height:1">87.3</div>
-          <div style="font-size:13px;color:var(--text2);margin-top:4px">საშ. ქულა (100-ქ. სკ.)</div>
+          <div style="font-size:13px;color:var(--text2);margin-top:4px">საშუალო ქულა (100-ქ. სკ.)</div>
           <div style="margin-top:14px">
             <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>პროგ.</span><span>87%</span></div>
             <div class="prw" style="height:10px"><div class="prf" style="width:87%;background:var(--green)"></div></div>
@@ -747,7 +747,7 @@ tr:hover td{background:#FAFBFC}
 <!-- ── SCHEDULE ── -->
 <div id="screen-sched" class="screen">
   <div class="ph fb">
-    <div><div class="pt">სასწ. ცხრილი</div><div class="ps">II სემ. 2025–2026 · MA-24B</div></div>
+    <div><div class="pt">სასწავლო ცხრილი</div><div class="ps">II სემესტრი 2025–2026 · MA-24B</div></div>
     <div class="fc">
       <button class="btn btn-n btn-sm" id="sched-week-btn" onclick="schedView('week',this)">📅 კვირა</button>
       <button class="btn btn-b btn-sm" id="sched-month-btn" onclick="schedView('month',this)">📆 თვე</button>
@@ -804,15 +804,15 @@ tr:hover td{background:#FAFBFC}
 
 <!-- ── LIBRARY ── -->
 <div id="screen-lib" class="screen">
-  <div class="ph fb"><div><div class="pt">ბიბლიოთეკა</div><div class="ps">ფიზიკური და ელ. კატალოგი</div></div></div>
+  <div class="ph fb"><div><div class="pt">ბიბლიოთეკა</div><div class="ps">ფიზიკური და ელექტრონული კატალოგი</div></div></div>
   <div class="card mb16">
     <div class="cb">
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <input class="fi" id="lib-search" placeholder="🔍  სახელმძღვ., ავტ., ISBN..." style="flex:1;min-width:200px" oninput="filterBooks(this.value)">
-        <select class="fi" style="width:auto" onchange="filterBooksCat(this.value)"><option value="">ყველა მოდ.</option><option>ანატომია</option><option>ფიზიოლ.</option><option>ფარმ.</option></select>
+        <select class="fi" style="width:auto" onchange="filterBooksCat(this.value)"><option value="">ყველა მოდული</option><option>ანატომია</option><option>ფიზიოლოგია</option><option>ფარმაკოლოგია</option></select>
         <div style="display:flex;gap:4px">
           <button class="chip on" id="lib-phys" onclick="libFilter('phys',this)">📚 ფიზ.</button>
-          <button class="chip" id="lib-dig" onclick="libFilter('dig',this)">💻 ელ.</button>
+          <button class="chip" id="lib-dig" onclick="libFilter('dig',this)">💻 ელექტრონული</button>
         </div>
       </div>
     </div>
@@ -825,10 +825,10 @@ tr:hover td{background:#FAFBFC}
     <div class="card">
       <div class="ch"><div class="ct">ჩემი ნასესხები</div></div>
       <div class="cb">
-        <table><thead><tr><th>სახელმძღვ.</th><th>ვადა</th><th>ტიპი</th><th></th></tr></thead>
+        <table><thead><tr><th>სახელმძღვანელო</th><th>ვადა</th><th>ტიპი</th><th></th></tr></thead>
         <tbody>
           <tr><td>Gray's Anatomy</td><td>10.07.2026</td><td><span class="bd bd-b">ფიზ.</span></td><td><button class="btn btn-n btn-xs" onclick="returnBook('Gray\\'s Anatomy')">დაბ.</button></td></tr>
-          <tr><td>Farmakologia (PDF)</td><td>03.07.2026</td><td><span class="bd bd-g">ელ.</span></td><td><button class="btn btn-n btn-xs" onclick="toast('განახ. გადმ.','success')">↻ განახ.</button></td></tr>
+          <tr><td>Farmakologia (PDF)</td><td>03.07.2026</td><td><span class="bd bd-g">ელ.</span></td><td><button class="btn btn-n btn-xs" onclick="toast('განახ. გადმ.','success')">↻ განახლება</button></td></tr>
         </tbody></table>
       </div>
     </div>
@@ -838,7 +838,7 @@ tr:hover td{background:#FAFBFC}
 <!-- ── CLUBS ── -->
 <div id="screen-clubs" class="screen">
   <div id="clubs-list-view">
-    <div class="ph"><div class="pt">კლუბები</div><div class="ps">სტუდ. კლუბები — გაწ., ღ-ძ., კალ.</div></div>
+    <div class="ph"><div class="pt">კლუბები</div><div class="ps">სტუდენტური კლუბები — გაწევრიანება, ღონისძიებები, კალენდარი</div></div>
     <div style="display:flex;gap:8px;margin-bottom:16px">
       <button class="btn btn-b btn-sm" id="clubs-all-btn" onclick="filterClubs('all',this)">ყველა</button>
       <button class="btn btn-n btn-sm" id="clubs-my-btn" onclick="filterClubs('my',this)">ჩემი</button>
@@ -850,10 +850,10 @@ tr:hover td{background:#FAFBFC}
 
 <!-- ── SURVEYS ── -->
 <div id="screen-surveys" class="screen">
-  <div class="ph"><div class="pt">გამოკითხვები</div><div class="ps">ადმინ. გამ. სტ-ებ-ს. / პ. მ-ებ-ს.</div></div>
+  <div class="ph"><div class="pt">გამოკითხვები</div><div class="ps">ადმინისტრაციის გამოკითხვები სტუდენტებისა და პროფ. მასწავლებლებისთვის</div></div>
   <div class="g2">
     <div class="card">
-      <div class="ch"><div class="ct">აქტიური გამ.</div></div>
+      <div class="ch"><div class="ct">აქტიური გამოკითხვები</div></div>
       <div class="cb"><div id="surveys-active"></div></div>
     </div>
     <div class="card">
@@ -866,7 +866,7 @@ tr:hover td{background:#FAFBFC}
 <!-- ── NEWS ── -->
 <div id="screen-news" class="screen">
   <div id="news-list-view">
-    <div class="ph"><div class="pt">სიახლეები და ბლოგი</div><div class="ps">აკადემიის სიახლეები, ღ-ძ., გამ.</div></div>
+    <div class="ph"><div class="pt">სიახლეები და ბლოგი</div><div class="ps">აკადემიის სიახლეები, ღონისძიებები, განცხადებები</div></div>
     <div class="g2" id="news-grid"></div>
   </div>
   <div id="news-detail-view" style="display:none"></div>
@@ -875,9 +875,9 @@ tr:hover td{background:#FAFBFC}
 <!-- ── CAREER ── -->
 <div id="screen-career" class="screen">
   <div id="career-list-view">
-    <div class="ph"><div class="pt">კარიერა</div><div class="ps">ვაკ., სამ. ადგ., ალუმნი — CV ელ. ფ-ით</div></div>
+    <div class="ph"><div class="pt">კარიერა</div><div class="ps">ვაკანსიები, სამუშაო ადგილები, ალუმნი — CV ელ. ფოსტით</div></div>
     <div style="background:var(--green-lt);border:1px solid var(--green);border-radius:var(--r);padding:14px 18px;font-size:13px;color:var(--green);margin-bottom:20px">
-      🎓 კურსდამთ. ინ. წვდ. — ვაკ., ციფ. სერტ., ალ. ქსელი
+      🎓 კურსდამთავრებულების ინფო — ვაკანსიები, ციფრული სერტიფიკატები, ალუმნი ქსელი
     </div>
     <div id="jobs-list"></div>
   </div>
@@ -896,8 +896,8 @@ tr:hover td{background:#FAFBFC}
     </div>
     <div class="mb-body" id="mand-body"></div>
     <div class="mf" style="background:var(--red-lt)">
-      <div style="flex:1;font-size:12px;color:var(--red)">✋ დადასტ. გარეშე გაგრძელება შ/ა</div>
-      <button class="btn btn-r" id="mand-confirm-btn" onclick="confirmMandatory()">✓ წავიკითხე და ვადასტ.</button>
+      <div style="flex:1;font-size:12px;color:var(--red)">✋ დადასტუდენტი გარეშე გაგრძელება შ/ა</div>
+      <button class="btn btn-r" id="mand-confirm-btn" onclick="confirmMandatory()">✓ წავიკითხე და ვადასტუდენტი</button>
     </div>
   </div>
 </div>
@@ -967,7 +967,7 @@ function verifyOTP(){
     app.style.display='flex';
     // Show mandatory notification after login
     setTimeout(showMandatoryNotification,600);
-    toast('კეთ. იყ. მობ., ნინო!','success');
+    toast('კეთილი იყოს მობრძანება, ნინო!','success');
     btn.innerHTML='→ დ.';btn.disabled=false;
   },1200);
 }
@@ -985,11 +985,11 @@ function showForgotPass(e){e.preventDefault();
   `,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-b" onclick="closeModal();toast(\'SMS კ. გ.!\',\'success\')">→ კ. გ.</button>');
 }
 function showAdminLogin(e){e.preventDefault();
-  showModal('ადმინ. პანელი',`
-    <div style="background:var(--amber-lt);border:1px solid var(--amber);border-radius:8px;padding:12px;font-size:13px;color:var(--amber);margin-bottom:16px">⚠ ადმ. პ. — მხოლოდ ავტ. პ.-ებ-ს.</div>
-    <div class="fg"><label class="fl">ადმ. ელ-ფ.</label><input class="fi" value="admin@bmeda.edu.ge"></div>
+  showModal('ადმინისტრატორის პანელი',`
+    <div style="background:var(--amber-lt);border:1px solid var(--amber);border-radius:8px;padding:12px;font-size:13px;color:var(--amber);margin-bottom:16px">⚠ ადმინ. პორტალი — მხოლოდ ავტორიზებული პირებისთვის</div>
+    <div class="fg"><label class="fl">ადმინისტრატორის ელ-ფოსტა</label><input class="fi" value="admin@bmeda.edu.ge"></div>
     <div class="fg mb0"><label class="fl">პ.</label><input class="fi" type="password" placeholder="••••••••"></div>
-  `,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-b" onclick="closeModal();toast(\'ადმ. პ. — ჯ. ელ. wireframe\',\'info\')">შ.</button>');
+  `,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-b" onclick="closeModal();toast(\'ადმინისტრატორის პორტალი — ჯერ wireframe-ში\',\'info\')">შ.</button>');
 }
 function doLogout(){
   document.getElementById('app').style.display='none';
@@ -1001,10 +1001,10 @@ function toggleNotif(){document.getElementById('notif-dd').classList.toggle('ope
 function markAllRead(){
   document.querySelectorAll('.nitem-unread').forEach(n=>n.classList.remove('nitem-unread'));
   document.getElementById('notif-dot').textContent='';document.getElementById('notif-dot').style.display='none';
-  toast('ყველა წ.','success');
+  toast('ყველა წერილი მონიშნულია წაკითხულად','success');
 }
 function goNotif(screen){
-  const labels={payments:'გადახდები',journal:'ელ. ჟ.',letters:'წ.'};
+  const labels={payments:'გადახდები',journal:'ელექტრონული ჟურნალი',letters:'წერილი'};
   go(screen,null,labels[screen]||screen);closeModal();
   document.getElementById('notif-dd').classList.remove('open');
   document.querySelectorAll('.ni').forEach(n=>{if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+screen+"'"))n.classList.add('on')});
@@ -1019,15 +1019,15 @@ function showMandatoryNotification(){
       <div style="font-size:13px;color:var(--text2)">გამოცდების ცხრილი — ივლ. 2026</div>
     </div>
     <div style="font-size:13px;line-height:1.8;color:var(--text1)">
-      <p style="margin-bottom:12px">ბ. სამ. აკ. ადმ. გ-ს:</p>
+      <p style="margin-bottom:12px">ბათუმის სამედიცინო აკადემიის ადმინისტრაცია გმადლობთ:</p>
       <p style="margin-bottom:8px"><b>შ. გ. ჩ. 14–25 ივ. 2026 MA-24B:</b></p>
       <ul style="padding-left:20px;display:flex;flex-direction:column;gap:6px">
-        <li><b>ანატომია</b> — 14.07 09:00 · 201-ე დ.</li>
-        <li><b>ფიზიოლ.</b> — 16.07 10:45 · 204-ე დ.</li>
-        <li><b>ფარმ.</b> — 18.07 09:00 · 105-ე დ.</li>
-        <li><b>სამ. ეთ.</b> — 21.07 11:00 · 301-ე დ.</li>
-        <li><b>კლ. პ.</b> — 23.07 09:00 · სიმ.1</li>
-        <li><b>ინგ.</b> — 25.07 13:00 · 108-ე დ.</li>
+        <li><b>ანატომია</b> — 14.07 09:00 · 201-ე დარბაზი</li>
+        <li><b>ფიზიოლოგია</b> — 16.07 10:45 · 204-ე დარბაზი</li>
+        <li><b>ფარმაკოლოგია</b> — 18.07 09:00 · 105-ე დარბაზი</li>
+        <li><b>სამედიცინო ეთიკა</b> — 21.07 11:00 · 301-ე დარბაზი</li>
+        <li><b>კლინიკური პრაქტიკა</b> — 23.07 09:00 · სიმულ. 1-ელი</li>
+        <li><b>ინგლისური ენა</b> — 25.07 13:00 · 108-ე დარბაზი</li>
       </ul>
       <p style="margin-top:12px;font-size:12px;color:var(--text3)">გ. და დ. თ. ჩ. სისტ-ში: 29.06.2026 11:34</p>
     </div>`;
@@ -1035,7 +1035,7 @@ function showMandatoryNotification(){
 }
 function confirmMandatory(){
   document.getElementById('mandatory-overlay').classList.remove('open');
-  toast('შეტ. დ.!','success');
+  toast('შეტყობინება დაიდასტურა!','success');
   // update letter badge
   const badge=document.getElementById('letters-badge');
   if(badge&&badge.textContent>0)badge.textContent=parseInt(badge.textContent)-1;
@@ -1043,7 +1043,7 @@ function confirmMandatory(){
 
 // ══ PROFILE ══
 function showPhotoModal(){
-  showModal('სურ. შ.',`
+  showModal('სურათის შეცვლა',`
     <div style="text-align:center;padding:20px 0">
       <div style="width:80px;height:80px;border-radius:50%;background:var(--blue);color:#fff;font-size:28px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">ნ</div>
       <button class="btn btn-b" onclick="toast('ფ. ატვ. ვ. გ.','info')">📁 ფ. ა.</button>
@@ -1052,24 +1052,24 @@ function showPhotoModal(){
   `,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-b" onclick="closeModal();toast(\'ფ. შ.\',\'success\')">შ.</button>');
 }
 function showEditContact(){
-  showModal('კ. რ.',`
+  showModal('კონტაქტი და რეკვიზიტები',`
     <div class="fg"><label class="fl">ელ-ფ.</label><input class="fi" value="nino.k@gmail.com"></div>
     <div class="fg"><label class="fl">ტელ. (SMS)</label><input class="fi" value="+995 555 123 456"></div>
     <div class="fg mb0"><label class="fl">მ-ბი</label><input class="fi" value="ბ., ნ. 14"></div>
   `,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-b" onclick="closeModal();toast(\'შ.\',\'success\')">შ.</button>');
 }
 function showStatusInfo(){
-  showModal('სტ. ინფ.',`
+  showModal('სტუდენტის ინფორმაცია',`
     <div style="display:flex;flex-direction:column;gap:10px;font-size:13px">
-      <div style="padding:10px;background:var(--purple-lt);border-radius:8px"><b style="color:var(--purple)">სსმ</b> — სპ. საჭ. მქ. სტ. — სპ. გ-ბ. სასწ. პ.-ში</div>
-      <div style="padding:10px;background:var(--amber-lt);border-radius:8px"><b style="color:var(--amber)">ობ.</b> — ო. სტ. — ს. დ.</div>
-      <div style="padding:10px;background:var(--blue-lt);border-radius:8px"><b style="color:var(--blue)">მ-ლდ.</b> — მ-ლ-ი სტ. — ს. დ.</div>
+      <div style="padding:10px;background:var(--purple-lt);border-radius:8px"><b style="color:var(--purple)">სსმ</b> — სპ. საჭ. მქ. სტუდენტი — სპ. გ-ბ. სასწავლო პ.-ში</div>
+      <div style="padding:10px;background:var(--amber-lt);border-radius:8px"><b style="color:var(--amber)">ობ.</b> — ო. სტუდენტი — ს. დ.</div>
+      <div style="padding:10px;background:var(--blue-lt);border-radius:8px"><b style="color:var(--blue)">მ-ლდ.</b> — მ-ლ-ი სტუდენტი — ს. დ.</div>
       <div style="padding:10px;background:var(--green-lt);border-radius:8px"><b style="color:var(--green)">სახ. გ.</b> — სახ. დ. მ-ი — ს. შ.</div>
     </div>
-  `,'<button class="btn btn-n" onclick="closeModal()">დ.</button>');
+  `,'<button class="btn btn-n" onclick="closeModal()">დახურვა</button>');
 }
 function showPassModal(){
-  showModal('პ. შ.',`
+  showModal('პაროლის შეცვლა',`
     <div class="fg"><label class="fl">მ. პ.</label><input class="fi" type="password" placeholder="••••••••"></div>
     <div class="fg"><label class="fl">ა. პ.</label><input class="fi" type="password" placeholder="მ. 8"></div>
     <div class="fg mb0"><label class="fl">გ.</label><input class="fi" type="password" placeholder="••••••••"></div>
@@ -1078,7 +1078,7 @@ function showPassModal(){
 
 // ══ STUDENT CARD ══
 function printCard(){
-  showModal('ბ. ბ. / PDF',`
+  showModal('ბიბლიოთეკის ბარათი / PDF',`
     <div style="background:linear-gradient(135deg,var(--navy) 0%,var(--blue-md) 100%);border-radius:12px;padding:20px;color:#fff;margin-bottom:14px">
       <div style="font-size:11px;opacity:.7;margin-bottom:4px">Student ID · BMA</div>
       <div style="font-size:16px;font-weight:800">ნინო კვ.</div>
@@ -1088,7 +1088,7 @@ function printCard(){
         <div><div style="opacity:.6">ვ.</div><b>31.08.2026</b></div>
       </div>
     </div>
-  `,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-b" onclick="closeModal();toast(\'PDF გ.\',\'success\')">↓ PDF</button>');
+  `,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-b" onclick="closeModal();toast(\'PDF გ.\',\'success\')">↓ PDF გადმოწერა</button>');
 }
 
 // ══ DOCUMENTS ══
@@ -1097,7 +1097,7 @@ function filterDocs(chip,type){
   document.querySelectorAll('#docs-table tbody tr').forEach(tr=>{tr.style.display=(type==='all'||tr.dataset.type===type)?'':'none'});
 }
 function showUploadModal(){
-  showModal('ფ. ატ.',`
+  showModal('ფაილის ატვირთვა',`
     <div class="fg mb12"><label class="fl">ფ. ტ.</label><select class="fi"><option>პ.</option><option>სამ. ც.</option><option>ფ.</option><option>სხ.</option></select></div>
     <div class="fg mb0"><label class="fl">ფ.</label>
       <div style="border:2px dashed var(--border);border-radius:var(--r);padding:24px;text-align:center;cursor:pointer;background:var(--bg)" onclick="toast('ფ. ვ. გ.','info')">
@@ -1107,28 +1107,28 @@ function showUploadModal(){
     </div>
   `,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-b" onclick="closeModal();toast(\'ატ.!\',\'success\')">↑ ატ.</button>');
 }
-function dlDoc(name){toast('«'+name+'» გ.','success')}
+function dlDoc(name){toast('«'+name+'» გადმოიტვირთა','success')}
 
 // ══ ORDERS ══
 function showVersions(num){
   const versions={
-    'ბ-042':[{v:'v3',date:'01.03.2026',note:'ჩ. ზ. ად.'},{v:'v2',date:'01.09.2025',note:'II სასწ. წ. გ.'},{v:'v1',date:'01.09.2024',note:'ო. ბ.'}],
-    'შ-019':[{v:'v1',date:'10.03.2026',note:'ო. ბ.'}],
-    'გ-007':[{v:'v2',date:'15.09.2025',note:'გ. კ.'},{v:'v1',date:'01.09.2025',note:'ო. ბ.'}],
+    'ბ-042':[{v:'v3',date:'01.03.2026',note:'ჩარიცხვის ზუსტი ადასტურება'},{v:'v2',date:'01.09.2025',note:'II სასწავლო წელი გამოყოფა'},{v:'v1',date:'01.09.2024',note:'ორიგინალი ბრძანება'}],
+    'შ-019':[{v:'v1',date:'10.03.2026',note:'ორიგინალი ბრძანება'}],
+    'გ-007':[{v:'v2',date:'15.09.2025',note:'გამოსწორება კოეფიციენტებში'},{v:'v1',date:'01.09.2025',note:'ორიგინალი ბრძანება'}],
   };
   const vs=versions[num]||[];
-  let rows=vs.map(v=>`<tr><td><button class="btn btn-n btn-xs" onclick="toast('${v.v} — ${v.date}','info')">${v.v}</button></td><td>${v.date}</td><td style="font-size:12px;color:var(--text2)">${v.note}</td><td><button class="btn btn-o btn-xs" onclick="toast('PDF ↓','success')">↓ PDF</button></td></tr>`).join('');
-  showModal('ბ. №'+num+' — ვ. ი.',`<table><thead><tr><th>ვ.</th><th>თ.</th><th>ცვ.</th><th></th></tr></thead><tbody>${rows}</tbody></table>`,
-  '<button class="btn btn-n" onclick="closeModal()">დ.</button>');
+  let rows=vs.map(v=>`<tr><td><button class="btn btn-n btn-xs" onclick="toast('${v.v} — ${v.date}','info')">${v.v}</button></td><td>${v.date}</td><td style="font-size:12px;color:var(--text2)">${v.note}</td><td><button class="btn btn-o btn-xs" onclick="toast('PDF ↓','success')">↓ PDF გადმოწერა</button></td></tr>`).join('');
+  showModal('ბრძანება №'+num+' — ვერსიების ისტორია',`<table><thead><tr><th>ვერსია</th><th>თარიღი</th><th>ცვლილება</th><th></th></tr></thead><tbody>${rows}</tbody></table>`,
+  '<button class="btn btn-n" onclick="closeModal()">დახურვა</button>');
 }
 function showOrderModal(num,title,date,text){
-  showModal('ბრძ. №'+num,`
+  showModal('ბრძანება №'+num,`
     <div style="background:var(--bg);border-radius:8px;padding:14px;margin-bottom:14px">
       <div style="font-size:11px;color:var(--text3);margin-bottom:4px">${date}</div>
       <div style="font-size:15px;font-weight:700">${title}</div>
     </div>
     <pre style="font-family:inherit;font-size:13px;color:var(--text2);line-height:1.8;white-space:pre-wrap">${text}</pre>
-  `,'<button class="btn btn-n" onclick="closeModal()">დ.</button><button class="btn btn-b" onclick="closeModal();toast(\'PDF ↓\',\'success\')">↓ PDF</button>');
+  `,'<button class="btn btn-n" onclick="closeModal()">დახურვა</button><button class="btn btn-b" onclick="closeModal();toast(\'PDF ↓\',\'success\')">↓ PDF გადმოწერა</button>');
 }
 </script>
 
@@ -1142,15 +1142,15 @@ function switchLetterTab(tab,chip){
 }
 function showLetterModal(id){
   const letters={
-    mandatory:{subject:'ბრძ. №ე-014 — გ. ც. ი. 2026',from:'ადმ.',type:'mandatory',body:'შ. გ. ჩ. 14–25 ი. 2026. MA-24B: ა. 14.07, ფ. 16.07, ფ. 18.07...',date:'28.06.2026 14:22',read:null},
-    teacher1:{subject:'სახ. ა. VII თ.',from:'ლ. გ.',type:'personal',body:'გ., ნ.! გ., გ. VII თ. და მ. შ. ლ.-ს. დ.: კ. 201, სამ. 14:00–16:00.',date:'25.06.2026 10:15',read:null},
-    admin1:{subject:'გ. შ.',from:'ფ. სამ.',type:'general',body:'პ., ბ. სამ. ა. ფ. სამ. გ-ბ. II სემ. 2,400₾ — 15.07.2026.',date:'20.06.2026 09:00',read:'20.06.2026 09:45'},
-    admin2:{subject:'გ. დ. #24-089',from:'სტ. სამ.',type:'general',body:'თ-ი გ. «ც. სწ. შ.» (#24-089) დ. სმს: +995 555 123 456.',date:'27.06.2026 16:00',read:'27.06.2026 16:30'},
-    sent1:{subject:'კ. VII თ.',from:'მე',type:'personal',body:'გ.! რ. გ.-ს ვ. VII თ.-ში?',date:'19.06.2026 08:30',read:'ო.'},
-    sent2:{subject:'ც. მ.',from:'მე',type:'personal',body:'გ.! გ., გ. ც. სწ. შ. სბ. დ.',date:'26.06.2026 11:00',read:'ო.'},
-    draft1:{subject:'[დ.] კ. ლ.',from:'',type:'draft',body:'გ.! მ. გ...',date:'29.06.2026 09:00',read:null},
-    gen1:{subject:'ა. სასწ. წ. 2026–2027',from:'ადმ.',type:'general',body:'ა. სასწ. წ. 2026 1 სექ. სწ. ს.: 4,800₾.',date:'01.07.2026'},
-    gen2:{subject:'კ. სამ. საათ.',from:'ადმ.',type:'general',body:'ი. 2026: ო.–პ.: 09:00–17:00, შ.: 10:00–14:00.',date:'15.06.2026'},
+    mandatory:{subject:'ბრძანება №ე-014 — გამოცდების ცხრილი ივლ. 2026',from:'ადმინისტრაცია',type:'mandatory',body:'შუალედური გამოცდები ჩატარდება 14–25 ივლ. 2026. MA-24B: ანატომია 14.07, ფიზიოლოგია 16.07, ფარმაკოლოგია 18.07...',date:'28.06.2026 14:22',read:null},
+    teacher1:{subject:'სახელმძღვანელო ანატომია VII თავი',from:'ლია გოგიაშვილი',type:'personal',body:'გამარჯობა, ნინო! გამოგიგზავნე VII თავის განხილვის განრიგი. შეხვედრა ლაბორატორიაში: კაბინეტი 201, სამშაბათი 14:00–16:00.',date:'25.06.2026 10:15',read:null},
+    admin1:{subject:'გადახდის შეხსენება',from:'ფინანსური სამსახური',type:'general',body:'პატივცემულო სტუდენტო, ბათუმის სამედიცინო აკადემიის ფინანსური სამსახური გაცნობებთ: II სემ. სწავლის საფასური 2,400₾ — გადახდის ვადა 15.07.2026.',date:'20.06.2026 09:00',read:'20.06.2026 09:45'},
+    admin2:{subject:'განაცხადი დამტკიცდა #24-089',from:'სტუდენტური სამსახური',type:'general',body:'თქვენი განაცხადი «ცნობა სწავლის შესახებ» (#24-089) დამტკიცდა. საკონტაქტო: +995 555 123 456.',date:'27.06.2026 16:00',read:'27.06.2026 16:30'},
+    sent1:{subject:'კითხვა VII თავზე',from:'მე',type:'personal',body:'გამარჯობა! როდის იქნება განხილვა VII თავის შესახებ?',date:'19.06.2026 08:30',read:'წაკითხულია'},
+    sent2:{subject:'ცნობის მოთხოვნა',from:'მე',type:'personal',body:'გამარჯობა! გთხოვთ, გამოგიგზავნოთ ცნობა სწავლის შესახებ საბანკო დაწესებულებისთვის.',date:'26.06.2026 11:00',read:'წაკითხულია'},
+    draft1:{subject:'[მონახაზი] კითხვა ლექციაზე',from:'',type:'draft',body:'გამარჯობა! მინდა გკითხოთ...',date:'29.06.2026 09:00',read:null},
+    gen1:{subject:'ახალი სასწავლო წელი 2026–2027',from:'ადმინისტრაცია',type:'general',body:'ახალი სასწავლო წელი იწყება 2026 წლის 1 სექტემბერს. სასწავლო საფასური: 4,800₾.',date:'01.07.2026'},
+    gen2:{subject:'კამპუსის სამუშაო საათები',from:'ადმინისტრაცია',type:'general',body:'ივლისი 2026: ორშ.–პარ.: 09:00–17:00, შაბ.: 10:00–14:00.',date:'15.06.2026'},
   };
   const l=letters[id];if(!l)return;
   const typeBadge={mandatory:'<span class="bd bd-r">⚠ აუც.</span>',personal:'<span class="bd bd-b">პ.</span>',general:'<span class="bd bd-n">საერ.</span>',draft:'<span class="bd bd-a">დ.</span>'};
@@ -1161,14 +1161,14 @@ function showLetterModal(id){
     </div>
     <div style="margin-bottom:12px;font-size:12px;color:var(--text2)">გამ.: <b>${l.from||'–'}</b></div>
     <div style="font-size:14px;line-height:1.8;color:var(--text1)">${l.body}</div>
-    ${l.type==='mandatory'?'<div style="margin-top:16px;background:var(--red-lt);border-radius:8px;padding:12px;font-size:12px;color:var(--red)">⚠ ეს შ. მ. დ. და სისტ. ა. ა. თ.</div>':''}
+    ${l.type==='mandatory'?'<div style="margin-top:16px;background:var(--red-lt);border-radius:8px;padding:12px;font-size:12px;color:var(--red)">⚠ ეს შ. მ. დ. და სისტემური ა. ა. თ.</div>':''}
   `,l.type==='mandatory'?
     '<button class="btn btn-r" onclick="closeModal();toast(\'დ.!\',\'success\')">✓ წ. და დ.</button>':
-    '<button class="btn btn-n" onclick="closeModal()">დ.</button><button class="btn btn-o btn-sm" onclick="archiveLetter()">🗄 არქ.</button><button class="btn btn-b btn-sm" onclick="closeModal();showComposeModal()">↩ პ.</button>');
+    '<button class="btn btn-n" onclick="closeModal()">დახურვა</button><button class="btn btn-o btn-sm" onclick="archiveLetter()">🗄 არქ.</button><button class="btn btn-b btn-sm" onclick="closeModal();showComposeModal()">↩ პ.</button>');
 }
-function archiveLetter(){closeModal();toast('წ. ა.-ში გ.','success')}
+function archiveLetter(){closeModal();toast('წერილი არქივში გადაიტანა','success')}
 function showComposeModal(){
-  showModal('ახ. წ.',`
+  showModal('ახალი წერილი',`
     <div class="fg mb12"><label class="fl">ა. (მ. პ. მ.)</label>
       <select class="fi"><option>ლ. გ. (ა.)</option><option>მ. ბ. (ა.)</option><option>თ. ჩ. (ა.)</option></select>
     </div>
@@ -1184,12 +1184,12 @@ function showComposeModal(){
 
 // ══ PAYMENTS ══
 function exportCSV(){toast('CSV ↓','success')}
-function dlReceipt(id){toast('ქ. '+id+' ↓','success')}
+function dlReceipt(id){toast('ქვითარი '+id+' ჩამოიტვირთა','success')}
 let payStep=1;
 function showPayModal(){payStep=1;renderPayStep()}
 function renderPayStep(){
   if(payStep===1){
-    showModal('გ. — მ.',`
+    showModal('გადახდა — მეთოდის შერჩევა',`
       <div style="margin-bottom:12px;font-size:13px;color:var(--text2)">თ.: <b style="color:var(--navy);font-size:16px">2,400₾</b></div>
       <div style="display:flex;flex-direction:column;gap:10px" id="pay-methods">
         <label style="display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid var(--blue);border-radius:var(--r);background:var(--blue-lt);cursor:pointer">
@@ -1201,7 +1201,7 @@ function renderPayStep(){
       </div>
     `,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-b" onclick="payStep=2;renderPayStep()">შ. →</button>');
   }else if(payStep===2){
-    showModal('გ. — ბ.',`
+    showModal('გადახდა — ბარათის მონაცემები',`
       <div style="background:var(--blue-lt);border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px;color:var(--blue)">💳 2,400₾</div>
       <div class="fg mb12"><label class="fl">ბ. ნ.</label><input class="fi" placeholder="•••• •••• •••• ••••" maxlength="19"></div>
       <div class="fg2 mb12">
@@ -1231,7 +1231,7 @@ function paySuccess(){
   closeModal();
   const r=document.getElementById('pay-pending');
   if(r){r.style.background='';r.cells[5].innerHTML='<span class="bd bd-g">გ.</span>';r.cells[6].innerHTML='<button class="btn btn-o btn-sm" onclick="dlReceipt(\'PAY-NEW\')">↓ ქ.</button>'}
-  toast('გ.! ქ. SMS-ით','success');
+  toast('გადახდა! ქვითარი SMS-ით გამოეგზავნა','success');
 }
 
 // ══ APPLICATIONS ══
@@ -1247,13 +1247,13 @@ function pickTmpl(el,title,preview){
 }
 function submitApp(){
   const refNum='#24-'+Math.floor(Math.random()*900+100);
-  showModal('გ. გ. ✅',`
+  showModal('გადახდა გავიდა ✅',`
     <div style="text-align:center;padding:10px 0 20px">
       <div style="font-size:40px;margin-bottom:12px">📋</div>
       <div style="font-size:18px;font-weight:800;color:var(--green);margin-bottom:8px">გ. წ.!</div>
       <div style="background:var(--bg);border-radius:8px;padding:16px;text-align:left;margin-top:16px;font-size:13px">
         <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--text2)">სარ. №</span><b>${refNum}</b></div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--text2)">სტ.</span><span class="bd bd-a">გ-ში</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--text2)">სტუდენტი</span><span class="bd bd-a">გ-ში</span></div>
         <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">SMS</span><span>+995 555 123 456</span></div>
       </div>
       <div style="margin-top:14px;background:var(--blue-lt);border-radius:8px;padding:12px;font-size:12px;color:var(--blue)">📱 SMS: «გ. ${refNum} მ. 1–3 სამ. დ.»</div>
@@ -1268,12 +1268,12 @@ function submitApp(){
 <script>
 // ══ JOURNAL ══
 const subjects=[
-  {name:'ანატომია',lect:'ლ. გ.',att:92,mid:88,fin:null,survey:true,dates:[{d:'03.03',q:85},{d:'10.03',q:90},{d:'17.03',q:88},{d:'24.03',q:92}]},
-  {name:'ფიზიოლოგია',lect:'თ. ჩ.',att:85,mid:82,fin:null,survey:false,dates:[{d:'04.03',q:80},{d:'11.03',q:85},{d:'18.03',q:82},{d:'25.03',q:78}]},
-  {name:'ფარმაკოლ.',lect:'მ. ბ.',att:67,mid:87,fin:null,survey:true,dates:[{d:'05.03',q:90},{d:'12.03',q:85},{d:'19.03',q:null},{d:'26.03',q:null}]},
-  {name:'სამ. ეთიკა',lect:'ნ. ა.',att:100,mid:95,fin:null,survey:false,dates:[{d:'06.03',q:95},{d:'13.03',q:96},{d:'20.03',q:94},{d:'27.03',q:95}]},
-  {name:'კლ. პრაქ.',lect:'ვ. ლ.',att:88,mid:90,fin:null,survey:false,dates:[{d:'07.03',q:88},{d:'14.03',q:92},{d:'21.03',q:89},{d:'28.03',q:91}]},
-  {name:'ინგლ.',lect:'ი. კ.',att:78,mid:76,fin:null,survey:false,dates:[{d:'02.03',q:74},{d:'09.03',q:78},{d:'16.03',q:76},{d:'23.03',q:80}]},
+  {name:'ანატომია',lect:'ლია გოგიაშვილი',att:92,mid:88,fin:null,survey:true,surveyUrl:'https://forms.google.com/anatomy-survey',dates:[{d:'03.03',q:85},{d:'10.03',q:90},{d:'17.03',q:88},{d:'24.03',q:92}]},
+  {name:'ფიზიოლოგია',lect:'თამარ ჩხეიძე',att:85,mid:82,fin:null,survey:false,surveyUrl:'',dates:[{d:'04.03',q:80},{d:'11.03',q:85},{d:'18.03',q:82},{d:'25.03',q:78}]},
+  {name:'ფარმაკოლოგია',lect:'მარინა ბერიძე',att:67,mid:87,fin:null,survey:true,surveyUrl:'https://forms.google.com/pharmacology-survey',dates:[{d:'05.03',q:90},{d:'12.03',q:85},{d:'19.03',q:null},{d:'26.03',q:null}]},
+  {name:'სამედიცინო ეთიკა',lect:'ნინო ახვლედიანი',att:100,mid:95,fin:null,survey:false,surveyUrl:'',dates:[{d:'06.03',q:95},{d:'13.03',q:96},{d:'20.03',q:94},{d:'27.03',q:95}]},
+  {name:'კლინიკური პრაქტიკა',lect:'ვასო ლომიძე',att:88,mid:90,fin:null,survey:false,surveyUrl:'',dates:[{d:'07.03',q:88},{d:'14.03',q:92},{d:'21.03',q:89},{d:'28.03',q:91}]},
+  {name:'ინგლისური ენა',lect:'ირინა კობახიძე',att:78,mid:76,fin:null,survey:false,surveyUrl:'',dates:[{d:'02.03',q:74},{d:'09.03',q:78},{d:'16.03',q:76},{d:'23.03',q:80}]},
 ];
 function gradeBox(v){
   if(v===null)return '<div style="font-size:12px;color:var(--text3);text-align:center;min-width:40px">–</div>';
@@ -1283,38 +1283,42 @@ function gradeBox(v){
 }
 function showSubjectModal(idx){
   const s=subjects[idx];
-  let rows=s.dates.map(d=>`<tr><td>${d.d}.2026</td><td>${gradeBox(d.q)}</td><td>${d.q!=null?(d.q>=85?'<span class="bd bd-g">კ.</span>':d.q>=70?'<span class="bd bd-a">საშ.</span>':'<span class="bd bd-r">სუ.</span>'):'<span class="bd bd-n">გ.</span>'}</td></tr>`).join('');
-  const surveyBtn=s.survey?`<div style="margin-top:16px;background:var(--blue-lt);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:13px;font-weight:600;color:var(--blue)">📊 გ. მ-ზე</div><button class="btn btn-b btn-sm" onclick="toast('გ. ი.','info')">გ. გ.</button></div>`:'';
-  showModal(s.name+' — ქ. ჩ.',`
+  let rows=s.dates.map(d=>`<tr><td>${d.d}.2026</td><td>${gradeBox(d.q)}</td><td>${d.q!=null?(d.q>=85?'<span class="bd bd-g">კარგი</span>':d.q>=70?'<span class="bd bd-a">საშუალო</span>':'<span class="bd bd-r">სუსტი</span>'):'<span class="bd bd-n">გ.</span>'}</td></tr>`).join('');
+  const surveyBtn=s.survey?`<div style="margin-top:16px;background:var(--blue-lt);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:13px;font-weight:600;color:var(--blue)">📊 გამოკითხვა მოდულზე</div><a href="${s.surveyUrl}" target="_blank" class="btn btn-b btn-sm" onclick="event.stopPropagation()">გამოკითხვაზე გადასვლა ↗</a></div>`:'';
+  showModal(s.name+' — დეტალები',`
     <div style="display:flex;gap:12px;margin-bottom:16px">
-      <div class="stat-box" style="flex:1"><div class="stat-num">${s.mid}</div><div class="stat-lbl">შ. ქ.</div></div>
-      <div class="stat-box" style="flex:1"><div class="stat-num">${s.att}%</div><div class="stat-lbl">დ.</div></div>
-      <div class="stat-box" style="flex:1"><div class="stat-num">–</div><div class="stat-lbl">საბ.</div></div>
+      <div class="stat-box" style="flex:1"><div class="stat-num">${s.mid}</div><div class="stat-lbl">შუალედური ქულა</div></div>
+      <div class="stat-box" style="flex:1"><div class="stat-num">${s.att}%</div><div class="stat-lbl">დასწრება</div></div>
+      <div class="stat-box" style="flex:1"><div class="stat-num">–</div><div class="stat-lbl">საბოლოო</div></div>
     </div>
-    <div style="font-size:12px;color:var(--text2);margin-bottom:10px">პ. მ.: <b>${s.lect}</b></div>
-    <table><thead><tr><th>თ.</th><th>ქ.</th><th>სტ.</th></tr></thead><tbody>${rows}</tbody></table>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:10px">პროფ. მასწავლებელი: <b>${s.lect}</b></div>
+    <table><thead><tr><th>თარიღი</th><th>ქულა</th><th>შეფასება</th></tr></thead><tbody>${rows}</tbody></table>
     ${surveyBtn}
-  `,'<button class="btn btn-n" onclick="closeModal()">დ.</button><button class="btn btn-b" onclick="closeModal();toast(\'PDF ↓\',\'success\')">↓ PDF</button>');
+  `,'<button class="btn btn-n" onclick="closeModal()">დახურვა</button><button class="btn btn-b" onclick="closeModal();toast(\'PDF ჩამოიტვირთა\',\'success\')">↓ PDF გადმოწერა</button>');
 }
 const jEl=document.getElementById('subjects');
 subjects.forEach((s,idx)=>{
   const pct=s.att,bc=pct>=80?'var(--green)':pct>=60?'var(--amber)':'var(--red)';
-  jEl.innerHTML+=`<div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:0;align-items:center;padding:11px 0;border-bottom:1px solid #F0F4F8;cursor:pointer" onclick="showSubjectModal(${idx})">
-    <div><div style="font-size:13px;font-weight:600">${s.name}${s.survey?'<span title="გ. ა." style="margin-left:6px;font-size:10px;color:var(--blue)">📊</span>':''}</div><div style="font-size:11px;color:var(--text3)">${s.lect}</div></div>
+  const surveyCell=s.survey
+    ?`<div style="padding:0 6px"><a href="${s.surveyUrl}" target="_blank" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;padding:4px 8px;background:var(--blue-lt);color:var(--blue);border-radius:6px;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap" title="გამოკითხვაზე გადასვლა">📊 გამოკითხვა ↗</a></div>`
+    :`<div style="padding:0 6px"><span style="font-size:11px;color:var(--text3)">—</span></div>`;
+  jEl.innerHTML+=`<div style="display:grid;grid-template-columns:1fr auto auto auto auto auto;gap:0;align-items:center;padding:11px 0;border-bottom:1px solid #F0F4F8;cursor:pointer" onclick="showSubjectModal(${idx})">
+    <div><div style="font-size:13px;font-weight:600">${s.name}</div><div style="font-size:11px;color:var(--text3)">პროფ. მასწავლებელი: ${s.lect}</div></div>
     <div style="min-width:90px;padding:0 8px"><div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${bc};border-radius:3px"></div></div><span style="font-size:12px;font-variant-numeric:tabular-nums;color:var(--text2);width:30px;text-align:right">${pct}%</span></div></div>
     <div style="padding:0 6px">${gradeBox(s.mid)}</div><div style="padding:0 6px">${gradeBox(s.fin)}</div>
-    <div style="padding:0 6px"><span class="bd ${s.mid>=85?'bd-g':s.mid>=70?'bd-a':'bd-r'}" style="font-size:10px">${s.mid>=85?'კ.':s.mid>=70?'საშ.':'სუ.'}</span></div>
+    <div style="padding:0 6px"><span class="bd ${s.mid>=85?'bd-g':s.mid>=70?'bd-a':'bd-r'}" style="font-size:10px">${s.mid>=85?'კარგი':s.mid>=70?'საშუალო':'სუსტი'}</span></div>
+    ${surveyCell}
   </div>`;
 });
 
 // ══ SCHEDULE ══
 const schedClasses=[
-  {name:'ანატ.',rm:'201',lect:'ლ. გ.',color:'b',topic:'ნ. სისტ.',mat:'Gray\'s, VII'},
-  {name:'ფიზ.',rm:'204',lect:'თ. ჩ.',color:'b',topic:'სისხ. მ.',mat:'Guyton, IX'},
-  {name:'ფარმ.',rm:'105',lect:'მ. ბ.',color:'g',topic:'ა-ბ.',mat:'ბ. გვ.88'},
-  {name:'სამ. ეთ.',rm:'301',lect:'ნ. ა.',color:'a',topic:'პ. უ.',mat:'სახ. III'},
-  {name:'კლ. პ.',rm:'სიმ.1',lect:'ვ. ლ.',color:'g',topic:'ვ. პ.',mat:'–'},
-  {name:'ინგ.',rm:'108',lect:'ი. კ.',color:'a',topic:'Med.Term.',mat:'Oxford'},
+  {name:'ანატომია',rm:'201',lect:'ლია გოგიაშვილი',color:'b',topic:'ნერვული სისტემა',mat:'Gray\'s Anatomy, VII თავი'},
+  {name:'ფიზიოლოგია',rm:'204',lect:'თამარ ჩხეიძე',color:'b',topic:'სისხლის მიმოქცევა',mat:'Guyton, IX თავი'},
+  {name:'ფარმაკოლოგია',rm:'105',lect:'მარინა ბერიძე',color:'g',topic:'ანტიბიოტიკები',mat:'სახელმძღვანელო გვ.88'},
+  {name:'სამედიცინო ეთიკა',rm:'301',lect:'ნინო ახვლედიანი',color:'a',topic:'პაციენტის უფლებები',mat:'სახელმძღვანელო III თავი'},
+  {name:'კლინიკური პრაქტიკა',rm:'სიმულ.1',lect:'ვასო ლომიძე',color:'g',topic:'ვენური პუნქცია',mat:'–'},
+  {name:'ინგლისური ენა',rm:'108',lect:'ირინა კობახიძე',color:'a',topic:'Medical Terminology',mat:'Oxford Medical English'},
 ];
 const weekSlots=['09:00–10:30','10:45–12:15','13:00–14:30','14:45–16:15'];
 const weekData=[
@@ -1347,7 +1351,7 @@ function showClassModal(o){
       <div style="display:flex;gap:12px"><span style="color:var(--text3);min-width:80px">თ.</span><b>${o.topic}</b></div>
       <div style="display:flex;gap:12px"><span style="color:var(--text3);min-width:80px">მ.</span><b>${o.mat}</b></div>
     </div>
-  `,'<button class="btn btn-n" onclick="closeModal()">დ.</button><button class="btn btn-b" onclick="closeModal();toast(\'შ. დ.\',\'success\')">🔔 შ.</button>');
+  `,'<button class="btn btn-n" onclick="closeModal()">დახურვა</button><button class="btn btn-b" onclick="closeModal();toast(\'შ. დ.\',\'success\')">🔔 შ.</button>');
 }
 function schedView(view,btn){
   document.getElementById('sched-week-view').style.display=view==='week'?'block':'none';
@@ -1361,8 +1365,8 @@ function buildMonthGrid(){
   // June 2026: starts on Monday (day 1)
   const days=30,offset=0;
   for(let i=0;i<offset;i++)grid.innerHTML+='<div></div>';
-  const classColors={'ანატ.':'background:var(--blue-lt);color:var(--blue)','ფიზ.':'background:var(--green-lt);color:var(--green)','ფარმ.':'background:var(--amber-lt);color:var(--amber)','კლ. პ.':'background:var(--green-lt);color:var(--green)','ინგ.':'background:var(--amber-lt);color:var(--amber)','სამ. ეთ.':'background:var(--purple-lt);color:var(--purple)'};
-  const sampleClasses={1:['ანატ.'],2:['ფიზ.'],3:['ფარმ.'],4:['ინგ.'],5:['კლ. პ.'],8:['ანატ.','ფარმ.'],9:['ფიზ.'],10:['სამ. ეთ.'],11:['ინგ.'],23:['ანატ.'],24:['ფიზ.','სამ. ეთ.'],25:['ფარმ.'],26:['ინგ.'],27:['კლ. პ.'],30:['ანატ.']};
+  const classColors={'ანატ.':'background:var(--blue-lt);color:var(--blue)','ფიზ.':'background:var(--green-lt);color:var(--green)','ფარმაკოლოგია':'background:var(--amber-lt);color:var(--amber)','კლინიკური პრაქტიკა':'background:var(--green-lt);color:var(--green)','ინგ.':'background:var(--amber-lt);color:var(--amber)','სამედიცინო ეთიკა':'background:var(--purple-lt);color:var(--purple)'};
+  const sampleClasses={1:['ანატომია'],2:['ფიზიოლოგია'],3:['ფარმაკოლოგია'],4:['ინგლ. ენა'],5:['კლინ. პრაქტ.'],8:['ანატომია','ფარმაკოლოგია'],9:['ფიზიოლოგია'],10:['სამ. ეთიკა'],11:['ინგლ. ენა'],23:['ანატომია'],24:['ფიზიოლოგია','სამ. ეთიკა'],25:['ფარმაკოლოგია'],26:['ინგლ. ენა'],27:['კლინ. პრაქტ.'],30:['ანატომია']};
   const today=29;
   for(let d=1;d<=days;d++){
     const isToday=d===today;const dayClasses=sampleClasses[d]||[];const isSun=(d+offset)%7===0;
@@ -1379,12 +1383,12 @@ function buildMonthGrid(){
 // ══ LIBRARY ══
 const booksData=[
   {title:"Gray's Anatomy, 42nd",auth:"Gray, Henry",cat:"ანატომია",col:"#1B4F8A",type:"phys",avail:true,code:"GRY-001",loc:"B-3-14"},
-  {title:"Guyton Physiology",auth:"Hall, John E.",cat:"ფიზიოლ.",col:"#1E8A5E",type:"phys",avail:false,code:"GUY-002",loc:"C-1-08"},
-  {title:"ფარმაკოლ. (PDF)",auth:"ბ., მ.",cat:"ფარმ.",col:"#C96A00",type:"dig",avail:true,code:"FARM-003",loc:"ელ."},
-  {title:"Clinical Medicine",auth:"Kumar, Clark",cat:"კლ. მ.",col:"#2E6DB4",type:"phys",avail:true,code:"CLI-004",loc:"A-2-05"},
+  {title:"Guyton Physiology",auth:"Hall, John E.",cat:"ფიზიოლოგია",col:"#1E8A5E",type:"phys",avail:false,code:"GUY-002",loc:"C-1-08"},
+  {title:"ფარმაკოლოგია (PDF)",auth:"ბენია მარინა",cat:"ფარმაკოლოგია",col:"#C96A00",type:"dig",avail:true,code:"FARM-003",loc:"ელ."},
+  {title:"Clinical Medicine",auth:"Kumar, Clark",cat:"კლინიკური მედიცინა",col:"#2E6DB4",type:"phys",avail:true,code:"CLI-004",loc:"A-2-05"},
   {title:"Medical Ethics",auth:"Hope, Tony",cat:"ეთიკა",col:"#6B4F8A",type:"dig",avail:true,code:"ETH-005",loc:"ელ."},
   {title:"Anatomy Atlas",auth:"Netter, F.H.",cat:"ანატომია",col:"#C0392B",type:"phys",avail:true,code:"NET-006",loc:"B-3-21"},
-  {title:"Harrison's Internal Med.",auth:"Loscalzo, J.",cat:"კლ. მ.",col:"#1B4F8A",type:"phys",avail:false,code:"HAR-007",loc:"A-2-11"},
+  {title:"Harrison's Internal Medicine",auth:"Loscalzo, J.",cat:"კლინიკური მედიცინა",col:"#1B4F8A",type:"phys",avail:false,code:"HAR-007",loc:"A-2-11"},
 ];
 let libMode='phys';
 function renderBooks(data){
@@ -1398,10 +1402,10 @@ function renderBooks(data){
       <div style="flex:1">
         <div style="font-size:13px;font-weight:600">${b.title}</div>
         <div style="font-size:12px;color:var(--text2);margin-top:2px">${b.auth}</div>
-        ${isElec?'<span class="bd bd-g" style="margin-top:4px;display:inline-block;font-size:10px">💻 ელ.</span>':'<div style="font-size:11px;color:var(--text3);margin-top:3px">📍 '+b.loc+' · '+b.code+'</div>'}
+        ${isElec?'<span class="bd bd-g" style="margin-top:4px;display:inline-block;font-size:10px">💻 ელექტრონული</span>':'<div style="font-size:11px;color:var(--text3);margin-top:3px">📍 '+b.loc+' · '+b.code+'</div>'}
         ${!b.avail&&!isElec?'<span class="bd bd-r" style="margin-top:4px;display:inline-block;font-size:10px">სახ. არ.</span>':''}
       </div>
-      ${isElec?`<button class="btn btn-g btn-sm" onclick="toast('PDF ↓ «${b.title}»','success')">↓ PDF</button>`:`<button class="btn ${b.avail?'btn-b':'btn-n'} btn-sm" ${!b.avail?'disabled':''} onclick="borrowBook('${b.title.replace(/'/g,"\\'")}')">${b.avail?'სეს.':'ი. ნ.'}</button>`}
+      ${isElec?`<button class="btn btn-g btn-sm" onclick="toast('PDF ↓ «${b.title}»','success')">↓ PDF გადმოწერა</button>`:`<button class="btn ${b.avail?'btn-b':'btn-n'} btn-sm" ${!b.avail?'disabled':''} onclick="borrowBook('${b.title.replace(/'/g,"\\'")}')">${b.avail?'სეს.':'ი. ნ.'}</button>`}
     </div>`;
   });
 }
@@ -1442,9 +1446,9 @@ function returnBook(title){
 // ══ CLUBS ══
 const clubsData=[
   {icon:'🩺',name:'პ. დახმ. კ.',fullName:'პირველი დახმარება',desc:'სა. დ. ჩ., BLS/AED ტ.',fullDesc:'კლ. მ. დ. ჩ-ვ.: BLS, AED გ. გ. წ., სიმ. ტ., ს. ღ-ძ. ს.-ში. კ. გ-ბ. 18 წ.',members:18,joined:true,color:'var(--blue-lt)',events:['21 ი. — BLS ტ.','05 ი. — I დ. ღ-ძ.']},
-  {icon:'🔬',name:'სამ. კ.',fullName:'სამეცნიერო კლუბი',desc:'კ., კ., სტ.',fullDesc:'ს. კ. ა., კ-ებ-ში მ., პ-ების გ., ს. ა. — Junior Research.',members:12,joined:false,color:'var(--green-lt)',events:['28 ი. — სტ. ს. კ.']},
+  {icon:'🔬',name:'სამ. კ.',fullName:'სამეცნიერო კლუბი',desc:'კ., კ., სტუდენტი',fullDesc:'ს. კ. ა., კ-ებ-ში მ., პ-ების გ., ს. ა. — Junior Research.',members:12,joined:false,color:'var(--green-lt)',events:['28 ი. — სტუდენტი ს. კ.']},
   {icon:'♟',name:'ინტ.',fullName:'ინტელექტი',desc:'დ., ლ.',fullDesc:'ი. ქ-ს, კ-ო ა., ი. ლ. — მ. შ-ბ. სამ. ფ.',members:24,joined:false,color:'var(--amber-lt)',events:['ყ. ოთ. 18:00']},
-  {icon:'🎭',name:'სათ. სტ.',fullName:'სათეატრო სტუდია',desc:'თ., ვ., შ.',fullDesc:'სპ. კ., კ-ს ა. ძ., ი. შ-ბ-ბ. ყ. სემ. — «ბ. ს.» კ. ა.',members:16,joined:false,color:'#F3E8FF',events:['10 ი. — ს. «ბ. ს.»']},
+  {icon:'🎭',name:'სათ. სტუდენტი',fullName:'სათეატრო სტუდია',desc:'თ., ვ., შ.',fullDesc:'სპ. კ., კ-ს ა. ძ., ი. შ-ბ-ბ. ყ. სემ. — «ბ. ს.» კ. ა.',members:16,joined:false,color:'#F3E8FF',events:['10 ი. — ს. «ბ. ს.»']},
   {icon:'⚽',name:'სპ. კ.',fullName:'სპორტული კლუბი',desc:'ფ., კ., ჩ.',fullDesc:'ყ. ს. ც.: ფ-ბ., ბ-ბ., ჩ-ბ. ლ. გ. ი. კ. ჩ-ს, ყ. ხ. 17:30.',members:30,joined:false,color:'var(--green-lt)',events:['ყ. ხ. 17:30 — ვ.']},
   {icon:'🌍',name:'ვ.',fullName:'ვოლონტიორობა',desc:'საზ. ღ., სოც. პ.',fullDesc:'სოც. პ. ქ-ში, ს. ა. საავ.-ებ-ში, ი. ხ-ლ-ბ-ბ. გ. ს-ო.',members:22,joined:false,color:'var(--blue-lt)',events:['15 ი. — სოც. ა.']},
 ];
@@ -1489,11 +1493,11 @@ function openClub(i){
           </div>
         </div>
         <div class="card">
-          <div class="ch"><div class="ct">სტ.</div></div>
+          <div class="ch"><div class="ct">სტუდენტი</div></div>
           <div class="cb">
             <div class="g2" style="gap:8px">
               <div class="stat-box"><div class="stat-num">${c.members}</div><div class="stat-lbl">წ.</div></div>
-              <div class="stat-box"><div class="stat-num">${c.joined?'✓':'–'}</div><div class="stat-lbl">${c.joined?'გ.':'ა. გ.'}</div></div>
+              <div class="stat-box"><div class="stat-num">${c.joined?'✓':'–'}</div><div class="stat-lbl">${c.joined?'გამოტოვებული':'ა. გ.'}</div></div>
             </div>
           </div>
         </div>
@@ -1505,22 +1509,22 @@ function openClub(i){
     </div>`;
 }
 function joinClub(i){
-  showModal('გ.',`<p>«${clubsData[i].fullName}» — გ.?</p>`,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-b" onclick="clubsData['+i+'].joined=true;clubsData['+i+'].members++;closeModal();openClub('+i+');toast(\'გ.!\',\'success\')">✓ გ.</button>');
+  showModal('გამოტოვებული',`<p>«${clubsData[i].fullName}» — გ.?</p>`,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-b" onclick="clubsData['+i+'].joined=true;clubsData['+i+'].members++;closeModal();openClub('+i+');toast(\'გ.!\',\'success\')">✓ გ.</button>');
 }
 function leaveClub(i){
-  showModal('გ.',`<p>«${clubsData[i].fullName}» — გ.?</p>`,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-r" onclick="clubsData['+i+'].joined=false;clubsData['+i+'].members--;closeModal();document.getElementById(\'clubs-list-view\').style.display=\'\';document.getElementById(\'club-detail-view\').style.display=\'none\';renderClubs(\'all\');toast(\'გ.!\',\'warning\')">გ.</button>');
+  showModal('გამოტოვებული',`<p>«${clubsData[i].fullName}» — გ.?</p>`,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-r" onclick="clubsData['+i+'].joined=false;clubsData['+i+'].members--;closeModal();document.getElementById(\'clubs-list-view\').style.display=\'\';document.getElementById(\'club-detail-view\').style.display=\'none\';renderClubs(\'all\');toast(\'გ.!\',\'warning\')">გ.</button>');
 }
 </script>
 
 <script>
 // ══ SURVEYS ══
 const surveysActive=[
-  {name:'სასწ. პ. შ. — 2026',deadline:'15.07.2026',anon:true,link:'https://forms.gle/example1',target:'student'},
+  {name:'სასწავლო პ. შ. — 2026',deadline:'15.07.2026',anon:true,link:'https://forms.gle/example1',target:'student'},
   {name:'ბ. სერვ.',deadline:'30.06.2026',anon:false,link:'https://forms.gle/example2',target:'student'},
 ];
 const surveysDone=[
-  {name:'სტ. ცხ. — 2025',date:'15.12.2025'},
-  {name:'ლ. შ. — I სემ.',date:'20.01.2026'},
+  {name:'სტუდენტთა ცხრილი — 2025',date:'15.12.2025'},
+  {name:'ლექციების შეჯამება — I სემ.',date:'20.01.2026'},
 ];
 const saEl=document.getElementById('surveys-active');
 surveysActive.forEach(s=>{
@@ -1540,7 +1544,7 @@ surveysDone.forEach(s=>{
   </div>`;
 });
 function openSurvey(link,name){
-  showModal('გ. შ.',`
+  showModal('გადახდის შეჯამება',`
     <div style="background:var(--blue-lt);border-radius:8px;padding:14px;margin-bottom:16px">
       <div style="font-size:14px;font-weight:700;margin-bottom:4px">${name}</div>
       <div style="font-size:12px;color:var(--blue)">Google Forms ლ.</div>
@@ -1552,10 +1556,10 @@ function openSurvey(link,name){
 
 // ══ NEWS ══
 const newsData=[
-  {tag:'გ.',title:'შ. გ. ც. — ი. 2026',date:'28 ი. 2026',icon:'📋',body:'შ. გ. ჩ. 14–25 ი. 2026. MA-24B: ა. — 14.07 09:00 · 201. ფ. — 16.07 · 204. ფ. — 18.07 · 105. სამ. ეთ. — 21.07. კ. პ. — 23.07. ი. — 25.07.',img:null},
-  {tag:'სი.',title:'BMA — I ა. ო.',date:'25 ი. 2026',icon:'🏆',body:'BMA-ს სტ. ჯ. «მ. ი. 2026» I ა. 14 უმ.-ს შ. ს. ნ. კ., გ. ლ., მ. ბ. — ბ.!',img:null},
-  {tag:'ღ-ძ.',title:'ღ. კ. დ. — 15 ი.',date:'22 ი. 2026',icon:'🎉',body:'15 ი. 2026, 11:00 — BMA-ს ღ. კ. დ. სპ.: «სამ. კ. ე.» და «სამ. გ.». რ.: students@bmeda.edu.ge.',img:null},
-  {tag:'ბ.',title:'სამ. კ. ე-ში',date:'18 ი. 2026',icon:'🌍',body:'EU ქვ.: პ. (ERF), გ. (ApprobO), ფ. (Valvira). BMA ECTS ა. გ.',img:null},
+  {tag:'აუცილებელი',title:'შუალედური გამოცდების ცხრილი — ივლ. 2026',date:'28 ი. 2026',icon:'📋',body:'შუალედური გამოცდები ჩატარდება 14–25 ივლ. 2026. MA-24B: ანატომია — 14.07 09:00 · 201-ე. ფიზიოლ. — 16.07 · 204. ფარმ. — 18.07 · 105. სამ. ეთიკა — 21.07. კლინ. პრაქტ. — 23.07. ინგლ. ენა — 25.07.',img:null},
+  {tag:'სიახლე',title:'ბათუმის სამ. აკ. — I ადგილი ოლიმპიადაზე',date:'25 ივნ. 2026',icon:'🏆',body:'ბათ. სამ. აკადემიის სტუდენტი გახდა «მედიცინის ახალგაზრდა» 2026 ოლიმპიადის I ადგილოსანი 14 უნივერსიტეტს შორის.',img:null},
+  {tag:'ღონისძ.',title:'ღია კარის დღე — 15 ივლ.',date:'22 ივნ. 2026',icon:'🎉',body:'15 ივლ. 2026, 11:00 — ბათ. სამ. აკადემიის ღია კარის დღე. სპეციალური სპიკერები: «სამ. კარიერა ევროპაში» და «სამ. გამოწვევები». რ-ა: students@bmeda.edu.ge.',img:null},
+  {tag:'ბლოგი',title:'სამ. კარიერა ევროპაში',date:'18 ივნ. 2026',icon:'🌍',body:'EU ქვეყნებში სამ. ლიცენზია: პოლონეთი (ERF), გერმანია (ApprobO), ფინეთი (Valvira). BMA ECTS-ი ავტომატურად გადადის.',img:null},
 ];
 const ng=document.getElementById('news-grid');
 newsData.forEach((n,i)=>{
@@ -1585,7 +1589,7 @@ function openNews(i){
         <p style="font-size:15px;line-height:1.9;color:var(--text1)">${n.body}</p>
         <div style="margin-top:24px;display:flex;gap:8px">
           <button class="btn btn-o btn-sm" onclick="toast('გ. კ.','success')">↗ გ.</button>
-          <button class="btn btn-n btn-sm" onclick="toast('კ.','success')">📋 კ.</button>
+          <button class="btn btn-n btn-sm" onclick="toast('კარგი','success')">📋 კ.</button>
         </div>
       </div>
     </div>`;
@@ -1593,9 +1597,9 @@ function openNews(i){
 
 // ══ CAREER / JOBS ══
 const jobs=[
-  {ico:'🏥',title:'ა. ე.',company:'ვ.',loc:'ბ.',type:'სრ.',salary:'800–1200₾',contact:'hr@vivamed.ge',phone:'+995 422 111 222',desc:'სამ. ა. ე. — ს-ო ვ. კ. ბ-ში. მ.: II+ სასწ. წ., BLS. CV გ. ელ. ფ-ზე.'},
-  {ico:'💊',title:'ფ. ა.',company:'Aversi',loc:'ბ./ქ.',type:'ნ.',salary:'600₾+',contact:'jobs@aversi.ge',phone:'+995 422 333 444',desc:'ფ. ა. — A. ქ. გ-ში. ი.: ფ. ფ., ენ. ც. CV + სურ.'},
-  {ico:'🩺',title:'სამ. სტ.',company:'ა. ჰ.',loc:'ბ.',type:'სტ.',salary:'400₾',contact:'training@hospital.ge',phone:'+995 422 555 666',desc:'სტ. II+ სასწ. წ. 3 თ. სტ., ს.: 400₾/თ. CV + ლ. გ. ს.'},
+  {ico:'🏥',title:'ამბულატორიის ექიმი',company:'VivaМed',loc:'ბათუმი',type:'სრული განაკვეთი',salary:'800–1200₾',contact:'hr@vivamed.ge',phone:'+995 422 111 222',desc:'სამ. ამბულატ. ექიმი — VivaМed კლინიკაში ბათუმში. მოთხ.: II+ სასწავლო წ., BLS სერტ. CV გამოგვიგზავნეთ ელ. ფოსტაზე.'},
+  {ico:'💊',title:'ფარმ. ასისტენტი',company:'Aversi',loc:'ბათ./ქ.',type:'ნახ. განაკვ.',salary:'600₾+',contact:'jobs@aversi.ge',phone:'+995 422 333 444',desc:'ფარმ. ასისტენტი — Aversi ქსელის გაყიდვებში. იდ.: ფარმ. ფაკ. სტ., ენ. ცოდნა. CV + სურათი.'},
+  {ico:'🩺',title:'სამ. სტუდ. სტაჟ.',company:'Adjara Hospital',loc:'ბათუმი',type:'სტაჟიორობა',salary:'400₾',contact:'training@hospital.ge',phone:'+995 422 555 666',desc:'სტუდ. II+ სასწ. წ. — 3 თვიანი სტ. ს-ვ.: 400₾/თ. CV + ლექ-ის გ. სი.'},
 ];
 const jl=document.getElementById('jobs-list');
 jobs.forEach((j,i)=>{
@@ -1644,7 +1648,7 @@ function openJob(i){
               <div style="font-size:13px;font-weight:600">${j.phone}</div>
             </div>
             <div style="background:var(--amber-lt);border-radius:8px;padding:12px;font-size:12px;color:var(--amber)">
-              📧 CV გ. ელ. ფ-ზე. ო. დ. ს. პ-ზე.
+              📧 CV გამოგვიგზავნეთ ელ. ფოსტაზე. ონლაინ დ. სა. პ-ზე.
             </div>
             <button class="btn btn-b btn-full" onclick="toast('ფ. ა. ი. ელ. ფ-ით: ${j.contact}','info')">📧 CV გ. ელ. ფ-ით</button>
           </div>
