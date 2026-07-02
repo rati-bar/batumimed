@@ -289,6 +289,7 @@ tr:hover td{background:var(--bg)}
       <button class="nav-item" onclick="go('messages',this,'შეტყობინებები')"><span class="ni-icon">✉️</span>შეტყობინებები <span class="nav-badge" id="msg-badge">3</span></button>
       <button class="nav-item" onclick="go('materials',this,'სასწავლო მასალები')"><span class="ni-icon">📁</span>სასწავლო მასალები</button>
       <button class="nav-item" onclick="go('reports',this,'ანგარიშები')"><span class="ni-icon">📊</span>ანგარიშები</button>
+      <button class="nav-item" onclick="go('surveys',this,'გამოკითხვები')"><span class="ni-icon">📝</span>გამოკითხვები</button>
       <button class="nav-item" onclick="go('profile',this,'პროფილი')"><span class="ni-icon">👤</span>პროფილი</button>
     </div>
     <div class="sidebar-footer">
@@ -956,6 +957,18 @@ tr:hover td{background:var(--bg)}
   </div>
 </div>
 
+
+<!-- ══ SURVEYS SCREEN ══ -->
+<div class="screen" id="screen-surveys">
+  <div style="margin-bottom:20px">
+    <div style="font-size:22px;font-weight:800;color:var(--navy)">გამოკითხვები</div>
+    <div style="font-size:13px;color:var(--muted);margin-top:4px">ადმინისტრაციის გამოკითხვები სტუდენტებისა და პროფ. მასწავლებლებისთვის</div>
+  </div>
+  <div class="card">
+    <div class="card-title">ყველა გამოკითხვა</div>
+    <div style="padding:4px 0"><div id="t-surveys-all"></div></div>
+  </div>
+</div>
 
 <!-- ══ PROFILE SCREEN ══ -->
 <div class="screen" id="screen-profile">
@@ -1679,6 +1692,32 @@ function changeSMS(){
 buildJournal()
 buildGrades()
 buildScheduleWeek()
+</script>
+
+<script>
+// ══ SURVEYS ══
+const tSurveysAll=[
+  {name:'სასწავლო პროცესის შეფასება — 2026',deadline:'15.07.2026',anon:true,link:'https://forms.gle/example1',status:'active'},
+  {name:'ბათუმის სამედიცინო აკადემიის სერვისების შეფასება',deadline:'30.06.2026',anon:false,link:'https://forms.gle/example2',status:'expired'},
+  {name:'პედაგოგიური გამოკითხვა — I სემესტრი',date:'10.01.2026',status:'done'},
+  {name:'სასწავლო მასალების შეფასება — 2025',date:'20.12.2025',status:'done'},
+];
+const tSaEl=document.getElementById('t-surveys-all');
+tSurveysAll.forEach(sv=>{
+  const isActive=sv.status==='active';
+  const isDone=sv.status==='done';
+  const badge=isDone?'<span class="badge badge-green">✓ შევსებული</span>':isActive?'<span class="badge badge-amber">● აქტიური</span>':'<span class="badge badge-red">ვადა გასული</span>';
+  const info=sv.deadline?'ვადა: '+sv.deadline:(sv.date?'შევსებულია: '+sv.date:'');
+  tSaEl.innerHTML+=`<div style="display:flex;align-items:center;padding:13px 0;border-bottom:1px solid #F0F4F8;gap:12px">
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:600">${sv.name}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">${info}${sv.anon?' · ანონიმური':''}</div>
+      ${isActive&&sv.link?`<a href="${sv.link}" target="_blank" style="font-size:11px;color:var(--blue);text-decoration:underline;margin-top:3px;display:inline-block">${sv.link} ↗</a>`:''}
+    </div>
+    ${badge}
+    ${isActive?`<a href="${sv.link}" target="_blank" class="btn btn-blue btn-sm" style="text-decoration:none">შევსება →</a>`:''}
+  </div>`;
+});
 </script>
 </body>
 </html>
