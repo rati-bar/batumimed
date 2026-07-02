@@ -1108,6 +1108,12 @@ const msgContent = [
   {from:'ადმინისტრაცია',role:'საერთო შეტყობინება',subj:'კამპუსის სამუშ. საათები — ივლ. 2026',
    body:'2026 წ. ივლ. კამპუსის სამ. საათები:\n\nორშ.–პარ.: 09:00–17:00\nშაბ.: 10:00–14:00\nკვ.: დახ.\n\nდ.ა.ა. სასწ. დეპ.',
    date:'15 ივნ. 2025'},
+  {from:'გიორგი ბერიძე',role:'სტუდ. · ჯგ. 101',subj:'სამ. ანგ. — მაისი 2025',
+   body:'მასწავლებელო,\n\nვაგზავნი ლაბ. ანგ. ადამ. ანატ. I ნაწ.\n\nმადლობა,\nგ. ბერიძე',
+   date:'15 მაი. 2025'},
+  {from:'სასწ. დეპ.',role:'სისტემური',subj:'მოდ. ახ. განრიგი — 2024–2025',
+   body:'2024–2025 სასწ. წ. განახლებული განრიგი სისტ-შია.',
+   date:'2 სექ. 2024'},
 ]
 
 // ── CORE UI ──
@@ -1474,9 +1480,10 @@ function openMsg(i){
       <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:4px">${m.subj}</div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:12px">${m.from} · ${m.role} · ${m.date}</div>
       <div style="font-size:13px;color:var(--text);white-space:pre-line;line-height:1.7;border-top:1px solid var(--border);padding-top:12px">${m.body}</div>
-      <div style="margin-top:16px;display:flex;gap:8px">
+      <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn btn-blue btn-sm" onclick="replyMsg('${m.from}')">↩ პასუხი</button>
-        <button class="btn btn-ghost btn-sm" onclick="toast('წარეშლა')">🗑</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('არქივში','info')">🗄 არქ.</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('წაიშალა','warn')">🗑</button>
       </div>
     </div>`
 }
