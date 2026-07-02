@@ -172,17 +172,25 @@ tr:hover td{background:#FAFBFC}
 .scard{background:linear-gradient(135deg,var(--navy) 0%,var(--blue-md) 100%);border-radius:16px;padding:24px;color:#fff;position:relative;overflow:hidden}
 .scard::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.06)}
 
-/* ── LETTER ITEM ── */
-.letter-item{padding:14px;border-bottom:1px solid var(--border);cursor:pointer;transition:.1s;display:flex;align-items:flex-start;gap:12px}
+/* ── LETTER / MESSAGE ── */
+.letter-item{padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:.1s;display:flex;align-items:flex-start;gap:12px}
 .letter-item:hover{background:var(--bg)}
 .letter-item.unread{border-left:3px solid var(--blue)}
 .letter-item.unread .li-subject{font-weight:700}
+.letter-item.selected{background:var(--blue-lt)}
 .li-icon{width:36px;height:36px;border-radius:50%;background:var(--blue-lt);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.li-subject{font-size:13px;color:var(--text1)}
-.li-preview{font-size:12px;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:380px}
-.li-meta{font-size:11px;color:var(--text3);white-space:nowrap}
+.li-from{font-size:12px;font-weight:600;color:var(--navy)}
+.li-subject{font-size:13px;color:var(--text1);margin-top:1px}
+.li-preview{font-size:12px;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li-meta{font-size:11px;color:var(--text3);white-space:nowrap;margin-left:8px}
 .li-mandatory{background:var(--red-lt);border-left:3px solid var(--red)}
 .li-mandatory .li-subject::before{content:'⚠ ';color:var(--red)}
+.msg-detail{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.msg-detail-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 16px;color:var(--text3);text-align:center;gap:8px}
+.letters-layout{display:flex;gap:16px;align-items:flex-start}
+.letters-list{flex:1;min-width:0}
+.letters-panel{width:340px;flex-shrink:0}
+@media(max-width:720px){.letters-layout{flex-direction:column}.letters-panel{width:100%}}
 
 /* ── STAT BOX ── */
 .stat-box{background:var(--bg);border-radius:var(--r);padding:14px;text-align:center}
@@ -501,110 +509,130 @@ tr:hover td{background:#FAFBFC}
   <div class="ph fb"><div><div class="pt">წერილები</div><div class="ps">შიდა კორესპონდენცია — პირადი და საერთო შეტყობინებები</div></div>
     <button class="btn btn-b" onclick="showComposeModal()">✉ ახალი წერილი</button>
   </div>
-  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap" id="letter-tabs">
-    <button class="chip on" onclick="switchLetterTab('inbox',this)">📥 შემოსული <span style="background:var(--red);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:2px">3</span></button>
-    <button class="chip" onclick="switchLetterTab('sent',this)">📤 გაგზავნილი</button>
-    <button class="chip" onclick="switchLetterTab('drafts',this)">📝 დრაფტები</button>
-    <button class="chip" onclick="switchLetterTab('archive',this)">🗄 არქივი</button>
-    <button class="chip" onclick="switchLetterTab('general',this)">📢 საერთო</button>
-  </div>
 
-  <!-- INBOX -->
-  <div id="lt-inbox" class="card">
-    <div class="letter-item li-mandatory" onclick="showLetterModal('mandatory')">
-      <div class="li-icon" style="background:var(--red-lt)">⚠</div>
-      <div style="flex:1">
-        <div style="font-size:11px;color:var(--red);font-weight:700;margin-bottom:2px">⚠ ᲐᲣᲪᲘᲚᲔᲑᲔᲚᲘ ᲬᲐᲡᲐᲙᲘᲗᲮᲘ</div>
-        <div class="li-subject">ადმინისტრაცია — გამოცდების ცხრილი ივლ. 2026 (ბრძ. №ე-014)</div>
-        <div class="li-preview">შუალედური გამოცდები ჩატარდება 2026 წ. 14–25 ივლ. MA-24B ჯგუფისთვის...</div>
+  <div class="letters-layout">
+    <!-- LEFT: list -->
+    <div class="letters-list">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px" id="letter-tabs">
+        <button class="chip on" onclick="switchLetterTab('inbox',this)">შემოსული <span style="background:var(--red);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:4px" id="lt-inbox-badge">3</span></button>
+        <button class="chip" onclick="switchLetterTab('sent',this)">გაგზავნილი</button>
+        <button class="chip" onclick="switchLetterTab('drafts',this)">📝 დრაფტები</button>
+        <button class="chip" onclick="switchLetterTab('general',this)">📢 საერთო</button>
       </div>
-      <div class="li-meta">28 ივნ.<br><span class="bd bd-r">წაუკ.</span></div>
-    </div>
-    <div class="letter-item unread" onclick="showLetterModal('teacher1')">
-      <div class="li-icon">👨‍🏫</div>
-      <div style="flex:1">
-        <div class="li-subject">ლია გოგიაშვილი — სახელმძღვანელო ანატომია VII თავი</div>
-        <div class="li-preview">გამარჯობა, ნინო! გთხოვთ, გადახედოთ VII თავს და მოემზადოთ...</div>
-      </div>
-      <div class="li-meta">25 ივნ.<br><span class="bd bd-b">პირადი</span></div>
-    </div>
-    <div class="letter-item unread" onclick="showLetterModal('admin1')">
-      <div class="li-icon">🏛</div>
-      <div style="flex:1">
-        <div class="li-subject">ადმინისტრაცია — გადახდის შეხსენება</div>
-        <div class="li-preview">პატივისცემით, ბათ. სამ. აკადემიის ფინ. სამსახური. II სემ. გადახდა...</div>
-      </div>
-      <div class="li-meta">20 ივნ.<br><span class="bd bd-n">საერთო</span></div>
-    </div>
-    <div class="letter-item" onclick="showLetterModal('admin2')">
-      <div class="li-icon">✅</div>
-      <div style="flex:1">
-        <div class="li-subject">სტუდენტი სამ. — განაცხადი დამტკიცდა #24-089</div>
-        <div class="li-preview">თქვენი განაცხადი «ცნობა სწავლის შესახებ» (#24-089) დამტკ...</div>
-      </div>
-      <div class="li-meta">27 ივნ.<br><span class="bd bd-g">წაკ.</span></div>
-    </div>
-  </div>
 
-  <!-- SENT -->
-  <div id="lt-sent" class="card" style="display:none">
-    <div class="letter-item" onclick="showLetterModal('sent1')">
-      <div class="li-icon" style="background:var(--blue-lt)">📤</div>
-      <div style="flex:1">
-        <div class="li-subject">ლ. გოგიაშვილი — კითხვა VII თ. შესახებ</div>
-        <div class="li-preview">გამარჯობა! რომელ გვ.-ს ვარ ვალდებული VII თ.-ში?</div>
+      <div style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:8px 12px;margin-bottom:12px;box-shadow:var(--shadow)">
+        <span style="color:var(--text3)">🔍</span>
+        <input type="text" placeholder="ძიება წერილებში..." style="border:none;outline:none;font-family:inherit;font-size:13px;flex:1;background:transparent">
       </div>
-      <div class="li-meta">19 ივნ.<br><span class="bd bd-g">გაიგზ.</span></div>
-    </div>
-    <div class="letter-item" onclick="showLetterModal('sent2')">
-      <div class="li-icon" style="background:var(--blue-lt)">📤</div>
-      <div style="flex:1">
-        <div class="li-subject">სტუდენტი სამ. — ცნობის მოთხოვნა</div>
-        <div class="li-preview">გამარჯობა! გთხოვთ, გამომიწეროთ ცნობა სწავლის შ...</div>
-      </div>
-      <div class="li-meta">26 ივნ.<br><span class="bd bd-g">გაიგზ.</span></div>
-    </div>
-  </div>
 
-  <!-- DRAFTS -->
-  <div id="lt-drafts" class="card" style="display:none">
-    <div class="letter-item" onclick="showLetterModal('draft1')">
-      <div class="li-icon" style="background:var(--amber-lt)">📝</div>
-      <div style="flex:1">
-        <div class="li-subject" style="color:var(--amber)">ლია გოგიაშვილი — [დრაფტი] კითხვა ლექციის შესახებ</div>
-        <div class="li-preview">გამარჯობა! მინდოდა გკითხოთ...</div>
+      <!-- INBOX -->
+      <div id="lt-inbox" class="card" style="padding:0;overflow:hidden">
+        <div class="letter-item li-mandatory" id="litem-mandatory" onclick="openLetter('mandatory',this)">
+          <div class="li-icon" style="background:var(--red-lt)">⚠</div>
+          <div style="flex:1;min-width:0">
+            <div class="li-from" style="color:var(--red)">ადმინისტრაცია <span class="bd bd-r" style="font-size:10px">სავალდებულო</span></div>
+            <div class="li-subject">გამოცდების ცხრილი ივლ. 2026 (ბრძ. №ე-014)</div>
+            <div class="li-preview">შუალედური გამოცდები ჩატარდება 2026 წ. 14–25 ივლ. MA-24B ჯგუფისთვის...</div>
+          </div>
+          <div class="li-meta">28 ივნ.<br><span class="bd bd-r">წაუკ.</span></div>
+        </div>
+        <div class="letter-item unread" id="litem-teacher1" onclick="openLetter('teacher1',this)">
+          <div class="li-icon">👨‍🏫</div>
+          <div style="flex:1;min-width:0">
+            <div class="li-from">ლია გოგიაშვილი <span class="bd bd-b" style="font-size:10px">პირადი</span></div>
+            <div class="li-subject">სახელმძღვანელო ანატომია VII თავი</div>
+            <div class="li-preview">გამარჯობა, ნინო! გთხოვთ, გადახედოთ VII თავს და მოემზადოთ...</div>
+          </div>
+          <div class="li-meta">25 ივნ.<br><span class="bd bd-b">წაუკ.</span></div>
+        </div>
+        <div class="letter-item unread" id="litem-admin1" onclick="openLetter('admin1',this)">
+          <div class="li-icon">🏛</div>
+          <div style="flex:1;min-width:0">
+            <div class="li-from">ადმინისტრაცია <span class="bd bd-n" style="font-size:10px">საერთო</span></div>
+            <div class="li-subject">გადახდის შეხსენება — II სემ.</div>
+            <div class="li-preview">პატივისცემით, ბათ. სამ. აკადემიის ფინ. სამსახური. II სემ. გადახდა...</div>
+          </div>
+          <div class="li-meta">20 ივნ.<br><span class="bd bd-n">წაუკ.</span></div>
+        </div>
+        <div class="letter-item" id="litem-admin2" onclick="openLetter('admin2',this)">
+          <div class="li-icon">✅</div>
+          <div style="flex:1;min-width:0">
+            <div class="li-from">სტუდენტური სამსახური</div>
+            <div class="li-subject">განაცხადი დამტკიცდა #24-089</div>
+            <div class="li-preview">თქვენი განაცხადი «ცნობა სწავლის შესახებ» (#24-089) დამტკ...</div>
+          </div>
+          <div class="li-meta">27 ივნ.<br><span class="bd bd-g">წაკ.</span></div>
+        </div>
       </div>
-      <div class="li-meta">29 ივნ.<br><button class="btn btn-o btn-xs" onclick="event.stopPropagation();showComposeModal()">გაგრძელ.</button></div>
-    </div>
-  </div>
 
-  <!-- ARCHIVE -->
-  <div id="lt-archive" class="card" style="display:none">
-    <div style="padding:20px;text-align:center;color:var(--text3)">
-      <div style="font-size:24px;margin-bottom:8px">🗄</div>
-      <div>არქივში 2 წერილი</div>
-      <button class="btn btn-n btn-sm" style="margin-top:10px" onclick="toast('არქივი გაიხსნა','info')">არქ. ნახვა</button>
-    </div>
-  </div>
+      <!-- SENT -->
+      <div id="lt-sent" class="card" style="display:none;padding:0;overflow:hidden">
+        <div class="letter-item" id="litem-sent1" onclick="openLetter('sent1',this)">
+          <div class="li-icon" style="background:var(--green-lt);color:var(--green)">📤</div>
+          <div style="flex:1;min-width:0">
+            <div class="li-from">ლია გოგიაშვილი-სთვის</div>
+            <div class="li-subject">კითხვა VII თავზე</div>
+            <div class="li-preview">გამარჯობა! როდის იქნება განხილვა VII თავის შესახებ?</div>
+          </div>
+          <div class="li-meta">19 ივნ.<br><span class="bd bd-g">გაიგზ.</span></div>
+        </div>
+        <div class="letter-item" id="litem-sent2" onclick="openLetter('sent2',this)">
+          <div class="li-icon" style="background:var(--green-lt);color:var(--green)">📤</div>
+          <div style="flex:1;min-width:0">
+            <div class="li-from">სტუდენტური სამსახური-სთვის</div>
+            <div class="li-subject">ცნობის მოთხოვნა სწავლის შ.</div>
+            <div class="li-preview">გამარჯობა! გთხოვთ, გამომიწეროთ ცნობა სწავლის შ...</div>
+          </div>
+          <div class="li-meta">26 ივნ.<br><span class="bd bd-g">გაიგზ.</span></div>
+        </div>
+      </div>
 
-  <!-- GENERAL -->
-  <div id="lt-general" class="card" style="display:none">
-    <div style="padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);font-size:12px;color:var(--text2)">📢 საერთო შეტყობინებები — ადმინისტრაციის მიერ გაგზავნილი ყველა სტუდენტისთვის</div>
-    <div class="letter-item" onclick="showLetterModal('gen1')">
-      <div class="li-icon">📢</div>
-      <div style="flex:1">
-        <div class="li-subject">ახ. სასწავლო წლის ინფორმაცია — 2026–2027</div>
-        <div class="li-preview">ახ. სასწავლო წელი დაიწყება 2026 წ. 1 სექტემბრიდან...</div>
+      <!-- DRAFTS -->
+      <div id="lt-drafts" class="card" style="display:none;padding:0;overflow:hidden">
+        <div class="letter-item" id="litem-draft1" onclick="openLetter('draft1',this)">
+          <div class="li-icon" style="background:var(--amber-lt)">📝</div>
+          <div style="flex:1;min-width:0">
+            <div class="li-from" style="color:var(--amber)">ლია გოგიაშვილი — [დრაფტი]</div>
+            <div class="li-subject">კითხვა ლექციის შესახებ</div>
+            <div class="li-preview">გამარჯობა! მინდოდა გკითხოთ...</div>
+          </div>
+          <div class="li-meta">29 ივნ.<br><button class="btn btn-o btn-xs" onclick="event.stopPropagation();showComposeModal()" style="font-size:10px;padding:2px 6px">გაგრძ.</button></div>
+        </div>
       </div>
-      <div class="li-meta">01 ივლ.</div>
+
+      <!-- GENERAL -->
+      <div id="lt-general" class="card" style="display:none;padding:0;overflow:hidden">
+        <div style="padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);font-size:12px;color:var(--text2)">📢 საერთო შეტყობინებები — ადმინისტრაციის მიერ ყველა სტუდენტისთვის</div>
+        <div class="letter-item" id="litem-gen1" onclick="openLetter('gen1',this)">
+          <div class="li-icon" style="background:var(--amber-lt)">📢</div>
+          <div style="flex:1;min-width:0">
+            <div class="li-from">სასწ. დეპარტამენტი <span class="bd bd-n" style="font-size:10px">საერთო</span></div>
+            <div class="li-subject">ახ. სასწ. წ. ინფ. — 2026–2027</div>
+            <div class="li-preview">ახ. სასწ. წ. დაიწყება 2026 წ. 1 სექტემბრიდან...</div>
+          </div>
+          <div class="li-meta">01 ივლ.</div>
+        </div>
+        <div class="letter-item" id="litem-gen2" onclick="openLetter('gen2',this)">
+          <div class="li-icon" style="background:var(--amber-lt)">📢</div>
+          <div style="flex:1;min-width:0">
+            <div class="li-from">ადმინისტრაცია <span class="bd bd-n" style="font-size:10px">საერთო</span></div>
+            <div class="li-subject">კამპუსის სამ. საათები — ივლ. 2026</div>
+            <div class="li-preview">ივლ. 2026 — ორ.–პარ.: 09:00–17:00, შაბ.: 10:00–14:00...</div>
+          </div>
+          <div class="li-meta">15 ივნ.</div>
+        </div>
+      </div>
     </div>
-    <div class="letter-item" onclick="showLetterModal('gen2')">
-      <div class="li-icon">📢</div>
-      <div style="flex:1">
-        <div class="li-subject">კამპუსის სამუშ. საათები — ივლ. 2026</div>
-        <div class="li-preview">ივლ. 2026 — ორ.–პარ.: 09:00–17:00, შაბ.: 10:00–14:00...</div>
+
+    <!-- RIGHT: detail panel -->
+    <div class="letters-panel">
+      <div class="msg-detail" id="lt-detail-panel">
+        <div class="msg-detail-empty">
+          <div style="font-size:32px">✉️</div>
+          <p>წერილი შესარჩევია</p>
+          <p style="font-size:12px;color:var(--text3)">სიაში დააჭირეთ ნებისმიერ წერილს</p>
+        </div>
       </div>
-      <div class="li-meta">15 ივნ.</div>
     </div>
   </div>
 </div>
@@ -1132,135 +1160,61 @@ function showOrderModal(num,title,date,text){
 
 <script>
 // ══ LETTERS ══
+const letterData = {
+  mandatory:{from:'ადმინისტრაცია',type:'mandatory',subject:'გამოცდების ცხრილი ივლ. 2026 (ბრძ. №ე-014)',date:'28.06.2026 14:22',body:'შუალედური გამოცდები ჩატარდება 2026 წ. 14–25 ივლ.\n\nMA-24B ჯგუფი:\n• ანატომია — 14.07.2026\n• ფიზიოლოგია — 16.07.2026\n• ფარმაკოლოგია — 18.07.2026\n\nგთხოვთ, დაადასტუროთ წაკითხვა.'},
+  teacher1:{from:'ლია გოგიაშვილი',type:'personal',subject:'სახელმძღვანელო — ანატომია VII თავი',date:'25.06.2026 10:05',body:'გამარჯობა, ნინო!\n\nგთხოვთ, გადახედოთ VII თავს და მოემზადოთ მე-3 ლექციისთვის.\n\nმასალა სისტემაში ატვირთულია.\n\nპატივისცემით,\nლია გოგიაშვილი'},
+  admin1:{from:'ადმინისტრაცია',type:'general',subject:'გადახდის შეხსენება — II სემ.',date:'20.06.2026 09:00',body:'პატივცემულო სტუდენტო,\n\nII სემ. სწავლის საფასური — 2,400₾\nგადახდის ვადა: 15 ივლ. 2026\n\nპატივისცემით,\nბათ. სამ. აკ. ფინ. სამსახური'},
+  admin2:{from:'სტუდენტური სამსახური',type:'general',subject:'განაცხადი დამტკიცდა #24-089',date:'27.06.2026 16:00',body:'თქვენი განაცხადი «ცნობა სწავლის შ.» (#24-089) დამტკიცდა.\n\nმისაღებია: სტ. სამსახური, 3 სართ.\n\nსაკ.: +995 555 123 456'},
+  sent1:{from:'მე → ლია გოგიაშვილი',type:'sent',subject:'კითხვა VII თავზე',date:'19.06.2026 08:30',body:'გამარჯობა!\n\nრომელ გვ.-ს ვარ ვალდებული VII თ.-ში?\n\nმადლობა!'},
+  sent2:{from:'მე → სტ. სამსახური',type:'sent',subject:'ცნობის მოთხოვნა',date:'26.06.2026 11:00',body:'გამარჯობა!\n\nგთხოვთ, გამომიწეროთ ცნობა სწავლის შ.\n\nმადლობა!'},
+  draft1:{from:'ლია გოგიაშვილი',type:'draft',subject:'[დრაფტი] კითხვა ლექციის შ.',date:'29.06.2026',body:'გამარჯობა!\n\nმინდოდა გკითხოთ...'},
+  gen1:{from:'სასწ. დეპარტამენტი',type:'general',subject:'ახ. სასწ. წ. — 2026–2027',date:'01.07.2026',body:'ახ. სასწ. წ. დაიწყება 2026 წ. 1 სექტ.\nMP-ები: 28 აგვ. 2026, 10:00'},
+  gen2:{from:'ადმინისტრაცია',type:'general',subject:'კამპუსის სამ. საათები — ივლ. 2026',date:'15.06.2026',body:'ივლ. 2026:\nორ–პარ: 09:00–17:00\nშაბ: 10:00–14:00\nკვ: დახ.'},
+}
+
 function switchLetterTab(tab,chip){
   document.querySelectorAll('#letter-tabs .chip').forEach(c=>c.classList.remove('on'));chip.classList.add('on');
-  ['inbox','sent','drafts','archive','general'].forEach(t=>{
+  ['inbox','sent','drafts','general'].forEach(t=>{
     const el=document.getElementById('lt-'+t);if(el)el.style.display=t===tab?'block':'none';
   });
-}
-function showLetterModal(id){
-  const letters={
-    mandatory:{subject:'ბრძანება №ე-014 — გამოცდების ცხრილი ივლ. 2026',from:'ადმინისტრაცია',type:'mandatory',body:'შუალედური გამოცდები ჩატარდება 14–25 ივლ. 2026. MA-24B: ანატომია 14.07, ფიზიოლოგია 16.07, ფარმაკოლოგია 18.07...',date:'28.06.2026 14:22',read:null},
-    teacher1:{subject:'სახელმძღვანელო ანატომია VII თავი',from:'ლია გოგიაშვილი',type:'personal',body:'გამარჯობა, ნინო! გამოგიგზავნე VII თავის განხილვის განრიგი. შეხვედრა ლაბორატორიაში: კაბინეტი 201, სამშაბათი 14:00–16:00.',date:'25.06.2026 10:15',read:null},
-    admin1:{subject:'გადახდის შეხსენება',from:'ფინანსური სამსახური',type:'general',body:'პატივცემულო სტუდენტო, ბათუმის სამედიცინო აკადემიის ფინანსური სამსახური გაცნობებთ: II სემ. სწავლის საფასური 2,400₾ — გადახდის ვადა 15.07.2026.',date:'20.06.2026 09:00',read:'20.06.2026 09:45'},
-    admin2:{subject:'განაცხადი დამტკიცდა #24-089',from:'სტუდენტური სამსახური',type:'general',body:'თქვენი განაცხადი «ცნობა სწავლის შესახებ» (#24-089) დამტკიცდა. საკონტაქტო: +995 555 123 456.',date:'27.06.2026 16:00',read:'27.06.2026 16:30'},
-    sent1:{subject:'კითხვა VII თავზე',from:'მე',type:'personal',body:'გამარჯობა! როდის იქნება განხილვა VII თავის შესახებ?',date:'19.06.2026 08:30',read:'წაკითხულია'},
-    sent2:{subject:'ცნობის მოთხოვნა',from:'მე',type:'personal',body:'გამარჯობა! გთხოვთ, გამოგიგზავნოთ ცნობა სწავლის შესახებ საბანკო დაწესებულებისთვის.',date:'26.06.2026 11:00',read:'წაკითხულია'},
-    draft1:{subject:'[მონახაზი] კითხვა ლექციაზე',from:'',type:'draft',body:'გამარჯობა! მინდა გკითხოთ...',date:'29.06.2026 09:00',read:null},
-    gen1:{subject:'ახალი სასწავლო წელი 2026–2027',from:'ადმინისტრაცია',type:'general',body:'ახალი სასწავლო წელი იწყება 2026 წლის 1 სექტემბერს. სასწავლო საფასური: 4,800₾.',date:'01.07.2026'},
-    gen2:{subject:'კამპუსის სამუშაო საათები',from:'ადმინისტრაცია',type:'general',body:'ივლისი 2026: ორშ.–პარ.: 09:00–17:00, შაბ.: 10:00–14:00.',date:'15.06.2026'},
-  };
-  const l=letters[id];if(!l)return;
-  const typeBadge={mandatory:'<span class="bd bd-r">⚠ აუც.</span>',personal:'<span class="bd bd-b">პ.</span>',general:'<span class="bd bd-n">საერ.</span>',draft:'<span class="bd bd-a">დ.</span>'};
-  showModal(l.subject,`
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div>${typeBadge[l.type]||''}</div>
-      <div style="font-size:11px;color:var(--text3)">${l.date}${l.read?' · წ.:'+l.read:''}</div>
-    </div>
-    <div style="margin-bottom:12px;font-size:12px;color:var(--text2)">გამ.: <b>${l.from||'–'}</b></div>
-    <div style="font-size:14px;line-height:1.8;color:var(--text1)">${l.body}</div>
-    ${l.type==='mandatory'?'<div style="margin-top:16px;background:var(--red-lt);border-radius:8px;padding:12px;font-size:12px;color:var(--red)">⚠ ეს შ. მ. დ. და სისტემური ა. ა. თ.</div>':''}
-  `,l.type==='mandatory'?
-    '<button class="btn btn-r" onclick="closeModal();toast(\'დ.!\',\'success\')">✓ წ. და დ.</button>':
-    '<button class="btn btn-n" onclick="closeModal()">დახურვა</button><button class="btn btn-o btn-sm" onclick="archiveLetter()">🗄 არქ.</button><button class="btn btn-b btn-sm" onclick="closeModal();showComposeModal()">↩ პ.</button>');
-}
-function archiveLetter(){closeModal();toast('წერილი არქივში გადაიტანა','success')}
-function showComposeModal(){
-  showModal('ახალი წერილი',`
-    <div class="fg mb12"><label class="fl">ა. (მ. პ. მ.)</label>
-      <select class="fi"><option>ლ. გ. (ა.)</option><option>მ. ბ. (ა.)</option><option>თ. ჩ. (ა.)</option></select>
-    </div>
-    <div class="fg mb12"><label class="fl">სათ.</label><input class="fi" placeholder="წ. სათ..."></div>
-    <div class="fg mb12"><label class="fl">ტ.</label><textarea class="fi" style="min-height:120px" placeholder="თ. წ..."></textarea></div>
-    <div class="fg mb0"><label class="fl">ფ. მ. (PDF/Office, მ. 100 MB)</label>
-      <div style="border:2px dashed var(--border);border-radius:var(--r);padding:16px;text-align:center;cursor:pointer;background:var(--bg)" onclick="toast('ფ. ვ. გ.','info')">
-        <span style="font-size:20px">📎</span> <span style="font-size:13px;color:var(--text2)">ფ. ატ. (PDF, Word, Excel)</span>
-      </div>
-    </div>
-  `,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-o" onclick="closeModal();toast(\'დ. შ.\',\'success\')">💾 დ.</button><button class="btn btn-b" onclick="closeModal();toast(\'გ.!\',\'success\')">✉ გ.</button>');
+  document.getElementById('lt-detail-panel').innerHTML=
+    '<div class="msg-detail-empty"><div style="font-size:32px">✉️</div><p>წერილი შესარჩევია</p><p style="font-size:12px;color:var(--text3)">სიაში დააჭირეთ ნებისმიერ წერილს</p></div>'
 }
 
-// ══ PAYMENTS ══
-function exportCSV(){toast('CSV ↓','success')}
-function dlReceipt(id){toast('ქვითარი '+id+' ჩამოიტვირთა','success')}
-let payStep=1;
-function showPayModal(){payStep=1;renderPayStep()}
-function renderPayStep(){
-  if(payStep===1){
-    showModal('გადახდა — მეთოდის შერჩევა',`
-      <div style="margin-bottom:12px;font-size:13px;color:var(--text2)">თ.: <b style="color:var(--navy);font-size:16px">2,400₾</b></div>
-      <div style="display:flex;flex-direction:column;gap:10px" id="pay-methods">
-        <label style="display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid var(--blue);border-radius:var(--r);background:var(--blue-lt);cursor:pointer">
-          <input type="radio" name="pm" value="card" checked> <span style="font-size:18px">💳</span> <div><div style="font-weight:600;font-size:13px">სბ.</div><div style="font-size:11px;color:var(--text3)">Visa / Mastercard</div></div>
-        </label>
-        <label style="display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer">
-          <input type="radio" name="pm" value="transfer"> <span style="font-size:18px">🏦</span> <div><div style="font-weight:600;font-size:13px">გ-ვა</div><div style="font-size:11px;color:var(--text3)">TBC / BOG</div></div>
-        </label>
-      </div>
-    `,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-b" onclick="payStep=2;renderPayStep()">შ. →</button>');
-  }else if(payStep===2){
-    showModal('გადახდა — ბარათის მონაცემები',`
-      <div style="background:var(--blue-lt);border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px;color:var(--blue)">💳 2,400₾</div>
-      <div class="fg mb12"><label class="fl">ბ. ნ.</label><input class="fi" placeholder="•••• •••• •••• ••••" maxlength="19"></div>
-      <div class="fg2 mb12">
-        <div><label class="fl">ვ.</label><input class="fi" placeholder="MM/YY" maxlength="5"></div>
-        <div><label class="fl">CVV</label><input class="fi" placeholder="•••" maxlength="3" type="password"></div>
-      </div>
-      <div class="fg mb0"><label class="fl">მ. სახ.</label><input class="fi" placeholder="NINO KVARATSKHELIA"></div>
-    `,'<button class="btn btn-n" onclick="payStep=1;renderPayStep()">← უ.</button><button class="btn btn-b" onclick="payStep=3;renderPayStep()">გ. →</button>');
-  }else if(payStep===3){
-    showModal('გ...',`<div style="text-align:center;padding:40px"><div style="width:56px;height:56px;border:4px solid var(--blue-lt);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 20px"></div><div style="font-size:15px;font-weight:700">მ-ბა...</div></div>`,'');
-    setTimeout(()=>{payStep=4;renderPayStep()},2000);
-  }else if(payStep===4){
-    showModal('✅ გ!',`
-      <div style="text-align:center;padding:20px">
-        <div style="width:64px;height:64px;background:var(--green-lt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px">✅</div>
-        <div style="font-size:18px;font-weight:800;color:var(--green);margin-bottom:8px">გ. დ.!</div>
-        <div style="font-size:13px;color:var(--text2);margin-bottom:16px">2,400₾ · II სემ. 2025–26</div>
-        <div style="background:var(--bg);border-radius:8px;padding:14px;font-size:12px;text-align:left">
-          <div style="display:flex;justify-content:space-between"><span>ტ. ID:</span><b>TRX-2026-042</b></div>
-          <div style="display:flex;justify-content:space-between;margin-top:6px"><span>SMS:</span><b>+995 555 123 456</b></div>
-        </div>
-      </div>
-    `,'<button class="btn btn-b" onclick="paySuccess()">✓ დ.</button>');
+function openLetter(id, el){
+  const l = letterData[id]
+  if(!l) return
+  // deselect others, select this
+  document.querySelectorAll('.letter-item').forEach(x=>x.classList.remove('selected'))
+  el.classList.add('selected')
+  el.classList.remove('unread')
+  // update unread badge
+  const unread = document.querySelectorAll('#lt-inbox .letter-item.unread').length
+  const badge = document.getElementById('lt-inbox-badge')
+  if(badge){badge.textContent=unread; badge.style.display=unread?'':'none'}
+
+  // mandatory overlay
+  if(l.type==='mandatory'){
+    const overlay = document.getElementById('mandatory-overlay')
+    if(overlay) overlay.style.display='flex'
+    return
   }
-}
-function paySuccess(){
-  closeModal();
-  const r=document.getElementById('pay-pending');
-  if(r){r.style.background='';r.cells[5].innerHTML='<span class="bd bd-g">გ.</span>';r.cells[6].innerHTML='<button class="btn btn-o btn-sm" onclick="dlReceipt(\'PAY-NEW\')">↓ ქ.</button>'}
-  toast('გადახდა! ქვითარი SMS-ით გამოეგზავნა','success');
+
+  const actions = l.type==='draft'
+    ? '<button class="btn btn-b btn-sm" onclick="showComposeModal()">✏ გაგრძელება</button><button class="btn btn-r btn-sm" onclick="toast('დრაფტი წაიშალა','warn')">🗑 წაშლა</button>'
+    : l.type==='sent'
+    ? '<button class="btn btn-n btn-sm" onclick="toast('წაიშალა','warn')">🗑 წაშლა</button>'
+    : '<button class="btn btn-b btn-sm" onclick="showComposeModal()">↩ პასუხი</button><button class="btn btn-n btn-sm" onclick="toast('წერილი არქივშია','info')">🗄 არქ.</button>'
+
+  document.getElementById('lt-detail-panel').innerHTML=`
+    <div style="margin-bottom:4px;font-size:16px;font-weight:700;color:var(--navy)">${l.subject}</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:12px">${l.from} · ${l.date}</div>
+    <div style="font-size:13px;color:var(--text1);white-space:pre-line;line-height:1.7;border-top:1px solid var(--border);padding-top:12px;margin-bottom:16px">${l.body}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">${actions}</div>`
 }
 
-// ══ APPLICATIONS ══
-function switchAppType(type,btn){
-  document.querySelectorAll('#screen-apps .chip').forEach(c=>c.classList.remove('on'));btn.classList.add('on');
-  document.getElementById('tmpl-section').style.display=type==='tmpl'?'block':'none';
-  document.getElementById('free-section').style.display=type==='free'?'block':'none';
-}
-function pickTmpl(el,title,preview){
-  document.querySelectorAll('.tmpl').forEach(t=>t.classList.remove('on'));el.classList.add('on');
-  document.getElementById('tmpl-title').textContent=title;
-  document.getElementById('tmpl-preview').innerHTML='BMA ად., რომ <b>ნ. კ.</b> (60001012345) — '+preview;
-}
-function submitApp(){
-  const refNum='#24-'+Math.floor(Math.random()*900+100);
-  showModal('გადახდა გავიდა ✅',`
-    <div style="text-align:center;padding:10px 0 20px">
-      <div style="font-size:40px;margin-bottom:12px">📋</div>
-      <div style="font-size:18px;font-weight:800;color:var(--green);margin-bottom:8px">გ. წ.!</div>
-      <div style="background:var(--bg);border-radius:8px;padding:16px;text-align:left;margin-top:16px;font-size:13px">
-        <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--text2)">სარ. №</span><b>${refNum}</b></div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--text2)">სტუდენტი</span><span class="bd bd-a">გ-ში</span></div>
-        <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">SMS</span><span>+995 555 123 456</span></div>
-      </div>
-      <div style="margin-top:14px;background:var(--blue-lt);border-radius:8px;padding:12px;font-size:12px;color:var(--blue)">📱 SMS: «გ. ${refNum} მ. 1–3 სამ. დ.»</div>
-    </div>
-  `,'<button class="btn btn-b" onclick="closeModal()">✓ კ.</button>');
-  const list=document.getElementById('my-apps');
-  const title=document.getElementById('tmpl-title').textContent;
-  list.insertAdjacentHTML('afterbegin',`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg);border-radius:6px"><div><div style="font-size:12px;font-weight:600">${title}</div><div style="font-size:11px;color:var(--text3)">${new Date().toLocaleDateString('ka-GE')} · ${refNum}</div></div><span class="bd bd-a">გ-ში</span></div>`);
-}
+function showLetterModal(id){ openLetter(id, document.getElementById('litem-'+id)||document.createElement('div')) }
+function archiveLetter(){closeModal();toast('წერილი არქივში გადაიტანა','success')}
 </script>
 
 <script>

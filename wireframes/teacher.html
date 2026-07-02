@@ -632,6 +632,7 @@ tr:hover td{background:var(--bg)}
           <div class="chip active" onclick="switchMsgTab('inbox',this)">შემოსული (3)</div>
           <div class="chip" onclick="switchMsgTab('sent',this)">გაგზავნილი</div>
           <div class="chip" onclick="switchMsgTab('drafts',this)">მონახაზები</div>
+          <div class="chip" onclick="switchMsgTab('general',this)">📢 საერთო</div>
         </div>
         <button class="btn btn-blue btn-sm" onclick="composeMsg()">+ წერილი</button>
       </div>
@@ -715,7 +716,41 @@ tr:hover td{background:var(--bg)}
       </div>
 
       <div class="card" id="msg-tab-drafts" style="display:none">
-        <div class="empty-state"><div class="es-icon">📭</div><p>მონახაზები არ არის</p></div>
+        <div class="msg-list">
+          <div class="msg-item" onclick="openMsg(6)">
+            <div class="msg-avatar" style="background:var(--amber-lt);color:var(--amber)">📝</div>
+            <div class="msg-body">
+              <div class="msg-from" style="color:var(--amber)">ჯგუფი 101 — [მონახაზი]</div>
+              <div class="msg-subject">შეახსენება — ლაბ. სამუშ. ანგარიში</div>
+              <div class="msg-preview">გამარჯობა, გუნდო! გსურთ შეახსენოთ, რომ ანგარიში...</div>
+            </div>
+            <div class="msg-meta">29 ივნ.<br><button class="btn btn-ghost btn-sm" style="padding:2px 6px;font-size:10px" onclick="event.stopPropagation();composeMsg()">გაგრძ.</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="msg-tab-general" style="display:none">
+        <div style="padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);font-size:12px;color:var(--muted)">📢 საერთო შეტყობინებები — ადმინისტრაცია და სასწავლო დეპარტამენტი</div>
+        <div class="msg-list">
+          <div class="msg-item unread" onclick="openMsg(7)">
+            <div class="msg-avatar" style="background:var(--amber-lt);color:var(--amber)">📢</div>
+            <div class="msg-body">
+              <div class="msg-from">სასწავლო დეპარტამენტი <span class="badge badge-amber" style="font-size:10px">საერთო</span></div>
+              <div class="msg-subject">2026–2027 სასწ. წ. დაწყება — 1 სექტემბერი</div>
+              <div class="msg-preview">ახ. სასწ. წ. ვრცელდება ყველა პროფ. მასწავლებელზე. სხდომა: 28 აგ...</div>
+            </div>
+            <div class="msg-meta">01 ივლ.</div>
+          </div>
+          <div class="msg-item" onclick="openMsg(8)">
+            <div class="msg-avatar" style="background:var(--amber-lt);color:var(--amber)">📢</div>
+            <div class="msg-body">
+              <div class="msg-from">ადმინისტრაცია <span class="badge badge-amber" style="font-size:10px">საერთო</span></div>
+              <div class="msg-subject">კამპუსის სამუშ. საათები — ივლ. 2026</div>
+              <div class="msg-preview">ივლ. 2026: ორ.–პარ. 09:00–17:00, შაბ. 10:00–14:00, კვ. დახ...</div>
+            </div>
+            <div class="msg-meta">15 ივნ.</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1064,6 +1099,15 @@ const msgContent = [
   {from:'გიორგი ბერიძე',role:'სტუდენტი · ჯგუფი 101',subj:'RE: გამოცდის შესახებ',
    body:'გამარჯობა, გიორგი!\n\nკი, ლექცია 5 შედის. სახელმძღვ. მე-7 თავი — კი. მე-8 — არა.\n\nწარმატება!',
    date:'2 ივლ. 2025, 15:00'},
+  {from:'ჯგუფი 101',role:'[მონახაზი]',subj:'შეახსენება — ლაბ. სამუშ. ანგარიში',
+   body:'გამარჯობა!\n\nგსურთ შეახსენოთ, რომ ლაბ. ანგარიში...',
+   date:'29 ივნ. 2025'},
+  {from:'სასწავლო დეპარტამენტი',role:'საერთო შეტყობინება',subj:'2026–2027 სასწ. წ. დაწყება — 1 სექტემბერი',
+   body:'პატივცემულო პროფ. მასწავლებელო,\n\nახალი სასწ. წ. დაწყება — 1 სექტ. 2026.\nსამეწარმეო სხდომა: 28 აგვ. 2026, 10:00, საკ. №12.\n\nგთხოვთ, შეამოწმოთ მოდულების ახ. განრიგი.\n\nპატივისცემით,\nსასწ. დეპ.',
+   date:'1 ივლ. 2025'},
+  {from:'ადმინისტრაცია',role:'საერთო შეტყობინება',subj:'კამპუსის სამუშ. საათები — ივლ. 2026',
+   body:'2026 წ. ივლ. კამპუსის სამ. საათები:\n\nორშ.–პარ.: 09:00–17:00\nშაბ.: 10:00–14:00\nკვ.: დახ.\n\nდ.ა.ა. სასწ. დეპ.',
+   date:'15 ივნ. 2025'},
 ]
 
 // ── CORE UI ──
@@ -1407,7 +1451,7 @@ function schedNext(){toast('შემდ. კვირა ▶')}
 
 // ── MESSAGES ──
 function switchMsgTab(tab,btn){
-  ['inbox','sent','drafts'].forEach(t=>{
+  ['inbox','sent','drafts','general'].forEach(t=>{
     const el = document.getElementById('msg-tab-'+t)
     if(el) el.style.display = t===tab?'block':'none'
   })
