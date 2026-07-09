@@ -7,18 +7,18 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#0D2B4E;--blue:#1B4F8A;--blue-lt:#EBF2FB;
+  --navy:#611a56;--blue:#881176;--blue-lt:#f5e6f3;
   --green:#1E8A5E;--green-lt:#E8F5EF;
   --amber:#C96A00;--amber-lt:#FEF3E2;
   --red:#C0392B;--red-lt:#FDECEA;
-  --bg:#EDF2F7;--surface:#FFFFFF;--border:#D1D9E6;
+  --bg:#eff8f1;--surface:#FFFFFF;--border:#D1D9E6;
   --text:#1A202C;--muted:#4A5568;--subtle:#718096;
   --radius:8px;--shadow:0 1px 4px rgba(0,0,0,.10);
 }
-body{font-family:'Segoe UI','Noto Sans Georgian',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+body{font-family:'BPG Nino Mtavruli','Segoe UI','Noto Sans Georgian',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
 
 /* ── AUTH ── */
-#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%)}
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(160deg,#611a56 0%,#881176 60%,#97a49a 100%)}
 .auth-card{background:var(--surface);border-radius:16px;padding:40px;width:380px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
 .auth-logo{text-align:center;margin-bottom:24px}
 .auth-logo img{width:72px;height:72px;border-radius:50%;object-fit:cover}
@@ -218,7 +218,7 @@ tr:hover td{background:var(--bg)}
 <div id="login-screen">
   <div class="auth-card">
     <div class="auth-logo">
-      <div style="width:72px;height:72px;border-radius:50%;background:var(--navy);color:#fff;font-size:28px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto">ბმ</div>
+      <div style="display:flex;justify-content:center;margin-bottom:4px"><svg width="72" height="72" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="11" fill="#611a56"/><polygon points="22,7 36,37 29,37 22,20 15,37 8,37" fill="#fff"/><rect x="15" y="24" width="14" height="3.5" fill="#611a56"/><polyline points="4,22 10,22 13,16 17,28 21,19 25,26 28,22 40,22" stroke="#c9a0c0" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2>ბათუმის სამედიცინო აკადემია</h2>
       <p>პროფ. მასწავლებლის პორტალი</p>
     </div>
@@ -269,9 +269,9 @@ tr:hover td{background:var(--bg)}
 <div id="app">
   <!-- SIDEBAR -->
   <nav class="sidebar">
-    <div class="sidebar-logo">
-      <div class="logo-name">ბათუმის სამედიცინო<br>აკადემია</div>
-      <div class="logo-sub">პროფ. მასწავლებლის პორტალი</div>
+    <div class="sidebar-logo" style="display:flex;align-items:center;gap:10px">
+      <svg width="38" height="38" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="44" height="44" rx="10" fill="#611a56"/><polygon points="22,7 36,37 29,37 22,20 15,37 8,37" fill="#fff"/><rect x="15" y="24" width="14" height="3.5" fill="#611a56"/><polyline points="4,22 10,22 13,16 17,28 21,19 25,26 28,22 40,22" stroke="#c9a0c0" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div><div class="logo-name">ბათ. სამ. აკადემია</div><div class="logo-sub">მასწავლებლის პორტალი</div></div>
     </div>
     <div class="sidebar-user">
       <div class="su-avatar">ნკ</div>
@@ -1355,11 +1355,11 @@ function studentDetail(si){
 // ── SCHEDULE ──
 const schedSlots = ['08:00–09:30','09:45–11:15','11:30–13:00','14:00–15:30','15:45–17:15']
 const schedBlocks = [
-  {day:1,slot:0,name:'ანატომია I',group:'ჯგუფი 101',room:'201',color:'#1B4F8A'},
-  {day:1,slot:1,name:'ანატომია I',group:'ჯგუფი 102',room:'201',color:'#1B4F8A'},
+  {day:1,slot:0,name:'ანატომია I',group:'ჯგუფი 101',room:'201',color:'#881176'},
+  {day:1,slot:1,name:'ანატომია I',group:'ჯგუფი 102',room:'201',color:'#881176'},
   {day:2,slot:2,name:'ნეირო-ანატომია',group:'ჯგუფი 301',room:'305',color:'#1E8A5E'},
   {day:3,slot:0,name:'კლინ. ანატომია',group:'ჯგუფი 401',room:'102',color:'#C96A00'},
-  {day:3,slot:3,name:'ანატომია I',group:'ჯგუფი 101',room:'201',color:'#1B4F8A'},
+  {day:3,slot:3,name:'ანატომია I',group:'ჯგუფი 101',room:'201',color:'#881176'},
   {day:4,slot:1,name:'ნეირო-ანატომია',group:'ჯგუფი 301',room:'305',color:'#1E8A5E'},
   {day:5,slot:2,name:'კლინ. ანატომია',group:'ჯგუფი 401',room:'102',color:'#C96A00'},
 ]
@@ -1708,7 +1708,7 @@ tSurveysAll.forEach(sv=>{
   const isDone=sv.status==='done';
   const badge=isDone?'<span class="badge badge-green">✓ შევსებული</span>':isActive?'<span class="badge badge-amber">● აქტიური</span>':'<span class="badge badge-red">ვადა გასული</span>';
   const info=sv.deadline?'ვადა: '+sv.deadline:(sv.date?'შევსებულია: '+sv.date:'');
-  tSaEl.innerHTML+=`<div style="display:flex;align-items:center;padding:13px 0;border-bottom:1px solid #F0F4F8;gap:12px">
+  tSaEl.innerHTML+=`<div style="display:flex;align-items:center;padding:13px 0;border-bottom:1px solid #eff8f1;gap:12px">
     <div style="flex:1">
       <div style="font-size:13px;font-weight:600">${sv.name}</div>
       <div style="font-size:11px;color:var(--muted);margin-top:2px">${info}${sv.anon?' · ანონიმური':''}</div>

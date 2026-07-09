@@ -1,19 +1,19 @@
-<title>BMA — სტუდენტის პორტალი · Wireframe v3</title>
+<title>ბათუმის სამედიცინო აკადემია — სტუდენტური პორტალი</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#0D2B4E;--blue:#1B4F8A;--blue-md:#2E6DB4;--blue-lt:#EAF1FB;
+  --navy:#611a56;--blue:#881176;--blue-md:#9e2189;--blue-lt:#f5e6f3;
   --green:#1E8A5E;--green-lt:#DCF5EB;
   --amber:#C96A00;--amber-lt:#FEF0D9;
   --red:#C0392B;--red-lt:#FDEAEA;
-  --purple:#5B2D8E;--purple-lt:#F0E8FF;
-  --bg:#EDF2F7;--surface:#fff;
+  --purple:#611a56;--purple-lt:#f5e6f3;
+  --bg:#eff8f1;--surface:#fff;
   --border:#D1DCE8;--text1:#111827;--text2:#4B5563;--text3:#9CA3AF;
   --r:8px;--shadow:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);
   --sidebar:248px;
 }
-body{font-family:'Segoe UI','Noto Sans Georgian',system-ui,sans-serif;background:var(--bg);color:var(--text1);font-size:14px;line-height:1.5}
+body{font-family:'BPG Nino Mtavruli','Segoe UI','Noto Sans Georgian',system-ui,sans-serif;background:var(--bg);color:var(--text1);font-size:14px;line-height:1.5}
 
 /* ── UTILITIES ── */
 .mb8{margin-bottom:8px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}.mb20{margin-bottom:20px}.mb24{margin-bottom:24px}
@@ -41,7 +41,7 @@ body{font-family:'Segoe UI','Noto Sans Georgian',system-ui,sans-serif;background
 /* ── FORM ── */
 .fl{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px}
 .fi{width:100%;border:1.5px solid var(--border);border-radius:var(--r);padding:9px 12px;font-size:13px;font-family:inherit;color:var(--text1);background:#fff;transition:.15s;outline:none}
-.fi:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(27,79,138,.12)}
+.fi:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(136,17,118,.12)}
 .fi[readonly]{background:var(--bg);color:var(--text2)}
 .fg{margin-bottom:14px}
 .fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
@@ -69,20 +69,20 @@ textarea.fi{resize:vertical;min-height:80px}
 
 /* ── TABLES ── */
 table{width:100%;border-collapse:collapse}
-th{background:#F5F8FB;padding:9px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text3);text-align:left;border-bottom:1.5px solid var(--border)}
+th{background:#eff8f1;padding:9px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text3);text-align:left;border-bottom:1.5px solid var(--border)}
 td{padding:10px 12px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:#FAFBFC}
+tr:hover td{background:#eff8f1}
 
 /* ── PROGRESS ── */
 .prw{width:100%;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
 .prf{height:100%;border-radius:4px;transition:.3s}
 
 /* ── LOGIN ── */
-#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--navy) 0%,#1B4F8A 60%,#1E6B4E 100%);position:relative;overflow:hidden}
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#611a56 0%,#881176 60%,#97a49a 100%);position:relative;overflow:hidden}
 #login::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
 .lbox{background:#fff;border-radius:16px;padding:40px;width:440px;max-width:95vw;box-shadow:0 24px 64px rgba(0,0,0,.28);position:relative;z-index:1}
-.llogo{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.llogo{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:28px}
 .llogo-icon{width:52px;height:52px;background:var(--blue);border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;flex-shrink:0}
 .llogo-text{font-size:20px;font-weight:800;color:var(--navy);line-height:1.2}
 .llogo-sub{font-size:11px;color:var(--text3)}
@@ -203,13 +203,13 @@ tr:hover td{background:#FAFBFC}
 .tmpl.on{border-color:var(--blue);background:var(--blue-lt);font-weight:600}
 
 /* ── BOOK CARD ── */
-.book-item{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid #F0F4F8;align-items:flex-start}
+.book-item{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid #eff8f1;align-items:flex-start}
 .book-spine{width:32px;height:44px;border-radius:3px 5px 5px 3px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .book-spine span{writing-mode:vertical-rl;transform:rotate(180deg);color:#fff;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;overflow:hidden;max-height:38px}
 
 /* ── CLUB CARD ── */
 .club-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);cursor:pointer;transition:.15s}
-.club-card:hover{box-shadow:var(--shadow-md);border-color:var(--blue-md)}
+.club-card:hover{box-shadow:var(--shadow-md);border-color:var(--blue)}
 
 /* ── SCHEDULE ── */
 .sched-month-day{border:1px solid var(--border);border-radius:6px;padding:6px;min-height:72px;transition:.1s}
@@ -228,8 +228,8 @@ tr:hover td{background:#FAFBFC}
 <div id="login">
   <div class="lbox">
     <div class="llogo">
-      <div class="llogo-icon">⚕</div>
-      <div><div class="llogo-text">Batumi Medical Academy</div><div class="llogo-sub">სტუდენტური პორტალი · v3.0</div></div>
+      <svg width="72" height="72" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="11" fill="#611a56"/><polygon points="22,7 36,37 29,37 22,20 15,37 8,37" fill="#fff"/><rect x="15" y="24" width="14" height="3.5" fill="#611a56"/><polyline points="4,22 10,22 13,16 17,28 21,19 25,26 28,22 40,22" stroke="#c9a0c0" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div style="margin-top:14px"><div class="llogo-text" style="font-size:18px;font-weight:800;color:var(--navy)">ბათუმის სამედიცინო<br>აკადემია</div><div class="llogo-sub">სტუდენტური პორტალი</div></div>
     </div>
     <div class="rtabs">
       <button class="rtab on" onclick="setRole(this,'სტუდენტი')">სტუდენტი</button>
@@ -269,8 +269,8 @@ tr:hover td{background:#FAFBFC}
   <nav class="sidebar">
     <div class="sb-brand">
       <div class="sb-logo">
-        <div class="sb-logo-icon">⚕</div>
-        <div><div class="sb-logo-text">BMA Portal</div><div class="sb-logo-sub">bmeda.edu.ge</div></div>
+        <svg width="38" height="38" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="44" height="44" rx="10" fill="#611a56"/><polygon points="22,7 36,37 29,37 22,20 15,37 8,37" fill="#fff"/><rect x="15" y="24" width="14" height="3.5" fill="#611a56"/><polyline points="4,22 10,22 13,16 17,28 21,19 25,26 28,22 40,22" stroke="#c9a0c0" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><div class="sb-logo-text">ბათ. სამ. აკადემია</div><div class="sb-logo-sub">bmeda.edu.ge</div></div>
       </div>
     </div>
     <div class="sb-user" onclick="go('profile',this,'პროფილი')">
@@ -1332,7 +1332,7 @@ subjects.forEach((s,idx)=>{
   const surveyCell=s.survey
     ?`<div style="display:flex;justify-content:center;padding:0 4px"><a href="${s.surveyUrl}" target="_blank" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;padding:4px 8px;background:var(--blue-lt);color:var(--blue);border-radius:6px;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap" title="გამოკითხვაზე გადასვლა">📊 გამ. ↗</a></div>`
     :`<div style="display:flex;justify-content:center;padding:0 4px"><span style="font-size:11px;color:var(--text3)">—</span></div>`;
-  jEl.innerHTML+=`<div style="display:grid;grid-template-columns:1fr 110px 52px 52px 72px 120px;gap:0;align-items:center;padding:11px 0;border-bottom:1px solid #F0F4F8;cursor:pointer" onclick="showSubjectModal(${idx})">
+  jEl.innerHTML+=`<div style="display:grid;grid-template-columns:1fr 110px 52px 52px 72px 120px;gap:0;align-items:center;padding:11px 0;border-bottom:1px solid #eff8f1;cursor:pointer" onclick="showSubjectModal(${idx})">
     <div><div style="font-size:13px;font-weight:600">${s.name}</div><div style="font-size:11px;color:var(--text3)">პროფ. მასწავლებელი: ${s.lect}</div></div>
     <div style="padding:0 8px"><div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${bc};border-radius:3px"></div></div><span style="font-size:12px;font-variant-numeric:tabular-nums;color:var(--text2);width:30px;text-align:right">${pct}%</span></div></div>
     <div style="display:flex;justify-content:center">${gradeBox(s.mid)}</div><div style="display:flex;justify-content:center">${gradeBox(s.fin)}</div>
@@ -1361,7 +1361,7 @@ const weekData=[
 const cmap={b:'background:var(--blue-lt);border-left:3px solid var(--blue)',g:'background:var(--green-lt);border-left:3px solid var(--green)',a:'background:var(--amber-lt);border-left:3px solid var(--amber)'};
 const swb=document.getElementById('sched-week-body');
 weekSlots.forEach((slot,si)=>{
-  let r=`<tr><td style="background:#F5F8FB;padding:9px 10px;font-size:11px;font-variant-numeric:tabular-nums;color:var(--text3);font-weight:600;border:1px solid var(--border)">${slot}</td>`;
+  let r=`<tr><td style="background:#eff8f1;padding:9px 10px;font-size:11px;font-variant-numeric:tabular-nums;color:var(--text3);font-weight:600;border:1px solid var(--border)">${slot}</td>`;
   for(let di=0;di<5;di++){
     const d=weekData[di][si];
     if(d)r+=`<td style="border:1px solid var(--border);padding:0;cursor:pointer" onclick='showClassModal(${JSON.stringify({slot,name:d.name,rm:d.rm,lect:d.lect,topic:d.topic,mat:d.mat,color:d.color}).replace(/'/g,"\\'")})'><div style="padding:7px 9px;height:100%;${cmap[d.color]}"><div style="font-size:12px;font-weight:700">${d.name}</div><div style="font-size:11px;color:var(--text3)">დ. ${d.rm}</div></div></td>`;
@@ -1413,13 +1413,13 @@ function buildMonthGrid(){
 <script>
 // ══ LIBRARY ══
 const booksData=[
-  {title:"Gray's Anatomy, 42nd",auth:"Gray, Henry",cat:"ანატომია",col:"#1B4F8A",type:"phys",avail:true,code:"GRY-001",loc:"B-3-14"},
+  {title:"Gray's Anatomy, 42nd",auth:"Gray, Henry",cat:"ანატომია",col:"#881176",type:"phys",avail:true,code:"GRY-001",loc:"B-3-14"},
   {title:"Guyton Physiology",auth:"Hall, John E.",cat:"ფიზიოლოგია",col:"#1E8A5E",type:"phys",avail:false,code:"GUY-002",loc:"C-1-08"},
   {title:"ფარმაკოლოგია (PDF)",auth:"ბენია მარინა",cat:"ფარმაკოლოგია",col:"#C96A00",type:"dig",avail:true,code:"FARM-003",loc:"ელ."},
-  {title:"Clinical Medicine",auth:"Kumar, Clark",cat:"კლინიკური მედიცინა",col:"#2E6DB4",type:"phys",avail:true,code:"CLI-004",loc:"A-2-05"},
-  {title:"Medical Ethics",auth:"Hope, Tony",cat:"ეთიკა",col:"#6B4F8A",type:"dig",avail:true,code:"ETH-005",loc:"ელ."},
+  {title:"Clinical Medicine",auth:"Kumar, Clark",cat:"კლინიკური მედიცინა",col:"#9e2189",type:"phys",avail:true,code:"CLI-004",loc:"A-2-05"},
+  {title:"Medical Ethics",auth:"Hope, Tony",cat:"ეთიკა",col:"#7d1e6d",type:"dig",avail:true,code:"ETH-005",loc:"ელ."},
   {title:"Anatomy Atlas",auth:"Netter, F.H.",cat:"ანატომია",col:"#C0392B",type:"phys",avail:true,code:"NET-006",loc:"B-3-21"},
-  {title:"Harrison's Internal Medicine",auth:"Loscalzo, J.",cat:"კლინიკური მედიცინა",col:"#1B4F8A",type:"phys",avail:false,code:"HAR-007",loc:"A-2-11"},
+  {title:"Harrison's Internal Medicine",auth:"Loscalzo, J.",cat:"კლინიკური მედიცინა",col:"#881176",type:"phys",avail:false,code:"HAR-007",loc:"A-2-11"},
 ];
 let libMode='phys';
 function renderBooks(data){
@@ -1465,7 +1465,7 @@ const clubsData=[
   {icon:'🩺',name:'პირველი დახმარება',fullName:'პირველი დახმარება',desc:'სასწრაფო დახმარება, BLS/AED ტრენინგი',fullDesc:'კლუბი ასწავლის სამედიცინო დახმარების საფუძვლებს: BLS, AED-ის გამოყენებას, სიმულაციურ ტრენინგებს და საავადმყოფოებში პრაქტიკულ გამოცდილებას.',members:18,joined:true,color:'var(--blue-lt)',events:['21 ივნისი — BLS ტრენინგი','05 ივლისი — პირველი დახმარების ღია დღე']},
   {icon:'🔬',name:'სამეცნიერო კლუბი',fullName:'სამეცნიერო კლუბი',desc:'კვლევა, კონფერენციები, პუბლიკაციები',fullDesc:'სამეცნიერო კლუბი ახალისებს სტუდენტურ კვლევებს, კონფერენციებში მონაწილეობას და სტატიების გამოქვეყნებას. სტუდენტებს ეძლევათ Junior Research პროგრამაში ჩართვის შესაძლებლობა.',members:12,joined:false,color:'var(--green-lt)',events:['28 ივლისი — სტუდენტური სამეცნიერო კონფერენცია']},
   {icon:'♟',name:'ინტელექტი',fullName:'ინტელექტი',desc:'ჭადრაკი, ლოგიკური თამაშები',fullDesc:'ინტელექტური თამაშების კლუბი: ჭადრაკი, კროსვორდი, ლოგიკური ლოტო. სამედიცინო ფაკულტეტის სტუდენტებს შორის პოპულარული კლუბი. სხდომა ყოველ ოთხშაბათ 18:00-ზე.',members:24,joined:false,color:'var(--amber-lt)',events:['ყოველ ოთხშაბათ 18:00 — სხდომა']},
-  {icon:'🎭',name:'სათეატრო სტუდია',fullName:'სათეატრო სტუდია',desc:'თეატრი, ვოკალი, სპექტაკლები',fullDesc:'სპექტაკლების კლუბი — ყოველ სემესტრს ბათუმის სამედიცინო აკადემიის კულტურული პროგრამა. სტუდენტებს შეუძლიათ ჩაებან სარეჟისორო სამუშაოებსა და სპექტაკლებში.',members:16,joined:false,color:'#F3E8FF',events:['10 ივლისი — სპექტაკლი «ბათუმის სანაპიროზე»']},
+  {icon:'🎭',name:'სათეატრო სტუდია',fullName:'სათეატრო სტუდია',desc:'თეატრი, ვოკალი, სპექტაკლები',fullDesc:'სპექტაკლების კლუბი — ყოველ სემესტრს ბათუმის სამედიცინო აკადემიის კულტურული პროგრამა. სტუდენტებს შეუძლიათ ჩაებან სარეჟისორო სამუშაოებსა და სპექტაკლებში.',members:16,joined:false,color:'#f5e6f3',events:['10 ივლისი — სპექტაკლი «ბათუმის სანაპიროზე»']},
   {icon:'⚽',name:'სპორტული კლუბი',fullName:'სპორტული კლუბი',desc:'ფეხბურთი, კალათბურთი, ჩოგბურთი',fullDesc:'ყველა სახის სპორტი: ფეხბურთი, კალათბურთი, ჩოგბურთი. ლიგის ჩემპიონატი ბათუმის სამედიცინო სტუდენტებს შორის. ვარჯიში ყოველ ხუთშაბათ 17:30-ზე.',members:30,joined:false,color:'var(--green-lt)',events:['ყოველ ხუთშაბათ 17:30 — ვარჯიში']},
   {icon:'🌍',name:'ვოლონტიორობა',fullName:'ვოლონტიორობა',desc:'საზოგადოებრივი სამსახური, სოციალური პროექტები',fullDesc:'სოციალური პროექტები ბათუმში, სამედიცინო მომსახურება სოფლებში, ბათუმის სამედიცინო სტუდენტური ვოლონტიორული ორგანიზაცია.',members:22,joined:false,color:'var(--blue-lt)',events:['15 ივლისი — სოციალური აქცია ქალაქში']},
 ];
@@ -1547,7 +1547,7 @@ surveysAll.forEach(sv=>{
   const isDone=sv.status==='done';
   const badge=isDone?'<span class="bd bd-g">✓ შევსებული</span>':isActive?'<span class="bd bd-a">● აქტიური</span>':'<span class="bd bd-r">ვადა გასული</span>';
   const info=sv.deadline?'ვადა: '+sv.deadline:(sv.date?'შევსებულია: '+sv.date:'');
-  saEl.innerHTML+=`<div style="display:flex;align-items:center;padding:13px 0;border-bottom:1px solid #F0F4F8;gap:12px">
+  saEl.innerHTML+=`<div style="display:flex;align-items:center;padding:13px 0;border-bottom:1px solid #eff8f1;gap:12px">
     <div style="flex:1">
       <div style="font-size:13px;font-weight:600">${sv.name}</div>
       <div style="font-size:11px;color:var(--text3);margin-top:2px">${info}${sv.anon?' · ანონიმური':''}</div>

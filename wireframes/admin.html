@@ -7,19 +7,19 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#0D2B4E;--blue:#1B4F8A;--blue-md:#2E6DB4;--blue-lt:#EAF1FB;
+  --navy:#611a56;--blue:#881176;--blue-md:#9e2189;--blue-lt:#f5e6f3;
   --green:#1E8A5E;--green-lt:#DCF5EB;
   --amber:#C96A00;--amber-lt:#FEF0D9;
   --red:#C0392B;--red-lt:#FDEAEA;
-  --purple:#5B2D8E;--purple-lt:#F0E8FF;
-  --bg:#EDF2F7;--surface:#fff;
+  --purple:#611a56;--purple-lt:#f5e6f3;
+  --bg:#eff8f1;--surface:#fff;
   --border:#D1DCE8;--text1:#111827;--text2:#4B5563;--text3:#9CA3AF;
   --r:8px;--shadow:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.12);
 }
-body{font-family:'Segoe UI','Noto Sans Georgian',system-ui,sans-serif;background:var(--bg);color:var(--text1);font-size:14px;line-height:1.5}
+body{font-family:'BPG Nino Mtavruli','Segoe UI','Noto Sans Georgian',system-ui,sans-serif;background:var(--bg);color:var(--text1);font-size:14px;line-height:1.5}
 
 /* AUTH */
-#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--navy),var(--blue))}
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(160deg,#611a56 0%,#881176 60%,#97a49a 100%)}
 .auth-card{background:#fff;border-radius:16px;padding:40px;width:390px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
 .auth-logo{text-align:center;margin-bottom:28px}
 .auth-logo .logo-circle{width:68px;height:68px;border-radius:50%;background:var(--navy);display:inline-flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:12px}
@@ -28,7 +28,7 @@ body{font-family:'Segoe UI','Noto Sans Georgian',system-ui,sans-serif;background
 .fg{margin-bottom:14px}
 .fl{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
 .fi{width:100%;border:1.5px solid var(--border);border-radius:var(--r);padding:10px 13px;font-size:14px;font-family:inherit;outline:none;transition:.15s}
-.fi:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(27,79,138,.12)}
+.fi:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(136,17,118,.12)}
 
 /* APP SHELL */
 #app{display:none;height:100vh;overflow:hidden}
@@ -101,7 +101,7 @@ body{font-family:'Segoe UI','Noto Sans Georgian',system-ui,sans-serif;background
 /* TABLES */
 .tw{overflow-x:auto}
 table{width:100%;border-collapse:collapse}
-th{background:#F5F8FB;padding:9px 13px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text3);text-align:left;border-bottom:1.5px solid var(--border)}
+th{background:#eff8f1;padding:9px 13px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text3);text-align:left;border-bottom:1.5px solid var(--border)}
 td{padding:10px 13px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#FAFBFD}
@@ -158,7 +158,7 @@ textarea.fi{resize:vertical;min-height:80px}
 <div id="login-screen">
   <div class="auth-card">
     <div class="auth-logo">
-      <div class="logo-circle">🏛️</div>
+      <div style="display:flex;justify-content:center;margin-bottom:10px"><svg width="72" height="72" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="11" fill="#611a56"/><polygon points="22,7 36,37 29,37 22,20 15,37 8,37" fill="#fff"/><rect x="15" y="24" width="14" height="3.5" fill="#611a56"/><polyline points="4,22 10,22 13,16 17,28 21,19 25,26 28,22 40,22" stroke="#c9a0c0" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2>ბათუმის სამედიცინო აკადემია</h2>
       <p>ადმინისტრატორის პორტალი</p>
     </div>
@@ -179,9 +179,9 @@ textarea.fi{resize:vertical;min-height:80px}
 <div id="app">
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="sb-logo">
-      <div class="ln">ბათუმის სამედიცინო<br>აკადემია</div>
-      <div class="ls">ადმინისტრატორი</div>
+    <div class="sb-logo" style="display:flex;align-items:center;gap:10px">
+      <svg width="38" height="38" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="44" height="44" rx="10" fill="#611a56"/><polygon points="22,7 36,37 29,37 22,20 15,37 8,37" fill="#fff"/><rect x="15" y="24" width="14" height="3.5" fill="#611a56"/><polyline points="4,22 10,22 13,16 17,28 21,19 25,26 28,22 40,22" stroke="#c9a0c0" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div><div class="ln">ბათ. სამ. აკადემია</div><div class="ls">ადმინისტრატორი</div></div>
     </div>
     <div class="sb-user">
       <div class="su-av">ად</div>
@@ -884,7 +884,7 @@ function renderSchedule(){
   const tb=document.getElementById('schedule-tbody');
   if(!tb)return;
   tb.innerHTML=scheduleSlots.map((slot,ri)=>`<tr>
-    <td style="font-size:12px;font-weight:700;color:var(--text2);white-space:nowrap;background:#F5F8FB">${slot}</td>
+    <td style="font-size:12px;font-weight:700;color:var(--text2);white-space:nowrap;background:#eff8f1">${slot}</td>
     ${scheduleData[ri].map(cell=>`<td style="font-size:12px">${cell==='—'?'<span style="color:var(--text3)">—</span>':`<div style="background:var(--blue-lt);border-left:3px solid var(--blue);border-radius:4px;padding:6px 8px;font-size:11px;line-height:1.4;cursor:pointer" onclick="editLessonModal()">${cell.replace(/\n/g,'<br>')}</div>`}</td>`).join('')}
   </tr>`).join('');
 }
