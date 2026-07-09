@@ -241,6 +241,38 @@ textarea.fi{resize:vertical;min-height:80px}
   </div>
   <div class="g2" style="margin-bottom:16px">
     <div class="card">
+      <div class="ch"><div class="ct">სტუდენტთა სტატუსი</div><button class="btn btn-n btn-sm" onclick="go('students',null,'სტუდენტები')">სრული სია →</button></div>
+      <div class="cb">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div style="background:var(--green-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('students',null,'სტუდენტები')">
+            <div style="font-size:28px;font-weight:800;color:var(--green)">287</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:2px">● აქტიური</div>
+          </div>
+          <div style="background:var(--amber-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('students',null,'სტუდენტები')">
+            <div style="font-size:28px;font-weight:800;color:var(--amber)">18</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:2px">💳 გადახდის დავალიანება</div>
+          </div>
+          <div style="background:#f5e6f3;border-radius:10px;padding:14px;cursor:pointer" onclick="go('students',null,'სტუდენტები')">
+            <div style="font-size:28px;font-weight:800;color:var(--navy)">12</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:2px">~ აკადემიური შვებულება</div>
+          </div>
+          <div style="background:var(--red-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('students',null,'სტუდენტები')">
+            <div style="font-size:28px;font-weight:800;color:var(--red)">5</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:2px">✕ ამოირიცხა</div>
+          </div>
+        </div>
+        <div style="border-top:1px solid var(--border);padding-top:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px">განსაკუთრებული სტატუსი</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <span class="bd bd-p">სსმ — 8 სტუდ.</span>
+            <span class="bd bd-b">სოციალური — 14 სტუდ.</span>
+            <span class="bd bd-n">I კატ. ოჯახი — 6 სტუდ.</span>
+            <span class="bd bd-a">იძულ. გადაადგ. — 3 სტუდ.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
       <div class="ch"><div class="ct">ბოლო გადახდები</div><button class="btn btn-n btn-sm" onclick="go('payments',null,'გადახდები')">ყველა →</button></div>
       <div class="cb" style="padding:0">
         <table><thead><tr><th>სტუდენტი</th><th>თანხა</th><th>სტატუსი</th></tr></thead>
@@ -272,6 +304,43 @@ textarea.fi{resize:vertical;min-height:80px}
         <button class="btn btn-n btn-sm" style="justify-content:flex-start" onclick="go('news',null,'სიახლეები');setTimeout(addNewsModal,300)">📰 სიახლის გამოქვეყნება</button>
         <button class="btn btn-n btn-sm" style="justify-content:flex-start" onclick="go('surveys',null,'გამოკითხვები');setTimeout(addSurveyModal,300)">📝 გამოკითხვის შექმნა</button>
         <button class="btn btn-n btn-sm" style="justify-content:flex-start" onclick="go('messages',null,'შეტყობინებები');setTimeout(composeModal,300)">✉️ მასობრივი შეტყობინება</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">მოახლოებული ვადები</div></div>
+      <div class="cb" style="display:flex;flex-direction:column;gap:0">
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+          <div style="min-width:36px;text-align:center;background:#f5e6f3;border-radius:8px;padding:4px 0">
+            <div style="font-size:16px;font-weight:800;color:var(--navy);line-height:1">14</div>
+            <div style="font-size:9px;color:var(--text2)">ივლ</div>
+          </div>
+          <div><div style="font-size:13px;font-weight:600">გადახდის ბოლო ვადა</div><div style="font-size:11px;color:var(--text2)">II სემ. — 18 სტუდ. ჯერ არ გადაუხდია</div></div>
+          <span class="bd bd-r" style="margin-left:auto;flex-shrink:0">5 დღე</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+          <div style="min-width:36px;text-align:center;background:#f5e6f3;border-radius:8px;padding:4px 0">
+            <div style="font-size:16px;font-weight:800;color:var(--navy);line-height:1">20</div>
+            <div style="font-size:9px;color:var(--text2)">ივლ</div>
+          </div>
+          <div><div style="font-size:13px;font-weight:600">საბოლოო გამოცდები — ჯგ. 601</div><div style="font-size:11px;color:var(--text2)">ანატომია, ფიზიოლოგია, ფარმ.</div></div>
+          <span class="bd bd-a" style="margin-left:auto;flex-shrink:0">11 დღე</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+          <div style="min-width:36px;text-align:center;background:#f5e6f3;border-radius:8px;padding:4px 0">
+            <div style="font-size:16px;font-weight:800;color:var(--navy);line-height:1">31</div>
+            <div style="font-size:9px;color:var(--text2)">ივლ</div>
+          </div>
+          <div><div style="font-size:13px;font-weight:600">სემესტრის დასასრული</div><div style="font-size:11px;color:var(--text2)">2025–2026 II სემესტრი</div></div>
+          <span class="bd bd-b" style="margin-left:auto;flex-shrink:0">22 დღე</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0">
+          <div style="min-width:36px;text-align:center;background:#f5e6f3;border-radius:8px;padding:4px 0">
+            <div style="font-size:16px;font-weight:800;color:var(--navy);line-height:1">01</div>
+            <div style="font-size:9px;color:var(--text2)">სექ</div>
+          </div>
+          <div><div style="font-size:13px;font-weight:600">ახალი სემესტრის დაწყება</div><div style="font-size:11px;color:var(--text2)">2026–2027 I სემესტრი</div></div>
+          <span class="bd bd-g" style="margin-left:auto;flex-shrink:0">53 დღე</span>
+        </div>
       </div>
     </div>
   </div>
