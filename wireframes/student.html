@@ -79,7 +79,7 @@ tr:hover td{background:#eff8f1}
 .prf{height:100%;border-radius:4px;transition:.3s}
 
 /* ── LOGIN ── */
-#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#611a56 0%,#881176 60%,#97a49a 100%);position:relative;overflow:hidden}
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#611a56;position:relative;overflow:hidden}
 #login::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
 .lbox{background:#fff;border-radius:16px;padding:40px;width:440px;max-width:95vw;box-shadow:0 24px 64px rgba(0,0,0,.28);position:relative;z-index:1}
 .llogo{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:28px}
@@ -169,7 +169,7 @@ tr:hover td{background:#eff8f1}
 .acc-hd.open .acc-arr{transform:rotate(90deg)}
 
 /* ── STUDENT CARD ── */
-.scard{background:linear-gradient(135deg,var(--navy) 0%,var(--blue-md) 100%);border-radius:16px;padding:24px;color:#fff;position:relative;overflow:hidden}
+.scard{background:var(--navy);border-radius:16px;padding:24px;color:#fff;position:relative;overflow:hidden}
 .scard::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.06)}
 
 /* ── LETTER / MESSAGE ── */
@@ -218,7 +218,7 @@ tr:hover td{background:#eff8f1}
 
 /* ── MISC ── */
 .section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:10px}
-.profile-photo{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-md));display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:700;flex-shrink:0;border:4px solid #fff;box-shadow:var(--shadow);overflow:hidden;position:relative;cursor:pointer}
+.profile-photo{width:80px;height:80px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:700;flex-shrink:0;border:4px solid #fff;box-shadow:var(--shadow);overflow:hidden;position:relative;cursor:pointer}
 .profile-photo:hover::after{content:'📷';position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;font-size:20px;border-radius:50%}
 .divider{height:1px;background:var(--border);margin:16px 0}
 @media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
@@ -1129,7 +1129,7 @@ function showPassModal(){
 // ══ STUDENT CARD ══
 function printCard(){
   showModal('ბიბლიოთეკის ბარათი / PDF',`
-    <div style="background:linear-gradient(135deg,var(--navy) 0%,var(--blue-md) 100%);border-radius:12px;padding:20px;color:#fff;margin-bottom:14px">
+    <div style="background:var(--navy);border-radius:12px;padding:20px;color:#fff;margin-bottom:14px">
       <div style="font-size:11px;opacity:.7;margin-bottom:4px">Student ID · BMA</div>
       <div style="font-size:16px;font-weight:800">ნინო კვ.</div>
       <div style="display:flex;justify-content:space-between;margin-top:12px;font-size:12px">
@@ -1250,32 +1250,62 @@ function openLetter(id, el){
 function showLetterModal(id){ openLetter(id, document.getElementById('litem-'+id)||document.createElement('div')) }
 function archiveLetter(){closeModal();toast('წერილი არქივში გადაიტანა','success')}
 
+const MSG_ROLES = {
+  director: {label:'დირექტორი', subs: null},
+  admin: {label:'ადმინისტრაცია', subs:[
+    {id:'study',   label:'სასწავლო განყოფილება'},
+    {id:'finance', label:'ფინანსური სამსახური'},
+    {id:'student', label:'სტუდენტური სამსახური'},
+    {id:'library', label:'ბიბლიოთეკა'},
+    {id:'hr',      label:'HR / კადრების სამსახური'},
+    {id:'it',      label:'IT სამსახური'},
+  ]},
+  teacher: {label:'პროფ. მასწავლებელი', subs:[
+    {id:'ლია გოგიაშვილი',  label:'ლია გოგიაშვილი — ანატომია'},
+    {id:'თამარ ჩხეიძე',    label:'თამარ ჩხეიძე — ფიზიოლოგია'},
+    {id:'მარინა ბერიძე',   label:'მარინა ბერიძე — ფარმაკოლოგია'},
+    {id:'ნინო ახვლედიანი', label:'ნინო ახვლედიანი — სამ. ეთიკა'},
+    {id:'ვასო ლომიძე',     label:'ვასო ლომიძე — კლინ. პრაქტიკა'},
+    {id:'ირინა კობახიძე',  label:'ირინა კობახიძე — ინგლისური ენა'},
+  ]},
+};
+
+function updateComposeRecipient(){
+  const type = document.getElementById('cmp-type').value;
+  const info = MSG_ROLES[type];
+  const subRow = document.getElementById('cmp-sub-row');
+  const subSel = document.getElementById('cmp-sub');
+  if(info && info.subs){
+    subRow.style.display='block';
+    subSel.innerHTML = `<option value="">— ${info.label}-ის შერჩევა —</option>` +
+      info.subs.map(s=>`<option value="${s.id}">${s.label}</option>`).join('');
+  } else {
+    subRow.style.display='none';
+  }
+}
+
 function showComposeModal(replyTo){
-  const teachers = [
-    {name:'ლია გოგიაშვილი', mod:'ანატომია'},
-    {name:'თამარ ჩხეიძე',    mod:'ფიზიოლოგია'},
-    {name:'მარინა ბერიძე',   mod:'ფარმაკოლოგია'},
-    {name:'ნინო ახვლედიანი', mod:'სამ. ეთიკა'},
-    {name:'ვასო ლომიძე',     mod:'კლინ. პრაქტიკა'},
-    {name:'ირინა კობახიძე',  mod:'ინგლისური ენა (ყოფ.)'},
-  ]
-  const opts = teachers.map(t=>`<option value="${t.name}"${replyTo===t.name?' selected':''}>${t.name} — ${t.mod}</option>`).join('')
+  const roleOpts = Object.entries(MSG_ROLES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
   showModal('ახალი წერილი',
     `<div style="display:flex;flex-direction:column;gap:12px">
        <div>
-         <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:6px">ვისთვის (პროფ. მასწავლებელი)</label>
-         <select id="compose-to" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
-           <option value="">--- მასწავლებლის შერჩევა ---</option>
-           ${opts}
+         <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:6px">მიმღების ჯგუფი</label>
+         <select id="cmp-type" class="fi" onchange="updateComposeRecipient()">
+           <option value="">— ჯგუფის შერჩევა —</option>
+           ${roleOpts}
          </select>
+       </div>
+       <div id="cmp-sub-row" style="display:none">
+         <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:6px">კონკრეტული მიმღები</label>
+         <select id="cmp-sub" class="fi"></select>
        </div>
        <div>
          <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:6px">სათაური</label>
-         <input id="compose-subj" type="text" placeholder="წერილის სათაური..." style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
+         <input id="compose-subj" type="text" class="fi" placeholder="წერილის სათაური...">
        </div>
        <div>
          <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:6px">ტექსტი</label>
-         <textarea id="compose-body" placeholder="შეიყვანეთ ტექსტი..." style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;min-height:110px;resize:vertical;outline:none"></textarea>
+         <textarea id="compose-body" class="fi" placeholder="შეიყვანეთ ტექსტი..." style="min-height:110px;resize:vertical"></textarea>
        </div>
        <div>
          <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:6px">დანართი (მაქს. 100 MB)</label>
@@ -1284,9 +1314,13 @@ function showComposeModal(replyTo){
      </div>`,
     `<button class="btn btn-n" onclick="closeModal()">მონახაზი</button>
      <button class="btn btn-b" onclick="
-       const to=document.getElementById('compose-to').value;
+       const type=document.getElementById('cmp-type').value;
+       const subSel=document.getElementById('cmp-sub');
+       const subVal=subSel&&subSel.style.display!=='none'?subSel.value:'';
+       const info=MSG_ROLES[type];
+       if(!type){toast('ჯგუფი არ შერჩეულა','error');return}
+       if(info&&info.subs&&!subVal){toast('მიმღები არ შერჩეულა','error');return}
        const subj=document.getElementById('compose-subj').value;
-       if(!to){toast('მასწავლებელი არ შერჩეულა','error');return}
        if(!subj.trim()){toast('სათაური ცარიელია','error');return}
        closeModal();toast('წერილი გაიგზავნა ✓','success')
      ">გაგზავნა ✉</button>`,
@@ -1578,7 +1612,7 @@ const newsData=[
 const ng=document.getElementById('news-grid');
 newsData.forEach((n,i)=>{
   ng.innerHTML+=`<div style="background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);cursor:pointer" onclick="openNews(${i})">
-    <div style="height:100px;background:linear-gradient(135deg,var(--blue-lt),var(--green-lt));display:flex;align-items:center;justify-content:center;font-size:36px">${n.icon}</div>
+    <div style="height:100px;background:var(--blue-lt);display:flex;align-items:center;justify-content:center;font-size:36px">${n.icon}</div>
     <div style="padding:14px">
       <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--blue);margin-bottom:5px">${n.tag}</div>
       <div style="font-size:14px;font-weight:700;line-height:1.3">${n.title}</div>
@@ -1595,7 +1629,7 @@ function openNews(i){
       <div class="fc"><button class="btn btn-n btn-sm" onclick="document.getElementById('news-list-view').style.display='';document.getElementById('news-detail-view').style.display='none'">← სიაში</button></div>
     </div>
     <div class="card">
-      <div style="height:180px;background:linear-gradient(135deg,var(--navy),var(--blue-md));display:flex;align-items:center;justify-content:center;font-size:56px">${n.icon}</div>
+      <div style="height:180px;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:56px">${n.icon}</div>
       <div class="cb">
         <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--blue);margin-bottom:8px">${n.tag} · ${n.date}</div>
         <h1 style="font-size:22px;font-weight:800;color:var(--navy);margin-bottom:16px;text-wrap:balance">${n.title}</h1>

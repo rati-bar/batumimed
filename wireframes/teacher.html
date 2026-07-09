@@ -18,7 +18,7 @@
 body{font-family:'BPG Nino Mtavruli','Segoe UI','Noto Sans Georgian',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
 
 /* ── AUTH ── */
-#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(160deg,#611a56 0%,#881176 60%,#97a49a 100%)}
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#611a56}
 .auth-card{background:var(--surface);border-radius:16px;padding:40px;width:380px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
 .auth-logo{text-align:center;margin-bottom:24px}
 .auth-logo img{width:72px;height:72px;border-radius:50%;object-fit:cover}
@@ -1465,34 +1465,68 @@ const msgGroups = {
   'ჯგუფი 401': ['ხარაბაძე ანა','ჩიქოვანი ნათია','ყიფიანი ვახო'],
 }
 
+const T_MSG_ROLES = {
+  group:    {label:'მთელი ჯგუფი',           hasSubs:true,  subsType:'groups'},
+  student:  {label:'ერთი სტუდენტი',          hasSubs:true,  subsType:'students'},
+  director: {label:'დირექტორი',              hasSubs:false},
+  admin:    {label:'ადმინისტრაცია',           hasSubs:true,  subsType:'adminDepts'},
+};
+const T_ADMIN_DEPTS = [
+  'სასწავლო განყოფილება','ფინანსური სამსახური','სტუდენტური სამსახური',
+  'ბიბლიოთეკა','HR / კადრების სამსახური','IT სამსახური'
+];
+
+function updateComposeTarget(){
+  const type = document.getElementById('t-cmp-type')?.value;
+  const grpRow = document.getElementById('compose-group-row');
+  const stuRow = document.getElementById('compose-student-row');
+  const admRow = document.getElementById('compose-admin-row');
+  const grpSel = document.getElementById('compose-group-sel');
+  const stuSel = document.getElementById('compose-student-sel');
+  if(!grpRow) return;
+  grpRow.style.display='none'; stuRow.style.display='none'; admRow.style.display='none';
+  if(type==='group')   grpRow.style.display='block';
+  if(type==='student'){ grpRow.style.display='block'; stuRow.style.display='block'; }
+  if(type==='admin')   admRow.style.display='block';
+  if((type==='group'||type==='student') && grpSel){
+    const grp = grpSel.value;
+    if(stuSel) stuSel.innerHTML = grp
+      ? ['<option value="">— სტუდენტის შერჩევა —</option>',...(msgGroups[grp]||[]).map(n=>`<option value="${n}">${n}</option>`)].join('')
+      : '<option value="">— ჯგუფი ჯერ შეარჩიეთ —</option>';
+  }
+}
+
 function composeMsg(replyTo){
+  const roleOpts = Object.entries(T_MSG_ROLES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+  const admOpts = T_ADMIN_DEPTS.map(d=>`<option value="${d}">${d}</option>`).join('');
   showModal('ახალი შეტყობინება',
     `<div style="display:flex;flex-direction:column;gap:12px">
        <div>
-         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">გაგზავნის ტიპი</label>
-         <div style="display:flex;gap:8px">
-           <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;padding:8px 12px;border:1.5px solid var(--blue);border-radius:8px;flex:1">
-             <input type="radio" name="compose-type" value="group" checked onchange="updateComposeTarget()" style="accent-color:var(--blue)"> მთელი ჯგუფი
-           </label>
-           <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;flex:1">
-             <input type="radio" name="compose-type" value="student" onchange="updateComposeTarget()" style="accent-color:var(--blue)"> ერთი სტუდენტი
-           </label>
-         </div>
+         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">მიმღების ჯგუფი / როლი</label>
+         <select id="t-cmp-type" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none" onchange="updateComposeTarget()">
+           <option value="">— შერჩევა —</option>
+           ${roleOpts}
+         </select>
        </div>
-       <div id="compose-group-row">
+       <div id="compose-group-row" style="display:none">
          <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">ჯგუფი</label>
          <select id="compose-group-sel" onchange="updateComposeTarget()" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
-           <option value="">--- ჯგუფის შერჩევა ---</option>
-           <option>ჯგუფი 101</option>
-           <option>ჯგუფი 102</option>
-           <option>ჯგუფი 301</option>
-           <option>ჯგუფი 401</option>
+           <option value="">— ჯგუფის შერჩევა —</option>
+           <option>ჯგუფი 101</option><option>ჯგუფი 102</option>
+           <option>ჯგუფი 301</option><option>ჯგუფი 401</option>
          </select>
        </div>
        <div id="compose-student-row" style="display:none">
          <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">სტუდენტი</label>
          <select id="compose-student-sel" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
-           <option value="">--- ჯგუფი ჯერ შეარჩიეთ ---</option>
+           <option value="">— ჯგუფი ჯერ შეარჩიეთ —</option>
+         </select>
+       </div>
+       <div id="compose-admin-row" style="display:none">
+         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">ადმინ. სამსახური</label>
+         <select id="compose-admin-sel" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
+           <option value="">— სამსახურის შერჩევა —</option>
+           ${admOpts}
          </select>
        </div>
        <div>
@@ -1513,56 +1547,39 @@ function composeMsg(replyTo){
     true
   )
   if(replyTo){
-    // pre-fill student match
     setTimeout(()=>{
-      document.querySelector('input[name="compose-type"][value="student"]').checked=true
-      updateComposeTarget()
-      // find group with this student
+      const typeSel = document.getElementById('t-cmp-type');
+      if(typeSel) typeSel.value='student';
+      updateComposeTarget();
       for(const [grp,students] of Object.entries(msgGroups)){
         if(students.includes(replyTo)){
-          document.getElementById('compose-group-sel').value=grp
-          updateComposeTarget()
+          document.getElementById('compose-group-sel').value=grp;
+          updateComposeTarget();
           setTimeout(()=>{
-            const sel=document.getElementById('compose-student-sel')
+            const sel=document.getElementById('compose-student-sel');
             for(const o of sel.options){ if(o.value===replyTo){sel.value=replyTo;break} }
-          },10)
-          break
+          },10);
+          break;
         }
       }
-    },10)
-  }
-}
-
-function updateComposeTarget(){
-  const type = document.querySelector('input[name="compose-type"]:checked')?.value
-  const grpRow = document.getElementById('compose-group-row')
-  const stuRow = document.getElementById('compose-student-row')
-  const grpSel = document.getElementById('compose-group-sel')
-  const stuSel = document.getElementById('compose-student-sel')
-  if(!grpRow||!stuRow||!grpSel||!stuSel) return
-  if(type==='student'){
-    stuRow.style.display='block'
-    const grp = grpSel.value
-    stuSel.innerHTML = grp
-      ? ['<option value="">--- სტუდენტის შერჩევა ---</option>',
-         ...(msgGroups[grp]||[]).map(n=>`<option value="${n}">${n}</option>`)].join('')
-      : '<option value="">--- ჯგუფი ჯერ შეარჩიეთ ---</option>'
-  } else {
-    stuRow.style.display='none'
+    },10);
   }
 }
 
 function sendComposedMsg(){
-  const type = document.querySelector('input[name="compose-type"]:checked')?.value
+  const type = document.getElementById('t-cmp-type')?.value
   const grp = document.getElementById('compose-group-sel')?.value
   const stu = document.getElementById('compose-student-sel')?.value
+  const adm = document.getElementById('compose-admin-sel')?.value
   const subj = document.getElementById('compose-subj')?.value?.trim()
   const body = document.getElementById('compose-body')?.value?.trim()
-  if(!grp){toast('ჯგუფი არ შერჩეულა','error');return}
+  if(!type){toast('მიმღები არ შერჩეულა','error');return}
+  if((type==='group'||type==='student')&&!grp){toast('ჯგუფი არ შერჩეულა','error');return}
   if(type==='student'&&!stu){toast('სტუდენტი არ შერჩეულა','error');return}
+  if(type==='admin'&&!adm){toast('სამსახური არ შერჩეულა','error');return}
   if(!subj){toast('სათაური ცარიელია','error');return}
   if(!body){toast('ტექსტი ცარიელია','error');return}
-  const to = type==='group' ? grp : stu
+  const to = type==='director'?'დირექტორი':type==='admin'?adm:type==='group'?grp:stu
   closeModal()
   toast(`შეტყობინება გაიგზავნა → ${to} ✓`,'success')
 }
