@@ -340,7 +340,7 @@ textarea.fi{resize:vertical;min-height:80px}
     <div class="ch"><div class="ct">პედაგოგების სია <span style="font-size:12px;font-weight:400;color:var(--text3)">24 პედაგოგი</span></div><button class="btn btn-n btn-sm" onclick="exportTeachers()">⬇ Excel</button></div>
     <div class="tw">
       <table id="teachers-table">
-        <thead><tr><th>ID</th><th>პედაგოგი</th><th>სპეციალობა</th><th>მოდულები</th><th>სტუდენტები</th><th>კონტაქტი</th><th>სტატუსი</th><th>მოქმედება</th></tr></thead>
+        <thead><tr><th>ID</th><th>პედაგოგი</th><th>სპეციალობა</th><th>მოდულები</th><th>სტუდ.</th><th>კონტაქტი</th><th>მოქმედება</th></tr></thead>
         <tbody id="teachers-tbody"></tbody>
       </table>
     </div>
@@ -455,15 +455,20 @@ textarea.fi{resize:vertical;min-height:80px}
 
 <!-- ══ LIBRARY ══ -->
 <div class="screen" id="screen-library">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-    <div style="display:flex;gap:8px">
-      <input class="fi" style="width:240px" placeholder="🔍  სათაური, ავტორი, ISBN...">
-      <select class="fi" style="width:auto"><option>ყველა კატეგორია</option><option>ანატომია</option><option>ფიზიოლოგია</option><option>ფარმაკოლოგია</option><option>ელ. წიგნი</option></select>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input class="fi" style="width:220px" placeholder="🔍  სათაური, ავტორი, ISBN..." oninput="filterLibrary(this.value)" id="lib-search">
+      <select class="fi" style="width:auto" onchange="filterLibraryCat(this.value)"><option value="">ყველა კატეგორია</option><option>ანატომია</option><option>ფიზიოლოგია</option><option>ფარმაკოლოგია</option><option>ეთიკა</option><option>მიკრობიოლოგია</option></select>
     </div>
     <div style="display:flex;gap:8px">
       <button class="btn btn-n btn-sm" onclick="exportLibrary()">⬇ Excel</button>
       <button class="btn btn-b" onclick="addBookModal()">➕ წიგნის დამატება</button>
     </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:16px">
+    <button class="chip active" id="lib-chip-all" onclick="filterLibraryType('all',this)">ყველა</button>
+    <button class="chip" id="lib-chip-printed" onclick="filterLibraryType('printed',this)">📚 ბეჭდური</button>
+    <button class="chip" id="lib-chip-digital" onclick="filterLibraryType('digital',this)">💻 ელექტრონული</button>
   </div>
   <div class="stats-row" style="grid-template-columns:repeat(3,1fr);margin-bottom:16px">
     <div class="stat-card"><div class="sc-icon">📚</div><div class="sc-val">342</div><div class="sc-label">სულ წიგნი (ბეჭდური)</div></div>
@@ -794,16 +799,17 @@ function renderStudents(list){
   if(!tb)return;
   tb.innerHTML=list.map(s=>{
     const attCol=s.att>=80?'bd-g':s.att>=75?'bd-a':'bd-r';
-    const stBd=s.status==='active'?'<span class="bd bd-g">● აქტიური</span>':s.status==='debt'?'<span class="bd bd-r">⚠ დავალიანება</span>':'<span class="bd bd-a">~ შვებ.</span>';
-    const balTxt=s.balance>0?`<span style="color:var(--red);font-weight:700">-${s.balance}₾</span>`:'<span style="color:var(--green)">✓</span>';
+    const stuStBd=s.status==='active'?'<span class="bd bd-g">● აქტიური</span>':s.status==='leave'?'<span class="bd bd-a">~ აკად. შვებ.</span>':s.status==='expelled'?'<span class="bd bd-r">✕ ამოირიცხა</span>':'<span class="bd bd-b">○ სტატუსი</span>';
+    const specialBd=s.special?`<span class="bd bd-p" style="margin-left:4px;font-size:10px">${s.special}</span>`:'';
+    const payBd=s.balance>0?'<span class="bd bd-r">✗ გადახდა ვერ</span>':'<span class="bd bd-g">✓ გადახდილი</span>';
     return `<tr>
       <td style="font-size:11px;color:var(--text3)">${s.id}</td>
-      <td><div style="font-weight:600">${s.name}</div><div style="font-size:11px;color:var(--text3)">${s.email}</div></td>
-      <td>${s.group}</td>
+      <td><div style="font-weight:600">${s.name}${specialBd}</div><div style="font-size:11px;color:var(--text3)">${s.email}</div></td>
+      <td><div style="display:flex;align-items:center;gap:4px">${s.group}<button class="btn btn-xs btn-ghost" style="padding:2px 5px" onclick="editStudentGroup('${s.id}')" title="ჯგუფის შეცვლა">✏</button></div></td>
       <td><span class="bd bd-b">${s.year}</span></td>
       <td><span class="bd ${attCol}">${s.att}%</span></td>
-      <td>${balTxt}</td>
-      <td>${stBd}</td>
+      <td>${payBd}</td>
+      <td>${stuStBd}</td>
       <td style="white-space:nowrap">
         <button class="btn btn-xs btn-ghost" onclick="viewStudent('${s.id}')">👤</button>
         <button class="btn btn-xs btn-ghost" onclick="editStudentModal('${s.id}')">✏</button>
@@ -819,7 +825,6 @@ function renderTeachers(list){
   const tb=document.getElementById('teachers-tbody');
   if(!tb)return;
   tb.innerHTML=list.map(t=>{
-    const stBd=t.status==='active'?'<span class="bd bd-g">● აქტიური</span>':'<span class="bd bd-a">~ შვებ.</span>';
     return `<tr>
       <td style="font-size:11px;color:var(--text3)">${t.id}</td>
       <td><div style="font-weight:600">${t.name}</div><div style="font-size:11px;color:var(--text3)">${t.email}</div></td>
@@ -827,7 +832,6 @@ function renderTeachers(list){
       <td style="font-size:12px">${t.modules.join(', ')}</td>
       <td><span class="bd bd-b">${t.students}</span></td>
       <td style="font-size:12px">${t.phone}</td>
-      <td>${stBd}</td>
       <td style="white-space:nowrap">
         <button class="btn btn-xs btn-ghost" onclick="editTeacherModal('${t.id}')">✏</button>
         <button class="btn btn-xs btn-r" onclick="removeTeacher('${t.id}')">✕</button>
@@ -901,8 +905,7 @@ function renderPayments(list){
       <td style="font-size:12px">${p.due}</td>
       <td>${stBd}</td>
       <td style="white-space:nowrap">
-        <button class="btn btn-xs btn-b" onclick="addPaymentDetail('${p.id}')">💳 შეტანა</button>
-        <button class="btn btn-xs btn-ghost" onclick="viewPaymentHistory('${p.id}')">📋</button>
+        <button class="btn btn-xs btn-ghost" onclick="viewPaymentHistory('${p.id}')">📋 ისტ.</button>
       </td></tr>`;
   }).join('');
 }
@@ -915,7 +918,7 @@ function renderApps(filter){
   const list=filter&&filter!=='all'?appsData.filter(a=>a.status===filter):appsData;
   tb.innerHTML=list.map(a=>{
     const stBd=a.status==='pending'?'<span class="bd bd-a">● მოლოდინში</span>':a.status==='approved'?'<span class="bd bd-g">✓ დამტკიცებული</span>':'<span class="bd bd-r">✗ უარყოფილი</span>';
-    const btns=a.status==='pending'?`<button class="btn btn-xs btn-g" onclick="approveApp('${a.name}','${a.id}')">✓ დამტკ.</button> <button class="btn btn-xs btn-r" onclick="rejectApp('${a.id}')">✕ უარი</button>`:'<button class="btn btn-xs btn-ghost" onclick="viewAppDetail(\''+a.id+'\')">👁</button>';
+    const btns=a.status==='pending'?`<button class="btn btn-xs btn-ghost" onclick="viewAppDetail('${a.id}')">👁</button> <button class="btn btn-xs btn-g" onclick="approveApp('${a.name}','${a.id}')">✓ დამტკ.</button> <button class="btn btn-xs btn-r" onclick="rejectApp('${a.id}')">✕ უარი</button>`:`<button class="btn btn-xs btn-ghost" onclick="viewAppDetail('${a.id}')">👁</button>`;
     return `<tr>
       <td style="font-size:11px;color:var(--text3)">${a.id}</td>
       <td><strong>${a.name}</strong></td>
@@ -932,12 +935,14 @@ function filterApps(f,el){
   renderApps(f);
 }
 
-function renderLibrary(){
+let libTypeFilter='all', libCatFilter='', libSearchQ='';
+function renderLibrary(list){
   const tb=document.getElementById('library-tbody');
   if(!tb)return;
-  tb.innerHTML=libraryData.map((b,i)=>`<tr>
+  if(!list)list=libraryData;
+  tb.innerHTML=list.map((b,i)=>`<tr>
     <td style="font-size:11px;color:var(--text3)">${b.isbn}</td>
-    <td><strong>${b.title}</strong></td>
+    <td><strong>${b.title}</strong>${b.url?` <a href="${b.url}" target="_blank" style="font-size:10px;color:var(--blue)">↗</a>`:''}</td>
     <td>${b.author}</td>
     <td><span class="bd bd-n">${b.cat}</span></td>
     <td style="text-align:center">${b.type==='digital'?'∞':b.copies}</td>
@@ -948,6 +953,16 @@ function renderLibrary(){
       <button class="btn btn-xs btn-r" onclick="removeBook(${i})">✕</button>
     </td></tr>`).join('');
 }
+function applyLibFilters(){
+  let list=libraryData;
+  if(libTypeFilter!=='all') list=list.filter(b=>b.type===libTypeFilter);
+  if(libCatFilter) list=list.filter(b=>b.cat===libCatFilter);
+  if(libSearchQ) list=list.filter(b=>b.title.includes(libSearchQ)||b.author.includes(libSearchQ)||b.isbn.includes(libSearchQ));
+  renderLibrary(list);
+}
+function filterLibraryType(t,el){libTypeFilter=t;document.querySelectorAll('.chip[id^="lib-chip"]').forEach(c=>c.classList.remove('active'));if(el)el.classList.add('active');applyLibFilters();}
+function filterLibraryCat(v){libCatFilter=v;applyLibFilters();}
+function filterLibrary(q){libSearchQ=q;applyLibFilters();}
 
 function renderNewsAdmin(filter){
   const el=document.getElementById('news-admin-grid');
@@ -1094,14 +1109,16 @@ function addStudentModal(){
     <div class="fg2"><div><label class="fl">ჯგუფი</label><select class="fi" id="ns-group"><option>ჯგუფი 101</option><option>ჯგუფი 102</option><option>ჯგუფი 201</option><option>ჯგუფი 301</option><option>ჯგუფი 401</option></select></div><div><label class="fl">სასწ. წელი</label><select class="fi"><option>I</option><option>II</option><option>III</option><option>IV</option><option>V</option><option>VI</option></select></div></div>
     <div class="fg"><label class="fl">ელ. ფოსტა</label><input class="fi" id="ns-email" placeholder="student@bmeda.edu.ge"></div>
     <div class="fg"><label class="fl">ტელეფონი</label><input class="fi" id="ns-phone" placeholder="+995 5XX XXX XXX"></div>
-    <div class="fg2"><div><label class="fl">სემ. გადასახადი (₾)</label><input class="fi" type="number" value="3100"></div><div><label class="fl">სტატუსი</label><select class="fi"><option value="active">აქტიური</option><option value="leave">შვებულება</option></select></div></div>`,
+    <div class="fg2"><div><label class="fl">სემ. გადასახადი (₾)</label><input class="fi" type="number" value="3100"></div><div><label class="fl">სტატუსი</label><select class="fi" id="ns-status"><option value="active">აქტიური</option><option value="leave">აკად. შვებ.</option></select></div></div>
+    <div class="fg"><label class="fl">განსაკუთრებული სტატუსი (სურვილისამებრ)</label><select class="fi" id="ns-special"><option value="">— არ არის —</option><option value="სსმ">სსმ — სპეციალური საჭიროება</option><option value="სოციალური">სოციალური დახმარება</option><option value="ობოლი">ობოლი / მინდობა</option><option value="იძულ. გადაადგ.">იძულებით გადაადგილებული</option><option value="I კატ. ოჯახი">I კატეგორიის ოჯახი</option><option value="სამხ. ოჯახი">სამხედრო პერსონ. ოჯახი</option></select></div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveNewStudent()">✓ დამატება</button>`);
 }
 function saveNewStudent(){
   const name=document.getElementById('ns-name').value.trim();
   if(!name){toast('შეავსეთ სახელი','error');return;}
   const id=document.getElementById('ns-id').value.trim()||'BMA-NEW';
-  students.unshift({id,name,group:document.getElementById('ns-group').value,year:'I',att:0,balance:0,status:'active',email:document.getElementById('ns-email').value,phone:document.getElementById('ns-phone').value});
+  const special=document.getElementById('ns-special').value;
+  students.unshift({id,name,group:document.getElementById('ns-group').value,year:'I',att:0,balance:0,status:document.getElementById('ns-status').value,email:document.getElementById('ns-email').value,phone:document.getElementById('ns-phone').value,special:special||null});
   document.getElementById('stu-count').textContent=students.length+' სტუდენტი';
   renderStudents(students);
   closeModal();toast('სტუდენტი დამატებულია ✓','success');
@@ -1112,7 +1129,8 @@ function editStudentModal(id){
     <div class="fg2"><div><label class="fl">სახელი</label><input class="fi" id="es-name" value="${s.name}"></div><div><label class="fl">ID</label><input class="fi" value="${s.id}" readonly></div></div>
     <div class="fg"><label class="fl">ელ. ფოსტა</label><input class="fi" id="es-email" value="${s.email}"></div>
     <div class="fg"><label class="fl">ტელეფონი</label><input class="fi" id="es-phone" value="${s.phone}"></div>
-    <div class="fg2"><div><label class="fl">სემ. ბალანსი (₾)</label><input class="fi" id="es-bal" type="number" value="${s.balance}"></div><div><label class="fl">სტატუსი</label><select class="fi" id="es-status"><option value="active" ${s.status==='active'?'selected':''}>აქტიური</option><option value="debt" ${s.status==='debt'?'selected':''}>დავალიანება</option><option value="leave" ${s.status==='leave'?'selected':''}>შვებულება</option></select></div></div>`,
+    <div class="fg2"><div><label class="fl">სემ. ბალანსი (₾)</label><input class="fi" id="es-bal" type="number" value="${s.balance}"></div><div><label class="fl">სტატუსი</label><select class="fi" id="es-status"><option value="active" ${s.status==='active'?'selected':''}>აქტიური</option><option value="debt" ${s.status==='debt'?'selected':''}>დავალიანება</option><option value="leave" ${s.status==='leave'?'selected':''}>შვებულება</option></select></div></div>
+    <div class="fg"><label class="fl">განსაკუთრებული სტატუსი</label><select class="fi" id="es-special"><option value="">— არ არის —</option><option value="სსმ" ${s.special==='სსმ'?'selected':''}>სსმ — სპეციალური საჭიროება</option><option value="სოციალური" ${s.special==='სოციალური'?'selected':''}>სოციალური დახმარება</option><option value="ობოლი" ${s.special==='ობოლი'?'selected':''}>ობოლი / მინდობა</option><option value="იძულ. გადაადგ." ${s.special==='იძულ. გადაადგ.'?'selected':''}>იძულებით გადაადგილებული</option><option value="I კატ. ოჯახი" ${s.special==='I კატ. ოჯახი'?'selected':''}>I კატეგორიის ოჯახი</option><option value="სამხ. ოჯახი" ${s.special==='სამხ. ოჯახი'?'selected':''}>სამხედრო პერსონ. ოჯახი</option></select></div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveEditStudent('${id}')">💾 შენახვა</button>`);
 }
 function saveEditStudent(id){
@@ -1122,7 +1140,16 @@ function saveEditStudent(id){
   s.phone=document.getElementById('es-phone').value;
   s.balance=+document.getElementById('es-bal').value;
   s.status=document.getElementById('es-status').value;
+  s.special=document.getElementById('es-special').value||null;
   renderStudents(students);closeModal();toast('მონაცემები განახლდა ✓','success');
+}
+function editStudentGroup(id){
+  const s=students.find(x=>x.id===id);if(!s)return;
+  const opts=groupsData.map(g=>`<option${g.name===s.group?' selected':''}>${g.name}</option>`).join('');
+  showModal('ჯგუფის შეცვლა — '+s.name,`
+    <div class="fg"><label class="fl">მიმდინარე ჯგუფი</label><div style="font-weight:600;padding:6px 0">${s.group}</div></div>
+    <div class="fg"><label class="fl">ახალი ჯგუფი</label><select class="fi" id="sg-group">${opts}</select></div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const s=students.find(x=>x.id==='${id}');if(s){s.group=document.getElementById('sg-group').value;renderStudents(students);}closeModal();toast('ჯგუფი შეიცვალა ✓','success')})()">💾 შენახვა</button>`);
 }
 function viewStudent(id){
   const s=students.find(x=>x.id===id);if(!s)return;
@@ -1291,7 +1318,8 @@ function addBookModal(){
   showModal('წიგნის დამატება',`
     <div class="fg"><label class="fl">სათაური</label><input class="fi" id="nb-title" placeholder="სათაური"></div>
     <div class="fg2"><div><label class="fl">ავტორი</label><input class="fi" id="nb-author"></div><div><label class="fl">ISBN</label><input class="fi" id="nb-isbn"></div></div>
-    <div class="fg2"><div><label class="fl">კატეგორია</label><select class="fi" id="nb-cat"><option>ანატომია</option><option>ფიზიოლოგია</option><option>ფარმაკოლოგია</option><option>ეთიკა</option><option>მიკრობიოლოგია</option></select></div><div><label class="fl">ტიპი</label><select class="fi" id="nb-type"><option value="printed">ბეჭდური</option><option value="digital">ელ. წიგნი</option></select></div></div>
+    <div class="fg2"><div><label class="fl">კატეგორია</label><select class="fi" id="nb-cat"><option>ანატომია</option><option>ფიზიოლოგია</option><option>ფარმაკოლოგია</option><option>ეთიკა</option><option>მიკრობიოლოგია</option></select></div><div><label class="fl">ტიპი</label><select class="fi" id="nb-type" onchange="document.getElementById('nb-url-row').style.display=this.value==='digital'?'block':'none'"><option value="printed">ბეჭდური</option><option value="digital">ელ. წიგნი</option></select></div></div>
+    <div id="nb-url-row" style="display:none"><div class="fg"><label class="fl">წიგნის ბმული (URL)</label><input class="fi" id="nb-url" placeholder="https://..."></div></div>
     <div class="fg"><label class="fl">ასლების რაოდენობა</label><input class="fi" id="nb-copies" type="number" value="1"></div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveNewBook()">✓ დამატება</button>`);
 }
@@ -1299,7 +1327,8 @@ function saveNewBook(){
   const title=document.getElementById('nb-title').value.trim();
   if(!title){toast('შეავსეთ სათაური','error');return;}
   const copies=+document.getElementById('nb-copies').value||1;
-  libraryData.push({isbn:document.getElementById('nb-isbn').value||'N/A',title,author:document.getElementById('nb-author').value,cat:document.getElementById('nb-cat').value,copies,avail:copies,type:document.getElementById('nb-type').value});
+  const nbType=document.getElementById('nb-type').value;
+  libraryData.push({isbn:document.getElementById('nb-isbn').value||'N/A',title,author:document.getElementById('nb-author').value,cat:document.getElementById('nb-cat').value,copies,avail:copies,type:nbType,url:nbType==='digital'?document.getElementById('nb-url').value:''});
   renderLibrary();closeModal();toast('წიგნი დამატებულია ✓','success');
 }
 function editBookModal(i){
@@ -1319,6 +1348,7 @@ function addNewsModal(){
   showModal('სიახლის შექმნა',`
     <div class="fg"><label class="fl">სათაური</label><input class="fi" id="nn-title" placeholder="სიახლის სათაური"></div>
     <div class="fg2"><div><label class="fl">ტეგი</label><select class="fi" id="nn-tag"><option>სიახლე</option><option>ღონისძიება</option><option>აუცილებელი</option><option>ბლოგი</option></select></div><div><label class="fl">თარიღი</label><input class="fi" id="nn-date" type="date" value="2026-07-09"></div></div>
+    <div class="fg"><label class="fl">ქოვერ სურათი</label><input class="fi" id="nn-cover" type="file" accept="image/*" style="padding:6px"></div>
     <div class="fg"><label class="fl">ტექსტი</label><textarea class="fi" id="nn-body" style="min-height:120px" placeholder="სიახლის სრული ტექსტი..."></textarea></div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-ghost btn-sm" onclick="saveNews('draft')">💾 დრაფტი</button><button class="btn btn-b" onclick="saveNews('published')">▶ გამოქვეყნება</button>`);
 }
@@ -1345,8 +1375,7 @@ function addSurveyModal(){
   showModal('გამოკითხვის შექმნა',`
     <div class="fg"><label class="fl">სახელი</label><input class="fi" id="nsv-name" placeholder="გამოკითხვის სახელი..."></div>
     <div class="fg2"><div><label class="fl">სამიზნე</label><select class="fi" id="nsv-target"><option>ყველა</option><option>სტუდენტები</option><option>პედაგოგები</option></select></div><div><label class="fl">ბოლო ვადა</label><input class="fi" id="nsv-deadline" type="date"></div></div>
-    <div class="fg"><label class="fl">Google Forms ბმული</label><input class="fi" id="nsv-link" placeholder="https://forms.gle/..."></div>
-    <div style="display:flex;align-items:center;gap:8px;margin-top:4px"><input type="checkbox" id="nsv-anon"><label for="nsv-anon" style="font-size:13px">ანონიმური გამოკითხვა</label></div>`,
+    <div class="fg"><label class="fl">Google Forms ბმული</label><input class="fi" id="nsv-link" placeholder="https://forms.gle/..."></div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-ghost btn-sm" onclick="saveSurvey('draft')">💾 დრაფტი</button><button class="btn btn-b" onclick="saveSurvey('active')">▶ გამოქვეყნება</button>`);
 }
 function saveSurvey(status){
@@ -1387,7 +1416,8 @@ function addJobModal(){
   showModal('ვაკანსიის დამატება',`
     <div class="fg"><label class="fl">პოზიცია</label><input class="fi" id="nj-title" placeholder="ექიმი, ასისტენტი..."></div>
     <div class="fg2"><div><label class="fl">კომპანია</label><input class="fi" id="nj-company"></div><div><label class="fl">ლოკაცია</label><input class="fi" id="nj-loc" value="ბათუმი"></div></div>
-    <div class="fg2"><div><label class="fl">ტიპი</label><select class="fi" id="nj-type"><option>სრული განაკვეთი</option><option>ნახევარი განაკვეთი</option><option>სტაჟიორობა</option></select></div><div><label class="fl">ხელფასი (₾)</label><input class="fi" id="nj-salary"></div></div>`,
+    <div class="fg2"><div><label class="fl">ტიპი</label><select class="fi" id="nj-type"><option>სრული განაკვეთი</option><option>ნახევარი განაკვეთი</option><option>სტაჟიორობა</option></select></div><div><label class="fl">ხელფასი (₾)</label><input class="fi" id="nj-salary"></div></div>
+    <div class="fg"><label class="fl">ვაკანსიის აღწერა</label><textarea class="fi" id="nj-desc" style="min-height:100px" placeholder="მოთხოვნები, პასუხისმგებლობები..."></textarea></div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveNewJob()">✓ გამოქვეყნება</button>`);
 }
 function saveNewJob(){
