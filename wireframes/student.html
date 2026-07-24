@@ -1604,17 +1604,17 @@ function openSurvey(link,name){
 
 // ══ NEWS ══
 const newsData=[
-  {tag:'აუცილებელი',title:'შუალედური გამოცდების ცხრილი — ივლისი 2026',date:'28 ივნისი 2026',icon:'📋',body:'შუალედური გამოცდები ჩატარდება 14–25 ივლისი 2026. MA-24B: ანატომია — 14.07 09:00, 201-ე სალი. ფიზიოლოგია — 16.07, 204-ე სალი. ფარმაკოლოგია — 18.07, 105-ე სალი. სამედიცინო ეთიკა — 21.07. კლინიკური პრაქტიკა — 23.07 სიმულაციურ ლაბორატორიაში. ინგლისური ენა — 25.07. გამოცდაზე გამოცხადება სავალდებულოა პირადობის მოწმობით.',img:null},
-  {tag:'სიახლე',title:'ბათუმის სამედიცინო აკადემია — I ადგილი ოლიმპიადაზე',date:'25 ივნისი 2026',icon:'🏆',body:'ბათუმის სამედიცინო აკადემიის სტუდენტი გახდა «მედიცინის ახალგაზრდა» 2026 ოლიმპიადის I ადგილოსანი 14 უნივერსიტეტს შორის. ოლიმპიადაში მონაწილეობდა 200-ზე მეტი სტუდენტი. ბათუმის სამედიცინო აკადემია ზედიზედ მეორე წელია პირველ ადგილს ინარჩუნებს.',img:null},
-  {tag:'ღონისძიება',title:'ღია კარის დღე — 15 ივლისი',date:'22 ივნისი 2026',icon:'🎉',body:'15 ივლისი 2026, 11:00 — ბათუმის სამედიცინო აკადემიის ღია კარის დღე. სპეციალური სპიკერები: «სამედიცინო კარიერა ევროპაში» და «სამედიცინო გამოწვევები XXI საუკუნეში». ღონისძიება ჩატარდება აკადემიის მთავარ აუდიტორიაში. რეგისტრაცია: students@bmeda.edu.ge.',img:null},
-  {tag:'ბლოგი',title:'სამედიცინო კარიერა ევროპაში — კურსდამთავრებულების გამოცდილება',date:'18 ივნისი 2026',icon:'🌍',body:'ევროკავშირის ქვეყნებში სამედიცინო ლიცენზიის მოპოვება: პოლონეთი (Europejski Rejestr Farmaceutyczny), გერმანია (Approbationsordnung), ფინეთი (Valvira). ბათუმის სამედიცინო აკადემიის ECTS-კრედიტები ავტომატურად გადადის ევროპის უმეტეს უნივერსიტეტებში. კურსდამთავრებულების 70%-ზე მეტი ევროპის კლინიკებში მუშაობს.',img:null},
+  {id:'NEWS-001',tag:'აუცილებელი',title:'შუალედური გამოცდების ცხრილი — ივლისი 2026',date:'28 ივნისი 2026',icon:'📋',body:'შუალედური გამოცდები ჩატარდება 14–25 ივლისი 2026. MA-24B: ანატომია — 14.07 09:00, 201-ე სალი. ფიზიოლოგია — 16.07, 204-ე სალი. ფარმაკოლოგია — 18.07, 105-ე სალი. სამედიცინო ეთიკა — 21.07. კლინიკური პრაქტიკა — 23.07 სიმულაციურ ლაბორატორიაში. ინგლისური ენა — 25.07. გამოცდაზე გამოცხადება სავალდებულოა პირადობის მოწმობით.',img:null},
+  {id:'NEWS-002',tag:'სიახლე',title:'ბათუმის სამედიცინო აკადემია — I ადგილი ოლიმპიადაზე',date:'25 ივნისი 2026',icon:'🏆',body:'ბათუმის სამედიცინო აკადემიის სტუდენტი გახდა «მედიცინის ახალგაზრდა» 2026 ოლიმპიადის I ადგილოსანი 14 უნივერსიტეტს შორის. ოლიმპიადაში მონაწილეობდა 200-ზე მეტი სტუდენტი. ბათუმის სამედიცინო აკადემია ზედიზედ მეორე წელია პირველ ადგილს ინარჩუნებს.',img:null},
+  {id:'NEWS-003',tag:'ღონისძიება',title:'ღია კარის დღე — 15 ივლისი',date:'22 ივნისი 2026',icon:'🎉',body:'15 ივლისი 2026, 11:00 — ბათუმის სამედიცინო აკადემიის ღია კარის დღე. სპეციალური სპიკერები: «სამედიცინო კარიერა ევროპაში» და «სამედიცინო გამოწვევები XXI საუკუნეში». ღონისძიება ჩატარდება აკადემიის მთავარ აუდიტორიაში. რეგისტრაცია: students@bmeda.edu.ge.',img:null},
+  {id:'NEWS-004',tag:'ბლოგი',title:'სამედიცინო კარიერა ევროპაში — კურსდამთავრებულების გამოცდილება',date:'18 ივნისი 2026',icon:'🌍',body:'ევროკავშირის ქვეყნებში სამედიცინო ლიცენზიის მოპოვება: პოლონეთი (Europejski Rejestr Farmaceutyczny), გერმანია (Approbationsordnung), ფინეთი (Valvira). ბათუმის სამედიცინო აკადემიის ECTS-კრედიტები ავტომატურად გადადის ევროპის უმეტეს უნივერსიტეტებში. კურსდამთავრებულების 70%-ზე მეტი ევროპის კლინიკებში მუშაობს.',img:null},
 ];
 const ng=document.getElementById('news-grid');
 newsData.forEach((n,i)=>{
   ng.innerHTML+=`<div style="background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);cursor:pointer" onclick="openNews(${i})">
     <div style="height:100px;background:var(--blue-lt);display:flex;align-items:center;justify-content:center;font-size:36px">${n.icon}</div>
     <div style="padding:14px">
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--blue);margin-bottom:5px">${n.tag}</div>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--blue);margin-bottom:5px">${n.id} · ${n.tag}</div>
       <div style="font-size:14px;font-weight:700;line-height:1.3">${n.title}</div>
       <div style="font-size:11px;color:var(--text3);margin-top:8px">${n.date}</div>
     </div>
@@ -1670,9 +1670,9 @@ function openNews(i){
 
 // ══ CAREER / JOBS ══
 const jobs=[
-  {ico:'🏥',title:'ამბულატორიის ექიმი',company:'VivaМed',loc:'ბათუმი',type:'სრული განაკვეთი',salary:'800–1200₾',contact:'hr@vivamed.ge',phone:'+995 422 111 222',desc:'სამედიცინო ამბულატორიის ექიმი VivaМed კლინიკაში ბათუმში. მოთხოვნები: II+ სასწავლო წელი, BLS სერტიფიკატი, ქართული და ინგლისური ენების ცოდნა. საათობრივი განრიგი მოქნილია სასწავლო გრაფიკთან შეთავსებისთვის.'},
-  {ico:'💊',title:'ფარმაცევტული ასისტენტი',company:'Aversi',loc:'ბათუმი',type:'ნახევარი განაკვეთი',salary:'600₾+',contact:'jobs@aversi.ge',phone:'+995 422 333 444',desc:'ფარმაცევტული ასისტენტი Aversi ფარმაციების ქსელში ბათუმში. სასურველია ფარმაკოლოგიის ფაკულტეტის სტუდენტი. გრაფიკი მოქნილია. საჭიროა CV და ფოტოსურათი.'},
-  {ico:'🩺',title:'სტუდენტური სტაჟიორობა',company:'Adjara Hospital',loc:'ბათუმი',type:'სტაჟიორობა',salary:'400₾',contact:'training@hospital.ge',phone:'+995 422 555 666',desc:'სტუდენტებისთვის II+ სასწავლო წელი — 3-თვიანი ანაზღაურებადი სტაჟი. სტიპენდია: 400₾ თვეში. საჭირო დოკუმენტები: CV, სასწავლო მოწმობა, ლექტორის სარეკომენდაციო წერილი.'},
+  {id:'JOB-001',ico:'🏥',title:'ამბულატორიის ექიმი',company:'VivaМed',loc:'ბათუმი',type:'სრული განაკვეთი',salary:'800–1200₾',contact:'hr@vivamed.ge',phone:'+995 422 111 222',desc:'სამედიცინო ამბულატორიის ექიმი VivaМed კლინიკაში ბათუმში. მოთხოვნები: II+ სასწავლო წელი, BLS სერტიფიკატი, ქართული და ინგლისური ენების ცოდნა. საათობრივი განრიგი მოქნილია სასწავლო გრაფიკთან შეთავსებისთვის.'},
+  {id:'JOB-002',ico:'💊',title:'ფარმაცევტული ასისტენტი',company:'Aversi',loc:'ბათუმი',type:'ნახევარი განაკვეთი',salary:'600₾+',contact:'jobs@aversi.ge',phone:'+995 422 333 444',desc:'ფარმაცევტული ასისტენტი Aversi ფარმაციების ქსელში ბათუმში. სასურველია ფარმაკოლოგიის ფაკულტეტის სტუდენტი. გრაფიკი მოქნილია. საჭიროა CV და ფოტოსურათი.'},
+  {id:'JOB-003',ico:'🩺',title:'სტუდენტური სტაჟიორობა',company:'Adjara Hospital',loc:'ბათუმი',type:'სტაჟიორობა',salary:'400₾',contact:'training@hospital.ge',phone:'+995 422 555 666',desc:'სტუდენტებისთვის II+ სასწავლო წელი — 3-თვიანი ანაზღაურებადი სტაჟი. სტიპენდია: 400₾ თვეში. საჭირო დოკუმენტები: CV, სასწავლო მოწმობა, ლექტორის სარეკომენდაციო წერილი.'},
 ];
 const jl=document.getElementById('jobs-list');
 jobs.forEach((j,i)=>{
@@ -1680,7 +1680,7 @@ jobs.forEach((j,i)=>{
     <div style="width:42px;height:42px;border-radius:8px;background:var(--blue-lt);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${j.ico}</div>
     <div style="flex:1">
       <div style="font-size:14px;font-weight:700">${j.title}</div>
-      <div style="font-size:12px;color:var(--text2);margin-top:2px">${j.company} · ${j.loc}</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:2px"><span style="font-weight:700;color:var(--blue)">${j.id}</span> · ${j.company} · ${j.loc}</div>
       <div style="display:flex;gap:7px;margin-top:8px"><span class="bd bd-b">${j.type}</span><span class="bd bd-g">${j.salary}</span></div>
     </div>
     <button class="btn btn-o btn-sm" onclick="event.stopPropagation();openJob(${i})">→ დეტალები</button>

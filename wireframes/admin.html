@@ -759,45 +759,45 @@ const teachers=[
   {id:'T-005',name:'ნანა ჯაფარიძე',spec:'მიკრობიოლოგია',modules:['მიკრობიოლოგია'],students:20,email:'n.japaridze@bmeda.edu.ge',phone:'+995 555 001 005',status:'leave'},
 ];
 const groupsData=[
-  {name:'ჯგუფი 101',year:'I სასწ. წელი',students:24,teacher:'ნინო კაპანაძე',att:88,active:true},
-  {name:'ჯგუფი 102',year:'I სასწ. წელი',students:22,teacher:'ნინო კაპანაძე',att:79,active:true},
-  {name:'ჯგუფი 201',year:'II სასწ. წელი',students:26,teacher:'გიორგი ბახტაძე',att:85,active:true},
-  {name:'ჯგუფი 202',year:'II სასწ. წელი',students:23,teacher:'გიორგი ბახტაძე',att:91,active:true},
-  {name:'ჯგუფი 301',year:'III სასწ. წელი',students:20,teacher:'ზვიად ქობულია',att:91,active:true},
-  {name:'ჯგუფი 401',year:'IV სასწ. წელი',students:21,teacher:'მარინე ლომთაძე',att:85,active:true},
-  {name:'ჯგუფი 501',year:'V სასწ. წელი',students:18,teacher:'ნანა ჯაფარიძე',att:88,active:true},
-  {name:'ჯგუფი 601',year:'VI სასწ. წელი',students:16,teacher:'ზვიად ქობულია',att:82,active:true},
+  {id:'GRP-101',name:'ჯგუფი 101',year:'I სასწ. წელი',students:24,teacherId:'T-001',teacher:'ნინო კაპანაძე',att:88,active:true},
+  {id:'GRP-102',name:'ჯგუფი 102',year:'I სასწ. წელი',students:22,teacherId:'T-001',teacher:'ნინო კაპანაძე',att:79,active:true},
+  {id:'GRP-201',name:'ჯგუფი 201',year:'II სასწ. წელი',students:26,teacherId:'T-002',teacher:'გიორგი ბახტაძე',att:85,active:true},
+  {id:'GRP-202',name:'ჯგუფი 202',year:'II სასწ. წელი',students:23,teacherId:'T-002',teacher:'გიორგი ბახტაძე',att:91,active:true},
+  {id:'GRP-301',name:'ჯგუფი 301',year:'III სასწ. წელი',students:20,teacherId:'T-004',teacher:'ზვიად ქობულია',att:91,active:true},
+  {id:'GRP-401',name:'ჯგუფი 401',year:'IV სასწ. წელი',students:21,teacherId:'T-003',teacher:'მარინე ლომთაძე',att:85,active:true},
+  {id:'GRP-501',name:'ჯგუფი 501',year:'V სასწ. წელი',students:18,teacherId:'T-005',teacher:'ნანა ჯაფარიძე',att:88,active:true},
+  {id:'GRP-601',name:'ჯგუფი 601',year:'VI სასწ. წელი',students:16,teacherId:'T-004',teacher:'ზვიად ქობულია',att:82,active:true},
 ];
 const modulesData=[
-  {code:'ANAT-101',name:'ანატომია I',teacher:'ნინო კაპანაძე',groups:'ჯგუფი 101, 102',credits:6,students:46,att:88,status:'active'},
-  {code:'PHYS-101',name:'ფიზიოლოგია I',teacher:'გიორგი ბახტაძე',groups:'ჯგუფი 101',credits:5,students:24,att:82,status:'active'},
-  {code:'PHYS-201',name:'ფიზიოლოგია II',teacher:'გიორგი ბახტაძე',groups:'ჯგუფი 201',credits:5,students:26,att:91,status:'active'},
-  {code:'PHAR-301',name:'ფარმაკოლოგია',teacher:'მარინე ლომთაძე',groups:'ჯგუფი 301',credits:6,students:20,att:88,status:'active'},
-  {code:'ETHI-201',name:'სამედიცინო ეთიკა',teacher:'ზვიად ქობულია',groups:'ჯგუფი 201, 202',credits:3,students:49,att:85,status:'active'},
-  {code:'NANAT-301',name:'ნეირო-ანატომია',teacher:'ნინო კაპანაძე',groups:'ჯგუფი 301',credits:4,students:20,att:91,status:'active'},
-  {code:'CANAT-401',name:'კლინიკური ანატომია',teacher:'ზვიად ქობულია',groups:'ჯგუფი 401',credits:6,students:21,att:85,status:'active'},
-  {code:'MICR-201',name:'მიკრობიოლოგია',teacher:'ნანა ჯაფარიძე',groups:'ჯგუფი 202',credits:5,students:23,att:79,status:'active'},
+  {code:'ANAT-101',name:'ანატომია I',teacherId:'T-001',teacher:'ნინო კაპანაძე',groups:'ჯგუფი 101, 102',credits:6,students:46,att:88,status:'active'},
+  {code:'PHYS-101',name:'ფიზიოლოგია I',teacherId:'T-002',teacher:'გიორგი ბახტაძე',groups:'ჯგუფი 101',credits:5,students:24,att:82,status:'active'},
+  {code:'PHYS-201',name:'ფიზიოლოგია II',teacherId:'T-002',teacher:'გიორგი ბახტაძე',groups:'ჯგუფი 201',credits:5,students:26,att:91,status:'active'},
+  {code:'PHAR-301',name:'ფარმაკოლოგია',teacherId:'T-003',teacher:'მარინე ლომთაძე',groups:'ჯგუფი 301',credits:6,students:20,att:88,status:'active'},
+  {code:'ETHI-201',name:'სამედიცინო ეთიკა',teacherId:'T-004',teacher:'ზვიად ქობულია',groups:'ჯგუფი 201, 202',credits:3,students:49,att:85,status:'active'},
+  {code:'NANAT-301',name:'ნეირო-ანატომია',teacherId:'T-001',teacher:'ნინო კაპანაძე',groups:'ჯგუფი 301',credits:4,students:20,att:91,status:'active'},
+  {code:'CANAT-401',name:'კლინიკური ანატომია',teacherId:'T-004',teacher:'ზვიად ქობულია',groups:'ჯგუფი 401',credits:6,students:21,att:85,status:'active'},
+  {code:'MICR-201',name:'მიკრობიოლოგია',teacherId:'T-005',teacher:'ნანა ჯაფარიძე',groups:'ჯგუფი 202',credits:5,students:23,att:79,status:'active'},
 ];
 const paymentsData=[
-  {id:'PAY-001',name:'ნინო მამულაძე',group:'ჯგუფი 101',sem:'II',fee:3100,paid:3100,rest:0,due:'30.06.2026',status:'paid'},
-  {id:'PAY-002',name:'გიორგი ბერიძე',group:'ჯგუფი 101',sem:'II',fee:3100,paid:0,rest:3100,due:'30.06.2026',status:'overdue'},
-  {id:'PAY-003',name:'მარიამ ჩხეიძე',group:'ჯგუფი 102',sem:'II',fee:3100,paid:3100,rest:0,due:'30.06.2026',status:'paid'},
-  {id:'PAY-004',name:'ლუკა კვარაცხელია',group:'ჯგუფი 102',sem:'II',fee:3100,paid:3100,rest:0,due:'30.06.2026',status:'paid'},
-  {id:'PAY-005',name:'ანა გელაშვილი',group:'ჯგუფი 201',sem:'II',fee:3100,paid:3100,rest:0,due:'30.06.2026',status:'paid'},
-  {id:'PAY-006',name:'დავით ხაჭაპურიძე',group:'ჯგუფი 201',sem:'II',fee:3100,paid:0,rest:3100,due:'30.06.2026',status:'overdue'},
-  {id:'PAY-007',name:'სოფო ნიჟარაძე',group:'ჯგუფი 201',sem:'II',fee:3100,paid:1550,rest:1550,due:'30.06.2026',status:'partial'},
-  {id:'PAY-008',name:'ვახო ლომიძე',group:'ჯგუფი 301',sem:'II',fee:3100,paid:1550,rest:1550,due:'30.06.2026',status:'partial'},
-  {id:'PAY-009',name:'ეკა თავდგირიძე',group:'ჯგუფი 301',sem:'II',fee:3100,paid:3100,rest:0,due:'30.06.2026',status:'paid'},
-  {id:'PAY-010',name:'ბექა ჩიტიძე',group:'ჯგუფი 401',sem:'II',fee:3100,paid:3100,rest:0,due:'30.06.2026',status:'paid'},
+  {id:'PAY-001',studentId:'BMA-2401',name:'ნინო მამულაძე',group:'ჯგუფი 101',sem:'II',fee:3100,paid:3100,rest:0,due:'30.06.2026',status:'paid'},
+  {id:'PAY-002',studentId:'BMA-2402',name:'გიორგი ბერიძე',group:'ჯგუფი 101',sem:'II',fee:3100,paid:0,rest:3100,due:'30.06.2026',status:'overdue'},
+  {id:'PAY-003',studentId:'BMA-2403',name:'მარიამ ჩხეიძე',group:'ჯგუფი 102',sem:'II',fee:3100,paid:3100,rest:0,due:'30.06.2026',status:'paid'},
+  {id:'PAY-004',studentId:'BMA-2404',name:'ლუკა კვარაცხელია',group:'ჯგუფი 102',sem:'II',fee:3100,paid:3100,rest:0,due:'30.06.2026',status:'paid'},
+  {id:'PAY-005',studentId:'BMA-2301',name:'ანა გელაშვილი',group:'ჯგუფი 201',sem:'II',fee:3100,paid:3100,rest:0,due:'30.06.2026',status:'paid'},
+  {id:'PAY-006',studentId:'BMA-2302',name:'დავით ხაჭაპურიძე',group:'ჯგუფი 201',sem:'II',fee:3100,paid:0,rest:3100,due:'30.06.2026',status:'overdue'},
+  {id:'PAY-007',studentId:'BMA-2303',name:'სოფო ნიჟარაძე',group:'ჯგუფი 201',sem:'II',fee:3100,paid:1550,rest:1550,due:'30.06.2026',status:'partial'},
+  {id:'PAY-008',studentId:'BMA-2201',name:'ვახო ლომიძე',group:'ჯგუფი 301',sem:'II',fee:3100,paid:1550,rest:1550,due:'30.06.2026',status:'partial'},
+  {id:'PAY-009',studentId:'BMA-2202',name:'ეკა თავდგირიძე',group:'ჯგუფი 301',sem:'II',fee:3100,paid:3100,rest:0,due:'30.06.2026',status:'paid'},
+  {id:'PAY-010',studentId:'BMA-2101',name:'ბექა ჩიტიძე',group:'ჯგუფი 401',sem:'II',fee:3100,paid:3100,rest:0,due:'30.06.2026',status:'paid'},
 ];
 const appsData=[
-  {id:'APP-001',name:'ნინო მამულაძე',type:'ცნობა',desc:'ცნობა სტუდენტის სტატუსის შესახებ — საბანკო',date:'08.07.2026',status:'pending'},
-  {id:'APP-002',name:'გიორგი ბერიძე',type:'გათავისუფლება',desc:'გათავისუფლება სამხედრო სავარჯიშოს გამო',date:'07.07.2026',status:'pending'},
-  {id:'APP-003',name:'მარიამ ჩხეიძე',type:'ცნობა',desc:'ცნობა ქართულ და ინგლისურ ენაზე',date:'07.07.2026',status:'pending'},
-  {id:'APP-004',name:'ლუკა კვარაცხელია',type:'გამოცდის შეცვლა',desc:'ანატომიის გამოცდის თარიღის გადაწევა',date:'06.07.2026',status:'pending'},
-  {id:'APP-005',name:'ანა გელაშვილი',type:'ტრანსკრიპტი',desc:'ოფიციალური ტრანსკრიპტი — ევროპა',date:'01.07.2026',status:'approved'},
-  {id:'APP-006',name:'ეკა თავდგირიძე',type:'ცნობა',desc:'ცნობა სტუდენტის სტატუსის შესახებ',date:'28.06.2026',status:'approved'},
-  {id:'APP-007',name:'ვახო ლომიძე',type:'გათავისუფლება',desc:'გათავისუფლება სამედიცინო ჩვენების გამო',date:'20.06.2026',status:'rejected'},
+  {id:'APP-001',studentId:'BMA-2401',name:'ნინო მამულაძე',type:'ცნობა',desc:'ცნობა სტუდენტის სტატუსის შესახებ — საბანკო',date:'08.07.2026',status:'pending'},
+  {id:'APP-002',studentId:'BMA-2402',name:'გიორგი ბერიძე',type:'გათავისუფლება',desc:'გათავისუფლება სამხედრო სავარჯიშოს გამო',date:'07.07.2026',status:'pending'},
+  {id:'APP-003',studentId:'BMA-2403',name:'მარიამ ჩხეიძე',type:'ცნობა',desc:'ცნობა ქართულ და ინგლისურ ენაზე',date:'07.07.2026',status:'pending'},
+  {id:'APP-004',studentId:'BMA-2404',name:'ლუკა კვარაცხელია',type:'გამოცდის შეცვლა',desc:'ანატომიის გამოცდის თარიღის გადაწევა',date:'06.07.2026',status:'pending'},
+  {id:'APP-005',studentId:'BMA-2301',name:'ანა გელაშვილი',type:'ტრანსკრიპტი',desc:'ოფიციალური ტრანსკრიპტი — ევროპა',date:'01.07.2026',status:'approved'},
+  {id:'APP-006',studentId:'BMA-2202',name:'ეკა თავდგირიძე',type:'ცნობა',desc:'ცნობა სტუდენტის სტატუსის შესახებ',date:'28.06.2026',status:'approved'},
+  {id:'APP-007',studentId:'BMA-2201',name:'ვახო ლომიძე',type:'გათავისუფლება',desc:'გათავისუფლება სამედიცინო ჩვენების გამო',date:'20.06.2026',status:'rejected'},
 ];
 const libraryData=[
   {isbn:'978-0-323-39985-3',title:'გრეის ანატომია',author:'გრეი ჰ.',cat:'ანატომია',copies:8,avail:5,type:'printed'},
@@ -809,26 +809,26 @@ const libraryData=[
   {isbn:'PDF-003',title:'სამედიცინო მიკრობიოლოგია (PDF)',author:'მიურეი R.',cat:'მიკრობიოლოგია',copies:999,avail:999,type:'digital'},
 ];
 const newsAdminData=[
-  {id:1,title:'შუალედური გამოცდების ცხრილი — ივლისი 2026',tag:'აუცილებელი',date:'28.06.2026',status:'published',views:312},
-  {id:2,title:'ბათუმის სამედიცინო აკადემია — I ადგილი ოლიმპიადაზე',tag:'სიახლე',date:'25.06.2026',status:'published',views:248},
-  {id:3,title:'ღია კარის დღე — 15 ივლისი',tag:'ღონისძიება',date:'22.06.2026',status:'published',views:189},
-  {id:4,title:'ახალი ლაბორატორია — სიმულაციური ცენტრი',tag:'სიახლე',date:'10.07.2026',status:'draft',views:0},
+  {id:'NEWS-001',title:'შუალედური გამოცდების ცხრილი — ივლისი 2026',tag:'აუცილებელი',date:'28.06.2026',status:'published',views:312},
+  {id:'NEWS-002',title:'ბათუმის სამედიცინო აკადემია — I ადგილი ოლიმპიადაზე',tag:'სიახლე',date:'25.06.2026',status:'published',views:248},
+  {id:'NEWS-003',title:'ღია კარის დღე — 15 ივლისი',tag:'ღონისძიება',date:'22.06.2026',status:'published',views:189},
+  {id:'NEWS-004',title:'ახალი ლაბორატორია — სიმულაციური ცენტრი',tag:'სიახლე',date:'10.07.2026',status:'draft',views:0},
 ];
 const surveysAdminData=[
-  {id:1,name:'სასწავლო პროცესის შეფასება — 2026',target:'ყველა',deadline:'15.07.2026',responses:187,total:312,link:'https://forms.gle/example1',status:'active'},
-  {id:2,name:'ბათუმის სამედიცინო აკადემიის სერვისების შეფასება',target:'სტუდენტები',deadline:'30.06.2026',responses:298,total:312,link:'https://forms.gle/example2',status:'expired'},
-  {id:3,name:'პედაგოგიური გამოკითხვა — I სემ.',target:'პედაგოგები',deadline:'20.01.2026',responses:22,total:24,link:'https://forms.gle/example3',status:'done'},
-  {id:4,name:'ახალი კურიკულუმის შეფასება',target:'ყველა',deadline:'01.08.2026',responses:0,total:336,link:'',status:'draft'},
+  {id:'SRV-001',name:'სასწავლო პროცესის შეფასება — 2026',target:'ყველა',deadline:'15.07.2026',responses:187,total:312,link:'https://forms.gle/example1',status:'active'},
+  {id:'SRV-002',name:'ბათუმის სამედიცინო აკადემიის სერვისების შეფასება',target:'სტუდენტები',deadline:'30.06.2026',responses:298,total:312,link:'https://forms.gle/example2',status:'expired'},
+  {id:'SRV-003',name:'პედაგოგიური გამოკითხვა — I სემ.',target:'პედაგოგები',deadline:'20.01.2026',responses:22,total:24,link:'https://forms.gle/example3',status:'done'},
+  {id:'SRV-004',name:'ახალი კურიკულუმის შეფასება',target:'ყველა',deadline:'01.08.2026',responses:0,total:336,link:'',status:'draft'},
 ];
 const jobsAdminData=[
-  {title:'ამბულატორიის ექიმი',company:'VivaМed',loc:'ბათუმი',type:'სრული განაკვეთი',salary:'800–1200₾',posted:'01.07.2026',apps:12,status:'active'},
-  {title:'ფარმაცევტული ასისტენტი',company:'Aversi',loc:'ბათუმი',type:'ნახევარი განაკვეთი',salary:'600₾+',posted:'25.06.2026',apps:8,status:'active'},
-  {title:'სტუდენტური სტაჟიორობა',company:'Adjara Hospital',loc:'ბათუმი',type:'სტაჟიორობა',salary:'400₾',posted:'15.06.2026',apps:24,status:'active'},
+  {id:'JOB-001',title:'ამბულატორიის ექიმი',company:'VivaМed',loc:'ბათუმი',type:'სრული განაკვეთი',salary:'800–1200₾',posted:'01.07.2026',apps:12,status:'active'},
+  {id:'JOB-002',title:'ფარმაცევტული ასისტენტი',company:'Aversi',loc:'ბათუმი',type:'ნახევარი განაკვეთი',salary:'600₾+',posted:'25.06.2026',apps:8,status:'active'},
+  {id:'JOB-003',title:'სტუდენტური სტაჟიორობა',company:'Adjara Hospital',loc:'ბათუმი',type:'სტაჟიორობა',salary:'400₾',posted:'15.06.2026',apps:24,status:'active'},
 ];
 const msgsData=[
-  {id:1,from:'ნინო მამულაძე',role:'სტუდენტი',subj:'გამოცდის თარიღი',body:'გამარჯობა! გთხოვთ განმარტოთ ანატომიის გამოცდის ზუსტი თარიღი.',date:'09.07.2026',read:false},
-  {id:2,from:'ნინო კაპანაძე',role:'პედაგოგი',subj:'ჟურნალის განახლება',body:'ადმინისტრაციას ვაცნობებ, რომ 02.07 გაკვეთილის ჟურნალი განახლებულია.',date:'08.07.2026',read:false},
-  {id:3,from:'გიორგი ბახტაძე',role:'პედაგოგი',subj:'მოდულის განრიგი',body:'ფიზიოლოგია II-ის განრიგი შეცვლილია.',date:'05.07.2026',read:true},
+  {id:'MSG-001',fromId:'BMA-2401',from:'ნინო მამულაძე',role:'სტუდენტი',subj:'გამოცდის თარიღი',body:'გამარჯობა! გთხოვთ განმარტოთ ანატომიის გამოცდის ზუსტი თარიღი.',date:'09.07.2026',read:false},
+  {id:'MSG-002',fromId:'T-001',from:'ნინო კაპანაძე',role:'პედაგოგი',subj:'ჟურნალის განახლება',body:'ადმინისტრაციას ვაცნობებ, რომ 02.07 გაკვეთილის ჟურნალი განახლებულია.',date:'08.07.2026',read:false},
+  {id:'MSG-003',fromId:'T-002',from:'გიორგი ბახტაძე',role:'პედაგოგი',subj:'მოდულის განრიგი',body:'ფიზიოლოგია II-ის განრიგი შეცვლილია.',date:'05.07.2026',read:true},
 ];
 const savedReports=[
   {name:'დასწრება — I სემ. 2026',date:'01.07.2026',type:'excel'},
@@ -843,15 +843,15 @@ const scheduleData=[
   ['მიკრობ.\nჯგ.202','—','კლინ.ანატ.\nჯგ.401','—','ნეირო-ანატ.\nჯგ.301'],
 ];
 const gradesData=[
-  {name:'ნინო მამულაძე',module:'ანატომია I',group:'ჯგ.101',mid:78,fin:82},
-  {name:'გიორგი ბერიძე',module:'ანატომია I',group:'ჯგ.101',mid:55,fin:48},
-  {name:'მარიამ ჩხეიძე',module:'ანატომია I',group:'ჯგ.102',mid:91,fin:88},
-  {name:'ლუკა კვარაცხელია',module:'ანატომია I',group:'ჯგ.102',mid:70,fin:74},
-  {name:'ანა გელაშვილი',module:'ფიზიოლოგია II',group:'ჯგ.201',mid:95,fin:93},
-  {name:'დავით ხაჭაპურიძე',module:'ფიზიოლოგია II',group:'ჯგ.201',mid:44,fin:38},
-  {name:'სოფო ნიჟარაძე',module:'ფიზიოლოგია II',group:'ჯგ.201',mid:80,fin:77},
-  {name:'ვახო ლომიძე',module:'ნეირო-ანატომია',group:'ჯგ.301',mid:62,fin:58},
-  {name:'ეკა თავდგირიძე',module:'კლინ.ანატომია',group:'ჯგ.401',mid:88,fin:85},
+  {id:'GRD-001',studentId:'BMA-2401',moduleCode:'ANAT-101',name:'ნინო მამულაძე',module:'ანატომია I',group:'ჯგ.101',mid:78,fin:82},
+  {id:'GRD-002',studentId:'BMA-2402',moduleCode:'ANAT-101',name:'გიორგი ბერიძე',module:'ანატომია I',group:'ჯგ.101',mid:55,fin:48},
+  {id:'GRD-003',studentId:'BMA-2403',moduleCode:'ANAT-101',name:'მარიამ ჩხეიძე',module:'ანატომია I',group:'ჯგ.102',mid:91,fin:88},
+  {id:'GRD-004',studentId:'BMA-2404',moduleCode:'ANAT-101',name:'ლუკა კვარაცხელია',module:'ანატომია I',group:'ჯგ.102',mid:70,fin:74},
+  {id:'GRD-005',studentId:'BMA-2301',moduleCode:'PHYS-201',name:'ანა გელაშვილი',module:'ფიზიოლოგია II',group:'ჯგ.201',mid:95,fin:93},
+  {id:'GRD-006',studentId:'BMA-2302',moduleCode:'PHYS-201',name:'დავით ხაჭაპურიძე',module:'ფიზიოლოგია II',group:'ჯგ.201',mid:44,fin:38},
+  {id:'GRD-007',studentId:'BMA-2303',moduleCode:'PHYS-201',name:'სოფო ნიჟარაძე',module:'ფიზიოლოგია II',group:'ჯგ.201',mid:80,fin:77},
+  {id:'GRD-008',studentId:'BMA-2201',moduleCode:'NANAT-301',name:'ვახო ლომიძე',module:'ნეირო-ანატომია',group:'ჯგ.301',mid:62,fin:58},
+  {id:'GRD-009',studentId:'BMA-2202',moduleCode:'CANAT-401',name:'ეკა თავდგირიძე',module:'კლინ.ანატომია',group:'ჯგ.401',mid:88,fin:85},
 ];
 </script>
 <script>
@@ -906,17 +906,17 @@ function filterTeachers(q){renderTeachers(teachers.filter(t=>t.name.includes(q)|
 function renderGroups(){
   const el=document.getElementById('groups-grid');
   if(!el)return;
-  el.innerHTML=groupsData.map((g,i)=>`
-    <div class="card" style="cursor:pointer" onclick="viewGroup(${i})">
-      <div class="ch"><div class="ct">${g.name}</div><span class="bd ${g.active?'bd-g':'bd-n'}">${g.active?'აქტიური':'დასრულებული'}</span></div>
+  el.innerHTML=groupsData.map(g=>`
+    <div class="card" style="cursor:pointer" onclick="viewGroup('${g.id}')">
+      <div class="ch"><div class="ct">${g.name} <span style="font-size:10px;color:var(--text3);font-weight:400">${g.id}</span></div><span class="bd ${g.active?'bd-g':'bd-n'}">${g.active?'აქტიური':'დასრულებული'}</span></div>
       <div class="cb">
-        <div style="font-size:12px;color:var(--text2);margin-bottom:10px">${g.year}</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:10px">${g.year} · <span style="font-size:10px;color:var(--text3)">${g.teacherId}</span></div>
         <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px"><span>სტუდენტები</span><strong>${g.students}</strong></div>
         <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px"><span>კლასის ხელმძ.</span><strong style="font-size:12px">${g.teacher}</strong></div>
         <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px"><span>დასწრება</span><span class="bd ${g.att>=80?'bd-g':g.att>=75?'bd-a':'bd-r'}">${g.att}%</span></div>
         <div style="display:flex;gap:6px;margin-top:12px">
-          <button class="btn btn-xs btn-o" onclick="event.stopPropagation();viewGroup(${i})">დეტალები</button>
-          <button class="btn btn-xs btn-ghost" onclick="event.stopPropagation();editGroupModal(${i})">✏ რედ.</button>
+          <button class="btn btn-xs btn-o" onclick="event.stopPropagation();viewGroup('${g.id}')">დეტალები</button>
+          <button class="btn btn-xs btn-ghost" onclick="event.stopPropagation();editGroupModal('${g.id}')">✏ რედ.</button>
         </div>
       </div>
     </div>`).join('');
@@ -925,20 +925,20 @@ function renderGroups(){
 function renderModules(){
   const tb=document.getElementById('modules-tbody');
   if(!tb)return;
-  tb.innerHTML=modulesData.map((m,i)=>{
+  tb.innerHTML=modulesData.map(m=>{
     const attBd=m.att>=80?'bd-g':m.att>=75?'bd-a':'bd-r';
     return `<tr>
       <td style="font-size:11px;font-weight:700;color:var(--blue)">${m.code}</td>
       <td><strong>${m.name}</strong></td>
-      <td>${m.teacher}</td>
+      <td><div style="font-size:12px">${m.teacher}</div><div style="font-size:10px;color:var(--text3)">${m.teacherId}</div></td>
       <td style="font-size:12px">${m.groups}</td>
       <td style="text-align:center">${m.credits}</td>
       <td style="text-align:center">${m.students}</td>
       <td><span class="bd ${attBd}">${m.att}%</span></td>
       <td><span class="bd bd-g">● აქტიური</span></td>
       <td style="white-space:nowrap">
-        <button class="btn btn-xs btn-ghost" onclick="editModuleModal(${i})">✏</button>
-        <button class="btn btn-xs btn-r" onclick="removeModule(${i})">✕</button>
+        <button class="btn btn-xs btn-ghost" onclick="editModuleModal('${m.code}')">✏</button>
+        <button class="btn btn-xs btn-r" onclick="removeModule('${m.code}')">✕</button>
       </td></tr>`;
   }).join('');
 }
@@ -959,7 +959,7 @@ function renderPayments(list){
     const stBd=p.status==='paid'?'<span class="bd bd-g">✓ გადახდილი</span>':p.status==='overdue'?'<span class="bd bd-r">✗ ვადაგადასული</span>':p.status==='partial'?'<span class="bd bd-a">⏳ ნაწილობრივი</span>':'<span class="bd bd-n">○ მოლოდინი</span>';
     return `<tr>
       <td style="font-size:11px;color:var(--text3)">${p.id}</td>
-      <td><strong>${p.name}</strong></td>
+      <td><div style="font-weight:600">${p.name}</div><div style="font-size:10px;cursor:pointer;color:var(--blue)" onclick="viewStudent('${p.studentId}')">${p.studentId} ↗</div></td>
       <td style="font-size:12px">${p.group}</td>
       <td>${p.sem}</td>
       <td><strong>${p.fee}₾</strong></td>
@@ -984,7 +984,7 @@ function renderApps(filter){
     const btns=a.status==='pending'?`<button class="btn btn-xs btn-ghost" onclick="viewAppDetail('${a.id}')">👁</button> <button class="btn btn-xs btn-g" onclick="approveApp('${a.name}','${a.id}')">✓ დამტკ.</button> <button class="btn btn-xs btn-r" onclick="rejectApp('${a.id}')">✕ უარი</button>`:`<button class="btn btn-xs btn-ghost" onclick="viewAppDetail('${a.id}')">👁</button>`;
     return `<tr>
       <td style="font-size:11px;color:var(--text3)">${a.id}</td>
-      <td><strong>${a.name}</strong></td>
+      <td><div style="font-weight:600">${a.name}</div><div style="font-size:10px;cursor:pointer;color:var(--blue)" onclick="viewStudent('${a.studentId}')">${a.studentId} ↗</div></td>
       <td><span class="bd bd-b">${a.type}</span></td>
       <td style="font-size:12px;max-width:200px">${a.desc}</td>
       <td style="font-size:12px">${a.date}</td>
@@ -1003,7 +1003,7 @@ function renderLibrary(list){
   const tb=document.getElementById('library-tbody');
   if(!tb)return;
   if(!list)list=libraryData;
-  tb.innerHTML=list.map((b,i)=>`<tr>
+  tb.innerHTML=list.map(b=>`<tr>
     <td style="font-size:11px;color:var(--text3)">${b.isbn}</td>
     <td><strong>${b.title}</strong>${b.url?` <a href="${b.url}" target="_blank" style="font-size:10px;color:var(--blue)">↗</a>`:''}</td>
     <td>${b.author}</td>
@@ -1012,8 +1012,8 @@ function renderLibrary(list){
     <td style="text-align:center">${b.type==='digital'?'<span class="bd bd-g">ყოველთვის</span>':`<span class="bd ${b.avail>0?'bd-g':'bd-r'}">${b.avail}</span>`}</td>
     <td>${b.type==='digital'?'<span class="bd bd-p">💻 ელ.</span>':'<span class="bd bd-b">📚 ბეჭ.</span>'}</td>
     <td style="white-space:nowrap">
-      <button class="btn btn-xs btn-ghost" onclick="editBookModal(${i})">✏</button>
-      <button class="btn btn-xs btn-r" onclick="removeBook(${i})">✕</button>
+      <button class="btn btn-xs btn-ghost" onclick="editBookModal('${b.isbn}')">✏</button>
+      <button class="btn btn-xs btn-r" onclick="removeBook('${b.isbn}')">✕</button>
     </td></tr>`).join('');
 }
 function applyLibFilters(){
@@ -1031,15 +1031,15 @@ function renderNewsAdmin(filter){
   const el=document.getElementById('news-admin-grid');
   if(!el)return;
   const list=filter&&filter!=='all'?newsAdminData.filter(n=>n.status===filter):newsAdminData;
-  el.innerHTML=list.map((n,i)=>`
+  el.innerHTML=list.map(n=>`
     <div class="card" style="margin-bottom:12px">
       <div class="ch">
-        <div><div style="font-size:14px;font-weight:700">${n.title}</div><div style="font-size:12px;color:var(--text3);margin-top:2px">${n.tag} · ${n.date}</div></div>
+        <div><div style="font-size:14px;font-weight:700">${n.title}</div><div style="font-size:12px;color:var(--text3);margin-top:2px"><span style="font-weight:700;color:var(--blue)">${n.id}</span> · ${n.tag} · ${n.date}</div></div>
         <div style="display:flex;gap:8px;align-items:center">
           ${n.status==='published'?'<span class="bd bd-g">✓ გამოქვეყნებული</span>':'<span class="bd bd-n">📝 დრაფტი</span>'}
           <span style="font-size:11px;color:var(--text3)">👁 ${n.views}</span>
-          <button class="btn btn-xs btn-ghost" onclick="editNewsModal(${i})">✏</button>
-          <button class="btn btn-xs btn-r" onclick="removeNews(${i})">✕</button>
+          <button class="btn btn-xs btn-ghost" onclick="editNewsModal('${n.id}')">✏</button>
+          <button class="btn btn-xs btn-r" onclick="removeNews('${n.id}')">✕</button>
         </div>
       </div>
     </div>`).join('');
@@ -1053,14 +1053,14 @@ function filterNews(f,el){
 function renderSurveysAdmin(){
   const el=document.getElementById('surveys-admin-list');
   if(!el)return;
-  el.innerHTML=surveysAdminData.map((s,i)=>{
+  el.innerHTML=surveysAdminData.map(s=>{
     const stBd=s.status==='active'?'<span class="bd bd-a">● აქტიური</span>':s.status==='expired'?'<span class="bd bd-r">ვადა გასული</span>':s.status==='done'?'<span class="bd bd-g">✓ დასრულებული</span>':'<span class="bd bd-n">📝 დრაფტი</span>';
     const pct=s.total>0?Math.round(s.responses/s.total*100):0;
     return `<div class="card" style="margin-bottom:12px">
       <div class="ch">
         <div style="flex:1">
           <div style="font-size:14px;font-weight:700">${s.name}</div>
-          <div style="font-size:12px;color:var(--text3);margin-top:2px">სამიზნე: ${s.target} · ვადა: ${s.deadline}</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:2px"><span style="font-weight:700;color:var(--blue)">${s.id}</span> · სამიზნე: ${s.target} · ვადა: ${s.deadline}</div>
           ${s.link?`<a href="${s.link}" target="_blank" style="font-size:11px;color:var(--blue)">${s.link} ↗</a>`:'<span style="font-size:11px;color:var(--text3)">ბმული არ არის</span>'}
         </div>
         <div style="text-align:right;flex-shrink:0">
@@ -1070,10 +1070,10 @@ function renderSurveysAdmin(){
         </div>
       </div>
       <div class="cb" style="padding:10px 18px;display:flex;gap:8px">
-        <button class="btn btn-xs btn-ghost" onclick="editSurveyModal(${i})">✏ რედ.</button>
-        <button class="btn btn-xs btn-b" onclick="viewSurveyResults(${i})">📊 შედეგები</button>
-        ${s.status==='draft'?`<button class="btn btn-xs btn-g" onclick="publishSurvey(${i})">▶ გამოქვეყნება</button>`:''}
-        <button class="btn btn-xs btn-r" onclick="removeSurvey(${i})">✕</button>
+        <button class="btn btn-xs btn-ghost" onclick="editSurveyModal('${s.id}')">✏ რედ.</button>
+        <button class="btn btn-xs btn-b" onclick="viewSurveyResults('${s.id}')">📊 შედეგები</button>
+        ${s.status==='draft'?`<button class="btn btn-xs btn-g" onclick="publishSurvey('${s.id}')">▶ გამოქვეყნება</button>`:''}
+        <button class="btn btn-xs btn-r" onclick="removeSurvey('${s.id}')">✕</button>
       </div>
     </div>`;
   }).join('');
@@ -1082,16 +1082,16 @@ function renderSurveysAdmin(){
 function renderCareerAdmin(){
   const el=document.getElementById('career-admin-list');
   if(!el)return;
-  el.innerHTML=jobsAdminData.map((j,i)=>`
+  el.innerHTML=jobsAdminData.map(j=>`
     <div class="card" style="margin-bottom:12px">
       <div class="ch">
-        <div><div style="font-size:14px;font-weight:700">${j.title}</div><div style="font-size:12px;color:var(--text3);margin-top:2px">${j.company} · ${j.loc} · ${j.type}</div></div>
+        <div><div style="font-size:14px;font-weight:700">${j.title}</div><div style="font-size:12px;color:var(--text3);margin-top:2px"><span style="font-weight:700;color:var(--blue)">${j.id}</span> · ${j.company} · ${j.loc} · ${j.type}</div></div>
         <div style="display:flex;gap:8px;align-items:center">
           <span class="bd bd-g">● ${j.status==='active'?'აქტიური':'დასრულებული'}</span>
           <span style="font-size:12px;color:var(--text2)">📋 ${j.apps} განაცხადი</span>
           <span style="font-size:12px;color:var(--text3)">${j.posted}</span>
-          <button class="btn btn-xs btn-ghost" onclick="editJobModal(${i})">✏</button>
-          <button class="btn btn-xs btn-r" onclick="removeJob(${i})">✕</button>
+          <button class="btn btn-xs btn-ghost" onclick="editJobModal('${j.id}')">✏</button>
+          <button class="btn btn-xs btn-r" onclick="removeJob('${j.id}')">✕</button>
         </div>
       </div>
     </div>`).join('');
@@ -1102,11 +1102,12 @@ function renderMessages(filter){
   if(!el)return;
   const list=msgsData;
   el.innerHTML=list.map(m=>`
-    <div onclick="openMsg(${m.id})" style="padding:14px 18px;border-bottom:1px solid var(--border);cursor:pointer;${!m.read?'background:var(--blue-lt)':''}">
+    <div onclick="openMsg('${m.id}')" style="padding:14px 18px;border-bottom:1px solid var(--border);cursor:pointer;${!m.read?'background:var(--blue-lt)':''}">
       <div style="display:flex;justify-content:space-between;margin-bottom:3px">
         <strong style="font-size:13px">${m.from}</strong>
         <span style="font-size:11px;color:var(--text3)">${m.date}</span>
       </div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:2px">${m.id} · <span style="color:var(--blue)">${m.fromId}</span></div>
       <div style="font-size:12px;font-weight:600;color:var(--navy)">${m.subj}</div>
       <div style="font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.body.substring(0,60)}...</div>
       ${!m.read?'<span class="bd bd-b" style="margin-top:4px;font-size:10px">ახალი</span>':''}
@@ -1118,7 +1119,7 @@ function filterMsgs(f,el){
   renderMessages(f);
 }
 function openMsg(id){
-  const m=msgsData.find(x=>x.id===id);if(!m)return;
+  const m=msgsData.find(x=>x.id===id||x.id===String(id));if(!m)return;
   m.read=true;
   document.getElementById('msg-detail-title').textContent=m.subj;
   document.getElementById('msg-detail-body').innerHTML=`
@@ -1129,7 +1130,7 @@ function openMsg(id){
     <p style="line-height:1.7;font-size:13px;color:var(--text1)">${m.body}</p>
     <div style="margin-top:20px">
       <textarea class="fi" placeholder="პასუხი..." style="min-height:80px;margin-bottom:8px" id="reply-box-${id}"></textarea>
-      <button class="btn btn-b btn-sm" onclick="sendReply(${id})">გაგზავნა ↗</button>
+      <button class="btn btn-b btn-sm" onclick="sendReply('${id}')">გაგზავნა ↗</button>
     </div>`;
   renderMessages();
 }
@@ -1142,8 +1143,9 @@ function renderGrades(){
     const total=(g.mid||0)+(g.fin||0);
     const stBd=total>=51?'<span class="bd bd-g">✓ ჩაბ.</span>':'<span class="bd bd-r">✗ ვერ ჩაბ.</span>';
     return `<tr>
-      <td><strong>${g.name}</strong></td>
-      <td style="font-size:12px">${g.module}</td>
+      <td style="font-size:10px;color:var(--text3)">${g.id}</td>
+      <td><div style="font-weight:600">${g.name}</div><div style="font-size:10px;cursor:pointer;color:var(--blue)" onclick="viewStudent('${g.studentId}')">${g.studentId} ↗</div></td>
+      <td><div style="font-size:11px;font-weight:700;color:var(--blue)">${g.moduleCode}</div><div style="font-size:12px">${g.module}</div></td>
       <td style="font-size:12px">${g.group}</td>
       <td style="text-align:center">${g.mid||'—'}</td>
       <td style="text-align:center">${g.fin||'—'}</td>
@@ -1266,24 +1268,25 @@ function addGroupModal(){
     <div class="fg"><label class="fl">ჯგუფის სახელი</label><input class="fi" id="ng-name" placeholder="ჯგუფი XXX"></div>
     <div class="fg"><label class="fl">სასწ. წელი</label><select class="fi" id="ng-year"><option>I სასწ. წელი</option><option>II სასწ. წელი</option><option>III სასწ. წელი</option><option>IV სასწ. წელი</option><option>V სასწ. წელი</option><option>VI სასწ. წელი</option></select></div>
     <div class="fg"><label class="fl">კლ. ხელმძ. პედ.</label><select class="fi" id="ng-teacher">${teachers.map(t=>'<option>'+t.name+'</option>').join('')}</select></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="const n=document.getElementById('ng-name').value.trim();if(!n){toast('შეავსეთ სახელი','error');return;}groupsData.push({name:n,year:document.getElementById('ng-year').value,students:0,teacher:document.getElementById('ng-teacher').value,att:0,active:true});renderGroups();closeModal();toast('ჯგუფი შექმნილია ✓','success')">✓ შექმნა</button>`);
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="const n=document.getElementById('ng-name').value.trim();if(!n){toast('შეავსეთ სახელი','error');return;}const newGrpId='GRP-'+n.replace(/[^0-9]/g,'').padStart(3,'0');groupsData.push({id:newGrpId||'GRP-NEW'+Date.now(),name:n,year:document.getElementById('ng-year').value,students:0,teacher:document.getElementById('ng-teacher').value,att:0,active:true});renderGroups();closeModal();toast('ჯგუფი შექმნილია ✓','success')">✓ შექმნა</button>`);
 }
-function viewGroup(i){
-  const g=groupsData[i];
+function viewGroup(id){
+  const g=groupsData.find(x=>x.id===id);if(!g)return;
   const stuList=students.filter(s=>s.group===g.name);
-  showModal('ჯგუფი: '+g.name,`
-    <div style="margin-bottom:14px"><span class="bd bd-b">${g.year}</span> <span class="bd bd-g">${g.att}% დასწრება</span></div>
-    <div style="font-size:13px;margin-bottom:14px"><strong>კლ. ხელმძ.:</strong> ${g.teacher}</div>
+  showModal('ჯგუფი: '+g.name+' ('+g.id+')',`
+    <div style="margin-bottom:14px"><span class="bd bd-b">${g.year}</span> <span class="bd bd-g">${g.att}% დასწრება</span> <span class="bd bd-n">${g.id}</span></div>
+    <div style="font-size:13px;margin-bottom:4px"><strong>კლ. ხელმძ.:</strong> ${g.teacher}</div>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:14px">${g.teacherId}</div>
     <div style="font-size:12px;font-weight:700;color:var(--text3);margin-bottom:8px">სტუდენტები (${stuList.length})</div>
-    ${stuList.length?stuList.map(s=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px"><span>${s.name}</span><span class="bd ${s.att>=80?'bd-g':s.att>=75?'bd-a':'bd-r'}">${s.att}%</span></div>`).join(''):'<p style="color:var(--text3)">სტუდენტები არ არის</p>'}`,
-    `<button class="btn btn-n" onclick="closeModal()">დახურვა</button><button class="btn btn-b" onclick="closeModal();editGroupModal(${i})">✏ რედ.</button>`,'lg');
+    ${stuList.length?stuList.map(s=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px"><span>${s.name} <span style="font-size:10px;color:var(--text3)">${s.id}</span></span><span class="bd ${s.att>=80?'bd-g':s.att>=75?'bd-a':'bd-r'}">${s.att}%</span></div>`).join(''):'<p style="color:var(--text3)">სტუდენტები არ არის</p>'}`,
+    `<button class="btn btn-n" onclick="closeModal()">დახურვა</button><button class="btn btn-b" onclick="closeModal();editGroupModal('${g.id}')">✏ რედ.</button>`,'lg');
 }
-function editGroupModal(i){
-  const g=groupsData[i];
+function editGroupModal(id){
+  const g=groupsData.find(x=>x.id===id);if(!g)return;
   showModal('ჯგუფის რედ. — '+g.name,`
     <div class="fg"><label class="fl">სახელი</label><input class="fi" id="eg-name" value="${g.name}"></div>
     <div class="fg"><label class="fl">კლ. ხელმძ.</label><select class="fi" id="eg-teacher">${teachers.map(t=>`<option ${t.name===g.teacher?'selected':''}>${t.name}</option>`).join('')}</select></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="groupsData[${i}].name=document.getElementById('eg-name').value;groupsData[${i}].teacher=document.getElementById('eg-teacher').value;renderGroups();closeModal();toast('ჯგუფი განახლდა ✓','success')">💾 შენახვა</button>`);
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const g=groupsData.find(x=>x.id==='${id}');if(g){g.name=document.getElementById('eg-name').value;g.teacher=document.getElementById('eg-teacher').value;}renderGroups();closeModal();toast('ჯგუფი განახლდა ✓','success')})()">💾 შენახვა</button>`);
 }
 
 function addModuleModal(){
@@ -1300,17 +1303,18 @@ function saveNewModule(){
   modulesData.push({code:document.getElementById('nm-code').value,name,teacher:document.getElementById('nm-teacher').value,groups:document.getElementById('nm-groups').value,credits:+document.getElementById('nm-credits').value,students:0,att:0,status:'active'});
   renderModules();closeModal();toast('მოდული შექმნილია ✓','success');
 }
-function editModuleModal(i){
-  const m=modulesData[i];
+function editModuleModal(code){
+  const m=modulesData.find(x=>x.code===code);if(!m)return;
   showModal('მოდულის რედ. — '+m.name,`
     <div class="fg"><label class="fl">სახელი</label><input class="fi" id="em-name" value="${m.name}"></div>
     <div class="fg"><label class="fl">პედაგოგი</label><select class="fi" id="em-teacher">${teachers.map(t=>`<option ${t.name===m.teacher?'selected':''}>${t.name}</option>`).join('')}</select></div>
-    <div class="fg2"><div><label class="fl">კოდი</label><input class="fi" id="em-code" value="${m.code}"></div><div><label class="fl">კრედ.</label><input class="fi" id="em-credits" type="number" value="${m.credits}"></div></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="modulesData[${i}].name=document.getElementById('em-name').value;modulesData[${i}].teacher=document.getElementById('em-teacher').value;renderModules();closeModal();toast('განახლდა ✓','success')">💾 შენახვა</button>`);
+    <div class="fg2"><div><label class="fl">კოდი (ID)</label><input class="fi" id="em-code" value="${m.code}" readonly></div><div><label class="fl">კრედ.</label><input class="fi" id="em-credits" type="number" value="${m.credits}"></div></div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const m=modulesData.find(x=>x.code==='${code}');if(m){m.name=document.getElementById('em-name').value;m.teacher=document.getElementById('em-teacher').value;}renderModules();closeModal();toast('განახლდა ✓','success')})()">💾 შენახვა</button>`);
 }
-function removeModule(i){
+function removeModule(code){
+  const i=modulesData.findIndex(x=>x.code===code);
   showModal('მოდულის წაშლა','<p style="color:var(--red)">⚠ გსურთ ამ მოდულის წაშლა?</p>',
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="modulesData.splice(${i},1);renderModules();closeModal();toast('წაშლილია','warn')">✕ წაშლა</button>`);
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="const i=modulesData.findIndex(x=>x.code==='${code}');if(i>-1)modulesData.splice(i,1);renderModules();closeModal();toast('წაშლილია','warn')">✕ წაშლა</button>`);
 }
 
 function addLessonModal(){
@@ -1394,17 +1398,18 @@ function saveNewBook(){
   libraryData.push({isbn:document.getElementById('nb-isbn').value||'N/A',title,author:document.getElementById('nb-author').value,cat:document.getElementById('nb-cat').value,copies,avail:copies,type:nbType,url:nbType==='digital'?document.getElementById('nb-url').value:''});
   renderLibrary();closeModal();toast('წიგნი დამატებულია ✓','success');
 }
-function editBookModal(i){
-  const b=libraryData[i];
+function editBookModal(isbn){
+  const b=libraryData.find(x=>x.isbn===isbn);if(!b)return;
   showModal('წიგნის რედ. — '+b.title,`
+    <div class="fg"><label class="fl">ISBN / ID</label><input class="fi" value="${b.isbn}" readonly></div>
     <div class="fg"><label class="fl">სათაური</label><input class="fi" id="eb-title" value="${b.title}"></div>
     <div class="fg"><label class="fl">ავტორი</label><input class="fi" id="eb-author" value="${b.author}"></div>
     <div class="fg"><label class="fl">ასლები</label><input class="fi" id="eb-copies" type="number" value="${b.copies}"></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="libraryData[${i}].title=document.getElementById('eb-title').value;libraryData[${i}].author=document.getElementById('eb-author').value;libraryData[${i}].copies=+document.getElementById('eb-copies').value;renderLibrary();closeModal();toast('განახლდა ✓','success')">💾 შენახვა</button>`);
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const b=libraryData.find(x=>x.isbn===${JSON.stringify(isbn)});if(b){b.title=document.getElementById('eb-title').value;b.author=document.getElementById('eb-author').value;b.copies=+document.getElementById('eb-copies').value;}renderLibrary();closeModal();toast('განახლდა ✓','success')})()">💾 შენახვა</button>`);
 }
-function removeBook(i){
+function removeBook(isbn){
   showModal('წიგნის წაშლა','<p style="color:var(--red)">⚠ გსურთ ამ ჩანაწერის წაშლა?</p>',
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="libraryData.splice(${i},1);renderLibrary();closeModal();toast('წაშლილია','warn')">✕ წაშლა</button>`);
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="const i=libraryData.findIndex(x=>x.isbn===${JSON.stringify(isbn)});if(i>-1)libraryData.splice(i,1);renderLibrary();closeModal();toast('წაშლილია','warn')">✕ წაშლა</button>`);
 }
 
 function addNewsModal(){
@@ -1418,20 +1423,20 @@ function addNewsModal(){
 function saveNews(status){
   const title=document.getElementById('nn-title').value.trim();
   if(!title){toast('შეავსეთ სათაური','error');return;}
-  newsAdminData.unshift({id:newsAdminData.length+1,title,tag:document.getElementById('nn-tag').value,date:'09.07.2026',status,views:0});
+  const newNid='NEWS-'+String(newsAdminData.length+1).padStart(3,'0');newsAdminData.unshift({id:newNid,title,tag:document.getElementById('nn-tag').value,date:'09.07.2026',status,views:0});
   renderNewsAdmin('all');closeModal();
   toast(status==='published'?'სიახლე გამოქვეყნდა ✓':'დრაფტი შენახულია','success');
 }
-function editNewsModal(i){
-  const n=newsAdminData[i];
-  showModal('სიახლის რედ.',`
+function editNewsModal(id){
+  const n=newsAdminData.find(x=>x.id===id);if(!n)return;
+  showModal('სიახლის რედ. — '+n.id,`
     <div class="fg"><label class="fl">სათაური</label><input class="fi" id="en-title" value="${n.title}"></div>
     <div class="fg"><label class="fl">ტეგი</label><select class="fi" id="en-tag"><option ${n.tag==='სიახლე'?'selected':''}>სიახლე</option><option ${n.tag==='ღონისძიება'?'selected':''}>ღონისძიება</option><option ${n.tag==='აუცილებელი'?'selected':''}>აუცილებელი</option></select></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r btn-sm" onclick="newsAdminData[${i}].status=newsAdminData[${i}].status==='published'?'draft':'published';renderNewsAdmin('all');closeModal();toast('სტატუსი შეიცვალა','info')">🔄 სტატუსი</button><button class="btn btn-b" onclick="newsAdminData[${i}].title=document.getElementById('en-title').value;newsAdminData[${i}].tag=document.getElementById('en-tag').value;renderNewsAdmin('all');closeModal();toast('განახლდა ✓','success')">💾 შენახვა</button>`);
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r btn-sm" onclick="(function(){const n=newsAdminData.find(x=>x.id==='${id}');if(n)n.status=n.status==='published'?'draft':'published';renderNewsAdmin('all');closeModal();toast('სტატუსი შეიცვალა','info')})()">🔄 სტატუსი</button><button class="btn btn-b" onclick="(function(){const n=newsAdminData.find(x=>x.id==='${id}');if(n){n.title=document.getElementById('en-title').value;n.tag=document.getElementById('en-tag').value;}renderNewsAdmin('all');closeModal();toast('განახლდა ✓','success')})()">💾 შენახვა</button>`);
 }
-function removeNews(i){
+function removeNews(id){
   showModal('სიახლის წაშლა','<p style="color:var(--red)">⚠ სიახლე წაიშლება.</p>',
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="newsAdminData.splice(${i},1);renderNewsAdmin('all');closeModal();toast('წაშლილია','warn')">✕ წაშლა</button>`);
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="const i=newsAdminData.findIndex(x=>x.id==='${id}');if(i>-1)newsAdminData.splice(i,1);renderNewsAdmin('all');closeModal();toast('წაშლილია','warn')">✕ წაშლა</button>`);
 }
 
 function addSurveyModal(){
@@ -1445,20 +1450,20 @@ function saveSurvey(status){
   const name=document.getElementById('nsv-name').value.trim();
   if(!name){toast('შეავსეთ სახელი','error');return;}
   const dl=document.getElementById('nsv-deadline').value;
-  surveysAdminData.unshift({id:surveysAdminData.length+1,name,target:document.getElementById('nsv-target').value,deadline:dl||'—',responses:0,total:312,link:document.getElementById('nsv-link').value,status});
+  const newSrvId='SRV-'+String(surveysAdminData.length+1).padStart(3,'0');surveysAdminData.unshift({id:newSrvId,name,target:document.getElementById('nsv-target').value,deadline:dl||'—',responses:0,total:312,link:document.getElementById('nsv-link').value,status});
   renderSurveysAdmin();closeModal();
   toast(status==='active'?'გამოკითხვა გამოქვეყნდა ✓':'დრაფტი შენახულია','success');
 }
-function editSurveyModal(i){
-  const s=surveysAdminData[i];
-  showModal('გამოკითხვის რედ.',`
+function editSurveyModal(id){
+  const s=surveysAdminData.find(x=>x.id===id);if(!s)return;
+  showModal('გამოკითხვის რედ. — '+s.id,`
     <div class="fg"><label class="fl">სახელი</label><input class="fi" id="esv-name" value="${s.name}"></div>
     <div class="fg"><label class="fl">Google Forms ბმული</label><input class="fi" id="esv-link" value="${s.link||''}"></div>
     <div class="fg"><label class="fl">ბოლო ვადა</label><input class="fi" id="esv-deadline" value="${s.deadline}"></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="surveysAdminData[${i}].name=document.getElementById('esv-name').value;surveysAdminData[${i}].link=document.getElementById('esv-link').value;surveysAdminData[${i}].deadline=document.getElementById('esv-deadline').value;renderSurveysAdmin();closeModal();toast('განახლდა ✓','success')">💾 შენახვა</button>`);
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const s=surveysAdminData.find(x=>x.id==='${id}');if(s){s.name=document.getElementById('esv-name').value;s.link=document.getElementById('esv-link').value;s.deadline=document.getElementById('esv-deadline').value;}renderSurveysAdmin();closeModal();toast('განახლდა ✓','success')})()">💾 შენახვა</button>`);
 }
-function viewSurveyResults(i){
-  const s=surveysAdminData[i];
+function viewSurveyResults(id){
+  const s=surveysAdminData.find(x=>x.id===id);if(!s)return;
   const pct=s.total>0?Math.round(s.responses/s.total*100):0;
   showModal('შედეგები — '+s.name,`
     <div style="text-align:center;padding:20px 0">
@@ -1469,10 +1474,10 @@ function viewSurveyResults(i){
     ${s.link?`<div style="text-align:center"><a href="${s.link}" target="_blank" class="btn btn-b">📊 Google Forms-ში სრული შედეგები ↗</a></div>`:''}`,
     `<button class="btn btn-n" onclick="closeModal()">დახურვა</button>`);
 }
-function publishSurvey(i){surveysAdminData[i].status='active';renderSurveysAdmin();toast('გამოქვეყნდა ✓','success')}
-function removeSurvey(i){
+function publishSurvey(id){const s=surveysAdminData.find(x=>x.id===id);if(s)s.status='active';renderSurveysAdmin();toast('გამოქვეყნდა ✓','success')}
+function removeSurvey(id){
   showModal('წაშლა','<p style="color:var(--red)">⚠ გამოკითხვა წაიშლება.</p>',
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="surveysAdminData.splice(${i},1);renderSurveysAdmin();closeModal();toast('წაშლილია','warn')">✕ წაშლა</button>`);
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="const i=surveysAdminData.findIndex(x=>x.id==='${id}');if(i>-1)surveysAdminData.splice(i,1);renderSurveysAdmin();closeModal();toast('წაშლილია','warn')">✕ წაშლა</button>`);
 }
 
 function addJobModal(){
@@ -1486,19 +1491,19 @@ function addJobModal(){
 function saveNewJob(){
   const title=document.getElementById('nj-title').value.trim();
   if(!title){toast('შეავსეთ პოზიცია','error');return;}
-  jobsAdminData.unshift({title,company:document.getElementById('nj-company').value,loc:document.getElementById('nj-loc').value,type:document.getElementById('nj-type').value,salary:document.getElementById('nj-salary').value,posted:'09.07.2026',apps:0,status:'active'});
+  const newJobId='JOB-'+String(jobsAdminData.length+1).padStart(3,'0');jobsAdminData.unshift({id:newJobId,title,company:document.getElementById('nj-company').value,loc:document.getElementById('nj-loc').value,type:document.getElementById('nj-type').value,salary:document.getElementById('nj-salary').value,posted:'09.07.2026',apps:0,status:'active'});
   renderCareerAdmin();closeModal();toast('ვაკანსია გამოქვეყნდა ✓','success');
 }
-function editJobModal(i){
-  const j=jobsAdminData[i];
-  showModal('ვაკანსიის რედ.',`
+function editJobModal(id){
+  const j=jobsAdminData.find(x=>x.id===id);if(!j)return;
+  showModal('ვაკანსიის რედ. — '+j.id,`
     <div class="fg"><label class="fl">პოზიცია</label><input class="fi" id="ej-title" value="${j.title}"></div>
     <div class="fg"><label class="fl">კომპანია</label><input class="fi" id="ej-company" value="${j.company}"></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="jobsAdminData[${i}].title=document.getElementById('ej-title').value;jobsAdminData[${i}].company=document.getElementById('ej-company').value;renderCareerAdmin();closeModal();toast('განახლდა ✓','success')">💾 შენახვა</button>`);
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const j=jobsAdminData.find(x=>x.id==='${id}');if(j){j.title=document.getElementById('ej-title').value;j.company=document.getElementById('ej-company').value;}renderCareerAdmin();closeModal();toast('განახლდა ✓','success')})()">💾 შენახვა</button>`);
 }
-function removeJob(i){
+function removeJob(id){
   showModal('ვაკანსიის წაშლა','<p style="color:var(--red)">⚠ ვაკანსია წაიშლება.</p>',
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="jobsAdminData.splice(${i},1);renderCareerAdmin();closeModal();toast('წაშლილია','warn')">✕ წაშლა</button>`);
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="const i=jobsAdminData.findIndex(x=>x.id==='${id}');if(i>-1)jobsAdminData.splice(i,1);renderCareerAdmin();closeModal();toast('წაშლილია','warn')">✕ წაშლა</button>`);
 }
 
 const ADMIN_MSG_GROUPS = [
