@@ -643,7 +643,7 @@ tr:hover td{background:var(--bg)}
 
       <div class="card" style="padding:0;overflow:hidden" id="msg-tab-inbox">
         <div class="msg-list">
-          <div class="msg-item unread" onclick="openMsg(0)">
+          <div class="msg-item unread" onclick="openMsg('MSG-T01')">
             <div class="msg-avatar">გბ</div>
             <div class="msg-body">
               <div class="msg-from">გიორგი ბერიძე <span class="badge badge-navy" style="font-size:10px">ჯგუფი 101</span></div>
@@ -652,7 +652,7 @@ tr:hover td{background:var(--bg)}
             </div>
             <div class="msg-meta">დღეს<br>14:22</div>
           </div>
-          <div class="msg-item unread" onclick="openMsg(1)">
+          <div class="msg-item unread" onclick="openMsg('MSG-T02')">
             <div class="msg-avatar">ას</div>
             <div class="msg-body">
               <div class="msg-from">ადმინისტრაცია <span class="badge badge-amber" style="font-size:10px">სისტემური</span></div>
@@ -661,7 +661,7 @@ tr:hover td{background:var(--bg)}
             </div>
             <div class="msg-meta">გუშინ<br>09:05</div>
           </div>
-          <div class="msg-item unread" onclick="openMsg(2)">
+          <div class="msg-item unread" onclick="openMsg('MSG-T03')">
             <div class="msg-avatar">ნჩ</div>
             <div class="msg-body">
               <div class="msg-from">ნინო ჩხეიძე <span class="badge badge-navy" style="font-size:10px">ჯგუფი 101</span></div>
@@ -670,7 +670,7 @@ tr:hover td{background:var(--bg)}
             </div>
             <div class="msg-meta">29 ივნ.<br>17:40</div>
           </div>
-          <div class="msg-item" onclick="openMsg(3)">
+          <div class="msg-item" onclick="openMsg('MSG-T04')">
             <div class="msg-avatar">ლკ</div>
             <div class="msg-body">
               <div class="msg-from">ლაშა კვარაცხელია <span class="badge badge-navy" style="font-size:10px">ჯგუფი 301</span></div>
@@ -679,7 +679,7 @@ tr:hover td{background:var(--bg)}
             </div>
             <div class="msg-meta">27 ივნ.<br>12:11</div>
           </div>
-          <div class="msg-item" onclick="openMsg(4)">
+          <div class="msg-item" onclick="openMsg('MSG-T05')">
             <div class="msg-avatar">ადმ</div>
             <div class="msg-body">
               <div class="msg-from">სასწავლო დეპ. <span class="badge badge-amber" style="font-size:10px">სისტემური</span></div>
@@ -693,7 +693,7 @@ tr:hover td{background:var(--bg)}
 
       <div class="card" style="display:none" id="msg-tab-sent">
         <div class="msg-list">
-          <div class="msg-item" onclick="openMsg(5)">
+          <div class="msg-item" onclick="openMsg('MSG-T06')">
             <div class="msg-avatar" style="background:var(--green-lt);color:var(--green)">გბ</div>
             <div class="msg-body">
               <div class="msg-from">გიორგი ბერიძე-სთვის <span class="badge badge-navy" style="font-size:10px">ჯგუფი 101</span></div>
@@ -716,7 +716,7 @@ tr:hover td{background:var(--bg)}
 
       <div class="card" id="msg-tab-drafts" style="display:none">
         <div class="msg-list">
-          <div class="msg-item" onclick="openMsg(6)">
+          <div class="msg-item" onclick="openMsg('MSG-T07')">
             <div class="msg-avatar" style="background:var(--amber-lt);color:var(--amber)">📝</div>
             <div class="msg-body">
               <div class="msg-from" style="color:var(--amber)">ჯგუფი 101 — [მონახაზი]</div>
@@ -731,7 +731,7 @@ tr:hover td{background:var(--bg)}
       <div class="card" id="msg-tab-general" style="display:none">
         <div style="padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);font-size:12px;color:var(--muted)">📢 საერთო შეტყობინებები — ადმინისტრაცია და სასწავლო დეპარტამენტი</div>
         <div class="msg-list">
-          <div class="msg-item unread" onclick="openMsg(7)">
+          <div class="msg-item unread" onclick="openMsg('MSG-T08')">
             <div class="msg-avatar" style="background:var(--amber-lt);color:var(--amber)">📢</div>
             <div class="msg-body">
               <div class="msg-from">სასწავლო დეპარტამენტი <span class="badge badge-amber" style="font-size:10px">საერთო</span></div>
@@ -740,7 +740,7 @@ tr:hover td{background:var(--bg)}
             </div>
             <div class="msg-meta">01 ივლ.</div>
           </div>
-          <div class="msg-item" onclick="openMsg(8)">
+          <div class="msg-item" onclick="openMsg('MSG-T09')">
             <div class="msg-avatar" style="background:var(--amber-lt);color:var(--amber)">📢</div>
             <div class="msg-body">
               <div class="msg-from">ადმინისტრაცია <span class="badge badge-amber" style="font-size:10px">საერთო</span></div>
@@ -1063,66 +1063,66 @@ tr:hover td{background:var(--bg)}
 <script>
 // ── DATA ──
 const moduleData = [
-  {name:'ანატომია I', group:'ჯგუფი 101', year:'I', students:24},
-  {name:'ანატომია I', group:'ჯგუფი 102', year:'I', students:22},
-  {name:'ნეირო-ანატომია', group:'ჯგუფი 301', year:'III', students:20},
-  {name:'კლინიკური ანატომია', group:'ჯგუფი 401', year:'IV', students:21},
+  {code:'ANAT-101', name:'ანატომია I', group:'ჯგუფი 101', groupId:'GRP-101', year:'I', students:24},
+  {code:'ANAT-101', name:'ანატომია I', group:'ჯგუფი 102', groupId:'GRP-102', year:'I', students:22},
+  {code:'NEUR-301', name:'ნეირო-ანატომია', group:'ჯგუფი 301', groupId:'GRP-301', year:'III', students:20},
+  {code:'CLAN-401', name:'კლინიკური ანატომია', group:'ჯგუფი 401', groupId:'GRP-401', year:'IV', students:21},
 ]
 
 const journalStudents = [
-  {name:'ბერიძე გიორგი',  att:['ი','ი','ი','არ','ი','ი','ი','ი'],mid:72,fin:null},
-  {name:'გოგია თამარ',    att:['ი','ი','ი','ი','ი','ი','ი','ი'],  mid:88,fin:null},
-  {name:'ჯოჯუა ანა',     att:['ი','ი','დ','ი','ი','ი','ი','ი'],  mid:81,fin:null},
-  {name:'მახარაძე ლევან',   att:['ი','ი','ი','ი','ი','ი','ი','ი'],  mid:95,fin:null},
-  {name:'კვარაცხელია ლაშა',   att:['ი','არ','ი','ი','ი','ი','ი','ი'], mid:77,fin:null},
-  {name:'ჩხეიძე ნინო',   att:['ი','ი','ი','ი','ი','ი','ი','ი'],  mid:70,fin:null},
-  {name:'ბუჩუკური ლელა',   att:['ი','ი','ი','ი','ი','ი','ი','ი'],  mid:85,fin:null},
-  {name:'ჯაყელი სალომე',    att:['ი','ი','ი','ი','ი','ი','ი','ი'],  mid:90,fin:null},
+  {id:'BMA-2401', name:'ბერიძე გიორგი',  att:['ი','ი','ი','არ','ი','ი','ი','ი'],mid:72,fin:null},
+  {id:'BMA-2402', name:'გოგია თამარ',    att:['ი','ი','ი','ი','ი','ი','ი','ი'],  mid:88,fin:null},
+  {id:'BMA-2403', name:'ჯოჯუა ანა',     att:['ი','ი','დ','ი','ი','ი','ი','ი'],  mid:81,fin:null},
+  {id:'BMA-2404', name:'მახარაძე ლევან',   att:['ი','ი','ი','ი','ი','ი','ი','ი'],  mid:95,fin:null},
+  {id:'BMA-2405', name:'კვარაცხელია ლაშა',   att:['ი','არ','ი','ი','ი','ი','ი','ი'], mid:77,fin:null},
+  {id:'BMA-2406', name:'ჩხეიძე ნინო',   att:['ი','ი','ი','ი','ი','ი','ი','ი'],  mid:70,fin:null},
+  {id:'BMA-2407', name:'ბუჩუკური ლელა',   att:['ი','ი','ი','ი','ი','ი','ი','ი'],  mid:85,fin:null},
+  {id:'BMA-2408', name:'ჯაყელი სალომე',    att:['ი','ი','ი','ი','ი','ი','ი','ი'],  mid:90,fin:null},
 ]
 
 const gradesStudents = [
-  {name:'ბერიძე გიორგი',  s1:17, s2:15, s3:16, att:16, fin:null},
-  {name:'გოგია თამარ',    s1:19, s2:18, s3:18, att:18, fin:null},
-  {name:'ჯოჯუა ანა',     s1:16, s2:17, s3:15, att:17, fin:null},
-  {name:'მახარაძე ლევან',   s1:20, s2:19, s3:19, att:19, fin:null},
-  {name:'კვარაცხელია ლაშა',   s1:15, s2:15, s3:14, att:15, fin:null},
-  {name:'ჩხეიძე ნინო',   s1:14, s2:14, s3:13, att:14, fin:null},
-  {name:'ბუჩუკური ლელა',   s1:17, s2:17, s3:16, att:16, fin:null},
-  {name:'ჯაყელი სალომე',    s1:18, s2:20, s3:19, att:18, fin:null},
+  {id:'BMA-2401', name:'ბერიძე გიორგი',  s1:17, s2:15, s3:16, att:16, fin:null},
+  {id:'BMA-2402', name:'გოგია თამარ',    s1:19, s2:18, s3:18, att:18, fin:null},
+  {id:'BMA-2403', name:'ჯოჯუა ანა',     s1:16, s2:17, s3:15, att:17, fin:null},
+  {id:'BMA-2404', name:'მახარაძე ლევან',   s1:20, s2:19, s3:19, att:19, fin:null},
+  {id:'BMA-2405', name:'კვარაცხელია ლაშა',   s1:15, s2:15, s3:14, att:15, fin:null},
+  {id:'BMA-2406', name:'ჩხეიძე ნინო',   s1:14, s2:14, s3:13, att:14, fin:null},
+  {id:'BMA-2407', name:'ბუჩუკური ლელა',   s1:17, s2:17, s3:16, att:16, fin:null},
+  {id:'BMA-2408', name:'ჯაყელი სალომე',    s1:18, s2:20, s3:19, att:18, fin:null},
 ]
 
 const msgContent = [
-  {from:'გიორგი ბერიძე',role:'სტუდენტი · ჯგუფი 101',subj:'გამოცდის შესახებ კითხვა',
+  {id:'MSG-T01', fromId:'BMA-2401', from:'გიორგი ბერიძე',role:'სტუდენტი · ჯგუფი 101',subj:'გამოცდის შესახებ კითხვა',
    body:'გამარჯობა, ქ-ნ კაპანაძე!\n\nმინდოდა გკითხოთ — ლექცია 5-ის მასალა შედის თუ არა შუალედურ გამოცდაში? სახელმძღვანელოს მე-7 თავი?\n\nმადლობა წინასწარ!',
    date:'2 ივლ. 2025, 14:22'},
-  {from:'ადმინისტრაცია',role:'სისტემური შეტყობინება',subj:'ჟურნალის ვადა',
+  {id:'MSG-T02', fromId:'ADM-001', from:'ადმინისტრაცია',role:'სისტემური შეტყობინება',subj:'ჟურნალის ვადა',
    body:'პატივცემულო მასწავლებელო,\n\nგაცნობებთ, რომ ჟურნალის შევსების ვადა — 5 ივლისი 2025.\n\nგთხოვთ, შეამოწმოთ და შეიყვანოთ სრული ჩანაწერები.\n\nპატივისცემით,\nსასწავლო დეპარტამენტი',
    date:'1 ივლ. 2025, 09:05'},
-  {from:'ნინო ჩხეიძე',role:'სტუდენტი · ჯგუფი 101',subj:'დახმარების თხოვნა',
+  {id:'MSG-T03', fromId:'BMA-2406', from:'ნინო ჩხეიძე',role:'სტუდენტი · ჯგუფი 101',subj:'დახმარების თხოვნა',
    body:'გამარჯობა!\n\nვერ ვასწრები ლაბორატორიულ სამუშაოს — 10 ივლისს ექიმთან ვარ. შეიძლება სხვა დროს ჩავაბარო?\n\nმადლობა!',
    date:'29 ივნ. 2025, 17:40'},
-  {from:'ლაშა კვარაცხელია',role:'სტუდენტი · ჯგუფი 301',subj:'სპეციალური პირობა',
+  {id:'MSG-T04', fromId:'BMA-2405', from:'ლაშა კვარაცხელია',role:'სტუდენტი · ჯგუფი 301',subj:'სპეციალური პირობა',
    body:'მასწავლებელო,\n\nმომდევნო 2 კვირა ექიმის ცნობა მაქვს. ვთხოვ სპეციალური პირობა მომეცეს.\n\nდოკუმენტი დამატებულია.',
    date:'27 ივნ. 2025, 12:11'},
-  {from:'სასწ. დეპარტამენტი',role:'სისტემური შეტყობინება',subj:'განრიგის ცვლილება — ივლისი',
+  {id:'MSG-T05', fromId:'ADM-001', from:'სასწ. დეპარტამენტი',role:'სისტემური შეტყობინება',subj:'განრიგის ცვლილება — ივლისი',
    body:'2025 წლის ივლისის განრიგი განახლებულია. გთხოვთ, გადახედოთ ახალ განრიგს სისტემაში.',
    date:'25 ივნ. 2025, 10:30'},
-  {from:'გიორგი ბერიძე',role:'სტუდენტი · ჯგუფი 101',subj:'RE: გამოცდის შესახებ',
+  {id:'MSG-T06', fromId:'BMA-2401', from:'გიორგი ბერიძე',role:'სტუდენტი · ჯგუფი 101',subj:'RE: გამოცდის შესახებ',
    body:'გამარჯობა, გიორგი!\n\nკი, ლექცია 5 შედის. სახელმძღვ. მე-7 თავი — კი. მე-8 — არა.\n\nწარმატება!',
    date:'2 ივლ. 2025, 15:00'},
-  {from:'ჯგუფი 101',role:'[მონახაზი]',subj:'შეახსენება — ლაბ. სამუშ. ანგარიში',
+  {id:'MSG-T07', fromId:'GRP-101', from:'ჯგუფი 101',role:'[მონახაზი]',subj:'შეახსენება — ლაბ. სამუშ. ანგარიში',
    body:'გამარჯობა!\n\nგსურთ შეახსენოთ, რომ ლაბ. ანგარიში...',
    date:'29 ივნ. 2025'},
-  {from:'სასწავლო დეპარტამენტი',role:'საერთო შეტყობინება',subj:'2026–2027 სასწ. წ. დაწყება — 1 სექტემბერი',
+  {id:'MSG-T08', fromId:'ADM-001', from:'სასწავლო დეპარტამენტი',role:'საერთო შეტყობინება',subj:'2026–2027 სასწ. წ. დაწყება — 1 სექტემბერი',
    body:'პატივცემულო პროფ. მასწავლებელო,\n\nახალი სასწ. წ. დაწყება — 1 სექტ. 2026.\nსამეწარმეო სხდომა: 28 აგვ. 2026, 10:00, საკ. №12.\n\nგთხოვთ, შეამოწმოთ მოდულების ახ. განრიგი.\n\nპატივისცემით,\nსასწ. დეპ.',
    date:'1 ივლ. 2025'},
-  {from:'ადმინისტრაცია',role:'საერთო შეტყობინება',subj:'კამპუსის სამუშ. საათები — ივლ. 2026',
+  {id:'MSG-T09', fromId:'ADM-001', from:'ადმინისტრაცია',role:'საერთო შეტყობინება',subj:'კამპუსის სამუშ. საათები — ივლ. 2026',
    body:'2026 წ. ივლ. კამპუსის სამ. საათები:\n\nორშ.–პარ.: 09:00–17:00\nშაბ.: 10:00–14:00\nკვ.: დახ.\n\nდ.ა.ა. სასწ. დეპ.',
    date:'15 ივნ. 2025'},
-  {from:'გიორგი ბერიძე',role:'სტუდ. · ჯგ. 101',subj:'სამ. ანგ. — მაისი 2025',
+  {id:'MSG-T10', fromId:'BMA-2401', from:'გიორგი ბერიძე',role:'სტუდ. · ჯგ. 101',subj:'სამ. ანგ. — მაისი 2025',
    body:'მასწავლებელო,\n\nვაგზავნი ლაბ. ანგ. ადამ. ანატ. I ნაწ.\n\nმადლობა,\nგ. ბერიძე',
    date:'15 მაი. 2025'},
-  {from:'სასწ. დეპ.',role:'სისტემური',subj:'მოდ. ახ. განრიგი — 2024–2025',
+  {id:'MSG-T11', fromId:'ADM-001', from:'სასწ. დეპ.',role:'სისტემური',subj:'მოდ. ახ. განრიგი — 2024–2025',
    body:'2024–2025 სასწ. წ. განახლებული განრიგი სისტ-შია.',
    date:'2 სექ. 2024'},
 ]
@@ -1435,10 +1435,11 @@ function switchMsgTab(tab,btn){
   document.getElementById('msg-detail-panel').innerHTML=
     '<div class="empty-state" style="padding:32px 16px"><div class="es-icon">✉️</div><p>შეტყობინება შესარჩევია</p></div>'
 }
-function openMsg(i){
-  const m = msgContent[i]
+function openMsg(id){
+  const m = msgContent.find(x=>x.id===id||x.id===String(id))
+  if(!m) return
   // mark as read
-  document.querySelectorAll('.msg-item').forEach((el,idx)=>{if(idx===i)el.classList.remove('unread')})
+  document.querySelectorAll('.msg-item').forEach(el=>{if(el.dataset.msgId===String(id))el.classList.remove('unread')})
   // update badge
   const unread = document.querySelectorAll('.msg-item.unread').length
   const badge = document.getElementById('msg-badge')
@@ -1447,7 +1448,7 @@ function openMsg(i){
   document.getElementById('msg-detail-panel').innerHTML=`
     <div style="padding:4px">
       <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:4px">${m.subj}</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">${m.from} · ${m.role} · ${m.date}</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px"><span style="font-weight:700;color:var(--blue)">${m.id}</span> · ${m.from} <span style="font-size:10px;color:var(--text3)">${m.fromId}</span> · ${m.role} · ${m.date}</div>
       <div style="font-size:13px;color:var(--text);white-space:pre-line;line-height:1.7;border-top:1px solid var(--border);padding-top:12px">${m.body}</div>
       <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn btn-blue btn-sm" onclick="replyMsg('${m.from}')">↩ პასუხი</button>
@@ -1714,10 +1715,10 @@ buildScheduleWeek()
 <script>
 // ══ SURVEYS ══
 const tSurveysAll=[
-  {name:'სასწავლო პროცესის შეფასება — 2026',deadline:'15.07.2026',anon:true,link:'https://forms.gle/example1',status:'active'},
-  {name:'ბათუმის სამედიცინო აკადემიის სერვისების შეფასება',deadline:'30.06.2026',anon:false,link:'https://forms.gle/example2',status:'expired'},
-  {name:'პედაგოგიური გამოკითხვა — I სემესტრი',date:'10.01.2026',status:'done'},
-  {name:'სასწავლო მასალების შეფასება — 2025',date:'20.12.2025',status:'done'},
+  {id:'SRV-T01',name:'სასწავლო პროცესის შეფასება — 2026',deadline:'15.07.2026',anon:true,link:'https://forms.gle/example1',status:'active'},
+  {id:'SRV-T02',name:'ბათუმის სამედიცინო აკადემიის სერვისების შეფასება',deadline:'30.06.2026',anon:false,link:'https://forms.gle/example2',status:'expired'},
+  {id:'SRV-T03',name:'პედაგოგიური გამოკითხვა — I სემესტრი',date:'10.01.2026',status:'done'},
+  {id:'SRV-T04',name:'სასწავლო მასალების შეფასება — 2025',date:'20.12.2025',status:'done'},
 ];
 const tSaEl=document.getElementById('t-surveys-all');
 tSurveysAll.forEach(sv=>{
