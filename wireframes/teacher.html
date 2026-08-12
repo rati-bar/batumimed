@@ -286,7 +286,6 @@ tr:hover td{background:var(--bg)}
       <button class="nav-item" onclick="go('journal',this,'ჟურნალი')"><span class="ni-icon">📋</span>ჟურნალი</button>
       <button class="nav-item" onclick="go('grades',this,'შეფასებები')"><span class="ni-icon">🎯</span>შეფასებები</button>
       <button class="nav-item" onclick="go('schedule',this,'განრიგი')"><span class="ni-icon">📅</span>განრიგი</button>
-      <button class="nav-item" onclick="go('messages',this,'შეტყობინებები')"><span class="ni-icon">✉️</span>შეტყობინებები <span class="nav-badge" id="msg-badge">3</span></button>
       <button class="nav-item" onclick="go('materials',this,'სასწავლო მასალები')"><span class="ni-icon">📁</span>სასწავლო მასალები</button>
       <button class="nav-item" onclick="go('reports',this,'ანგარიშები')"><span class="ni-icon">📊</span>ანგარიშები</button>
       <button class="nav-item" onclick="go('surveys',this,'გამოკითხვები')"><span class="ni-icon">📝</span>გამოკითხვები</button>
@@ -302,7 +301,6 @@ tr:hover td{background:var(--bg)}
     <div class="topbar">
       <div class="topbar-title" id="topbar-title">მთავარი</div>
       <div class="topbar-actions">
-        <button class="btn btn-outline btn-sm" onclick="go('messages',document.querySelector('.nav-item:nth-child(6)'),'შეტყობინებები')">✉️ შეტყობინებები</button>
         <button class="btn btn-ghost btn-sm" onclick="go('profile',null,'პროფილი')">ნ.კ.</button>
       </div>
     </div>
@@ -382,13 +380,6 @@ tr:hover td{background:var(--bg)}
         <div>
           <div class="act-text">ჯგუფი 102: შუალედური შეფასება შეიყვანეს — 24/25 სტუდენტი</div>
           <div class="act-time">გუშინ, 16:20</div>
-        </div>
-      </div>
-      <div class="activity-item">
-        <div class="act-icon" style="background:var(--amber-lt)">✉️</div>
-        <div>
-          <div class="act-text">ახალი შეტყობინება: გიორგი ბერიძე (ჯგუფი 101)</div>
-          <div class="act-time">გუშინ, 14:05</div>
         </div>
       </div>
       <div class="activity-item">
@@ -617,149 +608,6 @@ tr:hover td{background:var(--bg)}
 
   <div id="sched-month-view" style="display:none">
     <div id="sched-month-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px"></div>
-  </div>
-</div>
-
-
-<!-- ══ MESSAGES SCREEN ══ -->
-<div class="screen" id="screen-messages">
-  <div style="display:flex;gap:10px;align-items:flex-start">
-    <!-- LEFT: list -->
-    <div style="flex:1;min-width:0">
-      <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
-        <div class="chip-tabs" style="margin-bottom:0;flex:1">
-          <div class="chip active" onclick="switchMsgTab('inbox',this)">შემოსული (3)</div>
-          <div class="chip" onclick="switchMsgTab('sent',this)">გაგზავნილი</div>
-          <div class="chip" onclick="switchMsgTab('drafts',this)">მონახაზები</div>
-          <div class="chip" onclick="switchMsgTab('general',this)">📢 საერთო</div>
-        </div>
-        <button class="btn btn-blue btn-sm" onclick="composeMsg()">+ წერილი</button>
-      </div>
-
-      <div class="search-bar">
-        <span>🔍</span>
-        <input type="text" placeholder="ძიება შეტყობინებებში...">
-      </div>
-
-      <div class="card" style="padding:0;overflow:hidden" id="msg-tab-inbox">
-        <div class="msg-list">
-          <div class="msg-item unread" onclick="openMsg('MSG-T01')">
-            <div class="msg-avatar">გბ</div>
-            <div class="msg-body">
-              <div class="msg-from">გიორგი ბერიძე <span class="badge badge-navy" style="font-size:10px">ჯგუფი 101</span></div>
-              <div class="msg-subject">გამოცდის შესახებ კითხვა</div>
-              <div class="msg-preview">გამარჯობა, მინდოდა გკითხოთ — ლექცია 5-ის მასალა შედის თუ არა...</div>
-            </div>
-            <div class="msg-meta">დღეს<br>14:22</div>
-          </div>
-          <div class="msg-item unread" onclick="openMsg('MSG-T02')">
-            <div class="msg-avatar">ას</div>
-            <div class="msg-body">
-              <div class="msg-from">ადმინისტრაცია <span class="badge badge-amber" style="font-size:10px">სისტემური</span></div>
-              <div class="msg-subject">ჟურნალის ვადა</div>
-              <div class="msg-preview">პატივცემულო მასწავლებელო, გაცნობებთ, რომ ჟურნალის შევსება...</div>
-            </div>
-            <div class="msg-meta">გუშინ<br>09:05</div>
-          </div>
-          <div class="msg-item unread" onclick="openMsg('MSG-T03')">
-            <div class="msg-avatar">ნჩ</div>
-            <div class="msg-body">
-              <div class="msg-from">ნინო ჩხეიძე <span class="badge badge-navy" style="font-size:10px">ჯგუფი 101</span></div>
-              <div class="msg-subject">დახმარების თხოვნა</div>
-              <div class="msg-preview">გამარჯობა, ვერ ვასწრები ლაბორატორიულ სამუშაოს, შეიძლება...</div>
-            </div>
-            <div class="msg-meta">29 ივნ.<br>17:40</div>
-          </div>
-          <div class="msg-item" onclick="openMsg('MSG-T04')">
-            <div class="msg-avatar">ლკ</div>
-            <div class="msg-body">
-              <div class="msg-from">ლაშა კვარაცხელია <span class="badge badge-navy" style="font-size:10px">ჯგუფი 301</span></div>
-              <div class="msg-subject">სპეციალური პირობა</div>
-              <div class="msg-preview">მასწავლებელო, ექიმის ცნობა გამოგიგზავნეთ — მომდევნო 2 კვირა...</div>
-            </div>
-            <div class="msg-meta">27 ივნ.<br>12:11</div>
-          </div>
-          <div class="msg-item" onclick="openMsg('MSG-T05')">
-            <div class="msg-avatar">ადმ</div>
-            <div class="msg-body">
-              <div class="msg-from">სასწავლო დეპ. <span class="badge badge-amber" style="font-size:10px">სისტემური</span></div>
-              <div class="msg-subject">განრიგის ცვლილება — ივლისი</div>
-              <div class="msg-preview">2025 ივლისის განრიგი განახლებულია, გთხოვთ გადახედოთ...</div>
-            </div>
-            <div class="msg-meta">25 ივნ.<br>10:30</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" style="display:none" id="msg-tab-sent">
-        <div class="msg-list">
-          <div class="msg-item" onclick="openMsg('MSG-T06')">
-            <div class="msg-avatar" style="background:var(--green-lt);color:var(--green)">გბ</div>
-            <div class="msg-body">
-              <div class="msg-from">გიორგი ბერიძე-სთვის <span class="badge badge-navy" style="font-size:10px">ჯგუფი 101</span></div>
-              <div class="msg-subject">RE: გამოცდის შესახებ</div>
-              <div class="msg-preview">გამარჯობა, კი, ლექცია 5-ის მასალა შედის. გთხოვ...</div>
-            </div>
-            <div class="msg-meta">დღეს<br>15:00</div>
-          </div>
-          <div class="msg-item" onclick="toast('წერილი გაიხსნა')">
-            <div class="msg-avatar" style="background:var(--green-lt);color:var(--green)">ჯგ</div>
-            <div class="msg-body">
-              <div class="msg-from">ჯგუფი 101 მთელი ჯგუფი</div>
-              <div class="msg-subject">შემდეგი ლექციის მასალა</div>
-              <div class="msg-preview">გამარჯობა, ვებ-გვერდზე ავტვირთე ახალი პრეზენტაცია...</div>
-            </div>
-            <div class="msg-meta">28 ივნ.<br>08:40</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" id="msg-tab-drafts" style="display:none">
-        <div class="msg-list">
-          <div class="msg-item" onclick="openMsg('MSG-T07')">
-            <div class="msg-avatar" style="background:var(--amber-lt);color:var(--amber)">📝</div>
-            <div class="msg-body">
-              <div class="msg-from" style="color:var(--amber)">ჯგუფი 101 — [მონახაზი]</div>
-              <div class="msg-subject">შეახსენება — ლაბ. სამუშ. ანგარიში</div>
-              <div class="msg-preview">გამარჯობა, გუნდო! გსურთ შეახსენოთ, რომ ანგარიში...</div>
-            </div>
-            <div class="msg-meta">29 ივნ.<br><button class="btn btn-ghost btn-sm" style="padding:2px 6px;font-size:10px" onclick="event.stopPropagation();composeMsg()">გაგრძ.</button></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" id="msg-tab-general" style="display:none">
-        <div style="padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);font-size:12px;color:var(--muted)">📢 საერთო შეტყობინებები — ადმინისტრაცია და სასწავლო დეპარტამენტი</div>
-        <div class="msg-list">
-          <div class="msg-item unread" onclick="openMsg('MSG-T08')">
-            <div class="msg-avatar" style="background:var(--amber-lt);color:var(--amber)">📢</div>
-            <div class="msg-body">
-              <div class="msg-from">სასწავლო დეპარტამენტი <span class="badge badge-amber" style="font-size:10px">საერთო</span></div>
-              <div class="msg-subject">2026–2027 სასწ. წ. დაწყება — 1 სექტემბერი</div>
-              <div class="msg-preview">ახ. სასწ. წ. ვრცელდება ყველა პროფ. მასწავლებელზე. სხდომა: 28 აგ...</div>
-            </div>
-            <div class="msg-meta">01 ივლ.</div>
-          </div>
-          <div class="msg-item" onclick="openMsg('MSG-T09')">
-            <div class="msg-avatar" style="background:var(--amber-lt);color:var(--amber)">📢</div>
-            <div class="msg-body">
-              <div class="msg-from">ადმინისტრაცია <span class="badge badge-amber" style="font-size:10px">საერთო</span></div>
-              <div class="msg-subject">კამპუსის სამუშ. საათები — ივლ. 2026</div>
-              <div class="msg-preview">ივლ. 2026: ორ.–პარ. 09:00–17:00, შაბ. 10:00–14:00, კვ. დახ...</div>
-            </div>
-            <div class="msg-meta">15 ივნ.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RIGHT: message detail placeholder -->
-    <div class="card" style="width:340px;flex-shrink:0" id="msg-detail-panel">
-      <div class="empty-state" style="padding:32px 16px">
-        <div class="es-icon">✉️</div>
-        <p>შეტყობინება შესარჩევია</p>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -1091,42 +939,6 @@ const gradesStudents = [
   {id:'BMA-2408', name:'ჯაყელი სალომე',    s1:18, s2:20, s3:19, att:18, fin:null},
 ]
 
-const msgContent = [
-  {id:'MSG-T01', fromId:'BMA-2401', from:'გიორგი ბერიძე',role:'სტუდენტი · ჯგუფი 101',subj:'გამოცდის შესახებ კითხვა',
-   body:'გამარჯობა, ქ-ნ კაპანაძე!\n\nმინდოდა გკითხოთ — ლექცია 5-ის მასალა შედის თუ არა შუალედურ გამოცდაში? სახელმძღვანელოს მე-7 თავი?\n\nმადლობა წინასწარ!',
-   date:'2 ივლ. 2025, 14:22'},
-  {id:'MSG-T02', fromId:'ADM-001', from:'ადმინისტრაცია',role:'სისტემური შეტყობინება',subj:'ჟურნალის ვადა',
-   body:'პატივცემულო მასწავლებელო,\n\nგაცნობებთ, რომ ჟურნალის შევსების ვადა — 5 ივლისი 2025.\n\nგთხოვთ, შეამოწმოთ და შეიყვანოთ სრული ჩანაწერები.\n\nპატივისცემით,\nსასწავლო დეპარტამენტი',
-   date:'1 ივლ. 2025, 09:05'},
-  {id:'MSG-T03', fromId:'BMA-2406', from:'ნინო ჩხეიძე',role:'სტუდენტი · ჯგუფი 101',subj:'დახმარების თხოვნა',
-   body:'გამარჯობა!\n\nვერ ვასწრები ლაბორატორიულ სამუშაოს — 10 ივლისს ექიმთან ვარ. შეიძლება სხვა დროს ჩავაბარო?\n\nმადლობა!',
-   date:'29 ივნ. 2025, 17:40'},
-  {id:'MSG-T04', fromId:'BMA-2405', from:'ლაშა კვარაცხელია',role:'სტუდენტი · ჯგუფი 301',subj:'სპეციალური პირობა',
-   body:'მასწავლებელო,\n\nმომდევნო 2 კვირა ექიმის ცნობა მაქვს. ვთხოვ სპეციალური პირობა მომეცეს.\n\nდოკუმენტი დამატებულია.',
-   date:'27 ივნ. 2025, 12:11'},
-  {id:'MSG-T05', fromId:'ADM-001', from:'სასწ. დეპარტამენტი',role:'სისტემური შეტყობინება',subj:'განრიგის ცვლილება — ივლისი',
-   body:'2025 წლის ივლისის განრიგი განახლებულია. გთხოვთ, გადახედოთ ახალ განრიგს სისტემაში.',
-   date:'25 ივნ. 2025, 10:30'},
-  {id:'MSG-T06', fromId:'BMA-2401', from:'გიორგი ბერიძე',role:'სტუდენტი · ჯგუფი 101',subj:'RE: გამოცდის შესახებ',
-   body:'გამარჯობა, გიორგი!\n\nკი, ლექცია 5 შედის. სახელმძღვ. მე-7 თავი — კი. მე-8 — არა.\n\nწარმატება!',
-   date:'2 ივლ. 2025, 15:00'},
-  {id:'MSG-T07', fromId:'GRP-101', from:'ჯგუფი 101',role:'[მონახაზი]',subj:'შეახსენება — ლაბ. სამუშ. ანგარიში',
-   body:'გამარჯობა!\n\nგსურთ შეახსენოთ, რომ ლაბ. ანგარიში...',
-   date:'29 ივნ. 2025'},
-  {id:'MSG-T08', fromId:'ADM-001', from:'სასწავლო დეპარტამენტი',role:'საერთო შეტყობინება',subj:'2026–2027 სასწ. წ. დაწყება — 1 სექტემბერი',
-   body:'პატივცემულო პროფ. მასწავლებელო,\n\nახალი სასწ. წ. დაწყება — 1 სექტ. 2026.\nსამეწარმეო სხდომა: 28 აგვ. 2026, 10:00, საკ. №12.\n\nგთხოვთ, შეამოწმოთ მოდულების ახ. განრიგი.\n\nპატივისცემით,\nსასწ. დეპ.',
-   date:'1 ივლ. 2025'},
-  {id:'MSG-T09', fromId:'ADM-001', from:'ადმინისტრაცია',role:'საერთო შეტყობინება',subj:'კამპუსის სამუშ. საათები — ივლ. 2026',
-   body:'2026 წ. ივლ. კამპუსის სამ. საათები:\n\nორშ.–პარ.: 09:00–17:00\nშაბ.: 10:00–14:00\nკვ.: დახ.\n\nდ.ა.ა. სასწ. დეპ.',
-   date:'15 ივნ. 2025'},
-  {id:'MSG-T10', fromId:'BMA-2401', from:'გიორგი ბერიძე',role:'სტუდ. · ჯგ. 101',subj:'სამ. ანგ. — მაისი 2025',
-   body:'მასწავლებელო,\n\nვაგზავნი ლაბ. ანგ. ადამ. ანატ. I ნაწ.\n\nმადლობა,\nგ. ბერიძე',
-   date:'15 მაი. 2025'},
-  {id:'MSG-T11', fromId:'ADM-001', from:'სასწ. დეპ.',role:'სისტემური',subj:'მოდ. ახ. განრიგი — 2024–2025',
-   body:'2024–2025 სასწ. წ. განახლებული განრიგი სისტ-შია.',
-   date:'2 სექ. 2024'},
-]
-
 // ── CORE UI ──
 function showModal(title, body, foot, large){
   document.getElementById('modal-title').innerHTML = title
@@ -1347,8 +1159,7 @@ function studentDetail(si){
         </div>
       </div>
     </div>`,
-    `<button class="btn btn-outline" onclick="closeModal();composeMsg()">✉️ წერილი</button>
-     <button class="btn btn-ghost" onclick="closeModal()">დახურვა</button>`
+    `<button class="btn btn-ghost" onclick="closeModal()">დახურვა</button>`
   )
 }
 
@@ -1423,167 +1234,6 @@ function buildMonthGrid(){
 function schedPrev(){toast('◀ წინა კვირა')}
 function schedNext(){toast('შემდ. კვირა ▶')}
 
-
-// ── MESSAGES ──
-function switchMsgTab(tab,btn){
-  ['inbox','sent','drafts','general'].forEach(t=>{
-    const el = document.getElementById('msg-tab-'+t)
-    if(el) el.style.display = t===tab?'block':'none'
-  })
-  document.querySelectorAll('#screen-messages .chip').forEach(c=>c.classList.remove('active'))
-  btn.classList.add('active')
-  document.getElementById('msg-detail-panel').innerHTML=
-    '<div class="empty-state" style="padding:32px 16px"><div class="es-icon">✉️</div><p>შეტყობინება შესარჩევია</p></div>'
-}
-function openMsg(id){
-  const m = msgContent.find(x=>x.id===id||x.id===String(id))
-  if(!m) return
-  // mark as read
-  document.querySelectorAll('.msg-item').forEach(el=>{if(el.dataset.msgId===String(id))el.classList.remove('unread')})
-  // update badge
-  const unread = document.querySelectorAll('.msg-item.unread').length
-  const badge = document.getElementById('msg-badge')
-  if(badge) badge.textContent = unread; badge.style.display = unread?'':'none'
-
-  document.getElementById('msg-detail-panel').innerHTML=`
-    <div style="padding:4px">
-      <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:4px">${m.subj}</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:12px"><span style="font-weight:700;color:var(--blue)">${m.id}</span> · ${m.from} <span style="font-size:10px;color:var(--text3)">${m.fromId}</span> · ${m.role} · ${m.date}</div>
-      <div style="font-size:13px;color:var(--text);white-space:pre-line;line-height:1.7;border-top:1px solid var(--border);padding-top:12px">${m.body}</div>
-      <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-blue btn-sm" onclick="replyMsg('${m.from}')">↩ პასუხი</button>
-        <button class="btn btn-ghost btn-sm" onclick="toast('არქივში','info')">🗄 არქ.</button>
-        <button class="btn btn-ghost btn-sm" onclick="toast('წაიშალა','warn')">🗑</button>
-      </div>
-    </div>`
-}
-function replyMsg(to){ closeModal(); composeMsg(to) }
-// groups and students per group
-const msgGroups = {
-  'ჯგუფი 101': ['ბერიძე გიორგი','გოგია თამარ','ჯოჯუა ანა','მახარაძე ლევან','კვარაცხელია ლაშა','ჩხეიძე ნინო','ბუჩუკური ლელა','ჯაყელი სალომე'],
-  'ჯგუფი 102': ['ასათიანი მარიამ','ბახტაძე ნიკოლოზ','გოგბერაშვილი ნინო','დოლიძე ლუკა'],
-  'ჯგუფი 301': ['კვარაცხელია ლაშა','მდივანი სოფო','ნარიმანიძე გიორგი'],
-  'ჯგუფი 401': ['ხარაბაძე ანა','ჩიქოვანი ნათია','ყიფიანი ვახო'],
-}
-
-const T_MSG_ROLES = {
-  group:    {label:'მთელი ჯგუფი',           hasSubs:true,  subsType:'groups'},
-  student:  {label:'ერთი სტუდენტი',          hasSubs:true,  subsType:'students'},
-  director: {label:'დირექტორი',              hasSubs:false},
-  admin:    {label:'ადმინისტრაცია',           hasSubs:true,  subsType:'adminDepts'},
-};
-const T_ADMIN_DEPTS = [
-  'სასწავლო განყოფილება','ფინანსური სამსახური','სტუდენტური სამსახური',
-  'ბიბლიოთეკა','HR / კადრების სამსახური','IT სამსახური'
-];
-
-function updateComposeTarget(){
-  const type = document.getElementById('t-cmp-type')?.value;
-  const grpRow = document.getElementById('compose-group-row');
-  const stuRow = document.getElementById('compose-student-row');
-  const admRow = document.getElementById('compose-admin-row');
-  const grpSel = document.getElementById('compose-group-sel');
-  const stuSel = document.getElementById('compose-student-sel');
-  if(!grpRow) return;
-  grpRow.style.display='none'; stuRow.style.display='none'; admRow.style.display='none';
-  if(type==='group')   grpRow.style.display='block';
-  if(type==='student'){ grpRow.style.display='block'; stuRow.style.display='block'; }
-  if(type==='admin')   admRow.style.display='block';
-  if((type==='group'||type==='student') && grpSel){
-    const grp = grpSel.value;
-    if(stuSel) stuSel.innerHTML = grp
-      ? ['<option value="">— სტუდენტის შერჩევა —</option>',...(msgGroups[grp]||[]).map(n=>`<option value="${n}">${n}</option>`)].join('')
-      : '<option value="">— ჯგუფი ჯერ შეარჩიეთ —</option>';
-  }
-}
-
-function composeMsg(replyTo){
-  const roleOpts = Object.entries(T_MSG_ROLES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
-  const admOpts = T_ADMIN_DEPTS.map(d=>`<option value="${d}">${d}</option>`).join('');
-  showModal('ახალი შეტყობინება',
-    `<div style="display:flex;flex-direction:column;gap:12px">
-       <div>
-         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">მიმღების ჯგუფი / როლი</label>
-         <select id="t-cmp-type" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none" onchange="updateComposeTarget()">
-           <option value="">— შერჩევა —</option>
-           ${roleOpts}
-         </select>
-       </div>
-       <div id="compose-group-row" style="display:none">
-         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">ჯგუფი</label>
-         <select id="compose-group-sel" onchange="updateComposeTarget()" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
-           <option value="">— ჯგუფის შერჩევა —</option>
-           <option>ჯგუფი 101</option><option>ჯგუფი 102</option>
-           <option>ჯგუფი 301</option><option>ჯგუფი 401</option>
-         </select>
-       </div>
-       <div id="compose-student-row" style="display:none">
-         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">სტუდენტი</label>
-         <select id="compose-student-sel" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
-           <option value="">— ჯგუფი ჯერ შეარჩიეთ —</option>
-         </select>
-       </div>
-       <div id="compose-admin-row" style="display:none">
-         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">ადმინ. სამსახური</label>
-         <select id="compose-admin-sel" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
-           <option value="">— სამსახურის შერჩევა —</option>
-           ${admOpts}
-         </select>
-       </div>
-       <div>
-         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">სათაური</label>
-         <input id="compose-subj" type="text" placeholder="შეტყობინების სათაური..." style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
-       </div>
-       <div>
-         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">შეტყობინება</label>
-         <textarea id="compose-body" placeholder="შეიყვანეთ ტექსტი..." style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;min-height:100px;resize:vertical;outline:none"></textarea>
-       </div>
-       <div>
-         <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">დანართი (მაქს. 100 MB)</label>
-         <input type="file" multiple style="font-size:13px">
-       </div>
-     </div>`,
-    `<button class="btn btn-ghost" onclick="closeModal()">მონახაზი</button>
-     <button class="btn btn-blue" onclick="sendComposedMsg()">გაგზავნა ✉</button>`,
-    true
-  )
-  if(replyTo){
-    setTimeout(()=>{
-      const typeSel = document.getElementById('t-cmp-type');
-      if(typeSel) typeSel.value='student';
-      updateComposeTarget();
-      for(const [grp,students] of Object.entries(msgGroups)){
-        if(students.includes(replyTo)){
-          document.getElementById('compose-group-sel').value=grp;
-          updateComposeTarget();
-          setTimeout(()=>{
-            const sel=document.getElementById('compose-student-sel');
-            for(const o of sel.options){ if(o.value===replyTo){sel.value=replyTo;break} }
-          },10);
-          break;
-        }
-      }
-    },10);
-  }
-}
-
-function sendComposedMsg(){
-  const type = document.getElementById('t-cmp-type')?.value
-  const grp = document.getElementById('compose-group-sel')?.value
-  const stu = document.getElementById('compose-student-sel')?.value
-  const adm = document.getElementById('compose-admin-sel')?.value
-  const subj = document.getElementById('compose-subj')?.value?.trim()
-  const body = document.getElementById('compose-body')?.value?.trim()
-  if(!type){toast('მიმღები არ შერჩეულა','error');return}
-  if((type==='group'||type==='student')&&!grp){toast('ჯგუფი არ შერჩეულა','error');return}
-  if(type==='student'&&!stu){toast('სტუდენტი არ შერჩეულა','error');return}
-  if(type==='admin'&&!adm){toast('სამსახური არ შერჩეულა','error');return}
-  if(!subj){toast('სათაური ცარიელია','error');return}
-  if(!body){toast('ტექსტი ცარიელია','error');return}
-  const to = type==='director'?'დირექტორი':type==='admin'?adm:type==='group'?grp:stu
-  closeModal()
-  toast(`შეტყობინება გაიგზავნა → ${to} ✓`,'success')
-}
 
 // ── MODULES ──
 const moduleSurveys = ['','','https://forms.google.com/neuro-survey',''];

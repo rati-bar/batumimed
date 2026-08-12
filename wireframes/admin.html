@@ -192,6 +192,7 @@ textarea.fi{resize:vertical;min-height:80px}
       <button class="ni active" onclick="go('home',this,'მთავარი')"><span class="ni-icon">🏠</span>მთავარი</button>
 
       <div class="sb-section">სასწავლო პროცესი</div>
+      <button class="ni" onclick="go('users',this,'მომხმარებლების მართვა')"><span class="ni-icon">👤</span>მომხმარებლების მართვა</button>
       <button class="ni" onclick="go('students',this,'სტუდენტები')"><span class="ni-icon">🎓</span>სტუდენტები</button>
       <button class="ni" onclick="go('teachers',this,'პედაგოგები')"><span class="ni-icon">👨‍🏫</span>პედაგოგები</button>
       <button class="ni" onclick="go('groups',this,'ჯგუფები')"><span class="ni-icon">👥</span>ჯგუფები</button>
@@ -210,7 +211,6 @@ textarea.fi{resize:vertical;min-height:80px}
       <button class="ni" onclick="go('career',this,'კარიერა')"><span class="ni-icon">💼</span>კარიერა</button>
 
       <div class="sb-section">სისტემა</div>
-      <button class="ni" onclick="go('messages',this,'შეტყობინებები')"><span class="ni-icon">✉️</span>შეტყობინებები <span class="ni-badge" id="badge-msg">2</span></button>
       <button class="ni" onclick="go('reports',this,'ანგარიშები')"><span class="ni-icon">📊</span>ანგარიშები</button>
       <button class="ni" onclick="go('settings',this,'პარამეტრები')"><span class="ni-icon">⚙️</span>პარამეტრები</button>
     </div>
@@ -225,7 +225,6 @@ textarea.fi{resize:vertical;min-height:80px}
       <div><div class="tb-title" id="page-title">მთავარი</div><div class="tb-sub" id="page-sub">ბათუმის სამედიცინო აკადემია — ადმინისტრაციის პანელი</div></div>
       <div class="tb-actions">
         <span style="font-size:12px;color:var(--text3)">09 ივლისი 2026</span>
-        <button class="btn btn-n btn-sm" onclick="go('messages',document.querySelector('.ni:nth-child(1)'),'შეტყობინებები')">✉️ <span id="top-msg-count">2</span></button>
         <button class="btn btn-b btn-sm" onclick="go('settings',null,'პარამეტრები')">⚙️ პარამეტრები</button>
       </div>
     </div>
@@ -299,11 +298,9 @@ textarea.fi{resize:vertical;min-height:80px}
     <div class="card">
       <div class="ch"><div class="ct">სწრაფი მოქმედებები</div></div>
       <div class="cb" style="display:flex;flex-direction:column;gap:8px">
-        <button class="btn btn-b btn-sm" style="justify-content:flex-start" onclick="addStudentModal()">➕ სტუდენტის დამატება</button>
-        <button class="btn btn-o btn-sm" style="justify-content:flex-start" onclick="addTeacherModal()">➕ პედაგოგის დამატება</button>
+        <button class="btn btn-b btn-sm" style="justify-content:flex-start" onclick="go('users',null,'მომხმარებლების მართვა');setTimeout(addUserModal,300)">➕ მომხმარებლის დამატება</button>
         <button class="btn btn-n btn-sm" style="justify-content:flex-start" onclick="go('news',null,'სიახლეები');setTimeout(addNewsModal,300)">📰 სიახლის გამოქვეყნება</button>
         <button class="btn btn-n btn-sm" style="justify-content:flex-start" onclick="go('surveys',null,'გამოკითხვები');setTimeout(addSurveyModal,300)">📝 გამოკითხვის შექმნა</button>
-        <button class="btn btn-n btn-sm" style="justify-content:flex-start" onclick="go('messages',null,'შეტყობინებები');setTimeout(composeModal,300)">✉️ მასობრივი შეტყობინება</button>
       </div>
     </div>
     <div class="card">
@@ -347,6 +344,29 @@ textarea.fi{resize:vertical;min-height:80px}
 </div>
 
 <!-- ══ STUDENTS ══ -->
+<!-- ══ USERS — ცენტრალიზებული მართვა ══ -->
+<div class="screen" id="screen-users">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <input class="fi" style="width:240px" placeholder="🔍  სახელი, ID, ელ. ფოსტა..." oninput="renderUsers()" id="usr-search">
+      <button class="chip active" id="usr-chip-all" onclick="filterUsersRole('',this)">ყველა</button>
+      <button class="chip" id="usr-chip-student" onclick="filterUsersRole('სტუდენტი',this)">🎓 სტუდენტი</button>
+      <button class="chip" id="usr-chip-lecturer" onclick="filterUsersRole('ლექტორი',this)">👨‍🏫 ლექტორი</button>
+      <button class="chip" id="usr-chip-admin" onclick="filterUsersRole('ადმინისტრატორი',this)">🛡️ ადმინისტრატორი</button>
+    </div>
+    <button class="btn btn-b" onclick="addUserModal()">➕ მომხმარებლის დამატება</button>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">მომხმარებლები <span id="usr-count" style="font-size:12px;font-weight:400;color:var(--text3)"></span></div></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>სახელი</th><th>როლი</th><th>დამატ. ინფო</th><th>კონტაქტი</th><th>სტატუსი</th></tr></thead>
+        <tbody id="users-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <div class="screen" id="screen-students">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
     <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -360,7 +380,6 @@ textarea.fi{resize:vertical;min-height:80px}
         <option value="active">აქტიური</option><option value="debt">დავალიანება</option><option value="leave">აკადემიური შვებულება</option>
       </select>
     </div>
-    <button class="btn btn-b" onclick="addStudentModal()">➕ სტუდენტის დამატება</button>
   </div>
   <div class="card">
     <div class="ch">
@@ -381,7 +400,6 @@ textarea.fi{resize:vertical;min-height:80px}
 <div class="screen" id="screen-teachers">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
     <input class="fi" style="width:260px" placeholder="🔍  სახელი, მოდული..." oninput="filterTeachers(this.value)">
-    <button class="btn btn-b" onclick="addTeacherModal()">➕ პედაგოგის დამატება</button>
   </div>
   <div class="card">
     <div class="ch"><div class="ct">პედაგოგების სია <span style="font-size:12px;font-weight:400;color:var(--text3)">24 პედაგოგი</span></div><button class="btn btn-n btn-sm" onclick="exportTeachers()">⬇ Excel</button></div>
@@ -562,28 +580,6 @@ textarea.fi{resize:vertical;min-height:80px}
   <div id="career-admin-list"></div>
 </div>
 
-<!-- ══ MESSAGES ══ -->
-<div class="screen" id="screen-messages">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-    <div style="display:flex;gap:8px">
-      <button class="chip active" id="msg-chip-inbox" onclick="filterMsgs('inbox',this)">შემოსული (2)</button>
-      <button class="chip" id="msg-chip-sent" onclick="filterMsgs('sent',this)">გაგზავნილი</button>
-      <button class="chip" id="msg-chip-broadcast" onclick="filterMsgs('broadcast',this)">მასობრივი</button>
-    </div>
-    <button class="btn btn-b" onclick="composeModal()">✉️ ახალი შეტყობინება</button>
-  </div>
-  <div class="g2">
-    <div class="card" style="height:520px;display:flex;flex-direction:column">
-      <div class="ch"><div class="ct">შეტყობინებები</div></div>
-      <div id="msg-list" style="flex:1;overflow-y:auto"></div>
-    </div>
-    <div class="card" style="height:520px;display:flex;flex-direction:column">
-      <div class="ch"><div class="ct" id="msg-detail-title">შეტყობინება</div></div>
-      <div id="msg-detail-body" style="flex:1;overflow-y:auto;padding:18px;font-size:13px;color:var(--text2)">შეტყობინება აირჩიეთ სიაში</div>
-    </div>
-  </div>
-</div>
-
 <!-- ══ REPORTS ══ -->
 <div class="screen" id="screen-reports">
   <div class="g2" style="margin-bottom:16px">
@@ -645,16 +641,6 @@ textarea.fi{resize:vertical;min-height:80px}
       </div>
     </div>
     <div>
-      <div class="card" style="margin-bottom:16px">
-        <div class="ch"><div class="ct">შეტყობინებები და SMS</div></div>
-        <div class="cb">
-          <div class="fg" style="display:flex;justify-content:space-between;align-items:center"><label style="font-size:13px">გადახდის შეხსენება SMS</label><label class="toggle-wrap"><input type="checkbox" checked onchange="toggleSetting('sms-payment',this.checked)"><span class="toggle"></span></label></div>
-          <div class="fg" style="display:flex;justify-content:space-between;align-items:center"><label style="font-size:13px">განაცხადის სტატუსი SMS</label><label class="toggle-wrap"><input type="checkbox" checked onchange="toggleSetting('sms-app',this.checked)"><span class="toggle"></span></label></div>
-          <div class="fg" style="display:flex;justify-content:space-between;align-items:center"><label style="font-size:13px">ელ. ფოსტის შეტყობინება</label><label class="toggle-wrap"><input type="checkbox" checked onchange="toggleSetting('email-notify',this.checked)"><span class="toggle"></span></label></div>
-          <div class="fg"><label class="fl">SMS გამგზავნის სახელი</label><input class="fi" value="BMEDA"></div>
-          <button class="btn btn-b" onclick="saveSettings('შეტყობინებები')">შენახვა</button>
-        </div>
-      </div>
       <div class="card" style="margin-bottom:16px">
         <div class="ch"><div class="ct">პორტალის გარეგნობა — ფონის სურათი</div></div>
         <div class="cb">
@@ -758,6 +744,10 @@ const teachers=[
   {id:'T-004',name:'ზვიად ქობულია',spec:'სამედიცინო ეთიკა',modules:['სამედიცინო ეთიკა','კლინიკური ანატომია'],students:41,email:'z.kobuliya@bmeda.edu.ge',phone:'+995 555 001 004',status:'active'},
   {id:'T-005',name:'ნანა ჯაფარიძე',spec:'მიკრობიოლოგია',modules:['მიკრობიოლოგია'],students:20,email:'n.japaridze@bmeda.edu.ge',phone:'+995 555 001 005',status:'leave'},
 ];
+const admins=[
+  {id:'ADM-001',name:'თამარ ბერიძე',dept:'ადმინისტრაცია',email:'t.beridze@bmeda.edu.ge',phone:'+995 555 000 001',status:'active'},
+  {id:'ADM-002',name:'ლევან ღოღობერიძე',dept:'ფინანსური სამსახური',email:'finance@bmeda.edu.ge',phone:'+995 555 000 002',status:'active'},
+];
 const groupsData=[
   {id:'GRP-101',name:'ჯგუფი 101',year:'I სასწ. წელი',students:24,teacherId:'T-001',teacher:'ნინო კაპანაძე',att:88,active:true},
   {id:'GRP-102',name:'ჯგუფი 102',year:'I სასწ. წელი',students:22,teacherId:'T-001',teacher:'ნინო კაპანაძე',att:79,active:true},
@@ -824,11 +814,6 @@ const jobsAdminData=[
   {id:'JOB-001',title:'ამბულატორიის ექიმი',company:'VivaМed',loc:'ბათუმი',type:'სრული განაკვეთი',salary:'800–1200₾',posted:'01.07.2026',apps:12,status:'active'},
   {id:'JOB-002',title:'ფარმაცევტული ასისტენტი',company:'Aversi',loc:'ბათუმი',type:'ნახევარი განაკვეთი',salary:'600₾+',posted:'25.06.2026',apps:8,status:'active'},
   {id:'JOB-003',title:'სტუდენტური სტაჟიორობა',company:'Adjara Hospital',loc:'ბათუმი',type:'სტაჟიორობა',salary:'400₾',posted:'15.06.2026',apps:24,status:'active'},
-];
-const msgsData=[
-  {id:'MSG-001',fromId:'BMA-2401',from:'ნინო მამულაძე',role:'სტუდენტი',subj:'გამოცდის თარიღი',body:'გამარჯობა! გთხოვთ განმარტოთ ანატომიის გამოცდის ზუსტი თარიღი.',date:'09.07.2026',read:false},
-  {id:'MSG-002',fromId:'T-001',from:'ნინო კაპანაძე',role:'პედაგოგი',subj:'ჟურნალის განახლება',body:'ადმინისტრაციას ვაცნობებ, რომ 02.07 გაკვეთილის ჟურნალი განახლებულია.',date:'08.07.2026',read:false},
-  {id:'MSG-003',fromId:'T-002',from:'გიორგი ბახტაძე',role:'პედაგოგი',subj:'მოდულის განრიგი',body:'ფიზიოლოგია II-ის განრიგი შეცვლილია.',date:'05.07.2026',read:true},
 ];
 const savedReports=[
   {name:'დასწრება — I სემ. 2026',date:'01.07.2026',type:'excel'},
@@ -1097,45 +1082,6 @@ function renderCareerAdmin(){
     </div>`).join('');
 }
 
-function renderMessages(filter){
-  const el=document.getElementById('msg-list');
-  if(!el)return;
-  const list=msgsData;
-  el.innerHTML=list.map(m=>`
-    <div onclick="openMsg('${m.id}')" style="padding:14px 18px;border-bottom:1px solid var(--border);cursor:pointer;${!m.read?'background:var(--blue-lt)':''}">
-      <div style="display:flex;justify-content:space-between;margin-bottom:3px">
-        <strong style="font-size:13px">${m.from}</strong>
-        <span style="font-size:11px;color:var(--text3)">${m.date}</span>
-      </div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:2px">${m.id} · <span style="color:var(--blue)">${m.fromId}</span></div>
-      <div style="font-size:12px;font-weight:600;color:var(--navy)">${m.subj}</div>
-      <div style="font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.body.substring(0,60)}...</div>
-      ${!m.read?'<span class="bd bd-b" style="margin-top:4px;font-size:10px">ახალი</span>':''}
-    </div>`).join('');
-}
-function filterMsgs(f,el){
-  document.querySelectorAll('.chip[id^="msg-chip"]').forEach(c=>c.classList.remove('active'));
-  if(el)el.classList.add('active');
-  renderMessages(f);
-}
-function openMsg(id){
-  const m=msgsData.find(x=>x.id===id||x.id===String(id));if(!m)return;
-  m.read=true;
-  document.getElementById('msg-detail-title').textContent=m.subj;
-  document.getElementById('msg-detail-body').innerHTML=`
-    <div style="margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)">
-      <strong>${m.from}</strong> <span class="bd bd-n" style="font-size:10px">${m.role}</span>
-      <span style="float:right;font-size:12px;color:var(--text3)">${m.date}</span>
-    </div>
-    <p style="line-height:1.7;font-size:13px;color:var(--text1)">${m.body}</p>
-    <div style="margin-top:20px">
-      <textarea class="fi" placeholder="პასუხი..." style="min-height:80px;margin-bottom:8px" id="reply-box-${id}"></textarea>
-      <button class="btn btn-b btn-sm" onclick="sendReply('${id}')">გაგზავნა ↗</button>
-    </div>`;
-  renderMessages();
-}
-function sendReply(id){const rb=document.getElementById('reply-box-'+id);if(!rb||!rb.value.trim()){toast('პასუხი ცარიელია','error');return;}toast('პასუხი გაიგზავნა ✓','success');rb.value='';}
-
 function renderGrades(){
   const tb=document.getElementById('grades-tbody');
   if(!tb)return;
@@ -1168,6 +1114,78 @@ function renderSavedReports(){
 <script>
 // ══ MODAL FORMS ══
 
+let usrRole='';
+function usersAll(){
+  const st=x=>x==='active'?['აქტიური','bd-g']:x==='debt'?['დავალიანება','bd-r']:x==='leave'?['შვებულება','bd-a']:[x,'bd-n'];
+  return [
+    ...students.map(s=>({id:s.id,name:s.name,role:'სტუდენტი',rc:'bd-b',info:s.group,contact:s.email,st:st(s.status)})),
+    ...teachers.map(t=>({id:t.id,name:t.name,role:'ლექტორი',rc:'bd-p',info:t.spec,contact:t.email,st:st(t.status)})),
+    ...admins.map(a=>({id:a.id,name:a.name,role:'ადმინისტრატორი',rc:'bd-a',info:a.dept,contact:a.email,st:st(a.status)})),
+  ];
+}
+function renderUsers(){
+  const q=(document.getElementById('usr-search')?.value||'').trim();
+  let list=usersAll();
+  if(usrRole) list=list.filter(u=>u.role===usrRole);
+  if(q) list=list.filter(u=>u.name.includes(q)||u.id.includes(q)||(u.contact||'').includes(q));
+  const el=document.getElementById('users-tbody'); if(!el) return;
+  el.innerHTML=list.map(u=>`<tr>
+    <td style="font-weight:600;color:var(--blue)">${u.id}</td>
+    <td>${u.name}</td>
+    <td><span class="bd ${u.rc}">${u.role}</span></td>
+    <td style="color:var(--text2)">${u.info||'—'}</td>
+    <td style="font-size:12px;color:var(--text2)">${u.contact||'—'}</td>
+    <td><span class="bd ${u.st[1]}">${u.st[0]}</span></td>
+  </tr>`).join('');
+  const c=document.getElementById('usr-count'); if(c)c.textContent=list.length+' მომხმარებელი';
+}
+function filterUsersRole(role,el){usrRole=role;document.querySelectorAll('[id^=usr-chip]').forEach(c=>c.classList.remove('active'));if(el)el.classList.add('active');renderUsers();}
+function addUserModal(){
+  showModal('მომხმარებლის დამატება',`
+    <div class="fg"><label class="fl">როლი</label>
+      <select class="fi" id="nu-role" onchange="updateUserRoleFields()">
+        <option value="სტუდენტი">🎓 სტუდენტი</option>
+        <option value="ლექტორი">👨‍🏫 ლექტორი</option>
+        <option value="ადმინისტრატორი">🛡️ ადმინისტრატორი</option>
+      </select>
+    </div>
+    <div class="fg2"><div><label class="fl">სახელი გვარი</label><input class="fi" id="nu-name" placeholder="სახელი გვარი"></div><div><label class="fl">ID (სურვ.)</label><input class="fi" id="nu-id" placeholder="ავტომატური თუ ცარიელია"></div></div>
+    <div class="fg"><label class="fl">ელ. ფოსტა</label><input class="fi" id="nu-email" placeholder="name@bmeda.edu.ge"></div>
+    <div class="fg"><label class="fl">ტელეფონი</label><input class="fi" id="nu-phone" placeholder="+995 5XX XXX XXX"></div>
+    <div id="nu-role-fields"></div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveNewUser()">✓ დამატება</button>`);
+  updateUserRoleFields();
+}
+function updateUserRoleFields(){
+  const role=document.getElementById('nu-role').value;
+  const box=document.getElementById('nu-role-fields'); if(!box)return;
+  if(role==='სტუდენტი'){
+    box.innerHTML=`<div class="fg2"><div><label class="fl">ჯგუფი</label><select class="fi" id="nu-group"><option>ჯგუფი 101</option><option>ჯგუფი 102</option><option>ჯგუფი 201</option><option>ჯგუფი 301</option><option>ჯგუფი 401</option></select></div><div><label class="fl">სასწ. წელი</label><select class="fi" id="nu-year"><option>I</option><option>II</option><option>III</option><option>IV</option><option>V</option><option>VI</option></select></div></div>
+      <div class="fg"><label class="fl">განსაკუთრებული სტატუსი (სურვ.)</label><select class="fi" id="nu-special"><option value="">— არ არის —</option><option value="სსმ">სსმ — სპეც. საჭიროება</option><option value="სოციალური">სოციალური დახმარება</option><option value="ობოლი">ობოლი / მინდობა</option></select></div>`;
+  } else if(role==='ლექტორი'){
+    box.innerHTML=`<div class="fg"><label class="fl">სპეციალობა</label><input class="fi" id="nu-spec" placeholder="ანატომია..."></div>`;
+  } else {
+    box.innerHTML=`<div class="fg"><label class="fl">განყოფილება</label><select class="fi" id="nu-dept"><option>ადმინისტრაცია</option><option>სასწავლო განყოფილება</option><option>ფინანსური სამსახური</option><option>სტუდენტური სამსახური</option><option>ბიბლიოთეკა</option><option>HR / კადრები</option><option>IT სამსახური</option></select></div>`;
+  }
+}
+function saveNewUser(){
+  const role=document.getElementById('nu-role').value;
+  const name=document.getElementById('nu-name').value.trim();
+  if(!name){toast('შეავსეთ სახელი','error');return;}
+  const id=document.getElementById('nu-id').value.trim();
+  const email=document.getElementById('nu-email').value, phone=document.getElementById('nu-phone').value;
+  if(role==='სტუდენტი'){
+    students.unshift({id:id||'BMA-'+(2400+students.length+1),name,group:document.getElementById('nu-group').value,year:document.getElementById('nu-year').value,att:0,balance:0,status:'active',email,phone,special:document.getElementById('nu-special').value||null});
+    const sc=document.getElementById('stu-count'); if(sc)sc.textContent=students.length+' სტუდენტი';
+    renderStudents(students);
+  } else if(role==='ლექტორი'){
+    teachers.unshift({id:id||'T-0'+String(teachers.length+1).padStart(2,'0'),name,spec:document.getElementById('nu-spec').value,modules:[],students:0,email,phone,status:'active'});
+    renderTeachers(teachers);
+  } else {
+    admins.unshift({id:id||'ADM-0'+String(admins.length+1).padStart(2,'0'),name,dept:document.getElementById('nu-dept').value,email,phone,status:'active'});
+  }
+  renderUsers();closeModal();toast(role+' დამატებულია ✓','success');
+}
 function addStudentModal(){
   showModal('სტუდენტის დამატება',`
     <div class="fg2"><div><label class="fl">სახელი</label><input class="fi" id="ns-name" placeholder="სახელი გვარი"></div><div><label class="fl">ID</label><input class="fi" id="ns-id" placeholder="BMA-XXXX"></div></div>
@@ -1367,7 +1385,7 @@ function viewPaymentHistory(id){
 
 function approveApp(name,id){
   if(!id){closeModal&&closeModal();toast(name+' — განაცხადი დამტკიცებულია ✓','success');return;}
-  showModal('განაცხადის დამტკიცება',`<p>სტუდენტი: <strong>${name}</strong><br>განაცხადი დამტკიცდება და SMS შეტყობინება გაიგზავნება.</p>`,
+  showModal('განაცხადის დამტკიცება',`<p>სტუდენტი: <strong>${name}</strong><br>განაცხადი დამტკიცდება.</p>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-g" onclick="const a=appsData.find(x=>x.id==='${id}');if(a)a.status='approved';renderApps('all');closeModal();toast('${name} — დამტკიცდა ✓','success')">✓ დამტკიცება</button>`);
 }
 function rejectApp(id){
@@ -1506,69 +1524,6 @@ function removeJob(id){
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="const i=jobsAdminData.findIndex(x=>x.id==='${id}');if(i>-1)jobsAdminData.splice(i,1);renderCareerAdmin();closeModal();toast('წაშლილია','warn')">✕ წაშლა</button>`);
 }
 
-const ADMIN_MSG_GROUPS = [
-  {id:'all-students', label:'ყველა სტუდენტი',       role:'students'},
-  {id:'all-teachers', label:'ყველა პედაგოგი',        role:'teachers'},
-  {id:'grp-101',      label:'ჯგუფი 101',             role:'group'},
-  {id:'grp-102',      label:'ჯგუფი 102',             role:'group'},
-  {id:'grp-201',      label:'ჯგუფი 201',             role:'group'},
-  {id:'grp-301',      label:'ჯგუფი 301',             role:'group'},
-  {id:'grp-401',      label:'ჯგუფი 401',             role:'group'},
-  {id:'dept-study',   label:'სასწავლო განყოფილება',   role:'admin'},
-  {id:'dept-finance', label:'ფინანსური სამსახური',    role:'admin'},
-  {id:'dept-student', label:'სტუდენტური სამსახური',  role:'admin'},
-  {id:'dept-library', label:'ბიბლიოთეკა',             role:'admin'},
-  {id:'dept-hr',      label:'HR / კადრების სამსახური',role:'admin'},
-  {id:'dept-it',      label:'IT სამსახური',           role:'admin'},
-  {id:'director',     label:'დირექტორი',              role:'director'},
-];
-
-function updateAdminComposeSub(){
-  const role = document.getElementById('cm-role')?.value;
-  const toRow = document.getElementById('cm-to-row');
-  if(!toRow) return;
-  const roleData = {
-    students: ADMIN_MSG_GROUPS.filter(g=>g.role==='students'),
-    teachers: ADMIN_MSG_GROUPS.filter(g=>g.role==='teachers'),
-    group:    ADMIN_MSG_GROUPS.filter(g=>g.role==='group'),
-    admin:    ADMIN_MSG_GROUPS.filter(g=>g.role==='admin'),
-    director: ADMIN_MSG_GROUPS.filter(g=>g.role==='director'),
-    all:      ADMIN_MSG_GROUPS,
-  };
-  const opts = (roleData[role]||ADMIN_MSG_GROUPS).map(g=>`<option value="${g.id}">${g.label}</option>`).join('');
-  document.getElementById('cm-to').innerHTML = opts;
-  toRow.style.display = role==='all' ? 'none' : 'block';
-}
-
-function composeModal(){
-  showModal('ახალი შეტყობინება',`
-    <div class="fg">
-      <label class="fl">მიმღების ჯგუფი / როლი</label>
-      <select class="fi" id="cm-role" onchange="updateAdminComposeSub()">
-        <option value="all">ყველა</option>
-        <option value="students">სტუდენტები</option>
-        <option value="teachers">პედაგოგები</option>
-        <option value="group">კონკრეტული ჯგუფი</option>
-        <option value="admin">ადმინ. სამსახური</option>
-        <option value="director">დირექტორი</option>
-      </select>
-    </div>
-    <div class="fg" id="cm-to-row" style="display:none">
-      <label class="fl">კონკრეტული მიმღები</label>
-      <select class="fi" id="cm-to"></select>
-    </div>
-    <div class="fg"><label class="fl">სათაური</label><input class="fi" id="cm-subj" placeholder="შეტყობინების სათაური"></div>
-    <div class="fg"><label class="fl">შეტყობინება</label><textarea class="fi" id="cm-body" style="min-height:100px" placeholder="შეტყობინების ტექსტი..."></textarea></div>
-    <div style="display:flex;gap:12px;margin-top:4px"><label style="font-size:13px;display:flex;align-items:center;gap:6px"><input type="checkbox" checked> ელ. ფოსტა</label><label style="font-size:13px;display:flex;align-items:center;gap:6px"><input type="checkbox"> SMS</label></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="sendBroadcast()">✉️ გაგზავნა</button>`);
-}
-function sendBroadcast(){
-  const subj=document.getElementById('cm-subj').value.trim();
-  if(!subj){toast('შეავსეთ სათაური','error');return;}
-  closeModal();toast('შეტყობინება გაიგზავნა ✓','success');
-  document.getElementById('top-msg-count').textContent=+document.getElementById('top-msg-count').textContent+1;
-}
-
 function generateReport(){
   const el=document.getElementById('report-result-body');
   const title=document.getElementById('report-result-title');
@@ -1649,6 +1604,7 @@ function clearBg(){
 document.addEventListener('DOMContentLoaded',()=>{
   renderStudents(students);
   renderTeachers(teachers);
+  renderUsers();
   renderGroups();
   renderModules();
   renderSchedule();
@@ -1658,7 +1614,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderNewsAdmin('all');
   renderSurveysAdmin();
   renderCareerAdmin();
-  renderMessages();
   renderGrades();
   renderSavedReports();
 });
