@@ -561,7 +561,7 @@ textarea.fi{resize:vertical;min-height:80px}
   <div class="card">
     <div class="tw">
       <table id="modules-table">
-        <thead><tr><th>კოდი</th><th>მოდული</th><th>პროგრამა / მიღება</th><th>ჯგუფი</th><th>მასწავლებელი</th><th>კრედ.</th><th>პერიოდი</th><th>სწ. შედეგი</th><th>ჩატარებული</th><th>კალენდ. გეგმა</th><th>მოქმედება</th></tr></thead>
+        <thead><tr><th>კოდი</th><th>მოდული</th><th>პროგრამა / მიღება</th><th>ჯგუფი</th><th>მასწავლებელი</th><th>კრედ.</th><th>პერიოდი</th><th>კვირა / საათი</th><th>სწ. შედეგი</th><th>ჩატარებული</th><th>კალენდ. გეგმა</th><th>მოქმედება</th></tr></thead>
         <tbody id="modules-tbody"></tbody>
       </table>
     </div>
@@ -621,7 +621,7 @@ textarea.fi{resize:vertical;min-height:80px}
   <div class="card">
     <div class="ch"><div class="ct">სწავლის შედეგები <span id="out-count" style="font-size:12px;font-weight:400;color:var(--text3)"></span></div></div>
     <div class="tw"><table>
-      <thead><tr><th>ID</th><th>პროფესიული სტუდენტი</th><th>მოდული</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>მტკიც.</th><th>შედეგი</th><th>უწყისი</th></tr></thead>
+      <thead><tr><th>ID</th><th>პროფესიული სტუდენტი</th><th>მოდული</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>მტკიც.</th><th>შედეგი</th><th>უწყისი</th><th></th></tr></thead>
       <tbody id="outcomes-tbody"></tbody>
     </table></div>
   </div>
@@ -638,6 +638,14 @@ textarea.fi{resize:vertical;min-height:80px}
       <thead><tr><th>ID</th><th>პროგრამა</th><th>ჯგუფი</th><th>ბრძანება</th><th>თარიღი</th><th>დავალების ტიპი</th><th>შესრ. %</th><th>კომისია</th><th>მონაწილე</th></tr></thead>
       <tbody id="interim-tbody"></tbody>
     </table></div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">მოდულის ხელახალი გავლა</div><span style="font-size:11px;color:var(--text3)">ვერ დაძლევის შემთხვევაში — სხვა ჯგუფთან ერთად</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>ID</th><th>პროფესიული სტუდენტი</th><th>მოდული</th><th>ვერ დაძლია ჯგუფში</th><th>ხელახლა გადის ჯგუფთან</th><th>ბრძანება</th><th>სტატუსი</th><th></th></tr></thead>
+      <tbody id="retakes-tbody"></tbody>
+    </table></div>
+    <div class="note">ℹ️ 2 ცდა მოდულის დასრულებიდან <strong>2 კვირაში</strong>; შემდეგ სტუდენტი მოდულს <strong>ხელახლა გადის სხვა ჯგუფთან ერთად</strong> — სისტემაში აუცილებლად ფიქსირდება, რომელ ჯგუფთან. საჭიროა დირექტორის ბრძანება. — [სპწ] 21.9–21.11</div>
   </div>
   <div class="g2">
     <div class="card">
@@ -859,7 +867,8 @@ textarea.fi{resize:vertical;min-height:80px}
   </div>
   <div class="card">
     <div class="ch"><div class="ct">სასწავლო წელი</div><span style="font-size:11px;color:var(--text3)">დამტკიცებულია დირექტორის ბრძანებით · სემესტრები არ არსებობს</span></div>
-    <div class="tw"><table><thead><tr><th>დასახელება</th><th>დაწყება</th><th>დასრულება</th><th>არდადეგები</th><th>ბრძანება</th></tr></thead><tbody id="ref-years"></tbody></table></div>
+    <div class="tw"><table><thead><tr><th>პერიოდი</th><th>მიღება</th><th>დაწყება</th><th>პროგრამა → კვირები → დასრულება (გამოთვლილი)</th><th>არდადეგები</th><th>ბრძანება</th></tr></thead><tbody id="ref-years"></tbody></table></div>
+    <div class="note">ℹ️ პერიოდს განესაზღვრება <strong>მხოლოდ დაწყების თარიღი</strong>. დასრულება <strong>არ ინახება</strong> — გამოითვლება მაშინ, როცა პროგრამისთვის მინიჭებული კვირები ამოიწურება. თითოეულ პროგრამას შეიძლება სხვადასხვა კვირების რაოდენობა ჰქონდეს.</div>
   </div>
   <div class="card">
     <div class="ch"><div class="ct">ფილიალი / ლოკაცია</div><button class="btn btn-b btn-sm" onclick="addBranchModal()">➕ ფილიალის დამატება</button></div>
@@ -1159,10 +1168,39 @@ const intakesData=[
   {id:'INT-2',name:'საშემოდგომო მიღება 2025',season:'autumn',year:2025},
   {id:'INT-3',name:'საგაზაფხულო მიღება 2025',season:'spring',year:2025},
 ];
+// ── სასწავლო პერიოდი: განისაზღვრება მხოლოდ დაწყების თარიღით.
+//    დასრულება გამოითვლება, როცა პროგრამისთვის მინიჭებული კვირები ამოიწურება.
 const studyYearsData=[
-  {id:'SY-1',name:'2025–2026 სასწავლო წელი',startsOn:'15.09.2025',endsOn:'15.07.2026',orderId:'ORD-5',breaks:'31.12.2025–10.01.2026 (ზამთრის არდადეგები)'},
-  {id:'SY-2',name:'2024–2025 სასწავლო წელი',startsOn:'16.09.2024',endsOn:'12.07.2025',orderId:'ORD-5',breaks:'30.12.2024–08.01.2025'},
+  {id:'SY-1',name:'2025–2026 სასწავლო პერიოდი',intakeId:'INT-2',startsOn:'15.09.2025',orderId:'ORD-5',breaks:'31.12.2025–10.01.2026 (ზამთრის არდადეგები)'},
+  {id:'SY-2',name:'2025 საგაზაფხულო პერიოდი',intakeId:'INT-3',startsOn:'10.02.2025',orderId:'ORD-5',breaks:'—'},
+  {id:'SY-3',name:'2026 საგაზაფხულო პერიოდი',intakeId:'INT-1',startsOn:'09.02.2026',orderId:'ORD-5',breaks:'—'},
 ];
+// კვირების რაოდენობა — თითოეული პროგრამისთვის, თითოეულ პერიოდზე
+const periodWeeks=[
+  {periodId:'SY-1',programId:'PRG-1',weeks:36},
+  {periodId:'SY-1',programId:'PRG-2',weeks:32},
+  {periodId:'SY-1',programId:'PRG-3',weeks:30},
+  {periodId:'SY-1',programId:'PRG-4',weeks:30},
+  {periodId:'SY-2',programId:'PRG-1',weeks:34},
+  {periodId:'SY-2',programId:'PRG-3',weeks:28},
+  {periodId:'SY-3',programId:'PRG-1',weeks:36},
+];
+// dd.mm.yyyy არითმეტიკა
+function parseGeoDate(d){const [dd,mm,yy]=String(d).split('.').map(Number);return new Date(yy,mm-1,dd)}
+function fmtGeoDate(dt){const p=n=>String(n).padStart(2,'0');return `${p(dt.getDate())}.${p(dt.getMonth()+1)}.${dt.getFullYear()}`}
+function addWeeks(d,w){const dt=parseGeoDate(d);dt.setDate(dt.getDate()+w*7);return fmtGeoDate(dt)}
+function weeksFor(periodId,programId){const r=periodWeeks.find(x=>x.periodId===periodId&&x.programId===programId);return r?r.weeks:null}
+// დასრულების თარიღი = დაწყება + მინიჭებული კვირები (გამოთვლილი, არა შენახული)
+function periodEnd(periodId,programId){
+  const per=studyYearsData.find(x=>x.id===periodId); const w=weeksFor(periodId,programId);
+  return (per&&w)?addWeeks(per.startsOn,w):null;
+}
+function currentWeekOf(periodId){
+  const per=studyYearsData.find(x=>x.id===periodId); if(!per)return null;
+  const diff=Math.floor((parseGeoDate(TODAY)-parseGeoDate(per.startsOn))/(7*24*3600*1000))+1;
+  return diff>0?diff:null;
+}
+const TODAY='09.07.2026';
 const venuesData=[
   {id:'VEN-1',code:'603',type:'auditorium',capacity:30,active:true},
   {id:'VEN-2',code:'618',type:'auditorium',capacity:26,active:true},
@@ -1320,6 +1358,41 @@ const modulesData=[
   {code:'MOD-105',templateId:'MT-5',name:'მიკრობიოლოგია',regNo:'0910905',programId:'PRG-2',intakeId:'INT-3',groupId:'GRP-202',teacherId:'T-005',studyYear:2,credits:4,startsOn:'10.03.2026',endsOn:'15.06.2026',branchId:'BR-1',planStatus:'submitted',planSubmitted:'03.03.2026',planReviewed:null,reviewer:null,outcomes:5,conducted:8,totalLectures:22},
   {code:'MOD-106',templateId:'MT-1',name:'ბიოქიმია',regNo:'0910919',programId:'PRG-3',intakeId:'INT-3',groupId:'GRP-401',teacherId:'T-001',studyYear:2,credits:4,startsOn:'12.02.2026',endsOn:'28.05.2026',branchId:'BR-1',planStatus:'draft',planSubmitted:null,planReviewed:null,reviewer:null,outcomes:7,conducted:0,totalLectures:24},
 ];
+// ── მოდულის კვირეული გეგმა: რომელ კვირაში, რამდენი საათი ──
+const moduleWeekPlan=[
+  {moduleCode:'MOD-101',week:1,hours:4,topic:'უჯრედის ქიმიური შემადგენლობა'},
+  {moduleCode:'MOD-101',week:2,hours:4,topic:'წყალი, ელექტროლიტები, pH'},
+  {moduleCode:'MOD-101',week:3,hours:4,topic:'ცილების სტრუქტურა'},
+  {moduleCode:'MOD-101',week:4,hours:4,topic:'ამინომჟავები'},
+  {moduleCode:'MOD-101',week:5,hours:4,topic:'ნახშირწყლების მეტაბოლიზმი'},
+  {moduleCode:'MOD-101',week:6,hours:4,topic:'ლიპიდების მეტაბოლიზმი'},
+  {moduleCode:'MOD-101',week:7,hours:4,topic:'ფერმენტები'},
+  {moduleCode:'MOD-101',week:8,hours:6,topic:'ლაბორატორიული სამუშაო'},
+  {moduleCode:'MOD-101',week:9,hours:4,topic:'შედეგების ინტერპრეტაცია'},
+  {moduleCode:'MOD-102',week:1,hours:4,topic:'შინმოვლის საფუძვლები'},
+  {moduleCode:'MOD-102',week:2,hours:6,topic:'პაციენტის მოვლა — სიმულაცია'},
+  {moduleCode:'MOD-102',week:3,hours:8,topic:'სამუშაო გარემოში პრაქტიკა'},
+  {moduleCode:'MOD-102',week:4,hours:8,topic:'სამუშაო გარემოში პრაქტიკა'},
+  {moduleCode:'MOD-103',week:1,hours:4,topic:'ფარმაკოკინეტიკა'},
+  {moduleCode:'MOD-103',week:2,hours:4,topic:'ანტიბიოტიკები'},
+  {moduleCode:'MOD-103',week:3,hours:4,topic:'დოზირება'},
+  {moduleCode:'MOD-104',week:1,hours:8,topic:'კლინიკური პრაქტიკა — შესავალი'},
+  {moduleCode:'MOD-104',week:2,hours:8,topic:'პაციენტის მოვლა ზედამხედველობით'},
+  {moduleCode:'MOD-105',week:1,hours:4,topic:'მიკროორგანიზმების აგებულება'},
+  {moduleCode:'MOD-106',week:1,hours:4,topic:'უჯრედის ქიმიური შემადგენლობა'},
+];
+const modWeeks=code=>moduleWeekPlan.filter(x=>x.moduleCode===code).sort((a,b)=>a.week-b.week);
+const modHours=code=>modWeeks(code).reduce((a,x)=>a+x.hours,0);
+// ── ხელახალი გავლა: მოდულის ვერ დაძლევა → სხვა ჯგუფთან ერთად ──
+const retakesData=[
+  {id:'RT-1',studentId:'BMA-2402',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,
+   failedInGroupId:'GRP-101',retakeWithGroupId:'GRP-102',retakeModuleCode:'MOD-107',
+   orderId:'ORD-8',decidedOn:'20.05.2026',status:'in_progress'},
+  {id:'RT-2',studentId:'BMA-2303',moduleCode:'MOD-104',module:'კლინიკური პრაქტიკა',outcomeNo:1,
+   failedInGroupId:'GRP-201',retakeWithGroupId:null,retakeModuleCode:null,
+   orderId:null,decidedOn:null,status:'pending'},
+];
+const RETAKE_LBL={pending:['ჯგუფი დასანიშნია','bd-a'],in_progress:['ხელახლა გადის','bd-b'],confirmed:['დადასტურდა','bd-g'],failed:['ვერ დადასტურდა','bd-r']};
 // ── ASSESSMENT SPINE (§1.8) — ბინარული: confirmed | not_confirmed ──
 const outcomeResults=[
   {id:'OR-001',studentId:'BMA-2401',name:'ნინო მამულაძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:1,outcomeTitle:'აღწერს უჯრედის ქიმიურ შემადგენლობას',result:'confirmed',attemptNo:1,assessedOn:'20.03.2026',direction:'survey',source:'assessment',registerId:'REG-001',evidence:2},
@@ -1596,12 +1669,14 @@ function renderModules(){
       <td><div style="font-size:12px">${teacherName(m.teacherId)}</div><div style="font-size:10px;color:var(--text3)">${m.teacherId}</div></td>
       <td style="text-align:center">${m.credits}</td>
       <td style="font-size:11px;white-space:nowrap">${m.startsOn||'—'}<br>${m.endsOn||'—'}</td>
+      <td style="text-align:center;font-size:11px">${modWeeks(m.code).length} კვ.<div style="color:var(--text3)">${modHours(m.code)} სთ</div></td>
       <td style="text-align:center">${m.outcomes}</td>
       <td><div style="font-size:11px;margin-bottom:3px">${m.conducted}/${m.totalLectures}</div><div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden;min-width:50px"><div style="height:100%;width:${pct}%;background:var(--blue)"></div></div></td>
       <td><span class="bd ${ps[1]}">${ps[0]}</span></td>
       <td style="white-space:nowrap">
         <button class="btn btn-xs btn-ghost" onclick="viewModule('${m.code}')" title="მოდულის დეტალები">👁</button>
         <button class="btn btn-xs btn-ghost" onclick="viewCalendarPlan('${m.code}')" title="კალენდარული გეგმა">📋</button>
+        <button class="btn btn-xs btn-ghost" onclick="weekPlanPage('${m.code}')" title="კვირეული გეგმა">🗓️</button>
       </td></tr>`;
   }).join('');
 }
@@ -1801,6 +1876,7 @@ function renderOutcomes(){
       <td style="text-align:center">${o.evidence?`<span class="bd bd-b">${o.evidence}</span>`:'<span class="bd bd-r">0</span>'}</td>
       <td><span class="bd ${r[1]}">${r[0]}</span></td>
       <td>${o.registerId?`<span style="font-size:10px;color:var(--blue);cursor:pointer" onclick="viewRegister('${o.registerId}')">${o.registerId} ↗</span>`:'<span style="color:var(--text3)">—</span>'}</td>
+      <td>${o.result==='not_confirmed'?`<button class="btn btn-xs btn-a" onclick="openRetakeFor('${o.id}')" title="ხელახალი გავლა სხვა ჯგუფთან">🔁 ხელახლა</button>`:''}</td>
     </tr>`;
   }).join('');
   const c=document.getElementById('out-count');
@@ -2141,6 +2217,168 @@ function saveTemplate(){
     outcomes:0,contactH:0,selfH:0,assessH:0,programs:[pid]});
   tplSelProg=pid;renderTemplateDrill();closeModal();toast('შაბლონი რეგისტრირდა ✓','success');
 }
+// ── პერიოდის კვირები პროგრამის მიხედვით ──
+function addPeriodWeeks(periodId){
+  const per=studyYearsData.find(x=>x.id===periodId);
+  const used=periodWeeks.filter(w=>w.periodId===periodId).map(w=>w.programId);
+  const free=programsData.filter(pr=>!used.includes(pr.id));
+  if(!free.length){toast('ყველა პროგრამას კვირები უკვე მინიჭებული აქვს','warn');return;}
+  showModal('პროგრამის კვირების მინიჭება',`
+    <div class="fg"><label class="fl">პერიოდი</label><div class="fv">${per.name} · დაწყება ${per.startsOn}</div></div>
+    <div class="fg"><label class="fl">პროგრამა</label><select class="fi" id="pw-prog">${free.map(pr=>`<option value="${pr.id}">${pr.name}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">კვირების რაოდენობა</label><input class="fi" id="pw-weeks" type="number" min="1" max="52" value="32" oninput="pwPreview('${periodId}')"></div>
+    <div class="fg"><label class="fl">დასრულება (გამოთვლილი)</label><div class="fv" id="pw-end">—</div></div>
+    <div class="note">დასრულების თარიღი <strong>არ ინახება</strong> — გამოითვლება დაწყების თარიღიდან მინიჭებული კვირების ამოწურვისას.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="savePeriodWeeks('${periodId}')">✓ მინიჭება</button>`,'lg');
+  pwPreview(periodId);
+}
+function pwPreview(periodId){
+  const per=studyYearsData.find(x=>x.id===periodId);
+  const w=+(document.getElementById('pw-weeks')||{}).value||0;
+  const el=document.getElementById('pw-end');
+  if(el)el.textContent=w?addWeeks(per.startsOn,w):'—';
+}
+function savePeriodWeeks(periodId){
+  const w=+document.getElementById('pw-weeks').value;
+  if(!w){toast('მიუთითეთ კვირების რაოდენობა','error');return;}
+  periodWeeks.push({periodId,programId:document.getElementById('pw-prog').value,weeks:w});
+  renderReference();closeModal();toast('კვირები მინიჭებულია ✓','success');
+}
+function editPeriodWeeks(periodId,programId){
+  const r=periodWeeks.find(x=>x.periodId===periodId&&x.programId===programId);
+  const per=studyYearsData.find(x=>x.id===periodId);
+  showModal('კვირების შეცვლა',`
+    <div class="fg"><label class="fl">პერიოდი / პროგრამა</label><div class="fv">${per.name} · ${progName(programId)}</div></div>
+    <div class="fg"><label class="fl">დაწყება</label><div class="fv">${per.startsOn}</div></div>
+    <div class="fg"><label class="fl">კვირების რაოდენობა</label><input class="fi" id="pw-weeks" type="number" min="1" max="52" value="${r.weeks}" oninput="pwPreview('${periodId}')"></div>
+    <div class="fg"><label class="fl">დასრულება (გამოთვლილი)</label><div class="fv" id="pw-end">${periodEnd(periodId,programId)}</div></div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button>
+     <button class="btn btn-r" onclick="(function(){const i=periodWeeks.findIndex(x=>x.periodId==='${periodId}'&&x.programId==='${programId}');if(i>-1)periodWeeks.splice(i,1);renderReference();closeModal();toast('კვირები მოხსნილია','warn')})()">✕ მოხსნა</button>
+     <button class="btn btn-b" onclick="(function(){const r=periodWeeks.find(x=>x.periodId==='${periodId}'&&x.programId==='${programId}');r.weeks=+document.getElementById('pw-weeks').value;renderReference();closeModal();toast('კვირები განახლდა ✓','success')})()">💾 შენახვა</button>`,'lg');
+}
+// ── მოდულის კვირეული გეგმა: რომელ კვირაში, რამდენი საათი ──
+function weekPlanPage(code){
+  const m=modulesData.find(x=>x.code===code);if(!m)return;
+  const rows=modWeeks(code);
+  const per=studyYearsData.find(y=>y.intakeId===m.intakeId);
+  const allowed=per?weeksFor(per.id,m.programId):null;
+  const totalH=modHours(code);
+  const over=allowed&&rows.length?rows[rows.length-1].week>allowed:false;
+  showModal(`კვირეული გეგმა — ${m.name}`,`
+    <div class="chips">
+      <span class="bd bd-p">${progName(m.programId)}</span><span class="bd bd-b">${intakeName(m.intakeId)}</span>
+      <span class="bd bd-n">${groupName(m.groupId)}</span><span class="bd bd-n">${m.credits} კრედიტი</span>
+    </div>
+    <div class="st4">
+      <div class="stc"><div class="stc-ic" style="background:var(--blue-lt)">📅</div><div class="stc-v" style="font-size:16px">${per?per.startsOn:'—'}</div><div class="stc-l">პერიოდის დაწყება</div></div>
+      <div class="stc"><div class="stc-ic" style="background:#f5e6f3">🗓️</div><div class="stc-v">${allowed||'—'}</div><div class="stc-l">პროგრამის კვირები</div></div>
+      <div class="stc"><div class="stc-ic" style="background:var(--green-lt)">📚</div><div class="stc-v">${rows.length}</div><div class="stc-l">გაწერილი კვირა</div></div>
+      <div class="stc"><div class="stc-ic" style="background:var(--amber-lt)">⏱</div><div class="stc-v">${totalH}</div><div class="stc-l">სულ საათი</div></div>
+    </div>
+    ${over?'<div class="note note-a">⚠ გეგმა სცდება პროგრამისთვის მინიჭებულ კვირებს — შეამცირეთ კვირები ან გაზარდეთ პროგრამის კვირების რაოდენობა.</div>':''}
+    <div class="card"><div class="ch"><div class="ct">კვირეული გაწერა</div>
+      <button class="btn btn-b btn-sm" onclick="addWeekRow('${code}')">➕ კვირის დამატება</button></div>
+      ${rows.length?`<div class="tw"><table>
+        <thead><tr><th style="width:80px">კვირა</th><th>თარიღი (გამოთვლილი)</th><th>თემატიკა</th><th style="width:110px">საათი</th><th></th></tr></thead>
+        <tbody>${rows.map(r=>{
+          const wd=per?addWeeks(per.startsOn,r.week-1):null;
+          const bad=allowed&&r.week>allowed;
+          return `<tr${bad?' style="background:var(--red-lt)"':''}>
+            <td><input class="fi" type="number" min="1" style="width:66px;padding:5px 8px" value="${r.week}" onchange="setWeek('${code}',${r.week},'week',this.value)"></td>
+            <td style="font-size:12px">${wd||'—'}${bad?' <span class="bd bd-r" style="font-size:9px">სცდება</span>':''}</td>
+            <td><input class="fi" style="padding:5px 8px" value="${r.topic||''}" onchange="setWeek('${code}',${r.week},'topic',this.value)"></td>
+            <td><input class="fi" type="number" min="0" step="1" style="width:80px;padding:5px 8px" value="${r.hours}" onchange="setWeek('${code}',${r.week},'hours',this.value)"> სთ</td>
+            <td><button class="btn btn-xs btn-r" onclick="rmWeekRow('${code}',${r.week})">✕</button></td>
+          </tr>`}).join('')}
+        <tr style="background:var(--bg)"><td colspan="3" style="text-align:right;font-weight:700">სულ</td><td style="font-weight:800">${totalH} სთ</td><td></td></tr>
+        </tbody></table></div>`
+      :'<div class="cb" style="color:var(--text3);font-size:12px">კვირეული გეგმა ჯერ არ არის გაწერილი</div>'}</div>
+    <div class="note">ℹ️ მოდულს ეწერება <strong>რომელ კვირაში</strong> და <strong>რამდენი საათი</strong> იქნება მეცადინეობა. კვირის თარიღი გამოითვლება პერიოდის დაწყების თარიღიდან. გეგმა ვერ სცდება პროგრამისთვის მინიჭებულ კვირებს.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">უკან</button><button class="btn btn-b" onclick="closeModal();toast('კვირეული გეგმა შენახულია ✓','success')">💾 შენახვა</button>`,'xl');
+}
+function setWeek(code,week,field,val){
+  const r=moduleWeekPlan.find(x=>x.moduleCode===code&&x.week===week);
+  if(!r)return;
+  r[field]= field==='topic'?val:+val;
+  renderModules();weekPlanPage(code);
+}
+function addWeekRow(code){
+  const rows=modWeeks(code);
+  const next=rows.length?rows[rows.length-1].week+1:1;
+  moduleWeekPlan.push({moduleCode:code,week:next,hours:4,topic:''});
+  weekPlanPage(code);toast(`კვირა ${next} დაემატა`,'success');
+}
+function rmWeekRow(code,week){
+  const i=moduleWeekPlan.findIndex(x=>x.moduleCode===code&&x.week===week);
+  if(i>-1)moduleWeekPlan.splice(i,1);
+  renderModules();weekPlanPage(code);toast('კვირა მოხსნილია','warn');
+}
+// ── ხელახალი გავლა სხვა ჯგუფთან ერთად ──
+function renderRetakes(){
+  const tb=document.getElementById('retakes-tbody');
+  if(!tb)return;
+  tb.innerHTML=retakesData.length?retakesData.map(r=>{
+    const st=RETAKE_LBL[r.status]||[r.status,'bd-n'];
+    const stu=students.find(x=>x.id===r.studentId);
+    return `<tr>
+      <td style="font-size:11px;font-weight:700;color:var(--blue)">${r.id}</td>
+      <td><div class="row-id">${stu?avatar(stu.name,stu.id):''}<div><div class="rn">${stu?stu.name:r.studentId}</div><div class="ri">${r.studentId}</div></div></div></td>
+      <td>${r.module}<div style="font-size:10px;color:var(--text3)">${r.moduleCode} · სწ. შედეგი №${r.outcomeNo}</div></td>
+      <td style="font-size:12px">${groupName(r.failedInGroupId)}</td>
+      <td>${r.retakeWithGroupId
+        ? `<strong style="font-size:13px;color:var(--blue)">${groupName(r.retakeWithGroupId)}</strong>${r.retakeModuleCode?`<div style="font-size:10px;color:var(--text3)">${r.retakeModuleCode}</div>`:''}`
+        : '<span class="bd bd-a">ჯერ არ არის დანიშნული</span>'}</td>
+      <td style="font-size:11px">${r.orderId?orderRef(r.orderId):'—'}</td>
+      <td><span class="bd ${st[1]}">${st[0]}</span></td>
+      <td style="white-space:nowrap"><button class="btn btn-xs btn-o" onclick="assignRetakeGroup('${r.id}')">${r.retakeWithGroupId?'✏ ჯგუფის შეცვლა':'⇄ ჯგუფის დანიშვნა'}</button></td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:20px">ხელახალი გავლის ჩანაწერი არ არის</td></tr>';
+}
+function assignRetakeGroup(rid){
+  const r=retakesData.find(x=>x.id===rid);if(!r)return;
+  const stu=students.find(x=>x.id===r.studentId);
+  // იმავე მოდულის სხვა ინსტანციები — სხვა ჯგუფებთან
+  const opts=modulesData.filter(m=>m.regNo===(modulesData.find(x=>x.code===r.moduleCode)||{}).regNo && m.groupId!==r.failedInGroupId);
+  showModal('ხელახალი გავლა — ჯგუფის დანიშვნა',`
+    <div class="fg"><label class="fl">პროფესიული სტუდენტი</label><div class="fv">${stu?stu.name:''} · ${r.studentId}</div></div>
+    <div class="fg2">
+      <div><label class="fl">მოდული</label><div class="fv">${r.module}</div></div>
+      <div><label class="fl">ვერ დაძლეული სწავლის შედეგი</label><div class="fv">№${r.outcomeNo}</div></div>
+    </div>
+    <div class="fg"><label class="fl">ჯგუფი, სადაც ვერ დაძლია</label><div class="fv">${groupName(r.failedInGroupId)}</div></div>
+    <div class="fg"><label class="fl">ხელახლა გადის ჯგუფთან ერთად</label>
+      ${opts.length?`<select class="fi" id="rt-group">${opts.map(m=>`<option value="${m.code}" ${m.code===r.retakeModuleCode?'selected':''}>${groupName(m.groupId)} — ${m.name} (${m.startsOn}–${m.endsOn})</option>`).join('')}</select>`
+        :'<div style="color:var(--red);font-size:12px">იმავე მოდულის სხვა ინსტანცია არ არსებობს — საჭიროა მოდულის ინსტანცირება სხვა ჯგუფისთვის</div>'}</div>
+    <div class="fg"><label class="fl">ბრძანება (სავალდებულო)</label>
+      <select class="fi" id="rt-order"><option value="">— აირჩიეთ ბრძანება —</option>${ordersData.filter(o=>o.index==='student_02').map(o=>`<option value="${o.id}" ${o.id===r.orderId?'selected':''}>№${o.no} · ${o.date}</option>`).join('')}</select></div>
+    <div class="note note-a">⚠ მოდულის ვერ დაძლევის შემთხვევაში სტუდენტი მოდულს <strong>ხელახლა გადის სხვა ჯგუფთან ერთად</strong>. სისტემაში ფიქსირდება, <strong>რომელ ჯგუფთან ერთად</strong> გადის კონკრეტულ მოდულს. 2 ცდა მოდულის დასრულებიდან 2 კვირაში, შემდეგ — მოდულის ხელახალი გავლა. — [სპწ] 21.9–21.11</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button>${opts.length?`<button class="btn btn-b" onclick="saveRetake('${rid}')">✓ დანიშვნა</button>`:''}`,'lg');
+}
+function saveRetake(rid){
+  const r=retakesData.find(x=>x.id===rid);
+  const ord=document.getElementById('rt-order').value;
+  if(!ord){toast('ბრძანება სავალდებულოა','error');return;}
+  const code=document.getElementById('rt-group').value;
+  const m=modulesData.find(x=>x.code===code);
+  r.retakeModuleCode=code; r.retakeWithGroupId=m?m.groupId:null; r.orderId=ord;
+  r.status='in_progress'; r.decidedOn=TODAY;
+  auditLog.unshift({id:'AUD-'+String(auditLog.length+1).padStart(3,'0'),actor:'ადმინისტრატორი',role:'spms_specialist',action:'UPDATE',entity:'module_retake',entityId:rid,at:'დღეს',ip:'10.0.4.18'});
+  renderRetakes();renderAudit();closeModal();
+  toast(`ხელახალი გავლა დანიშნულია — ${groupName(r.retakeWithGroupId)} ✓`,'success');
+}
+// ვერ დაძლეული შედეგიდან ხელახალი გავლის გახსნა
+function openRetakeFor(orId){
+  const o=outcomeResults.find(x=>x.id===orId);if(!o)return;
+  let r=retakesData.find(x=>x.studentId===o.studentId&&x.moduleCode===o.moduleCode&&x.outcomeNo===o.outcomeNo);
+  if(!r){
+    const stu=students.find(x=>x.id===o.studentId);
+    const g=groupsData.find(x=>x.name===(stu||{}).group);
+    r={id:'RT-'+(retakesData.length+1),studentId:o.studentId,moduleCode:o.moduleCode,module:o.module,outcomeNo:o.outcomeNo,
+       failedInGroupId:g?g.id:null,retakeWithGroupId:null,retakeModuleCode:null,orderId:null,decidedOn:null,status:'pending'};
+    retakesData.push(r);renderRetakes();
+  }
+  assignRetakeGroup(r.id);
+}
 // ── ფილიალი (§2.1) ──
 function renderBranches(){
   const el=document.getElementById('ref-branches');
@@ -2236,7 +2474,25 @@ function renderReference(){
   const iv=document.getElementById('ref-intakes');
   if(iv)iv.innerHTML=intakesData.map(i=>`<tr><td style="font-weight:700;color:var(--blue);font-size:11px">${i.id}</td><td>${i.name}</td><td><span class="bd ${i.season==='spring'?'bd-g':'bd-a'}">${i.season==='spring'?'საგაზაფხულო':'საშემოდგომო'}</span></td><td style="text-align:center">${i.year}</td></tr>`).join('');
   const sy=document.getElementById('ref-years');
-  if(sy)sy.innerHTML=studyYearsData.map(y=>`<tr><td>${y.name}</td><td style="font-size:12px">${y.startsOn}</td><td style="font-size:12px">${y.endsOn}</td><td style="font-size:11px">${y.breaks}</td><td style="font-size:11px;color:var(--text3)">${orderRef(y.orderId)}</td></tr>`).join('');
+  if(sy)sy.innerHTML=studyYearsData.map(y=>{
+    const rows=periodWeeks.filter(w=>w.periodId===y.id);
+    const cw=currentWeekOf(y.id);
+    return `<tr>
+      <td><strong style="font-size:13px">${y.name}</strong>${cw?`<div style="font-size:10px;color:var(--blue)">მიმდინარე კვირა: ${cw}</div>`:''}</td>
+      <td style="font-size:12px">${intakeName(y.intakeId)}</td>
+      <td style="font-weight:700;font-size:13px">${y.startsOn}</td>
+      <td>${rows.length?rows.map(w=>`<div style="display:flex;align-items:center;gap:8px;font-size:12px;padding:2px 0">
+          <span style="min-width:170px">${progName(w.programId)}</span>
+          <span class="bd bd-b">${w.weeks} კვირა</span>
+          <span style="color:var(--text3)">→</span>
+          <strong>${periodEnd(y.id,w.programId)}</strong>
+          <button class="btn btn-xs btn-ghost" onclick="editPeriodWeeks('${y.id}','${w.programId}')" title="კვირების შეცვლა">✏</button>
+        </div>`).join(''):'<span style="color:var(--text3);font-size:12px">კვირები არ არის მინიჭებული</span>'}
+        <button class="btn btn-xs btn-o" style="margin-top:6px" onclick="addPeriodWeeks('${y.id}')">➕ პროგრამის კვირები</button></td>
+      <td style="font-size:11px">${y.breaks}</td>
+      <td style="font-size:11px;color:var(--text3)">${orderRef(y.orderId)}</td>
+    </tr>`;
+  }).join('');
   const vn=document.getElementById('ref-venues');
   if(vn)vn.innerHTML=venuesData.map(v=>`<tr><td style="font-weight:700;color:var(--blue)">${v.code}</td><td style="font-size:12px">${VENUE_TYPE_LBL[v.type]}</td><td style="text-align:center">${v.capacity}</td><td><span class="bd ${v.active?'bd-g':'bd-n'}">${v.active?'აქტიური':'არააქტიური'}</span></td></tr>`).join('');
   const sl=document.getElementById('ref-slots');
@@ -2347,6 +2603,14 @@ function viewModule(code){
     <div class="fg"><label class="fl">ჩატარებული მეცადინეობა (მთელი მოდულის მაჩვენებელი)</label>
       <div style="font-size:13px;margin-bottom:4px">${done} / ${lecs.length}</div>
       <div style="height:8px;background:var(--border);border-radius:4px;overflow:hidden"><div style="height:100%;width:${lecs.length?Math.round(done/lecs.length*100):0}%;background:var(--blue)"></div></div></div>
+    <div class="fg"><label class="fl">კვირეული გეგმა</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
+        <span class="bd bd-b">${modWeeks(code).length} კვირა</span><span class="bd bd-n">${modHours(code)} საათი</span>
+        <button class="btn btn-xs btn-o" onclick="closeModal();weekPlanPage('${code}')">🗓️ კვირეული გეგმის რედაქტირება</button>
+      </div>
+      ${modWeeks(code).length?`<div class="tw"><table><thead><tr><th style="width:70px">კვირა</th><th>თემატიკა</th><th style="width:80px">საათი</th></tr></thead><tbody>
+        ${modWeeks(code).map(w=>`<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${w.week}</td><td style="font-size:12px">${w.topic||'—'}</td><td style="text-align:center">${w.hours} სთ</td></tr>`).join('')}
+      </tbody></table></div>`:'<div style="color:var(--text3);font-size:12px">კვირეული გეგმა ჯერ არ არის გაწერილი</div>'}</div>
     <div class="fg"><label class="fl">სასწავლო წლის სლოტები და მეცადინეობა</label>${slotBlocks}</div>
     ${outs.length?`<div class="fg"><label class="fl">სწავლის შედეგები და შეფასების ინსტრუმენტი</label>
       <div class="tw"><table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>მიმართულება</th><th>ინსტრუმენტი</th></tr></thead><tbody>
@@ -2798,6 +3062,16 @@ function studentProgress(s){
           <td><span class="bd ${r[1]}">${r[0]}</span></td></tr>`}).join('')}
         </tbody></table></div></div>`;
     }).join(''):'<div class="card"><div class="cb" style="color:var(--text3)">შეფასების ჩანაწერი არ არის</div></div>'}
+    ${retakesData.filter(r=>r.studentId===s.id).length?`<div class="card"><div class="ch"><div class="ct">მოდულის ხელახალი გავლა</div></div>
+      <div class="tw"><table><thead><tr><th>მოდული</th><th>სწ. შედეგი</th><th>ვერ დაძლია ჯგუფში</th><th>ხელახლა გადის ჯგუფთან</th><th>სტატუსი</th></tr></thead><tbody>
+      ${retakesData.filter(r=>r.studentId===s.id).map(r=>{const st=RETAKE_LBL[r.status];
+        return `<tr><td>${r.module}<div style="font-size:10px;color:var(--text3)">${r.moduleCode}</div></td>
+          <td style="text-align:center">№${r.outcomeNo}</td>
+          <td style="font-size:12px">${groupName(r.failedInGroupId)}</td>
+          <td>${r.retakeWithGroupId?`<strong style="color:var(--blue)">${groupName(r.retakeWithGroupId)}</strong>`:'<span class="bd bd-a">ჯერ არ არის დანიშნული</span>'}</td>
+          <td><span class="bd ${st[1]}">${st[0]}</span></td></tr>`}).join('')}
+      </tbody></table></div>
+      <div class="note">მოდულის ვერ დაძლევის შემთხვევაში სტუდენტი მოდულს ხელახლა გადის <strong>სხვა ჯგუფთან ერთად</strong>.</div></div>`:''}
     <div class="note">კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>. ქულა, საშუალო და გამსვლელობა არ არსებობს; დასწრება რეგისტრია. — [სპწ] 21.10, 21.11</div>`;
 }
 function studentHistory(s){
@@ -3331,6 +3605,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   modulesData.forEach(m=>{const l=modLectures(m.code);if(l.length){m.conducted=l.filter(x=>x.conducted).length;m.totalLectures=l.length;}});
   renderStudentTabs();
   renderTeacherTabs();
+  renderRetakes();
   renderBranches();
   renderModuleDrill();
   renderTemplateDrill();
