@@ -1052,6 +1052,56 @@ const moduleTemplates=[
   {id:'MT-4',regNo:'0910931',title:'კლინიკური პრაქტიკა',titleEn:'Clinical Practice',credits:8,kind:'work_based',kindLabel:null,prerequisite:'MT-2',revisions:'11.02.2021',orderId:'ORD-4',outcomes:4,contactH:120,selfH:10,assessH:20,programs:['PRG-1']},
   {id:'MT-5',regNo:'0910905',title:'მიკრობიოლოგია',titleEn:'Microbiology',credits:4,kind:'theoretical',kindLabel:'საბაზო მეცნიერებები',prerequisite:null,revisions:'21.05.2018',orderId:'ORD-4',outcomes:5,contactH:64,selfH:12,assessH:10,programs:['PRG-1','PRG-2','PRG-3']},
 ];
+// ── საათების განაწილება კვირების მიხედვით (სასწავლო გეგმა, დანართი 2) ──
+// ერთი კვირა = საკონტაქტო + დამოუკიდებელი სამუშაო + შეფასების საათები
+const templateWeekPlan=[
+  {id:'TW-1',templateId:'MT-1',week:1,contactH:8,selfH:2,assessH:0,topic:'უჯრედის ქიმიური შემადგენლობა'},
+  {id:'TW-2',templateId:'MT-1',week:2,contactH:8,selfH:2,assessH:0,topic:'წყალი, ელექტროლიტები, pH'},
+  {id:'TW-3',templateId:'MT-1',week:3,contactH:8,selfH:2,assessH:0,topic:'ცილების სტრუქტურა და ფუნქცია'},
+  {id:'TW-4',templateId:'MT-1',week:4,contactH:8,selfH:2,assessH:2,topic:'ამინომჟავები — შუალედური შეფასება'},
+  {id:'TW-5',templateId:'MT-1',week:5,contactH:8,selfH:2,assessH:0,topic:'ნახშირწყლების მეტაბოლიზმი'},
+  {id:'TW-6',templateId:'MT-1',week:6,contactH:8,selfH:2,assessH:0,topic:'ლიპიდების მეტაბოლიზმი'},
+  {id:'TW-7',templateId:'MT-1',week:7,contactH:8,selfH:2,assessH:2,topic:'ფერმენტები — შეფასება'},
+  {id:'TW-8',templateId:'MT-1',week:8,contactH:8,selfH:0,assessH:4,topic:'ლაბორატორიული სამუშაო'},
+  {id:'TW-9',templateId:'MT-1',week:9,contactH:8,selfH:0,assessH:6,topic:'შედეგების ინტერპრეტაცია — დასკვნითი შეფასება'},
+  {id:'TW-10',templateId:'MT-2',week:1,contactH:10,selfH:3,assessH:0,topic:'შინმოვლის საფუძვლები'},
+  {id:'TW-11',templateId:'MT-2',week:2,contactH:10,selfH:3,assessH:0,topic:'პაციენტის უსაფრთხო გარემო'},
+  {id:'TW-12',templateId:'MT-2',week:3,contactH:10,selfH:3,assessH:2,topic:'ჰიგიენური მოვლა — შეფასება'},
+  {id:'TW-13',templateId:'MT-2',week:4,contactH:10,selfH:3,assessH:0,topic:'კვება და დიეტა'},
+  {id:'TW-14',templateId:'MT-2',week:5,contactH:10,selfH:2,assessH:0,topic:'სიმულაციური სავარჯიშო'},
+  {id:'TW-15',templateId:'MT-2',week:6,contactH:10,selfH:2,assessH:2,topic:'მედიკამენტის მიცემა — შეფასება'},
+  {id:'TW-16',templateId:'MT-2',week:7,contactH:10,selfH:2,assessH:0,topic:'სამუშაო გარემოში პრაქტიკა'},
+  {id:'TW-17',templateId:'MT-2',week:8,contactH:10,selfH:1,assessH:4,topic:'სამუშაო გარემოში პრაქტიკა'},
+  {id:'TW-18',templateId:'MT-2',week:9,contactH:10,selfH:1,assessH:8,topic:'დასკვნითი შეფასება'},
+  {id:'TW-19',templateId:'MT-3',week:1,contactH:10,selfH:3,assessH:0,topic:'ფარმაკოკინეტიკა'},
+  {id:'TW-20',templateId:'MT-3',week:2,contactH:10,selfH:3,assessH:0,topic:'ფარმაკოდინამიკა'},
+  {id:'TW-21',templateId:'MT-3',week:3,contactH:10,selfH:2,assessH:2,topic:'ანტიბიოტიკები — შეფასება'},
+  {id:'TW-22',templateId:'MT-3',week:4,contactH:10,selfH:2,assessH:0,topic:'ტკივილგამაყუჩებელი საშუალებები'},
+  {id:'TW-23',templateId:'MT-3',week:5,contactH:10,selfH:2,assessH:0,topic:'გულ-სისხლძარღვთა პრეპარატები'},
+  {id:'TW-24',templateId:'MT-3',week:6,contactH:10,selfH:2,assessH:2,topic:'დოზირება — შეფასება'},
+  {id:'TW-25',templateId:'MT-3',week:7,contactH:10,selfH:2,assessH:2,topic:'გვერდითი მოვლენები'},
+  {id:'TW-26',templateId:'MT-3',week:8,contactH:10,selfH:2,assessH:6,topic:'დასკვნითი შეფასება'},
+  {id:'TW-27',templateId:'MT-4',week:1,contactH:15,selfH:2,assessH:0,topic:'კლინიკური პრაქტიკა — შესავალი'},
+  {id:'TW-28',templateId:'MT-4',week:2,contactH:15,selfH:2,assessH:0,topic:'პაციენტის მოვლა ზედამხედველობით'},
+  {id:'TW-29',templateId:'MT-4',week:3,contactH:15,selfH:2,assessH:2,topic:'პროცედურების შესრულება — შეფასება'},
+  {id:'TW-30',templateId:'MT-4',week:4,contactH:15,selfH:1,assessH:0,topic:'დოკუმენტაციის წარმოება'},
+  {id:'TW-31',templateId:'MT-4',week:5,contactH:15,selfH:1,assessH:0,topic:'გუნდური მუშაობა კლინიკაში'},
+  {id:'TW-32',templateId:'MT-4',week:6,contactH:15,selfH:1,assessH:4,topic:'პრაქტიკული დავალება დაკვირვებით'},
+  {id:'TW-33',templateId:'MT-4',week:7,contactH:15,selfH:1,assessH:4,topic:'პორტფოლიოს შედგენა'},
+  {id:'TW-34',templateId:'MT-4',week:8,contactH:15,selfH:0,assessH:10,topic:'დასკვნითი შეფასება'},
+  {id:'TW-35',templateId:'MT-5',week:1,contactH:8,selfH:2,assessH:0,topic:'მიკროორგანიზმების აგებულება'},
+  {id:'TW-36',templateId:'MT-5',week:2,contactH:8,selfH:2,assessH:0,topic:'ბაქტერიები და ვირუსები'},
+  {id:'TW-37',templateId:'MT-5',week:3,contactH:8,selfH:2,assessH:2,topic:'სტერილიზაცია და დეზინფექცია — შეფასება'},
+  {id:'TW-38',templateId:'MT-5',week:4,contactH:8,selfH:2,assessH:0,topic:'იმუნიტეტი'},
+  {id:'TW-39',templateId:'MT-5',week:5,contactH:8,selfH:2,assessH:0,topic:'ნიმუშის აღება და ტრანსპორტირება'},
+  {id:'TW-40',templateId:'MT-5',week:6,contactH:8,selfH:1,assessH:2,topic:'ლაბორატორიული დიაგნოსტიკა'},
+  {id:'TW-41',templateId:'MT-5',week:7,contactH:8,selfH:1,assessH:2,topic:'ინფექციის კონტროლი'},
+  {id:'TW-42',templateId:'MT-5',week:8,contactH:8,selfH:0,assessH:4,topic:'დასკვნითი შეფასება'},
+];
+let twSeq=42;
+const tplWeeks=tid=>templateWeekPlan.filter(x=>x.templateId===tid).sort((a,b)=>a.week-b.week);
+const tplWeekTotals=tid=>tplWeeks(tid).reduce((a,x)=>({contactH:a.contactH+x.contactH,selfH:a.selfH+x.selfH,assessH:a.assessH+x.assessH}),{contactH:0,selfH:0,assessH:0});
+const tplWeekSum=tid=>{const t=tplWeekTotals(tid);return t.contactH+t.selfH+t.assessH};
 // სწავლის შედეგები (§1.5) — ბიოქიმია 0910919, 72/14/14
 const templateOutcomes=[
   {id:'TO-1',templateId:'MT-1',no:1,title:'აღწერს უჯრედის ქიმიურ შემადგენლობას',direction:'survey',contactH:10,selfH:2,assessH:2},
@@ -1132,30 +1182,11 @@ const modulesData=[
   {code:'MOD-106',templateId:'MT-1',name:'ბიოქიმია',regNo:'0910919',programId:'PRG-3',intakeId:'INT-3',groupId:'GRP-401',teacherId:'T-001',studyYear:2,credits:4,startsOn:'12.02.2026',endsOn:'28.05.2026',branchId:'BR-1',outcomes:7,conducted:0,totalLectures:24},
 ];
 // ── მოდულის კვირეული გეგმა: რომელ კვირაში, რამდენი საათი ──
-const moduleWeekPlan=[
-  {moduleCode:'MOD-101',week:1,hours:4,topic:'უჯრედის ქიმიური შემადგენლობა'},
-  {moduleCode:'MOD-101',week:2,hours:4,topic:'წყალი, ელექტროლიტები, pH'},
-  {moduleCode:'MOD-101',week:3,hours:4,topic:'ცილების სტრუქტურა'},
-  {moduleCode:'MOD-101',week:4,hours:4,topic:'ამინომჟავები'},
-  {moduleCode:'MOD-101',week:5,hours:4,topic:'ნახშირწყლების მეტაბოლიზმი'},
-  {moduleCode:'MOD-101',week:6,hours:4,topic:'ლიპიდების მეტაბოლიზმი'},
-  {moduleCode:'MOD-101',week:7,hours:4,topic:'ფერმენტები'},
-  {moduleCode:'MOD-101',week:8,hours:6,topic:'ლაბორატორიული სამუშაო'},
-  {moduleCode:'MOD-101',week:9,hours:4,topic:'შედეგების ინტერპრეტაცია'},
-  {moduleCode:'MOD-102',week:1,hours:4,topic:'შინმოვლის საფუძვლები'},
-  {moduleCode:'MOD-102',week:2,hours:6,topic:'პაციენტის მოვლა — სიმულაცია'},
-  {moduleCode:'MOD-102',week:3,hours:8,topic:'სამუშაო გარემოში პრაქტიკა'},
-  {moduleCode:'MOD-102',week:4,hours:8,topic:'სამუშაო გარემოში პრაქტიკა'},
-  {moduleCode:'MOD-103',week:1,hours:4,topic:'ფარმაკოკინეტიკა'},
-  {moduleCode:'MOD-103',week:2,hours:4,topic:'ანტიბიოტიკები'},
-  {moduleCode:'MOD-103',week:3,hours:4,topic:'დოზირება'},
-  {moduleCode:'MOD-104',week:1,hours:8,topic:'კლინიკური პრაქტიკა — შესავალი'},
-  {moduleCode:'MOD-104',week:2,hours:8,topic:'პაციენტის მოვლა ზედამხედველობით'},
-  {moduleCode:'MOD-105',week:1,hours:4,topic:'მიკროორგანიზმების აგებულება'},
-  {moduleCode:'MOD-106',week:1,hours:4,topic:'უჯრედის ქიმიური შემადგენლობა'},
-];
-const modWeeks=code=>moduleWeekPlan.filter(x=>x.moduleCode===code).sort((a,b)=>a.week-b.week);
-const modHours=code=>modWeeks(code).reduce((a,x)=>a+x.hours,0);
+// მოდულის ინსტანციის კვირეული განაწილება = მისი შაბლონის საათების განაწილება
+const modTemplateId=code=>(modulesData.find(x=>x.code===code)||{}).templateId;
+const modWeeks=code=>tplWeeks(modTemplateId(code));
+const modHours=code=>tplWeekSum(modTemplateId(code));
+const modWeekTotals=code=>tplWeekTotals(modTemplateId(code));
 // ── ხელახალი გავლა: მოდულის ვერ დაძლევა → სხვა ჯგუფთან ერთად ──
 const retakesData=[
   {id:'RT-1',studentId:'BMA-2402',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,
@@ -1444,7 +1475,7 @@ function renderModules(){
       <td><div style="font-size:11px;margin-bottom:3px">${m.conducted}/${m.totalLectures}</div><div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden;min-width:50px"><div style="height:100%;width:${pct}%;background:var(--blue)"></div></div></td>
       <td style="white-space:nowrap">
         <button class="btn btn-xs btn-ghost" onclick="viewModule('${m.code}')" title="მოდულის დეტალები">👁</button>
-        <button class="btn btn-xs btn-ghost" onclick="weekPlanPage('${m.code}')" title="კვირეული გეგმა">🗓️</button>
+        <button class="btn btn-xs btn-ghost" onclick="viewTemplate('${m.templateId}')" title="საათების განაწილება კვირების მიხედვით">🗓️</button>
       </td></tr>`;
   }).join('');
 }
@@ -2112,6 +2143,67 @@ function removeProgramModule(pid,tid){
       if(!t.programs.length){const i=moduleTemplates.findIndex(x=>x.id==='${tid}');if(i>-1)moduleTemplates.splice(i,1);}
       renderPrograms();closeModal();viewProgram('${pid}');toast('მოდული მოხსნილია','warn')})()">✕ მოხსნა</button>`);
 }
+// ── საათების განაწილება კვირების მიხედვით: დამატება / რედაქტირება / წაშლა ──
+function tplWeekTable(tid){
+  const ws=tplWeeks(tid), t=tplWeekTotals(tid);
+  if(!ws.length)return '<div style="color:var(--text3);font-size:12px">საათების განაწილება ჯერ არ არის გაწერილი — დაამატეთ სასწავლო კვირა</div>';
+  const num=(w,f)=>`<input class="fi" type="number" min="0" step="0.5" value="${w[f]}" onchange="setTplWeek('${tid}','${w.id}','${f}',this.value)" style="width:70px;text-align:center;padding:5px 6px">`;
+  return `<div class="tw"><table>
+    <thead><tr><th style="width:78px">კვირა</th><th>თემატიკა</th><th style="width:96px">საკონტაქტო</th><th style="width:110px">დამოუკიდებელი</th><th style="width:96px">შეფასება</th><th style="width:60px">სულ</th><th style="width:44px"></th></tr></thead>
+    <tbody>${ws.map(w=>`<tr>
+      <td><input class="fi" type="number" min="1" max="52" value="${w.week}" onchange="setTplWeek('${tid}','${w.id}','week',this.value)" style="width:64px;text-align:center;padding:5px 6px;font-weight:700;color:var(--blue)"></td>
+      <td><input class="fi" value="${(w.topic||'').replace(/"/g,'&quot;')}" onchange="setTplWeek('${tid}','${w.id}','topic',this.value)" placeholder="თემატიკა" style="padding:5px 8px;font-size:12px"></td>
+      <td style="text-align:center">${num(w,'contactH')}</td>
+      <td style="text-align:center">${num(w,'selfH')}</td>
+      <td style="text-align:center">${num(w,'assessH')}</td>
+      <td style="text-align:center;font-weight:700">${w.contactH+w.selfH+w.assessH}</td>
+      <td><button class="btn btn-xs btn-r" onclick="rmTplWeek('${tid}','${w.id}')" title="კვირის წაშლა">✕</button></td>
+    </tr>`).join('')}
+    <tr style="background:var(--blue-lt)">
+      <td colspan="2" style="font-weight:700;font-size:12px">სულ — ${ws.length} კვირა</td>
+      <td style="text-align:center;font-weight:800;color:var(--blue)">${t.contactH}</td>
+      <td style="text-align:center;font-weight:800;color:var(--blue)">${t.selfH}</td>
+      <td style="text-align:center;font-weight:800;color:var(--blue)">${t.assessH}</td>
+      <td style="text-align:center;font-weight:800">${t.contactH+t.selfH+t.assessH}</td><td></td>
+    </tr></tbody></table></div>`;
+}
+function syncTplHours(tid){
+  const t=moduleTemplates.find(x=>x.id===tid); if(!t)return;
+  if(!tplWeeks(tid).length)return;
+  const w=tplWeekTotals(tid); t.contactH=w.contactH; t.selfH=w.selfH; t.assessH=w.assessH;
+}
+function refreshTplWeeks(tid){
+  syncTplHours(tid);
+  const el=document.getElementById('tw-wrap'); if(el)el.innerHTML=tplWeekTable(tid);
+  renderPrograms();
+}
+function setTplWeek(tid,wid,field,val){
+  const w=templateWeekPlan.find(x=>x.id===wid); if(!w)return;
+  if(field==='topic'){w.topic=val;}
+  else{
+    const n=Math.max(0,+val||0);
+    if(field==='week'){
+      const dup=templateWeekPlan.find(x=>x.templateId===tid&&x.id!==wid&&x.week===n);
+      if(dup){toast('ამ ნომრით სასწავლო კვირა უკვე არსებობს','error');refreshTplWeeks(tid);return;}
+      w.week=Math.max(1,n);
+    } else w[field]=n;
+  }
+  refreshTplWeeks(tid);
+  toast('საათების განაწილება განახლდა ✓','success');
+}
+function addTplWeek(tid){
+  const ws=tplWeeks(tid);
+  const next=ws.length?Math.max(...ws.map(x=>x.week))+1:1;
+  templateWeekPlan.push({id:'TW-'+(++twSeq),templateId:tid,week:next,contactH:0,selfH:0,assessH:0,topic:''});
+  refreshTplWeeks(tid);
+  toast(next+'-ე სასწავლო კვირა დამატებულია ✓','success');
+}
+function rmTplWeek(tid,wid){
+  const w=templateWeekPlan.find(x=>x.id===wid); if(!w)return;
+  const i=templateWeekPlan.indexOf(w); templateWeekPlan.splice(i,1);
+  refreshTplWeeks(tid);
+  toast(w.week+'-ე სასწავლო კვირა წაშლილია','warn');
+}
 function viewTemplate(id){
   const t=moduleTemplates.find(x=>x.id===id);if(!t)return;
   const outs=templateOutcomes.filter(o=>o.templateId===id);
@@ -2144,9 +2236,14 @@ function viewTemplate(id){
     <div class="fg"><label class="fl">მოდულზე დაშვების წინაპირობა</label><div style="font-size:12px">${t.prerequisite?moduleTemplates.find(x=>x.id===t.prerequisite)?.title:'— არ არის —'}</div></div>
     <div class="fg"><label class="fl">პროგრამები (M:N)</label><div>${t.programs.map(pid=>`<span class="bd bd-p" style="font-size:10px">${progName(pid)}</span>`).join(' ')}</div>
       <div style="font-size:11px;color:var(--text3);margin-top:4px">სლოტების რაოდენობა განისაზღვრება პროგრამის ხანგრძლივობით — მოდულზე ხელით არ იცვლება</div></div>
-    <div class="fg"><label class="fl">საათების განაწილება</label>
-      <div class="tw"><table><thead><tr><th>საკონტაქტო</th><th>დამოუკიდებელი</th><th>შეფასება</th><th>სულ</th></tr></thead>
-      <tbody><tr><td style="text-align:center">${t.contactH}</td><td style="text-align:center">${t.selfH}</td><td style="text-align:center">${t.assessH}</td><td style="text-align:center"><strong>${t.contactH+t.selfH+t.assessH}</strong></td></tr></tbody></table></div></div>
+    <div class="fg"><label class="fl">საათების განაწილება კვირების მიხედვით</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
+        <span class="bd bd-b">${tplWeeks(id).length} სასწავლო კვირა</span>
+        <span class="bd bd-n">${tplWeekSum(id)} საათი სულ</span>
+        <button class="btn btn-xs btn-b" onclick="addTplWeek('${id}')">➕ კვირის დამატება</button>
+      </div>
+      <div id="tw-wrap">${tplWeekTable(id)}</div>
+      <div class="note">ერთი სასწავლო კვირისთვის იწერება <strong>საკონტაქტო</strong>, <strong>დამოუკიდებელი სამუშაო</strong> და <strong>შეფასების</strong> საათები. ველში ჩაწერა ინახება ავტომატურად; შაბლონის ჯამური საათები გამოითვლება კვირების ჯამიდან.</div></div>
     ${outs.length?`<div class="fg"><label class="fl">სწავლის შედეგები</label>
       <div class="tw"><table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>შეფასების მიმართულება</th><th>საკ./დამ./შეფ.</th></tr></thead><tbody>
       ${outs.map(o=>`<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${o.no}</td><td style="font-size:12px">${o.title}</td><td style="font-size:11px">${DIRECTION_LBL[o.direction]}</td><td style="text-align:center;font-size:11px">${o.contactH}/${o.selfH}/${o.assessH}</td></tr>`).join('')}
@@ -2199,12 +2296,20 @@ function viewModule(code){
       <div style="height:8px;background:var(--border);border-radius:4px;overflow:hidden"><div style="height:100%;width:${lecs.length?Math.round(done/lecs.length*100):0}%;background:var(--blue)"></div></div></div>
     <div class="fg"><label class="fl">კვირეული გეგმა</label>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
-        <span class="bd bd-b">${modWeeks(code).length} კვირა</span><span class="bd bd-n">${modHours(code)} საათი</span>
-        <button class="btn btn-xs btn-o" onclick="closeModal();weekPlanPage('${code}')">🗓️ კვირეული გეგმის რედაქტირება</button>
+        <span class="bd bd-b">${modWeeks(code).length} სასწავლო კვირა</span><span class="bd bd-n">${modHours(code)} საათი სულ</span>
+        <button class="btn btn-xs btn-o" onclick="closeModal();viewTemplate('${m.templateId}')">🗓️ საათების განაწილების რედაქტირება</button>
       </div>
-      ${modWeeks(code).length?`<div class="tw"><table><thead><tr><th style="width:70px">კვირა</th><th>თემატიკა</th><th style="width:80px">საათი</th></tr></thead><tbody>
-        ${modWeeks(code).map(w=>`<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${w.week}</td><td style="font-size:12px">${w.topic||'—'}</td><td style="text-align:center">${w.hours} სთ</td></tr>`).join('')}
-      </tbody></table></div>`:'<div style="color:var(--text3);font-size:12px">კვირეული გეგმა ჯერ არ არის გაწერილი</div>'}</div>
+      ${modWeeks(code).length?`<div class="tw"><table>
+        <thead><tr><th style="width:64px">კვირა</th><th>თემატიკა</th><th style="width:96px">საკონტაქტო</th><th style="width:110px">დამოუკიდებელი</th><th style="width:90px">შეფასება</th><th style="width:60px">სულ</th></tr></thead><tbody>
+        ${modWeeks(code).map(w=>`<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${w.week}</td><td style="font-size:12px">${w.topic||'—'}</td>
+          <td style="text-align:center">${w.contactH}</td><td style="text-align:center">${w.selfH}</td><td style="text-align:center">${w.assessH}</td>
+          <td style="text-align:center;font-weight:700">${w.contactH+w.selfH+w.assessH}</td></tr>`).join('')}
+        ${(()=>{const t=modWeekTotals(code);return `<tr style="background:var(--blue-lt)"><td colspan="2" style="font-weight:700;font-size:12px">სულ</td>
+          <td style="text-align:center;font-weight:800;color:var(--blue)">${t.contactH}</td><td style="text-align:center;font-weight:800;color:var(--blue)">${t.selfH}</td>
+          <td style="text-align:center;font-weight:800;color:var(--blue)">${t.assessH}</td><td style="text-align:center;font-weight:800">${t.contactH+t.selfH+t.assessH}</td></tr>`})()}
+      </tbody></table></div>
+      <div class="note">განაწილება მოდულის შაბლონიდან მოდის — რედაქტირება ხდება <strong>პროგრამის მოდულის შიდა გვერდზე</strong>.</div>`
+        :'<div style="color:var(--text3);font-size:12px">საათების განაწილება ჯერ არ არის გაწერილი</div>'}</div>
     <div class="fg"><label class="fl">სასწავლო წლის სლოტები და მეცადინეობა</label>${slotBlocks}</div>
     ${outs.length?`<div class="fg"><label class="fl">სწავლის შედეგები და შეფასების ინსტრუმენტი</label>
       <div class="tw"><table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>მიმართულება</th><th>ინსტრუმენტი</th></tr></thead><tbody>
@@ -3135,6 +3240,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderOrders();
   renderRoles();
   renderAudit();
+  moduleTemplates.forEach(t=>syncTplHours(t.id));
   renderPrograms();
   // მოდულის ჩატარების მაჩვენებელი გამოითვლება მეცადინეობის ჩანაწერებიდან
   modulesData.forEach(m=>{const l=modLectures(m.code);if(l.length){m.conducted=l.filter(x=>x.conducted).length;m.totalLectures=l.length;}});

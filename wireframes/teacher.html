@@ -426,7 +426,7 @@ tr:hover td{background:var(--bg)}
     </div>
     <div style="overflow-x:auto">
     <table>
-      <thead><tr><th>კოდი</th><th>მოდული</th><th>პროგრამა / მიღება</th><th>ჯგუფი</th><th>სასწ. წელი</th><th>კრედ.</th><th>პერიოდი</th><th>სწ. შედეგი</th><th>ჩატარებული</th><th>მოქმედება</th></tr></thead>
+      <thead><tr><th>კოდი</th><th>მოდული</th><th>პროგრამა / მიღება</th><th>ჯგუფი</th><th>სასწ. წელი</th><th>კრედ.</th><th>საათები (კვირა)</th><th>პერიოდი</th><th>სწ. შედეგი</th><th>ჩატარებული</th><th>მოქმედება</th></tr></thead>
       <tbody id="modules-body"></tbody>
     </table></div>
   </div>
@@ -854,6 +854,30 @@ const slotTemplates=[
   {ordinal:'VII',startsAt:'15:30',endsAt:'16:10'},
 ];
 // ── ჩემი სასწავლო მოდულები (ინსტანცია + კალენდარული გეგმა §2.6) ──
+// ── საათების განაწილება კვირების მიხედვით (იწერება პროგრამის მოდულის შიდა გვერდზე) ──
+const weekHours={
+  '0910919':[{week:1,contactH:8,selfH:2,assessH:0,topic:'უჯრედის ქიმიური შემადგენლობა'},{week:2,contactH:8,selfH:2,assessH:0,topic:'წყალი, ელექტროლიტები, pH'},{week:3,contactH:8,selfH:2,assessH:0,topic:'ცილების სტრუქტურა და ფუნქცია'},{week:4,contactH:8,selfH:2,assessH:2,topic:'ამინომჟავები — შუალედური შეფასება'},{week:5,contactH:8,selfH:2,assessH:0,topic:'ნახშირწყლების მეტაბოლიზმი'},{week:6,contactH:8,selfH:2,assessH:0,topic:'ლიპიდების მეტაბოლიზმი'},{week:7,contactH:8,selfH:2,assessH:2,topic:'ფერმენტები — შეფასება'},{week:8,contactH:8,selfH:0,assessH:4,topic:'ლაბორატორიული სამუშაო'},{week:9,contactH:8,selfH:0,assessH:6,topic:'შედეგების ინტერპრეტაცია — დასკვნითი შეფასება'}],
+  '0910917':[{week:1,contactH:10,selfH:3,assessH:0,topic:'შინმოვლის საფუძვლები'},{week:2,contactH:10,selfH:3,assessH:0,topic:'პაციენტის უსაფრთხო გარემო'},{week:3,contactH:10,selfH:3,assessH:2,topic:'ჰიგიენური მოვლა — შეფასება'},{week:4,contactH:10,selfH:3,assessH:0,topic:'კვება და დიეტა'},{week:5,contactH:10,selfH:2,assessH:0,topic:'სიმულაციური სავარჯიშო'},{week:6,contactH:10,selfH:2,assessH:2,topic:'მედიკამენტის მიცემა — შეფასება'},{week:7,contactH:10,selfH:2,assessH:0,topic:'სამუშაო გარემოში პრაქტიკა'},{week:8,contactH:10,selfH:1,assessH:4,topic:'სამუშაო გარემოში პრაქტიკა'},{week:9,contactH:10,selfH:1,assessH:8,topic:'დასკვნითი შეფასება'}],
+  '0910922':[{week:1,contactH:10,selfH:3,assessH:0,topic:'ფარმაკოკინეტიკა'},{week:2,contactH:10,selfH:3,assessH:0,topic:'ფარმაკოდინამიკა'},{week:3,contactH:10,selfH:2,assessH:2,topic:'ანტიბიოტიკები — შეფასება'},{week:4,contactH:10,selfH:2,assessH:0,topic:'ტკივილგამაყუჩებელი საშუალებები'},{week:5,contactH:10,selfH:2,assessH:0,topic:'გულ-სისხლძარღვთა პრეპარატები'},{week:6,contactH:10,selfH:2,assessH:2,topic:'დოზირება — შეფასება'},{week:7,contactH:10,selfH:2,assessH:2,topic:'გვერდითი მოვლენები'},{week:8,contactH:10,selfH:2,assessH:6,topic:'დასკვნითი შეფასება'}],
+  '0910931':[{week:1,contactH:15,selfH:2,assessH:0,topic:'კლინიკური პრაქტიკა — შესავალი'},{week:2,contactH:15,selfH:2,assessH:0,topic:'პაციენტის მოვლა ზედამხედველობით'},{week:3,contactH:15,selfH:2,assessH:2,topic:'პროცედურების შესრულება — შეფასება'},{week:4,contactH:15,selfH:1,assessH:0,topic:'დოკუმენტაციის წარმოება'},{week:5,contactH:15,selfH:1,assessH:0,topic:'გუნდური მუშაობა კლინიკაში'},{week:6,contactH:15,selfH:1,assessH:4,topic:'პრაქტიკული დავალება დაკვირვებით'},{week:7,contactH:15,selfH:1,assessH:4,topic:'პორტფოლიოს შედგენა'},{week:8,contactH:15,selfH:0,assessH:10,topic:'დასკვნითი შეფასება'}],
+  '0910905':[{week:1,contactH:8,selfH:2,assessH:0,topic:'მიკროორგანიზმების აგებულება'},{week:2,contactH:8,selfH:2,assessH:0,topic:'ბაქტერიები და ვირუსები'},{week:3,contactH:8,selfH:2,assessH:2,topic:'სტერილიზაცია და დეზინფექცია — შეფასება'},{week:4,contactH:8,selfH:2,assessH:0,topic:'იმუნიტეტი'},{week:5,contactH:8,selfH:2,assessH:0,topic:'ნიმუშის აღება და ტრანსპორტირება'},{week:6,contactH:8,selfH:1,assessH:2,topic:'ლაბორატორიული დიაგნოსტიკა'},{week:7,contactH:8,selfH:1,assessH:2,topic:'ინფექციის კონტროლი'},{week:8,contactH:8,selfH:0,assessH:4,topic:'დასკვნითი შეფასება'}],
+};
+const modWeeks=reg=>(weekHours[reg]||[]).slice().sort((a,b)=>a.week-b.week);
+const modWeekTotals=reg=>modWeeks(reg).reduce((a,x)=>({contactH:a.contactH+x.contactH,selfH:a.selfH+x.selfH,assessH:a.assessH+x.assessH}),{contactH:0,selfH:0,assessH:0});
+const modHours=reg=>{const t=modWeekTotals(reg);return t.contactH+t.selfH+t.assessH};
+function weekHoursTable(reg){
+  const ws=modWeeks(reg); if(!ws.length)return '<div style="font-size:12px;color:var(--text3)">საათების განაწილება ჯერ არ არის გაწერილი</div>';
+  const t=modWeekTotals(reg);
+  return `<div style="overflow-x:auto"><table style="font-size:12px">
+    <thead><tr><th style="width:56px">კვირა</th><th>თემატიკა</th><th style="width:88px">საკონტაქტო</th><th style="width:104px">დამოუკიდებელი</th><th style="width:82px">შეფასება</th><th style="width:56px">სულ</th></tr></thead>
+    <tbody>${ws.map(w=>`<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${w.week}</td><td>${w.topic||'—'}</td>
+      <td style="text-align:center">${w.contactH}</td><td style="text-align:center">${w.selfH}</td><td style="text-align:center">${w.assessH}</td>
+      <td style="text-align:center;font-weight:700">${w.contactH+w.selfH+w.assessH}</td></tr>`).join('')}
+    <tr style="background:var(--blue-lt)"><td colspan="2" style="font-weight:700">სულ — ${ws.length} კვირა</td>
+      <td style="text-align:center;font-weight:800;color:var(--blue)">${t.contactH}</td><td style="text-align:center;font-weight:800;color:var(--blue)">${t.selfH}</td>
+      <td style="text-align:center;font-weight:800;color:var(--blue)">${t.assessH}</td><td style="text-align:center;font-weight:800">${t.contactH+t.selfH+t.assessH}</td></tr>
+    </tbody></table></div>`;
+}
 const moduleData = [
   {code:'MOD-101', regNo:'0910919', name:'ბიოქიმია', programId:'PRG-1', intakeId:'INT-2', group:'ჯგუფი 101', groupId:'GRP-101', studyYear:2, credits:4, students:24,
    startsOn:'10.02.2026', endsOn:'25.05.2026', outcomes:7, conducted:18, totalLectures:24},
@@ -1149,11 +1173,13 @@ function renderMyModules(){
       <td>${m.group}</td>
       <td><span class="badge badge-navy">${romanYear(m.studyYear)}</span></td>
       <td style="text-align:center">${m.credits}</td>
+      <td style="text-align:center;font-size:11px;white-space:nowrap">${modHours(m.regNo)} სთ<div style="color:var(--subtle)">${modWeeks(m.regNo).length} კვირა</div></td>
       <td style="font-size:11px;white-space:nowrap">${m.startsOn}<br>${m.endsOn}</td>
       <td style="text-align:center">${m.outcomes}</td>
       <td><div style="font-size:11px">${m.conducted}/${m.totalLectures}</div><div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden;min-width:44px"><div style="height:100%;width:${pct}%;background:var(--blue)"></div></div></td>
       <td style="white-space:nowrap">
         <button class="btn btn-outline btn-sm" onclick="openModuleDetail(${i})">ჟურნალი</button>
+        <button class="btn btn-ghost btn-sm" onclick="weekHoursModal('${m.regNo}','${m.name}')" title="საათების განაწილება კვირების მიხედვით">🗓️</button>
         <button class="btn btn-ghost btn-sm" onclick="manageSurvey(${i},'${m.name}','${m.group}')">📊</button>
       </td></tr>`;
   }).join('');
@@ -1357,6 +1383,14 @@ function openModuleDetail(i){
   document.getElementById('journal-module-sel').selectedIndex = i
   buildJournal()
 }
+function weekHoursModal(reg,name){
+  showModal(`საათების განაწილება — ${name}`,
+    `<div style="margin-bottom:12px"><span class="badge badge-navy">სარეგ. № ${reg}</span> <span class="badge badge-blue">${modWeeks(reg).length} სასწავლო კვირა</span> <span class="badge badge-green">${modHours(reg)} საათი სულ</span></div>
+     ${weekHoursTable(reg)}
+     <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--muted);margin-top:12px">
+       განაწილება იწერება <strong>პროგრამის მოდულის შიდა გვერდზე</strong> ადმინისტრირების პანელიდან — მასწავლებელი მას <strong>ნახულობს</strong>.</div>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">დახურვა</button>`,true)
+}
 function moduleStats(i){
   const m = moduleData[i]
   const conf=journalStudents.reduce((a,s)=>a+moduleOutcomes.filter(o=>(outcomeMatrix[s.id]||{})[o.no]==='confirmed').length,0);
@@ -1369,6 +1403,10 @@ function moduleStats(i){
        <div class="stat-card"><div class="sc-label">ჩატარებული მეცადინეობა</div><div class="sc-value">${m.conducted}</div><div class="sc-sub">/${m.totalLectures}</div></div>
        <div class="stat-card"><div class="sc-label">დადასტურებული შედეგი</div><div class="sc-value" style="color:var(--green)">${conf}</div><div class="sc-sub">/${totalCells}</div></div>
        <div class="stat-card"><div class="sc-label">ვერ დადასტურდა</div><div class="sc-value" style="color:var(--red)">${notConf}</div></div>
+     </div>
+     <div style="margin-top:14px">
+       <p style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">ᏚᎪᎪᎢᎬᏴᏆᏚ ᎦᎪᏁᎪᏔᏞᎬᏴᎪ ᏦᏙᏆᎡᎬᏴᏆᏚ ᎷᏆᎻᎬᎠᏙᏆᎢ</p>
+       ${weekHoursTable(m.regNo)}
      </div>
      <div style="margin-top:14px">
        <p style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">ᏚᏔᎪᏙᏞᏆᏚ ᏚᎻᎬᎠᎬᏳᏆᏚ ᎠᎪᎠᎪᏚᎢᏌᎡᎬᏴᎪ</p>

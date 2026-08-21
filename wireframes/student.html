@@ -1004,6 +1004,30 @@ function showOrderModal(num,title,date,text){
 const DIRECTION_LBL={survey:'გამოკითხვა',practical_task:'პრაქტიკული დავალება',practical_task_observed:'პრაქტიკული დავალება დაკვირვებით'};
 const RESULT_LBL={confirmed:['დადასტურდა','bd-g'],not_confirmed:['ვერ დადასტურდა','bd-r']};
 const SOURCE_LBL={assessment:'შეფასება',formal_recognition:'ფორმალური აღიარება',non_formal_recognition:'არაფორმალური აღიარება',mobility_transfer:'მობილობით გადატანა'};
+// ── საათების განაწილება კვირების მიხედვით (იწერება პროგრამის მოდულის შიდა გვერდზე) ──
+const weekHours={
+  '0910919':[{week:1,contactH:8,selfH:2,assessH:0,topic:'უჯრედის ქიმიური შემადგენლობა'},{week:2,contactH:8,selfH:2,assessH:0,topic:'წყალი, ელექტროლიტები, pH'},{week:3,contactH:8,selfH:2,assessH:0,topic:'ცილების სტრუქტურა და ფუნქცია'},{week:4,contactH:8,selfH:2,assessH:2,topic:'ამინომჟავები — შუალედური შეფასება'},{week:5,contactH:8,selfH:2,assessH:0,topic:'ნახშირწყლების მეტაბოლიზმი'},{week:6,contactH:8,selfH:2,assessH:0,topic:'ლიპიდების მეტაბოლიზმი'},{week:7,contactH:8,selfH:2,assessH:2,topic:'ფერმენტები — შეფასება'},{week:8,contactH:8,selfH:0,assessH:4,topic:'ლაბორატორიული სამუშაო'},{week:9,contactH:8,selfH:0,assessH:6,topic:'შედეგების ინტერპრეტაცია — დასკვნითი შეფასება'}],
+  '0910917':[{week:1,contactH:10,selfH:3,assessH:0,topic:'შინმოვლის საფუძვლები'},{week:2,contactH:10,selfH:3,assessH:0,topic:'პაციენტის უსაფრთხო გარემო'},{week:3,contactH:10,selfH:3,assessH:2,topic:'ჰიგიენური მოვლა — შეფასება'},{week:4,contactH:10,selfH:3,assessH:0,topic:'კვება და დიეტა'},{week:5,contactH:10,selfH:2,assessH:0,topic:'სიმულაციური სავარჯიშო'},{week:6,contactH:10,selfH:2,assessH:2,topic:'მედიკამენტის მიცემა — შეფასება'},{week:7,contactH:10,selfH:2,assessH:0,topic:'სამუშაო გარემოში პრაქტიკა'},{week:8,contactH:10,selfH:1,assessH:4,topic:'სამუშაო გარემოში პრაქტიკა'},{week:9,contactH:10,selfH:1,assessH:8,topic:'დასკვნითი შეფასება'}],
+  '0910922':[{week:1,contactH:10,selfH:3,assessH:0,topic:'ფარმაკოკინეტიკა'},{week:2,contactH:10,selfH:3,assessH:0,topic:'ფარმაკოდინამიკა'},{week:3,contactH:10,selfH:2,assessH:2,topic:'ანტიბიოტიკები — შეფასება'},{week:4,contactH:10,selfH:2,assessH:0,topic:'ტკივილგამაყუჩებელი საშუალებები'},{week:5,contactH:10,selfH:2,assessH:0,topic:'გულ-სისხლძარღვთა პრეპარატები'},{week:6,contactH:10,selfH:2,assessH:2,topic:'დოზირება — შეფასება'},{week:7,contactH:10,selfH:2,assessH:2,topic:'გვერდითი მოვლენები'},{week:8,contactH:10,selfH:2,assessH:6,topic:'დასკვნითი შეფასება'}],
+  '0910931':[{week:1,contactH:15,selfH:2,assessH:0,topic:'კლინიკური პრაქტიკა — შესავალი'},{week:2,contactH:15,selfH:2,assessH:0,topic:'პაციენტის მოვლა ზედამხედველობით'},{week:3,contactH:15,selfH:2,assessH:2,topic:'პროცედურების შესრულება — შეფასება'},{week:4,contactH:15,selfH:1,assessH:0,topic:'დოკუმენტაციის წარმოება'},{week:5,contactH:15,selfH:1,assessH:0,topic:'გუნდური მუშაობა კლინიკაში'},{week:6,contactH:15,selfH:1,assessH:4,topic:'პრაქტიკული დავალება დაკვირვებით'},{week:7,contactH:15,selfH:1,assessH:4,topic:'პორტფოლიოს შედგენა'},{week:8,contactH:15,selfH:0,assessH:10,topic:'დასკვნითი შეფასება'}],
+  '0910905':[{week:1,contactH:8,selfH:2,assessH:0,topic:'მიკროორგანიზმების აგებულება'},{week:2,contactH:8,selfH:2,assessH:0,topic:'ბაქტერიები და ვირუსები'},{week:3,contactH:8,selfH:2,assessH:2,topic:'სტერილიზაცია და დეზინფექცია — შეფასება'},{week:4,contactH:8,selfH:2,assessH:0,topic:'იმუნიტეტი'},{week:5,contactH:8,selfH:2,assessH:0,topic:'ნიმუშის აღება და ტრანსპორტირება'},{week:6,contactH:8,selfH:1,assessH:2,topic:'ლაბორატორიული დიაგნოსტიკა'},{week:7,contactH:8,selfH:1,assessH:2,topic:'ინფექციის კონტროლი'},{week:8,contactH:8,selfH:0,assessH:4,topic:'დასკვნითი შეფასება'}],
+};
+const modWeeks=reg=>(weekHours[reg]||[]).slice().sort((a,b)=>a.week-b.week);
+const modWeekTotals=reg=>modWeeks(reg).reduce((a,x)=>({contactH:a.contactH+x.contactH,selfH:a.selfH+x.selfH,assessH:a.assessH+x.assessH}),{contactH:0,selfH:0,assessH:0});
+const modHours=reg=>{const t=modWeekTotals(reg);return t.contactH+t.selfH+t.assessH};
+function weekHoursTable(reg){
+  const ws=modWeeks(reg); if(!ws.length)return '<div style="font-size:12px;color:var(--text3)">საათების განაწილება ჯერ არ არის გაწერილი</div>';
+  const t=modWeekTotals(reg);
+  return `<div style="overflow-x:auto"><table style="font-size:12px">
+    <thead><tr><th style="width:56px">კვირა</th><th>თემატიკა</th><th style="width:88px">საკონტაქტო</th><th style="width:104px">დამოუკიდებელი</th><th style="width:82px">შეფასება</th><th style="width:56px">სულ</th></tr></thead>
+    <tbody>${ws.map(w=>`<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${w.week}</td><td>${w.topic||'—'}</td>
+      <td style="text-align:center">${w.contactH}</td><td style="text-align:center">${w.selfH}</td><td style="text-align:center">${w.assessH}</td>
+      <td style="text-align:center;font-weight:700">${w.contactH+w.selfH+w.assessH}</td></tr>`).join('')}
+    <tr style="background:var(--blue-lt)"><td colspan="2" style="font-weight:700">სულ — ${ws.length} კვირა</td>
+      <td style="text-align:center;font-weight:800;color:var(--blue)">${t.contactH}</td><td style="text-align:center;font-weight:800;color:var(--blue)">${t.selfH}</td>
+      <td style="text-align:center;font-weight:800;color:var(--blue)">${t.assessH}</td><td style="text-align:center;font-weight:800">${t.contactH+t.selfH+t.assessH}</td></tr>
+    </tbody></table></div>`;
+}
 const myModules=[
   {code:'MOD-101',regNo:'0910919',name:'ბიოქიმია',teacher:'ლია გოგიაშვილი',credits:4,startsOn:'10.02.2026',endsOn:'25.05.2026',
    present:22,absent:1,survey:true,surveyUrl:'https://forms.google.com/biochem-survey',
@@ -1067,6 +1091,7 @@ function showModuleModal(idx){
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
       <span class="bd bd-n">სარეგ. № ${m.regNo}</span><span class="bd bd-b">${m.credits} კრედიტი</span>
       <span class="bd bd-n">${m.startsOn} – ${m.endsOn}</span>
+      <span class="bd bd-b">${modWeeks(m.regNo).length} კვირა · ${modHours(m.regNo)} სთ</span>
     </div>
     <div style="display:flex;gap:12px;margin-bottom:16px">
       <div class="stat-box" style="flex:1"><div class="stat-num" style="color:var(--green)">${conf}<span style="font-size:16px;color:var(--text3)">/${m.outcomes.length}</span></div><div class="stat-lbl">დადასტურებული შედეგი</div></div>
@@ -1074,6 +1099,9 @@ function showModuleModal(idx){
       <div class="stat-box" style="flex:1"><div class="stat-num" style="color:${m.absent?'var(--red)':'var(--green)'}">${m.absent}</div><div class="stat-lbl">გააცდინა</div></div>
     </div>
     <div style="font-size:12px;color:var(--text2);margin-bottom:10px">პროფესიული განათლების მასწავლებელი: <b>${m.teacher}</b></div>
+    <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:6px">საათების განაწილება კვირების მიხედვით</div>
+    ${weekHoursTable(m.regNo)}
+    <div style="height:14px"></div>
     <table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>მტკიც.</th><th>შედეგი</th></tr></thead><tbody>${rows}</tbody></table>
     <div style="background:var(--blue-lt);border-radius:8px;padding:10px;font-size:12px;color:var(--text2);margin-top:12px">
       კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>. 2 ცდა მოდულის დასრულებიდან 2 კვირაში; III ცდა ფასიანია, თუ მიზეზი არასაპატიოა. ყოველი შედეგი უზრუნველყოფილია <strong>მტკიცებულებით</strong> პორტფოლიოში. — [სპწ] 21.9–21.16</div>
