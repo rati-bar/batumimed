@@ -137,6 +137,48 @@ textarea.fi{resize:vertical;min-height:80px}
 @keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
 
 /* CHIPS */
+/* ── SJA UX პატერნები ── */
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.page-head h2{font-size:26px;font-weight:800;color:var(--navy);margin:0 0 4px}
+.page-head .ph-sub{font-size:13px;color:var(--text2)}
+.filter-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 18px;margin-bottom:18px}
+.filter-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filter-row .fi{width:auto;min-width:150px;border-radius:999px;padding:8px 14px;font-size:12px;background:var(--surface)}
+.filter-row .search-fi{flex:1;min-width:220px;border-radius:999px;padding:8px 16px}
+.filter-hint{font-size:11px;color:var(--text3);border:1px dashed var(--border);border-radius:999px;padding:4px 12px;margin-left:auto}
+.stabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--border);margin-bottom:2px;padding:0 4px}
+.stab{display:flex;align-items:center;gap:7px;padding:12px 14px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent;transition:.15s}
+.stab:hover{color:var(--navy)}
+.stab.on{color:var(--blue);border-bottom-color:var(--blue)}
+.stab-n{font-size:11px;font-weight:700;background:var(--bg);color:var(--text2);border-radius:999px;padding:2px 8px}
+.stab.on .stab-n{background:var(--blue-lt);color:var(--blue)}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.av-lg{width:58px;height:58px;font-size:20px}
+.row-id{display:flex;align-items:center;gap:10px}
+.row-id .rn{font-weight:700;font-size:13px;color:var(--text1);line-height:1.3}
+.row-id .ri{font-size:11px;color:var(--text3)}
+.note{background:var(--blue-lt);border-left:4px solid var(--blue);border-radius:6px;padding:12px 14px;font-size:12.5px;color:var(--text2);line-height:1.6;margin-top:14px}
+.note-a{background:var(--amber-lt);border-left-color:var(--amber)}
+.dhead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.dhead-l{display:flex;gap:14px;align-items:center}
+.dhead-name{font-size:23px;font-weight:800;color:var(--navy);line-height:1.2}
+.dhead-meta{font-size:13px;color:var(--text2);margin-top:3px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.dtabs{display:flex;gap:2px;flex-wrap:wrap;border-bottom:1px solid var(--border);margin:-4px -18px 18px;padding:0 18px}
+.dtab{padding:13px 16px;font-size:14px;font-weight:600;color:var(--text2);cursor:pointer;border:none;background:none;border-bottom:2.5px solid transparent}
+.dtab:hover{color:var(--navy)}
+.dtab.on{color:var(--blue);border-bottom-color:var(--blue)}
+.f3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 24px}
+.f3 .fl{margin-bottom:3px}
+.f3 .fv{font-size:14px;font-weight:700;color:var(--text1)}
+.st4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.stc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.stc-ic{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:10px}
+.stc-v{font-size:25px;font-weight:800;color:var(--navy);line-height:1}
+.stc-l{font-size:12px;color:var(--text2);margin-top:4px}
+.filerow{display:flex;align-items:center;gap:10px;padding:12px 2px;border-bottom:1px solid var(--border);font-size:13px}
+.filerow:last-of-type{border-bottom:none}
+@media(max-width:900px){.f3{grid-template-columns:1fr 1fr}.st4{grid-template-columns:1fr 1fr}}
 .dp-bar{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
 .dp-title{font-size:19px;font-weight:800;color:var(--navy);margin:0}
 .dp-foot{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;padding:16px 18px;border-top:1px solid var(--border);background:var(--bg)}
@@ -406,65 +448,105 @@ textarea.fi{resize:vertical;min-height:80px}
 </div>
 
 <div class="screen" id="screen-students">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <input class="fi" style="width:240px" placeholder="🔍  სახელი, ID, ელ. ფოსტა..." oninput="filterStudents(this.value)" id="stu-search">
-      <select class="fi" style="width:auto" onchange="filterStudentBranch(this.value)" id="stu-branch-filter">
-        <option value="">ყველა ფილიალი</option>
-        <option value="BR-1">მთავარი კამპუსი</option><option value="BR-2">სტომ. პოლიკლინიკა</option><option value="BR-3">სიმულაციური ცენტრი</option>
-      </select>
-      <select class="fi" style="width:auto" onchange="filterStudentProgram(this.value)" id="stu-prog-filter">
-        <option value="">ყველა პროგრამა</option>
-        <option value="PRG-1">საექთნო განათლება</option><option value="PRG-2">ექთნის თანაშემწე</option><option value="PRG-3">ფარმაცია (სააფთიაქო)</option><option value="PRG-4">კბილის სატექნიკო საქმე</option>
-      </select>
-      <select class="fi" style="width:auto" onchange="filterStudentGroup(this.value)" id="stu-group-filter">
-        <option value="">ყველა ჯგუფი</option>
-        <option>ჯგუფი 101</option><option>ჯგუფი 102</option><option>ჯგუფი 201</option><option>ჯგუფი 202</option><option>ჯგუფი 301</option><option>ჯგუფი 401</option>
-      </select>
-      <select class="fi" style="width:auto" onchange="filterStudentStatus(this.value)" id="stu-status-filter">
-        <option value="">ყველა სტატუსი</option>
+  <div class="page-head">
+    <div>
+      <h2>პროფესიული სტუდენტების ბაზა</h2>
+      <div class="ph-sub">ყველა სტატუსი · პროგრამა განსაზღვრავს კურიკულუმს · ბადეში მხოლოდ ძირითადი ველებია, დანარჩენი — პროფილში</div>
+    </div>
+    <button class="btn btn-n" onclick="exportStudents()">⬇ ექსპორტი</button>
+  </div>
+
+  <div class="filter-card">
+    <div class="filter-row">
+      <select class="fi" onchange="filterStudentStatus(this.value)" id="stu-status-filter">
+        <option value="">სტატუსი: ყველა</option>
         <option value="applicant">აპლიკანტი</option><option value="active">აქტიური</option><option value="suspended">სტატუსი შეჩერებული</option><option value="terminated">სტატუსი შეწყვეტილი</option>
       </select>
+      <select class="fi" onchange="filterStudentBranch(this.value)" id="stu-branch-filter">
+        <option value="">ფილიალი: ყველა</option>
+        <option value="BR-1">მთავარი კამპუსი</option><option value="BR-2">სტომ. პოლიკლინიკა</option><option value="BR-3">სიმულაციური ცენტრი</option>
+      </select>
+      <select class="fi" onchange="filterStudentProgram(this.value)" id="stu-prog-filter">
+        <option value="">პროგრამა: ყველა</option>
+        <option value="PRG-1">საექთნო განათლება</option><option value="PRG-2">ექთნის თანაშემწე</option><option value="PRG-3">ფარმაცია (სააფთიაქო)</option><option value="PRG-4">კბილის სატექნიკო საქმე</option>
+      </select>
+      <select class="fi" onchange="filterStudentIntake(this.value)" id="stu-intake-filter">
+        <option value="">მიღება: ყველა</option>
+        <option value="INT-1">საგაზაფხულო 2026</option><option value="INT-2">საშემოდგომო 2025</option><option value="INT-3">საგაზაფხულო 2025</option>
+      </select>
+      <select class="fi" onchange="filterStudentGroup(this.value)" id="stu-group-filter">
+        <option value="">ჯგუფი: ყველა</option>
+        <option>ჯგუფი 101</option><option>ჯგუფი 102</option><option>ჯგუფი 201</option><option>ჯგუფი 202</option><option>ჯგუფი 301</option><option>ჯგუფი 401</option>
+      </select>
+    </div>
+    <div class="filter-row" style="margin-top:12px">
+      <input class="fi search-fi" placeholder="🔍  ძიება სახელით ან პირადი ნომრით..." oninput="filterStudents(this.value)" id="stu-search">
+      <span class="filter-hint">ფილტრი — ყველა ველით</span>
     </div>
   </div>
+
   <div class="card">
-    <div class="ch">
-      <div class="ct">პროფესიული სტუდენტები <span id="stu-count" style="font-size:12px;font-weight:400;color:var(--text3)"></span></div>
-      <button class="btn btn-n btn-sm" onclick="exportStudents()">⬇ Excel</button>
-    </div>
+    <div class="stabs" id="stu-tabs"></div>
     <div class="tw">
       <table id="students-table">
-        <thead><tr><th>ID</th><th>პროფესიული სტუდენტი</th><th>პროგრამა / მიღება</th><th>ჯგუფი</th><th>სასწ. წელი</th><th>ნაშთი</th><th>სტატუსი</th><th>მოქმედება</th></tr></thead>
+        <thead><tr><th>პროფესიული სტუდენტი</th><th>მიღება</th><th>პროგრამა</th><th>ჯგუფი</th><th>სასწ. წელი</th><th>ფილიალი</th><th>ნაშთი</th><th>სტატუსი</th><th></th></tr></thead>
         <tbody id="students-tbody"></tbody>
       </table>
     </div>
+    <div class="note">ℹ️ ჩანართზე გადასვლა აჩვენებს ამ სტატუსისთვის სპეციფიკურ ველებს — შეჩერებული: შეჩერების საფუძველი, ვადა და ბრძანება; შეწყვეტილი: საფუძველი, თარიღი და ბრძანება; აპლიკანტი: განაცხადის თარიღი. სტატუსი იცვლება <strong>მხოლოდ დირექტორის ბრძანებით</strong>.</div>
   </div>
 </div>
 
 
 <!-- ══ TEACHERS ══ -->
 <div class="screen" id="screen-teachers">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-    <input class="fi" style="width:260px" placeholder="🔍  სახელი, მოდული..." oninput="filterTeachers(this.value)">
+  <div class="page-head">
+    <div>
+      <h2>პროფესიული განათლების მასწავლებლები</h2>
+      <div class="ph-sub">სასწავლო პერსონალის ცნობარი — განმახორციელებლის ტიპი, სპეციალობა და ფილიალი · დეტალები პროფილში</div>
+    </div>
+    <button class="btn btn-n" onclick="exportTeachers()">⬇ ექსპორტი</button>
+  </div>
+  <div class="filter-card">
+    <div class="filter-row">
+      <select class="fi" id="tch-impl-filter" onchange="filterTeacherImpl(this.value)">
+        <option value="">განმახორციელებელი: ყველა</option>
+        <option value="vocational_teacher">პროფესიული განათლების მასწავლებელი</option>
+        <option value="instructor">ინსტრუქტორი</option>
+        <option value="clinical_teaching_person">კლინიკურ სწავლებაში ჩართული პირი</option>
+        <option value="invited_specialist">მოწვეული პირი</option>
+        <option value="lab_assistant">ლაბორანტი</option>
+      </select>
+      <select class="fi" id="tch-status-filter" onchange="filterTeacherStatus(this.value)">
+        <option value="">სტატუსი: ყველა</option><option value="active">აქტიური</option><option value="inactive">არააქტიური</option>
+      </select>
+      <input class="fi search-fi" placeholder="🔍  ძიება სახელით, სპეციალობით ან მოდულით..." oninput="filterTeachers(this.value)">
+      <span class="filter-hint">ფილტრი — ყველა ველით</span>
+    </div>
   </div>
   <div class="card">
-    <div class="ch"><div class="ct">პროფესიული განათლების მასწავლებლები <span style="font-size:12px;font-weight:400;color:var(--text3)">24 მასწავლებელი</span></div><button class="btn btn-n btn-sm" onclick="exportTeachers()">⬇ Excel</button></div>
+    <div class="stabs" id="tch-tabs"></div>
     <div class="tw">
       <table id="teachers-table">
-        <thead><tr><th>ID</th><th>მასწავლებელი</th><th>განმახორციელებლის ტიპი</th><th>სპეციალობა</th><th>მოდულები</th><th>მუშაობის დაწყება</th><th>გაცდენა</th><th>სტატუსი</th><th>მოქმედება</th></tr></thead>
+        <thead><tr><th>მასწავლებელი</th><th>განმახორციელებლის ტიპი</th><th>სპეციალობა</th><th>მოდულები</th><th>ფილიალი</th><th>მუშაობის დაწყება</th><th>საათი</th><th>სტატუსი</th><th></th></tr></thead>
         <tbody id="teachers-tbody"></tbody>
       </table>
     </div>
+    <div class="note">ℹ️ მასწავლებელი <strong>ჯგუფს ან მოდულს არ ებმის</strong> — ინიშნება თითო მეცადინეობაზე განრიგის builder-იდან. საათები გამოითვლება ჩატარებული მეცადინეობის ხანგრძლივობიდან.</div>
   </div>
 </div>
 
 <!-- ══ GROUPS ══ -->
 <div class="screen" id="screen-groups">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-    <div style="font-size:14px;color:var(--text2)">სულ 8 ჯგუფი · 2025–2026 სასწ. წელი</div>
+  <div class="page-head">
+    <div>
+      <h2>სასწავლო ჯგუფები</h2>
+      <div class="ph-sub">ჯგუფის იდენტობა = ნომერი + პროგრამა + მიღება · გადადის წელიწადში ერთხელ, პროგრამის ხანგრძლივობის ფარგლებში</div>
+    </div>
     <button class="btn btn-b" onclick="addGroupModal()">➕ ჯგუფის შექმნა</button>
   </div>
   <div id="groups-grid" class="g3"></div>
+  <div class="note">ℹ️ ჯგუფის პროგრამა და მიღება განსაზღვრავს მის კურიკულუმს. სტუდენტის დამატება/მოხსნა ხდება <strong>ჯგუფის გვერდიდან</strong>; მოხსნა მიმართავს შეჩერებაზე, შეწყვეტაზე, მობილობაზე ან სხვა ჯგუფზე — ყოველთვის ბრძანებით.</div>
 </div>
 
 <!-- ══ MODULES ══ -->
@@ -496,6 +578,13 @@ textarea.fi{resize:vertical;min-height:80px}
     </div>
     <button class="btn btn-b" onclick="addLessonModal()">➕ მეცადინეობის დამატება</button>
   </div>
+  <div class="page-head">
+    <div>
+      <h2>განრიგი</h2>
+      <div class="ph-sub">გადაათრიეთ მეცადინეობა თავისუფალ სლოტში · სლოტები I–VII (40 წთ) · ≤8 საკონტაქტო საათი დღეში</div>
+    </div>
+    <button class="btn btn-b" onclick="toast('ცხრილს ხელს აწერს სპმს უფროსი','info')">✍ ცხრილის ხელმოწერა</button>
+  </div>
   <div class="g2" style="align-items:start">
     <div class="card">
       <div class="ch"><div class="ct">დაუგეგმავი მეცადინეობა</div><span style="font-size:11px;color:var(--text3)">გადაათრიეთ ბადეში</span></div>
@@ -507,6 +596,7 @@ textarea.fi{resize:vertical;min-height:80px}
     </div>
   </div>
   <div class="card">
+    <div class="ch"><div class="ct">კვირის ბადე</div><span style="font-size:11px;color:var(--text3)">drag & drop — მეცადინეობა → სლოტი → მასწავლებელი</span></div>
     <div class="tw"><table id="schedule-table">
       <thead><tr><th>სლოტი</th><th>ორშაბათი</th><th>სამშაბათი</th><th>ოთხშაბათი</th><th>ხუთშაბათი</th><th>პარასკევი</th></tr></thead>
       <tbody id="schedule-tbody"></tbody>
@@ -1366,60 +1456,102 @@ const romanYear=n=>['—','I','II','III','IV','V','VI'][n]||n;
 <script>
 // ══ RENDER FUNCTIONS ══
 
+const AVC=['#611a56','#881176','#1E8A5E','#C96A00','#C0392B','#4B5563','#5B2D8E','#1B4F8A'];
+const avColor=id=>AVC[(String(id).split('').reduce((a,c)=>a+c.charCodeAt(0),0))%AVC.length];
+const initials=n=>n.trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('.');
+function avatar(name,id,cls){
+  return `<div class="av ${cls||''}" style="background:${avColor(id)}">${initials(name)}</div>`;
+}
+let stuStatusTab='';
+function renderStudentTabs(){
+  const el=document.getElementById('stu-tabs');
+  if(!el)return;
+  const defs=[['','ყველა'],['applicant','აპლიკანტი'],['active','აქტიური'],['suspended','სტატუსი შეჩერებული'],['terminated','სტატუსი შეწყვეტილი']];
+  el.innerHTML=defs.map(([k,l])=>{
+    const n=k?students.filter(s=>s.status===k).length:students.length;
+    return `<button class="stab ${stuStatusTab===k?'on':''}" onclick="stuStatusTab='${k}';renderStudentTabs();applyStudentFilters()">${l}<span class="stab-n">${n}</span></button>`;
+  }).join('');
+}
+let stuF={q:'',branch:'',prog:'',intake:'',group:''};
+function applyStudentFilters(){
+  let l=students;
+  if(stuStatusTab) l=l.filter(x=>x.status===stuStatusTab);
+  if(stuF.branch)  l=l.filter(x=>x.branchId===stuF.branch);
+  if(stuF.prog)    l=l.filter(x=>x.programId===stuF.prog);
+  if(stuF.intake)  l=l.filter(x=>x.intakeId===stuF.intake);
+  if(stuF.group)   l=l.filter(x=>x.group===stuF.group);
+  if(stuF.q)       l=l.filter(x=>x.name.includes(stuF.q)||x.id.includes(stuF.q)||(x.email||'').includes(stuF.q));
+  renderStudents(l);
+}
+function filterStudents(q){stuF.q=q.trim();applyStudentFilters()}
+function filterStudentBranch(v){stuF.branch=v;applyStudentFilters()}
+function filterStudentProgram(v){stuF.prog=v;applyStudentFilters()}
+function filterStudentIntake(v){stuF.intake=v;applyStudentFilters()}
+function filterStudentGroup(v){stuF.group=v;applyStudentFilters()}
+function filterStudentStatus(v){stuStatusTab=v;renderStudentTabs();applyStudentFilters()}
 function renderStudents(list){
   const tb=document.getElementById('students-tbody');
   if(!tb)return;
-  tb.innerHTML=list.map(s=>{
+  tb.innerHTML=list.length?list.map(s=>{
     const st=STUDENT_STATUS_LBL[s.status]||[s.status,'bd-n'];
-    const stBd=`<span class="bd ${st[1]}">${st[0]}</span>`;
-    // სპეც. კატეგორიის ველები (§7.2) — არ ჩანს ზოგად ბადეში
-    const payBd=s.balance>0?`<span class="bd bd-a">ნაშთი ${s.balance}₾</span>`:'<span class="bd bd-g">✓ გადახდილი</span>';
-    const ordBd=s.status==='suspended'?`<div style="font-size:10px;color:var(--text3)">${orderRef(s.suspensionOrderId)}</div>`
-              :s.status==='terminated'?`<div style="font-size:10px;color:var(--text3)">${orderRef(s.terminationOrderId)}</div>`:'';
+    const ord=s.status==='suspended'?orderRef(s.suspensionOrderId):s.status==='terminated'?orderRef(s.terminationOrderId):'';
+    const pay=s.balance>0?`<span class="bd bd-a">${s.balance}₾</span>`:'<span class="bd bd-g">✓</span>';
+    const it=intakesData.find(x=>x.id===s.intakeId);
     return `<tr>
-      <td style="font-size:11px;color:var(--text3)">${s.id}</td>
-      <td><div style="font-weight:600">${s.name}</div><div style="font-size:11px;color:var(--text3)">${s.email}</div></td>
-      <td><div style="font-size:12px">${progName(s.programId)}</div><div style="font-size:10px;color:var(--text3)">${intakeName(s.intakeId)}</div></td>
-      <td><div style="display:flex;align-items:center;gap:4px">${s.group}<button class="btn btn-xs btn-ghost" style="padding:2px 5px" onclick="editStudentGroup('${s.id}')" title="ჯგუფის შეცვლა">✏</button></div></td>
-      <td><span class="bd bd-b">${romanYear(s.studyYear)}</span></td>
-      <td>${payBd}</td>
-      <td>${stBd}${ordBd}</td>
-      <td style="white-space:nowrap">
-        <button class="btn btn-xs btn-ghost" onclick="viewStudent('${s.id}')">👤</button>
-        <button class="btn btn-xs btn-ghost" onclick="changeStatusModal('${s.id}')" title="სტატუსის შეცვლა (ბრძანებით)">⇄</button>
-        <button class="btn btn-xs btn-ghost" onclick="editStudentModal('${s.id}')">✏</button>
-      </td></tr>`;
-  }).join('');
+      <td><div class="row-id">${avatar(s.name,s.id)}<div><div class="rn">${s.name}</div><div class="ri">${s.id}</div></div></div></td>
+      <td>${it?`<span class="bd ${it.season==='spring'?'bd-g':'bd-a'}" style="font-size:10px">${it.season==='spring'?'საგაზაფხულო':'საშემოდგომო'} ${it.year}</span>`:'—'}</td>
+      <td style="font-size:12px">${progName(s.programId)}</td>
+      <td><div style="display:flex;align-items:center;gap:4px;font-size:12px">${s.group}<button class="btn btn-xs btn-ghost" style="padding:2px 5px" onclick="editStudentGroup('${s.id}')" title="ჯგუფის შეცვლა">✏</button></div></td>
+      <td style="text-align:center"><span class="bd bd-n">${romanYear(s.studyYear)}</span></td>
+      <td style="font-size:12px">${branchName(s.branchId).split('—')[0]}</td>
+      <td style="text-align:center">${pay}</td>
+      <td><span class="bd ${st[1]}">${st[0]}</span>${ord?`<div style="font-size:10px;color:var(--text3);margin-top:2px">${ord}</div>`:''}</td>
+      <td style="white-space:nowrap"><button class="btn btn-xs btn-o" onclick="viewStudent('${s.id}')">პროფილი →</button></td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:24px">ამ ფილტრით ჩანაწერი არ მოიძებნა</td></tr>';
   const c=document.getElementById('stu-count'); if(c)c.textContent=list.length+' პროფესიული სტუდენტი';
 }
-function filterStudents(q){renderStudents(students.filter(s=>s.name.includes(q)||s.id.includes(q)||s.email.includes(q)))}
-function filterStudentGroup(g){renderStudents(g?students.filter(s=>s.group===g):students)}
-function filterStudentStatus(st){renderStudents(st?students.filter(s=>s.status===st):students)}
-function filterStudentProgram(pid){renderStudents(pid?students.filter(s=>s.programId===pid):students)}
-function filterStudentBranch(b){renderStudents(b?students.filter(s=>s.branchId===b):students)}
-
+let tchF={q:'',impl:'',status:''};
+function renderTeacherTabs(){
+  const el=document.getElementById('tch-tabs');
+  if(!el)return;
+  const defs=[['','ყველა'],['active','აქტიური'],['inactive','არააქტიური']];
+  el.innerHTML=defs.map(([k,l])=>{
+    const n=k?teachers.filter(t=>t.status===k).length:teachers.length;
+    return `<button class="stab ${tchF.status===k?'on':''}" onclick="filterTeacherStatus('${k}')">${l}<span class="stab-n">${n}</span></button>`;
+  }).join('');
+}
+function applyTeacherFilters(){
+  let l=teachers;
+  if(tchF.status)l=l.filter(t=>t.status===tchF.status);
+  if(tchF.impl)l=l.filter(t=>t.implementerType===tchF.impl);
+  if(tchF.q)l=l.filter(t=>t.name.includes(tchF.q)||t.spec.includes(tchF.q)||t.modules.join(' ').includes(tchF.q));
+  renderTeachers(l);
+}
+function filterTeacherImpl(v){tchF.impl=v;applyTeacherFilters()}
+function filterTeacherStatus(v){tchF.status=v;renderTeacherTabs();applyTeacherFilters()}
 function renderTeachers(list){
   const tb=document.getElementById('teachers-tbody');
   if(!tb)return;
-  tb.innerHTML=list.map(t=>{
+  tb.innerHTML=list.length?list.map(t=>{
+    const mods=modulesData.filter(m=>m.teacherId===t.id);
+    const myLecs=moduleLectures.filter(l=>mods.some(m=>m.code===l.moduleCode));
+    const h=Math.round(myLecs.filter(l=>l.conducted).reduce((a,l)=>a+l.durationMin,0)/60);
     const abs=teacherAbsences.filter(a=>a.teacherId===t.id).length;
-    const stBd=t.status==='active'?'<span class="bd bd-g">აქტიური</span>':'<span class="bd bd-n">არააქტიური</span>';
     return `<tr>
-      <td style="font-size:11px;color:var(--text3)">${t.id}</td>
-      <td><div style="font-weight:600">${t.name}</div><div style="font-size:11px;color:var(--text3)">${t.email}</div></td>
+      <td><div class="row-id">${avatar(t.name,t.id)}<div><div class="rn">${t.name}</div><div class="ri">${t.id}${abs?` · <span style="color:var(--amber)">${abs} გაცდენა</span>`:''}</div></div></div></td>
       <td style="font-size:12px">${IMPLEMENTER_LBL[t.implementerType]||t.implementerType}</td>
       <td style="font-size:12px">${t.spec}</td>
-      <td style="font-size:12px">${t.modules.join(', ')}</td>
+      <td style="font-size:12px">${t.modules.join(', ')||'—'}</td>
+      <td style="font-size:12px">${branchName(t.branchId).split('—')[0]}</td>
       <td style="font-size:12px">${t.workStartedOn||'—'}</td>
-      <td>${abs?`<span class="bd bd-a">${abs}</span>`:'<span style="color:var(--text3)">—</span>'}</td>
-      <td>${stBd}</td>
-      <td style="white-space:nowrap">
-        <button class="btn btn-xs btn-ghost" onclick="viewTeacher('${t.id}')">👤</button>
-        <button class="btn btn-xs btn-ghost" onclick="editTeacherModal('${t.id}')">✏</button>
-      </td></tr>`;
-  }).join('');
+      <td style="text-align:center"><span class="bd bd-b">${h}</span></td>
+      <td><span class="bd ${t.status==='active'?'bd-g':'bd-n'}">${t.status==='active'?'აქტიური':'არააქტიური'}</span></td>
+      <td style="white-space:nowrap"><button class="btn btn-xs btn-o" onclick="viewTeacher('${t.id}')">პროფილი →</button></td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:24px">ჩანაწერი არ მოიძებნა</td></tr>';
 }
-function filterTeachers(q){renderTeachers(teachers.filter(t=>t.name.includes(q)||t.spec.includes(q)))}
+function filterTeachers(q){tchF.q=q.trim();applyTeacherFilters()}
 
 function renderGroups(){
   const el=document.getElementById('groups-grid');
@@ -1495,7 +1627,7 @@ function renderSchedule(){
           <div style="color:var(--text2)">${teacherName(x.teacherId)}</div></div>`;
       }).join('');
       return `<td style="font-size:12px;vertical-align:top;min-width:130px" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)" ondrop="dropLecture(event,'${slot.ordinal}',${day})">
-        ${cell==='—'&&!plHtml?'<span style="color:var(--text3)">—</span>':''}
+        ${cell==='—'&&!plHtml?'<div style="border:1.5px dashed var(--border);border-radius:5px;padding:10px 6px;text-align:center;font-size:10px;color:var(--text3)">+ ჩააგდეთ მეცადინეობა</div>':''}
         ${cell!=='—'?`<div style="background:var(--blue-lt);border-left:3px solid var(--blue);border-radius:4px;padding:6px 8px;font-size:11px;line-height:1.4;cursor:pointer" onclick="editLessonModal()">${cell.replace(/\n/g,'<br>')}</div>`:''}
         ${plHtml}
       </td>`;
@@ -2570,40 +2702,145 @@ function editStudentGroup(id){
     <div style="background:var(--amber-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">მობილობა შესაძლებელია პროგრამის დაწყებიდან <strong>≤2 კვირაში</strong>, კომისიის რეკომენდაციითა და დირექტორის ბრძანებით. — [სპწ] მუხ. 16</div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const s=students.find(x=>x.id==='${id}');if(s){s.group=document.getElementById('sg-group').value;renderStudents(students);}closeModal();toast('ჯგუფი შეიცვალა ✓','success')})()">💾 შენახვა</button>`);
 }
-function viewStudent(id){
+let stuTab='overview';
+function viewStudent(id,tab){
   const s=students.find(x=>x.id===id);if(!s)return;
-  const outs=outcomeResults.filter(o=>o.studentId===id);
-  const conf=outs.filter(o=>o.result==='confirmed').length;
-  const att=attendanceData.find(a=>a.studentId===id);
-  const isp=ispData.find(x=>x.studentId===id);
+  if(tab)stuTab=tab; else stuTab='overview';
   const st=STUDENT_STATUS_LBL[s.status]||[s.status,'bd-n'];
+  const it=intakesData.find(x=>x.id===s.intakeId);
+  const tabs=[['overview','მიმოხილვა'],['progress','პროგრესი'],['history','ისტორია'],['files','ფაილები']];
   showModal('პროფესიული სტუდენტის პროფილი',`
-    <div style="display:flex;gap:14px;align-items:center;margin-bottom:16px">
-      <div style="width:56px;height:56px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800">${s.name.charAt(0)}</div>
-      <div><div style="font-size:18px;font-weight:800;color:var(--navy)">${s.name}</div>
-      <div style="font-size:13px;color:var(--text2);margin-top:2px">${s.id} · ${s.group} · ${romanYear(s.studyYear)} სასწ. წელი</div>
-      <div style="margin-top:5px"><span class="bd ${st[1]}">${st[0]}</span></div></div>
+    <div class="dhead">
+      <div class="dhead-l">
+        ${avatar(s.name,s.id,'av-lg')}
+        <div><div class="dhead-name">${s.name}</div>
+        <div class="dhead-meta">${branchName(s.branchId).split('—')[0]} · ${s.group} · ${progName(s.programId)} · ${romanYear(s.studyYear)} სასწავლო წელი · ${it?it.name:''}</div></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-o" onclick="closeModal();changeStatusModal('${id}')">⇄ სტატუსის შეცვლა</button>
+        <button class="btn btn-b" onclick="closeModal();editStudentModal('${id}')">✏ რედაქტირება</button>
+      </div>
     </div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
-      <span class="bd bd-p">${progName(s.programId)}</span><span class="bd bd-b">${intakeName(s.intakeId)}</span>
+    <div class="chips">
+      <span class="bd ${st[1]}">${st[0]}</span>
+      <span class="bd bd-p">${progName(s.programId)}</span>
+      <span class="bd bd-n">${romanYear(s.studyYear)} სასწ. წელი</span>
+      ${s.balance>0?`<span class="bd bd-a">ნაშთი ${s.balance}₾</span>`:'<span class="bd bd-g">✓ გადახდილი</span>'}
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
-      <div style="background:var(--bg);border-radius:6px;padding:10px"><div style="font-size:11px;color:var(--text3)">დადასტურებული შედეგი</div><div style="font-size:20px;font-weight:800;color:var(--green);margin-top:2px">${conf}<span style="font-size:13px;color:var(--text3)">/${outs.length}</span></div></div>
-      <div style="background:var(--bg);border-radius:6px;padding:10px"><div style="font-size:11px;color:var(--text3)">დასწრების რეგისტრი</div><div style="font-size:13px;font-weight:700;margin-top:5px">${att?`✓${att.present} ✕${att.absent} ⏱${att.late}`:'—'}</div></div>
-      <div style="background:var(--bg);border-radius:6px;padding:10px"><div style="font-size:11px;color:var(--text3)">ნაშთი</div><div style="font-size:20px;font-weight:800;color:${s.balance>0?'var(--amber)':'var(--green)'};margin-top:2px">${s.balance}₾</div></div>
-    </div>
-    ${s.status==='suspended'?`<div style="background:var(--amber-lt);border-radius:6px;padding:12px;margin-bottom:12px;font-size:12px">
-      <strong>სტატუსის შეჩერება</strong><br>საფუძველი: ${SUSPENSION_LBL[s.suspensionReason]||'—'}<br>თარიღი: ${s.suspendedOn||'—'} · ვადა: ${s.suspensionExpiresOn||'—'}<br>${orderRef(s.suspensionOrderId)}</div>`:''}
-    ${s.status==='terminated'?`<div style="background:var(--red-lt);border-radius:6px;padding:12px;margin-bottom:12px;font-size:12px">
-      <strong>სტატუსის შეწყვეტა</strong><br>საფუძველი: ${TERMINATION_LBL[s.terminationReason]||'—'}<br>თარიღი: ${s.terminatedOn||'—'}<br>${orderRef(s.terminationOrderId)}<br><em>აღდგენის უფლების გარეშე</em></div>`:''}
-    ${outs.length?`<div class="fg"><label class="fl">სწავლის შედეგები</label><div class="tw"><table><thead><tr><th>მოდული</th><th>№</th><th>სწავლის შედეგი</th><th>ცდა</th><th>მტკიც.</th><th>შედეგი</th></tr></thead><tbody>
-      ${outs.map(o=>{const r=RESULT_LBL[o.result];return `<tr><td style="font-size:11px">${o.module}</td><td style="text-align:center;font-weight:700;color:var(--blue)">${o.outcomeNo}</td><td style="font-size:11px">${o.outcomeTitle}</td><td style="text-align:center">${o.attemptNo}</td><td style="text-align:center">${o.evidence}</td><td><span class="bd ${r[1]}">${r[0]}</span></td></tr>`}).join('')}
-      </tbody></table></div></div>`:''}
-    ${isp?`<div class="fg"><label class="fl">ინდივიდუალური სასწავლო გეგმა</label><div style="font-size:12px">${ISP_GROUND_LBL[isp.ground]} · <span class="bd bd-p">${ISP_KIND_LBL[isp.kind]}</span> · შედგენილია ${isp.drawnUpOn}</div></div>`:''}
-    ${s.legalRepName?`<div class="fg"><label class="fl">კანონიერი წარმომადგენელი</label><div style="font-size:12px">${s.legalRepName} (${s.legalRepRelation}) · ${s.legalRepPhone||'—'}</div></div>`:''}
-    <div class="fg"><label class="fl">ჩარიცხვის ბრძანება</label><div style="font-size:12px">${orderRef(s.enrolOrderId)}</div></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">დახურვა</button><button class="btn btn-o" onclick="closeModal();changeStatusModal('${id}')">⇄ სტატუსი</button><button class="btn btn-b" onclick="closeModal();editStudentModal('${id}')">✏ რედაქტირება</button>`,'xl');
+    <div class="dtabs">${tabs.map(([k,l])=>`<button class="dtab ${stuTab===k?'on':''}" onclick="viewStudent('${id}','${k}')">${l}</button>`).join('')}</div>
+    <div id="stu-pane">${studentPane(s)}</div>`,
+    '','xl');
 }
+function studentPane(s){
+  if(stuTab==='overview')  return studentOverview(s);
+  if(stuTab==='progress')  return studentProgress(s);
+  if(stuTab==='history')   return studentHistory(s);
+  return studentFiles(s);
+}
+function studentOverview(s){
+  const it=intakesData.find(x=>x.id===s.intakeId);
+  const F=(l,v)=>`<div><label class="fl">${l}</label><div class="fv">${v||'—'}</div></div>`;
+  const st=STUDENT_STATUS_LBL[s.status]||[s.status,'bd-n'];
+  return `<div class="f3">
+      ${F('პირადი ნომერი (= login)',s.id)}
+      ${F('ელ. ფოსტა',s.email)}
+      ${F('ტელეფონი',s.phone)}
+      ${F('საგანმანათლებლო პროგრამა',progName(s.programId))}
+      ${F('მიღება',it?it.name:'')}
+      ${F('ჯგუფი',s.group)}
+      ${F('სასწავლო წელი',romanYear(s.studyYear))}
+      ${F('ფილიალი',branchName(s.branchId))}
+      ${F('ნაშთი',s.balance+'₾')}
+      ${F('სტატუსი',`<span class="bd ${st[1]}">${st[0]}</span>`)}
+      ${F('ჩარიცხვის ბრძანება',orderRef(s.enrolOrderId))}
+      ${F('კანონიერი წარმომადგენელი',s.legalRepName?`${s.legalRepName} (${s.legalRepRelation})<div style="font-size:12px;font-weight:400;color:var(--text2)">${s.legalRepPhone||''}</div>`:'—')}
+    </div>
+    <div class="note">ℹ️ სტატუსისთვის სპეციფიკური ველები ჩანს <strong>მხოლოდ შესაბამის სტატუსზე</strong>. კანონიერი წარმომადგენელი — <strong>მხოლოდ მონაცემი</strong>, პორტალის ანგარიში არ იქმნება.</div>
+    ${s.status==='suspended'?`<div class="card" style="margin-top:14px"><div class="ch"><div class="ct">სტატუსის შეჩერება</div><span class="bd bd-a">შეჩერებული</span></div>
+      <div class="cb"><div class="f3">
+        ${F('საფუძველი',SUSPENSION_LBL[s.suspensionReason])}${F('შეჩერების თარიღი',s.suspendedOn)}${F('ვადა (5 წელი)',s.suspensionExpiresOn)}
+        ${F('ბრძანება',orderRef(s.suspensionOrderId))}
+      </div><div class="note">აღდგენა შესაძლებელია <strong>იმავე პროგრამაზე, იმავე ეტაპიდან</strong>; მოთხოვნა წერილობით ვადის ამოწურვამდე ≥5 სამუშაო დღით ადრე.</div></div></div>`:''}
+    ${s.status==='terminated'?`<div class="card" style="margin-top:14px"><div class="ch"><div class="ct">სტატუსის შეწყვეტა</div><span class="bd bd-r">შეწყვეტილი</span></div>
+      <div class="cb"><div class="f3">
+        ${F('საფუძველი',TERMINATION_LBL[s.terminationReason])}${F('თარიღი',s.terminatedOn)}${F('ბრძანება',orderRef(s.terminationOrderId))}
+      </div><div class="note note-a">⚠ სტატუსის შეწყვეტა — <strong>აღდგენის უფლების გარეშე</strong>.</div></div></div>`:''}
+    ${s.status==='applicant'?`<div class="card" style="margin-top:14px"><div class="ch"><div class="ct">აპლიკანტი</div><span class="bd bd-n">ჯერ არ არის პროფესიული სტუდენტი</span></div>
+      <div class="cb"><div class="f3">${F('განაცხადის თარიღი',s.appliedOn)}${F('სასურველი პროგრამა',progName(s.programId))}</div></div></div>`:''}`;
+}
+function studentProgress(s){
+  const outs=outcomeResults.filter(o=>o.studentId===s.id);
+  const conf=outs.filter(o=>o.result==='confirmed').length;
+  const notConf=outs.filter(o=>o.result==='not_confirmed').length;
+  const att=attendanceData.find(a=>a.studentId===s.id);
+  const ia=interimData.find(x=>x.groupId===(groupsData.find(g=>g.name===s.group)||{}).id);
+  const byMod={};
+  outs.forEach(o=>{(byMod[o.moduleCode]=byMod[o.moduleCode]||{name:o.module,rows:[]}).rows.push(o)});
+  return `<div class="st4">
+      <div class="stc"><div class="stc-ic" style="background:var(--green-lt)">✅</div><div class="stc-v" style="color:var(--green)">${conf}</div><div class="stc-l">დადასტურებული სწავლის შედეგი</div></div>
+      <div class="stc"><div class="stc-ic" style="background:var(--red-lt)">✕</div><div class="stc-v" style="color:var(--red)">${notConf}</div><div class="stc-l">ვერ დადასტურდა</div></div>
+      <div class="stc"><div class="stc-ic" style="background:var(--blue-lt)">📋</div><div class="stc-v">${att?att.present:'—'}</div><div class="stc-l">დაესწრო (რეგისტრი)</div></div>
+      <div class="stc"><div class="stc-ic" style="background:var(--amber-lt)">🎯</div><div class="stc-v">${ia&&ia.participated?'✓':'—'}</div><div class="stc-l">შუალედური შეფასება</div></div>
+    </div>
+    ${att?`<div class="card"><div class="ch"><div class="ct">დასწრების რეგისტრი</div><span style="font-size:11px;color:var(--text3)">პროცენტული ზღვარი და ქულა არ არსებობს</span></div>
+      <div class="cb"><div style="display:flex;gap:10px;flex-wrap:wrap">
+        <span class="bd bd-g">დაესწრო ${att.present}</span><span class="bd ${att.absent?'bd-r':'bd-n'}">გააცდინა ${att.absent}</span><span class="bd ${att.late?'bd-a':'bd-n'}">დააგვიანა ${att.late}</span>
+      </div></div></div>`:''}
+    ${Object.keys(byMod).length?Object.entries(byMod).map(([code,m])=>{
+      const c=m.rows.filter(r=>r.result==='confirmed').length;
+      return `<div class="card"><div class="ch"><div class="ct">${m.name} <span style="font-size:11px;font-weight:400;color:var(--text3)">${code}</span></div>
+        <span class="bd ${c===m.rows.length?'bd-g':'bd-b'}">${c}/${m.rows.length} დადასტურდა</span></div>
+        <div class="tw"><table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>მტკიც.</th><th>შედეგი</th></tr></thead><tbody>
+        ${m.rows.map(o=>{const r=RESULT_LBL[o.result];return `<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${o.outcomeNo}</td>
+          <td style="font-size:12px">${o.outcomeTitle}</td><td style="text-align:center">${o.attemptNo>=3?`<span class="bd bd-a">${o.attemptNo}</span>`:o.attemptNo}</td>
+          <td style="font-size:11px">${o.assessedOn}</td><td style="font-size:11px">${SOURCE_LBL[o.source]}</td>
+          <td style="text-align:center">${o.evidence?`<span class="bd bd-b">${o.evidence}</span>`:'<span class="bd bd-r">0</span>'}</td>
+          <td><span class="bd ${r[1]}">${r[0]}</span></td></tr>`}).join('')}
+        </tbody></table></div></div>`;
+    }).join(''):'<div class="card"><div class="cb" style="color:var(--text3)">შეფასების ჩანაწერი არ არის</div></div>'}
+    <div class="note">კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>. ქულა, საშუალო და გამსვლელობა არ არსებობს; დასწრება რეგისტრია. — [სპწ] 21.10, 21.11</div>`;
+}
+function studentHistory(s){
+  const outs=outcomeResults.filter(o=>o.studentId===s.id);
+  const years=[...new Set([s.studyYear,s.studyYear-1].filter(y=>y>=1))];
+  return `<div class="note">🎓 ისტორია — რომელ ჯგუფში იყო, რომელი სასწავლო წელი დაიხურა, რომელი მოდულები გაიარა და რა შედეგით.</div>
+    ${years.map((y,idx)=>{
+      const cur=idx===0;
+      const rows=cur?outs:[];
+      return `<div class="card" style="margin-top:14px">
+        <div class="ch"><div class="ct">${romanYear(y)} სასწავლო წელი · ${s.group} · ${progName(s.programId)}</div>
+          <span class="bd ${cur?'bd-g':'bd-n'}">${cur?'მიმდინარე':'დახურული'}</span></div>
+        ${rows.length?`<div class="tw"><table><thead><tr><th>მოდული</th><th>დადასტურდა</th><th>ვერ დადასტურდა</th><th>მტკიცებულება</th><th>უწყისი</th></tr></thead><tbody>
+          ${Object.entries(rows.reduce((a,o)=>{(a[o.moduleCode]=a[o.moduleCode]||{n:o.module,c:0,f:0,e:0,reg:o.registerId}); a[o.moduleCode][o.result==='confirmed'?'c':'f']++; a[o.moduleCode].e+=o.evidence; return a},{}))
+            .map(([code,m])=>`<tr><td>${m.n}<div style="font-size:10px;color:var(--text3)">${code}</div></td>
+              <td style="text-align:center"><span class="bd bd-g">${m.c}</span></td>
+              <td style="text-align:center">${m.f?`<span class="bd bd-r">${m.f}</span>`:'—'}</td>
+              <td style="text-align:center">${m.e}</td>
+              <td style="font-size:11px">${m.reg||'—'}</td></tr>`).join('')}
+        </tbody></table></div>`:'<div class="cb" style="color:var(--text3);font-size:12px">ამ სასწავლო წლის ჩანაწერი არ არის</div>'}
+      </div>`;
+    }).join('')}
+    <div class="note">„დახურული" სასწავლო წელი = ჯგუფმა დაასრულა წელი; მოდულის დადასტურებული შედეგები და უწყისები ისტორიაში ფიქსირდება. სტუდენტის პირადი საქმე ინახება <strong>75 წელი</strong>. — [სეწ] მუხ. 10</div>`;
+}
+const studentFilesData={};
+function studentFiles(s){
+  const f=studentFilesData[s.id]||(studentFilesData[s.id]=[
+    {name:'ხელშეკრულება_2025.pdf'},{name:'პირადობის_ასლი.pdf'},{name:'ატესტატი.pdf'}]);
+  return `${f.map((x,i)=>`<div class="filerow">
+      <span style="font-size:16px">📄</span><span style="flex:1">${x.name}</span>
+      <button class="btn btn-xs btn-ghost" onclick="toast('ფაილი ჩამოიტვირთა ✓','success')">⬇</button>
+      <button class="btn btn-xs btn-r" onclick="rmStudentFile('${s.id}',${i})">✕</button>
+    </div>`).join('')}
+    <button class="btn btn-o btn-sm" style="margin-top:14px" onclick="addStudentFile('${s.id}')">⤒ ფაილის მიმაგრება</button>
+    <div class="note">დოკუმენტები — ხელშეკრულებები, სერტიფიკატები და სხვა ფაილები. პირადი საქმე ინახება <strong>75 წელი</strong>.</div>`;
+}
+function addStudentFile(id){
+  showModal('ფაილის მიმაგრება',`
+    <div class="fg"><label class="fl">დასახელება</label><input class="fi" id="sf-name" placeholder="დოკუმენტის სახელი"></div>
+    <div class="fg"><label class="fl">ფაილი</label><input class="fi" type="file"></div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const n=document.getElementById('sf-name').value.trim();if(!n){toast('შეავსეთ დასახელება','error');return}studentFilesData['${id}'].push({name:n});closeModal();viewStudent('${id}','files');toast('ფაილი მიმაგრდა ✓','success')})()">✓ მიმაგრება</button>`);
+}
+function rmStudentFile(id,i){studentFilesData[id].splice(i,1);viewStudent(id,'files');toast('ფაილი მოხსნილია','warn')}
 function editTeacherModal(id){
   const t=teachers.find(x=>x.id===id);if(!t)return;
   showModal('მასწავლებლის რედაქტირება',`
@@ -2620,38 +2857,53 @@ function viewTeacher(id){
   const mods=modulesData.filter(m=>m.teacherId===t.id);
   const myLecs=moduleLectures.filter(l=>mods.some(m=>m.code===l.moduleCode));
   const contactH=Math.round(myLecs.filter(l=>l.conducted).reduce((a,l)=>a+l.durationMin,0)/60);
-  const monthH=Math.round(myLecs.filter(l=>l.conducted&&(l.conductedOn||'').includes('.03.')||l.conductedOn==='დღეს').reduce((a,l)=>a+l.durationMin,0)/60);
+  const monthH=Math.round(myLecs.filter(l=>l.conducted&&((l.conductedOn||'').includes('.03.')||l.conductedOn==='დღეს')).reduce((a,l)=>a+l.durationMin,0)/60);
   const sched=plannedLessons.filter(x=>x.teacherId===t.id);
+  const F=(l,v)=>`<div><label class="fl">${l}</label><div class="fv">${v||'—'}</div></div>`;
   showModal('მასწავლებლის პროფილი',`
-    <div style="display:flex;gap:14px;align-items:center;margin-bottom:16px">
-      <div style="width:56px;height:56px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800">${t.name.charAt(0)}</div>
-      <div><div style="font-size:18px;font-weight:800;color:var(--navy)">${t.name}</div>
-      <div style="font-size:12px;color:var(--text2);margin-top:3px">${IMPLEMENTER_LBL[t.implementerType]}</div>
-      <div style="font-size:12px;color:var(--text3)">${t.id} · ${t.spec}</div></div>
+    <div class="dhead">
+      <div class="dhead-l">
+        ${avatar(t.name,t.id,'av-lg')}
+        <div><div class="dhead-name">${t.name}</div>
+        <div class="dhead-meta">${IMPLEMENTER_LBL[t.implementerType]} · ${t.spec} · ${branchName(t.branchId).split('—')[0]}</div></div>
+      </div>
+      <button class="btn btn-b" onclick="closeModal();editTeacherModal('${id}')">✏ რედაქტირება</button>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
-      <div style="background:var(--bg);border-radius:6px;padding:10px"><div style="font-size:11px;color:var(--text3)">მუშაობის დაწყება</div><div style="font-size:14px;font-weight:700;margin-top:4px">${t.workStartedOn||'—'}</div></div>
-      <div style="background:var(--bg);border-radius:6px;padding:10px"><div style="font-size:11px;color:var(--text3)">საკონტაქტო საათი (სულ)</div><div style="font-size:20px;font-weight:800;color:var(--blue);margin-top:2px">${contactH}</div></div>
-      <div style="background:var(--bg);border-radius:6px;padding:10px"><div style="font-size:11px;color:var(--text3)">ამ თვეში (საათი)</div><div style="font-size:20px;font-weight:800;color:var(--green);margin-top:2px">${monthH}</div></div>
-      <div style="background:var(--bg);border-radius:6px;padding:10px"><div style="font-size:11px;color:var(--text3)">მოდულები</div><div style="font-size:20px;font-weight:800;margin-top:2px">${mods.length}</div></div>
+    <div class="chips">
+      <span class="bd ${t.status==='active'?'bd-g':'bd-n'}">${t.status==='active'?'აქტიური':'არააქტიური'}</span>
+      <span class="bd bd-p">${IMPLEMENTER_LBL[t.implementerType]}</span>
+      <span class="bd bd-n">${t.id}</span>
     </div>
-    ${t.qualification?`<div class="fg"><label class="fl">კვალიფიკაცია / ბიოგრაფია</label><div style="font-size:12px;line-height:1.7;color:var(--text2)">${t.qualification}</div></div>`:''}
-    <div class="fg"><label class="fl">სამუშაო განრიგი</label>
+    <div class="st4">
+      <div class="stc"><div class="stc-ic" style="background:var(--blue-lt)">📅</div><div class="stc-v" style="font-size:16px">${t.workStartedOn||'—'}</div><div class="stc-l">მუშაობის დაწყება</div></div>
+      <div class="stc"><div class="stc-ic" style="background:var(--green-lt)">⏱</div><div class="stc-v" style="color:var(--green)">${contactH}</div><div class="stc-l">საკონტაქტო საათი (სულ)</div></div>
+      <div class="stc"><div class="stc-ic" style="background:var(--amber-lt)">📆</div><div class="stc-v" style="color:var(--amber)">${monthH}</div><div class="stc-l">ამ თვეში (საათი)</div></div>
+      <div class="stc"><div class="stc-ic" style="background:#f5e6f3">📚</div><div class="stc-v">${mods.length}</div><div class="stc-l">მოდული</div></div>
+    </div>
+    <div class="f3">
+      ${F('ელ. ფოსტა',t.email)}${F('ტელეფონი',t.phone)}${F('პირადი ნომერი (= login)',t.id)}
+      ${F('სპეციალობა',t.spec)}${F('ფილიალი',branchName(t.branchId))}${F('დანიშვნის ბრძანება',orderRef(t.appointOrderId))}
+    </div>
+    ${t.qualification?`<div class="fg" style="margin-top:18px"><label class="fl">კვალიფიკაცია / ბიოგრაფია</label><div style="font-size:13px;line-height:1.7;color:var(--text2)">${t.qualification}</div></div>`:''}
+    <div class="card" style="margin-top:16px"><div class="ch"><div class="ct">მოდულები — კალენდარული გეგმის ავტორი</div></div>
+      ${mods.length?`<div class="tw"><table><thead><tr><th>კოდი</th><th>მოდული</th><th>ჯგუფი</th><th>პერიოდი</th><th>ჩატარებული</th><th>გეგმა</th></tr></thead><tbody>
+      ${mods.map(m=>{const ps=PLAN_STATUS_LBL[m.planStatus];return `<tr><td style="font-size:11px;color:var(--blue);font-weight:700">${m.code}</td><td>${m.name}</td>
+        <td style="font-size:12px">${groupName(m.groupId)}</td><td style="font-size:11px">${m.startsOn}–${m.endsOn}</td>
+        <td style="text-align:center;font-size:12px">${m.conducted}/${m.totalLectures}</td><td><span class="bd ${ps[1]}">${ps[0]}</span></td></tr>`}).join('')}
+      </tbody></table></div>`:'<div class="cb" style="color:var(--text3);font-size:12px">მოდული არ არის</div>'}</div>
+    <div class="card"><div class="ch"><div class="ct">სამუშაო განრიგი</div><span style="font-size:11px;color:var(--text3)">ინიშნება თითო მეცადინეობაზე</span></div>
       ${sched.length?`<div class="tw"><table><thead><tr><th>დღე</th><th>სლოტი</th><th>მეცადინეობა</th><th>ჯგუფი</th><th>სივრცე</th></tr></thead><tbody>
-        ${sched.map(x=>{const l=moduleLectures.find(y=>y.id===x.lectureId);const m=l?modulesData.find(y=>y.code===l.moduleCode):null;const v=venuesData.find(y=>y.id===x.venueId);
-          return `<tr><td style="font-size:12px">${['','ორშ.','სამ.','ოთხ.','ხუთ.','პარ.'][x.day]||'—'}</td><td style="font-size:12px">${x.slot}</td><td style="font-size:11px">${l?l.title.substring(0,32):'—'}</td><td style="font-size:11px">${m?groupName(m.groupId):'—'}</td><td style="font-size:11px">${v?v.code:'—'}</td></tr>`}).join('')}
-      </tbody></table></div>`:'<div style="color:var(--text3);font-size:12px">დაგეგმილი მეცადინეობა არ არის</div>'}</div>
-    <div class="fg"><label class="fl">მოდულები (კალენდარული გეგმის ავტორი)</label>
-      ${mods.length?`<div class="tw"><table><thead><tr><th>კოდი</th><th>მოდული</th><th>ჯგუფი</th><th>გეგმა</th></tr></thead><tbody>
-      ${mods.map(m=>{const ps=PLAN_STATUS_LBL[m.planStatus];return `<tr><td style="font-size:11px;color:var(--blue)">${m.code}</td><td>${m.name}</td><td style="font-size:12px">${groupName(m.groupId)}</td><td><span class="bd ${ps[1]}">${ps[0]}</span></td></tr>`}).join('')}
-      </tbody></table></div>`:'<div style="color:var(--text3);font-size:12px">მოდული არ არის</div>'}</div>
-    <div class="fg"><label class="fl">გაცდენა / დაგვიანება</label>
+      ${sched.map(x=>{const l=moduleLectures.find(y=>y.id===x.lectureId);const m=l?modulesData.find(y=>y.code===l.moduleCode):null;const v=venuesData.find(y=>y.id===x.venueId);
+        return `<tr><td style="font-size:12px">${['','ორშ.','სამ.','ოთხ.','ხუთ.','პარ.'][x.day]||'—'}</td><td style="font-size:12px;font-weight:700;color:var(--blue)">${x.slot}</td>
+        <td style="font-size:11px">${l?l.title.substring(0,34):'—'}</td><td style="font-size:11px">${m?groupName(m.groupId):'—'}</td><td style="font-size:11px">${v?v.code:'—'}</td></tr>`}).join('')}
+      </tbody></table></div>`:'<div class="cb" style="color:var(--text3);font-size:12px">დაგეგმილი მეცადინეობა არ არის</div>'}</div>
+    <div class="card"><div class="ch"><div class="ct">გაცდენა / დაგვიანება</div></div>
       ${abs.length?`<div class="tw"><table><thead><tr><th>თარიღი</th><th>სახეობა</th><th>წთ</th><th>შემცვლელი</th><th>შენიშვნა</th></tr></thead><tbody>
-      ${abs.map(a=>`<tr><td style="font-size:12px">${a.on}</td><td><span class="bd ${a.kind==='absence'?'bd-r':'bd-a'}">${a.kind==='absence'?'გაცდენა':'დაგვიანება'}</span></td><td style="text-align:center">${a.minutesLate||'—'}</td><td style="font-size:12px">${a.substitute?teacherName(a.substitute):'—'}</td><td style="font-size:11px">${a.note}</td></tr>`).join('')}
-      </tbody></table></div>`:'<div style="color:var(--green);font-size:12px">✓ გაცდენა არ არის</div>'}</div>
-    <div class="fg"><label class="fl">დანიშვნის ბრძანება</label><div style="font-size:12px">${orderRef(t.appointOrderId)}</div></div>
-    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">მასწავლებელი ანგარიშვალდებულია <strong>სპმს მენეჯერისა</strong> და შესაბამისი <strong>პროგრამის ხელმძღვანელის</strong> წინაშე. — [სპწ] 34.5.34</div>`,
-    `<button class="btn btn-n" onclick="closeModal()">დახურვა</button><button class="btn btn-b" onclick="closeModal();editTeacherModal('${id}')">✏ რედაქტირება</button>`,'xl');
+      ${abs.map(a=>`<tr><td style="font-size:12px">${a.on}</td><td><span class="bd ${a.kind==='absence'?'bd-r':'bd-a'}">${a.kind==='absence'?'გაცდენა':'დაგვიანება'}</span></td>
+        <td style="text-align:center">${a.minutesLate||'—'}</td><td style="font-size:12px">${a.substitute?teacherName(a.substitute):'—'}</td><td style="font-size:11px">${a.note}</td></tr>`).join('')}
+      </tbody></table></div>`:'<div class="cb" style="color:var(--green);font-size:12px">✓ გაცდენა არ არის</div>'}</div>
+    <div class="note">მასწავლებელი ანგარიშვალდებულია <strong>სპმს მენეჯერისა</strong> და შესაბამისი <strong>პროგრამის ხელმძღვანელის</strong> წინაშე. — [სპწ] 34.5.34</div>`,
+    '','xl');
 }
 function addGroupModal(){
   showModal('ჯგუფის შექმნა',`
@@ -2666,20 +2918,106 @@ function viewGroup(id){
   const g=groupsData.find(x=>x.id===id);if(!g)return;
   const stuList=students.filter(s=>s.group===g.name);
   const mods=modulesData.filter(m=>m.groupId===g.id);
+  const conducted=mods.reduce((a,m)=>a+m.conducted,0), total=mods.reduce((a,m)=>a+m.totalLectures,0);
+  const it=intakesData.find(x=>x.id===g.intakeId);
+  const maxY=progSlots(g.programId);
   showModal(`${g.name}`,`
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
-      <span class="bd bd-p">${progName(g.programId)}</span><span class="bd bd-b">${intakeName(g.intakeId)}</span>
-      <span class="bd bd-n">${romanYear(g.studyYear)} სასწ. წელი</span><span class="bd bd-n">${g.id}</span>
+    <div class="dhead">
+      <div><div class="dhead-name">${g.name} — ${progName(g.programId)}</div>
+      <div class="dhead-meta">${branchName(g.branchId).split('—')[0]} · ${it?it.name:''} · ${romanYear(g.studyYear)} სასწავლო წელი</div></div>
+      <button class="btn btn-b" onclick="closeModal();editGroupModal('${id}')">✏ რედაქტირება</button>
     </div>
-    <div class="fg"><label class="fl">მოდულები</label>
-      ${mods.length?`<div class="tw"><table><thead><tr><th>კოდი</th><th>მოდული</th><th>მასწავლებელი</th><th>პერიოდი</th><th>გეგმა</th></tr></thead><tbody>
-      ${mods.map(m=>{const ps=PLAN_STATUS_LBL[m.planStatus];return `<tr><td style="font-size:11px;color:var(--blue)">${m.code}</td><td>${m.name}</td><td style="font-size:12px">${teacherName(m.teacherId)}</td><td style="font-size:11px">${m.startsOn}–${m.endsOn}</td><td><span class="bd ${ps[1]}">${ps[0]}</span></td></tr>`}).join('')}
-      </tbody></table></div>`:'<div style="color:var(--text3);font-size:12px">მოდული არ არის</div>'}</div>
-    <div class="fg"><label class="fl">პროფესიული სტუდენტები (${stuList.length})</label>
-    ${stuList.length?stuList.map(s=>{const st=STUDENT_STATUS_LBL[s.status]||[s.status,'bd-n'];
-      return `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px"><span>${s.name} <span style="font-size:10px;color:var(--text3)">${s.id}</span></span><span class="bd ${st[1]}">${st[0]}</span></div>`}).join(''):'<p style="color:var(--text3)">სტუდენტები არ არის</p>'}</div>
-    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2);margin-top:10px">ჯგუფი გადადის <strong>წელიწადში ერთხელ</strong>, პროგრამის ხანგრძლივობის ფარგლებში. ამოღება მიმართავს შეჩერებაზე / შეწყვეტაზე / მობილობაზე — ყოველთვის ბრძანებით.</div>`,
-    `<button class="btn btn-n" onclick="closeModal()">დახურვა</button><button class="btn btn-b" onclick="closeModal();editGroupModal('${id}')">✏ რედაქტირება</button>`,'xl');
+    <div class="st4">
+      <div class="stc"><div class="stc-ic" style="background:var(--blue-lt)">👥</div><div class="stc-v">${stuList.length}<span style="font-size:15px;color:var(--text3)"> / ${g.students}</span></div><div class="stc-l">პროფესიული სტუდენტი</div></div>
+      <div class="stc"><div class="stc-ic" style="background:#f5e6f3">🎯</div><div class="stc-v" style="font-size:15px">${progName(g.programId)}</div><div class="stc-l">პროგრამა</div></div>
+      <div class="stc"><div class="stc-ic" style="background:var(--amber-lt)">🗂️</div><div class="stc-v" style="font-size:15px">${it?it.name.split('მიღება')[0]+'მიღება':'—'}</div><div class="stc-l">მიღება · ${romanYear(g.studyYear)} სასწ. წელი</div></div>
+      <div class="stc"><div class="stc-ic" style="background:var(--green-lt)">📋</div><div class="stc-v">${conducted}<span style="font-size:15px;color:var(--text3)"> / ${total}</span></div><div class="stc-l">ჩატარებული მეცადინეობა</div></div>
+    </div>
+    <div class="card"><div class="cb" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <strong style="font-size:13px">⇄ სასწავლო წლის მართვა:</strong>
+      ${Array.from({length:maxY},(_,k)=>k+1).map(y=>`<span class="bd ${y===g.studyYear?'bd-g':y<g.studyYear?'bd-n':'bd-n'}" style="${y>g.studyYear?'opacity:.5':''}">${romanYear(y)} — ${y===g.studyYear?'მიმდინარე':y<g.studyYear?'დახურული':'ჯერ არ დაწყებულა'}</span>`).join('')}
+      ${g.studyYear<maxY?`<button class="btn btn-b btn-sm" style="margin-left:auto" onclick="advanceGroup('${id}')">✓ ${romanYear(g.studyYear)} წლის დახურვა</button>`
+        :'<span class="bd bd-p" style="margin-left:auto">პროგრამის ბოლო წელი</span>'}
+    </div></div>
+    <div class="card"><div class="ch"><div class="ct">ჯგუფში ჩარიცხული პროფესიული სტუდენტები</div>
+      <button class="btn btn-b btn-sm" onclick="addStudentToGroup('${id}')">+ სტუდენტის დამატება</button></div>
+      ${stuList.length?`<div class="tw"><table>
+        <thead><tr><th>პროფესიული სტუდენტი</th><th>ელ. ფოსტა</th><th>ტელეფონი</th><th>კანონიერი წარმ.</th><th>სტატუსი</th><th></th></tr></thead>
+        <tbody>${stuList.map(s=>{const st=STUDENT_STATUS_LBL[s.status]||[s.status,'bd-n'];
+          return `<tr>
+            <td><div class="row-id">${avatar(s.name,s.id)}<div><div class="rn">${s.name}</div><div class="ri">${s.id}</div></div></div></td>
+            <td style="font-size:12px">${s.email}</td><td style="font-size:12px">${s.phone||'—'}</td>
+            <td style="font-size:12px">${s.legalRepName||'—'}</td>
+            <td><span class="bd ${st[1]}">${st[0]}</span></td>
+            <td style="white-space:nowrap"><button class="btn btn-xs btn-o" onclick="closeModal();viewStudent('${s.id}')">პროფილი →</button>
+              <button class="btn btn-xs btn-r" onclick="removeFromGroup('${id}','${s.id}')">მოხსნა</button></td>
+          </tr>`}).join('')}</tbody></table></div>`
+        :'<div class="cb" style="color:var(--text3);font-size:12px">სტუდენტი არ არის ჩარიცხული</div>'}</div>
+    <div class="card"><div class="ch"><div class="ct">ჯგუფის მოდულები</div></div>
+      ${mods.length?`<div class="tw"><table><thead><tr><th>კოდი</th><th>მოდული</th><th>მასწავლებელი</th><th>პერიოდი</th><th>ჩატარებული</th><th>გეგმა</th><th></th></tr></thead><tbody>
+      ${mods.map(m=>{const ps=PLAN_STATUS_LBL[m.planStatus];return `<tr><td style="font-size:11px;color:var(--blue);font-weight:700">${m.code}</td><td>${m.name}</td>
+        <td style="font-size:12px">${teacherName(m.teacherId)}</td><td style="font-size:11px">${m.startsOn}–${m.endsOn}</td>
+        <td style="text-align:center;font-size:12px">${m.conducted}/${m.totalLectures}</td><td><span class="bd ${ps[1]}">${ps[0]}</span></td>
+        <td><button class="btn btn-xs btn-ghost" onclick="closeModal();viewModule('${m.code}')">👁</button></td></tr>`}).join('')}
+      </tbody></table></div>`:'<div class="cb" style="color:var(--text3);font-size:12px">მოდული არ არის</div>'}</div>
+    <div class="note">ℹ️ სტუდენტის დამატება/მოხსნა ხდება ამ გვერდიდან. ჯგუფი უკავშირდება პროგრამის მოდულებს და გაივლის მათ მეცადინეობებს <strong>თანმიმდევრობით</strong>. მობილობა შესაძლებელია პროგრამის დაწყებიდან <strong>≤2 კვირაში</strong>.</div>`,
+    '','xl');
+}
+function advanceGroup(id){
+  const g=groupsData.find(x=>x.id===id);if(!g)return;
+  const maxY=progSlots(g.programId);
+  if(g.studyYear>=maxY){toast('პროგრამის ბოლო წელია','warn');return;}
+  showModal('სასწავლო წლის დახურვა',`
+    <p style="font-size:13px">გსურთ <strong>${g.name}</strong>-ის ${romanYear(g.studyYear)} სასწავლო წლის დახურვა და ${romanYear(g.studyYear+1)} წელზე გადაყვანა?</p>
+    <div class="note">ჯგუფი გადადის <strong>წელიწადში ერთხელ</strong>, პროგრამის ხანგრძლივობის ფარგლებში (${maxY} წელი). დახურული წლის შედეგები ფიქსირდება სტუდენტების ისტორიაში. საჭიროა დირექტორის ბრძანება.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const g=groupsData.find(x=>x.id==='${id}');g.studyYear++;renderGroups();closeModal();viewGroup('${id}');toast('სასწავლო წელი დაიხურა — ჯგუფი გადავიდა '+romanYear(g.studyYear)+' წელზე ✓','success')})()">✓ დახურვა და გადაყვანა</button>`);
+}
+function addStudentToGroup(gid){
+  const g=groupsData.find(x=>x.id===gid);if(!g)return;
+  const free=students.filter(s=>s.group!==g.name&&s.status!=='terminated');
+  showModal('სტუდენტის დამატება ჯგუფში',`
+    <div class="fg"><label class="fl">ჯგუფი</label><div class="fv">${g.name} · ${progName(g.programId)}</div></div>
+    <div class="fg"><label class="fl">პროფესიული სტუდენტი</label>
+      <select class="fi" id="ag-stu">${free.map(s=>`<option value="${s.id}">${s.name} — ${s.id} (${s.group})</option>`).join('')}</select></div>
+    <div class="note">მობილობა შესაძლებელია პროგრამის დაწყებიდან <strong>≤2 კვირაში</strong>, კომისიის რეკომენდაციითა და დირექტორის ბრძანებით.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const s=students.find(x=>x.id===document.getElementById('ag-stu').value);if(s){s.group='${g.name}';s.programId='${g.programId}';s.intakeId='${g.intakeId}';}renderStudents(students);renderGroups();closeModal();viewGroup('${gid}');toast('სტუდენტი დაემატა ჯგუფს ✓','success')})()">✓ დამატება</button>`,'lg');
+}
+function removeFromGroup(gid,sid){
+  const s=students.find(x=>x.id===sid);if(!s)return;
+  showModal('სტუდენტის მოხსნა ჯგუფიდან',`
+    <div class="fg"><label class="fl">პროფესიული სტუდენტი</label><div class="fv">${s.name} · ${s.id}</div></div>
+    <div class="fg"><label class="fl">მოხსნის მარშრუტი</label>
+      <select class="fi" id="rg-route" onchange="updateRemoveRoute()">
+        <option value="suspended">სტატუსის შეჩერება</option>
+        <option value="terminated">სტატუსის შეწყვეტა</option>
+        <option value="mobility">მობილობა — სხვა ჯგუფი / პროგრამა</option>
+      </select></div>
+    <div id="rg-extra"></div>
+    <div class="fg"><label class="fl">ბრძანება (სავალდებულო)</label>
+      <select class="fi" id="rg-order"><option value="">— აირჩიეთ ბრძანება —</option>${ordersData.filter(o=>o.index==='student_02').map(o=>`<option value="${o.id}">№${o.no} · ${o.date}</option>`).join('')}</select></div>
+    <div class="note note-a">⚠ ჯგუფიდან მოხსნა ყოველთვის მიმართავს სტატუსზე ან მობილობაზე და <strong>მოითხოვს ბრძანებას</strong>. — [სპწ] მუხ. 14–16</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="applyRemoveFromGroup('${gid}','${sid}')">✓ მოხსნა</button>`,'lg');
+  updateRemoveRoute();
+}
+function updateRemoveRoute(){
+  const v=document.getElementById('rg-route').value, box=document.getElementById('rg-extra');
+  if(!box)return;
+  if(v==='suspended')box.innerHTML=`<div class="fg2"><div><label class="fl">საფუძველი</label><select class="fi" id="rg-reason">${Object.entries(SUSPENSION_LBL).map(([k,l])=>`<option value="${k}">${l}</option>`).join('')}</select></div><div><label class="fl">ვადა (5 წელი)</label><input class="fi" id="rg-exp" placeholder="დდ.თთ.წწწწ"></div></div>`;
+  else if(v==='terminated')box.innerHTML=`<div class="fg"><label class="fl">საფუძველი</label><select class="fi" id="rg-reason">${Object.entries(TERMINATION_LBL).map(([k,l])=>`<option value="${k}">${l}</option>`).join('')}</select></div>`;
+  else box.innerHTML=`<div class="fg"><label class="fl">ახალი ჯგუფი</label><select class="fi" id="rg-newgroup">${groupsData.map(g=>`<option value="${g.id}">${g.name} — ${progName(g.programId)}</option>`).join('')}</select></div>`;
+}
+function applyRemoveFromGroup(gid,sid){
+  const s=students.find(x=>x.id===sid);
+  const ord=document.getElementById('rg-order').value;
+  if(!ord){toast('ბრძანება სავალდებულოა','error');return;}
+  const route=document.getElementById('rg-route').value;
+  const rs=document.getElementById('rg-reason');
+  if(route==='suspended'){s.status='suspended';s.suspensionOrderId=ord;s.suspensionReason=rs?rs.value:null;s.suspensionExpiresOn=(document.getElementById('rg-exp')||{}).value||'';s.group='—';}
+  else if(route==='terminated'){s.status='terminated';s.terminationOrderId=ord;s.terminationReason=rs?rs.value:null;s.group='—';}
+  else {const ng=groupsData.find(g=>g.id===document.getElementById('rg-newgroup').value);if(ng){s.group=ng.name;s.programId=ng.programId;s.intakeId=ng.intakeId;}}
+  auditLog.unshift({id:'AUD-'+String(auditLog.length+1).padStart(3,'0'),actor:'ადმინისტრატორი',role:'spms_specialist',action:'UPDATE',entity:'group_membership',entityId:sid,at:'დღეს',ip:'10.0.4.18'});
+  renderStudents(students);renderStudentTabs();renderGroups();renderAudit();closeModal();viewGroup(gid);
+  toast('სტუდენტი მოხსნილია ჯგუფიდან ბრძანებით ✓','success');
 }
 function editGroupModal(id){
   const g=groupsData.find(x=>x.id===id);if(!g)return;
@@ -2991,6 +3329,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderReference();
   // მოდულის ჩატარების მაჩვენებელი გამოითვლება მეცადინეობის ჩანაწერებიდან
   modulesData.forEach(m=>{const l=modLectures(m.code);if(l.length){m.conducted=l.filter(x=>x.conducted).length;m.totalLectures=l.length;}});
+  renderStudentTabs();
+  renderTeacherTabs();
   renderBranches();
   renderModuleDrill();
   renderTemplateDrill();
