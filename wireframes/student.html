@@ -156,6 +156,11 @@ tr:hover td{background:#eff8f1}
 
 /* ── TOASTS ── */
 #toasts{position:fixed;bottom:20px;right:20px;z-index:3000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.dp-bar{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.dp-title{font-size:19px;font-weight:800;color:var(--navy)}
+.dp-foot{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;padding:16px 18px;border-top:1px solid var(--border);background:var(--bg)}
+.dp-foot:empty{display:none}
+#screen-detail #modal-box.modal-lg{max-width:900px}
 .toast{background:#1F2937;color:#fff;padding:11px 16px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,.2);display:flex;align-items:center;gap:8px;animation:slideIn .25s ease;pointer-events:all;max-width:320px}
 .toast-g{background:var(--green)}.toast-r{background:var(--red)}.toast-a{background:var(--amber)}
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -785,18 +790,22 @@ tr:hover td{background:#eff8f1}
   <div id="career-detail-view" style="display:none"></div>
 </div>
 
+<!-- ══ DETAIL PAGE (მოდალების ნაცვლად შიდა გვერდი) ══ -->
+<div class="screen" id="screen-detail">
+  <div class="dp-bar">
+    <button class="btn btn-n btn-sm" onclick="closeModal()">← უკან</button>
+    <div class="dp-title" id="modal-title">–</div>
+  </div>
+  <div class="card" id="modal-box">
+    <div class="cb" id="modal-body"></div>
+    <div class="dp-foot" id="modal-footer"></div>
+  </div>
+</div>
+
     </div><!-- /inner -->
   </div><!-- /content -->
 </div><!-- /app -->
 
-<!-- ══ MODAL ══ -->
-<div id="modal-overlay" onclick="overlayClick(event)">
-  <div class="modal" id="modal-box">
-    <div class="mh"><div class="mh-t" id="modal-title">–</div><button class="mclose" onclick="closeModal()">✕</button></div>
-    <div class="mb-body" id="modal-body"></div>
-    <div class="mf" id="modal-footer"></div>
-  </div>
-</div>
 
 <!-- ══ TOASTS ══ -->
 <div id="toasts"></div>
@@ -804,15 +813,41 @@ tr:hover td{background:#eff8f1}
 
 <script>
 // ══ MODAL & TOAST ══
+// ── შიდა გვერდები მოდალების ნაცვლად ──
+let pageStack=[];
+function currentScreenId(){
+  const on=document.querySelector('.screen.on');
+  return on?on.id.replace('screen-',''):'profile';
+}
 function showModal(title,body,footer,large){
+  const from=currentScreenId();
+  if(from!=='detail') pageStack.push({id:from,title:document.getElementById('bc-title').textContent});
   document.getElementById('modal-title').textContent=title;
   document.getElementById('modal-body').innerHTML=body;
-  document.getElementById('modal-footer').innerHTML=footer||'<button class="btn btn-n" onclick="closeModal()">დახ.</button>';
-  document.getElementById('modal-box').className='modal'+(large?' modal-lg':'');
-  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('modal-footer').innerHTML=footer||'';
+  document.getElementById('modal-box').className='card'+(large?' modal-lg':'');
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('on'));
+  document.getElementById('screen-detail').classList.add('on');
+  document.getElementById('bc-title').textContent=title;
+  const inner=document.querySelector('.inner'); if(inner)inner.scrollTop=0;
+  window.scrollTo(0,0);
 }
-function closeModal(){document.getElementById('modal-overlay').classList.remove('open')}
-function overlayClick(e){if(e.target===document.getElementById('modal-overlay'))closeModal()}
+function closeModal(){
+  const prev=pageStack.pop();
+  if(prev){
+    document.querySelectorAll('.screen').forEach(x=>x.classList.remove('on'));
+    const sc=document.getElementById('screen-'+prev.id);
+    if(sc)sc.classList.add('on');
+    document.getElementById('bc-title').textContent=prev.title||prev.id;
+    document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+    const nav=Array.from(document.querySelectorAll('.ni')).find(n=>(n.getAttribute('onclick')||'').includes("go('"+prev.id+"'"));
+    if(nav)nav.classList.add('on');
+  } else {
+    go('profile',document.querySelector('.ni'),'პროფილი');
+  }
+  window.scrollTo(0,0);
+}
+function overlayClick(e){}
 function toast(msg,type){
   const c=document.getElementById('toasts');
   const t=document.createElement('div');
@@ -826,6 +861,7 @@ function toast(msg,type){
 
 // ══ NAVIGATION ══
 function go(id,el,title){
+  if(id!=='detail') pageStack=[];
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
   const sc=document.getElementById('screen-'+id);
   if(sc)sc.classList.add('on');

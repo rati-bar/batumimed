@@ -137,6 +137,12 @@ textarea.fi{resize:vertical;min-height:80px}
 @keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
 
 /* CHIPS */
+.dp-bar{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.dp-title{font-size:19px;font-weight:800;color:var(--navy);margin:0}
+.dp-foot{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;padding:16px 18px;border-top:1px solid var(--border);background:var(--bg)}
+.dp-foot:empty{display:none}
+#screen-detail #modal-box.lg{max-width:900px}
+#screen-detail #modal-box.xl{max-width:1180px}
 .chip{display:inline-flex;align-items:center;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--border);cursor:pointer;background:#fff;color:var(--text2);transition:.12s}
 .chip:hover,.chip.active{border-color:var(--blue);background:var(--blue-lt);color:var(--blue)}
 
@@ -820,18 +826,22 @@ textarea.fi{resize:vertical;min-height:80px}
   </div>
 </div>
 
+<!-- ══ DETAIL PAGE (მოდალების ნაცვლად შიდა გვერდი) ══ -->
+<div class="screen" id="screen-detail">
+  <div class="dp-bar">
+    <button class="btn btn-n btn-sm" onclick="closeModal()">← უკან</button>
+    <h3 id="modal-title" class="dp-title">სათაური</h3>
+  </div>
+  <div class="card" id="modal-box">
+    <div class="cb" id="modal-body"></div>
+    <div class="dp-foot" id="modal-footer"></div>
+  </div>
+</div>
+
     </div><!-- /pc -->
   </div><!-- /main -->
 </div><!-- /app -->
 
-<!-- MODAL -->
-<div id="modal-overlay" onclick="if(event.target===this)closeModal()">
-  <div class="modal" id="modal-box">
-    <div class="mh"><h3 id="modal-title">სათაური</h3><button onclick="closeModal()" style="background:none;border:none;cursor:pointer;font-size:20px;color:var(--text3);line-height:1">×</button></div>
-    <div class="mc" id="modal-body"></div>
-    <div class="mf" id="modal-footer"></div>
-  </div>
-</div>
 
 <!-- TOASTS -->
 <div id="toasts"></div>
@@ -850,21 +860,48 @@ textarea.fi{resize:vertical;min-height:80px}
 function doLogin(){document.getElementById('login-screen').style.display='none';const a=document.getElementById('app');a.classList.add('visible');toast('კეთილი იყოს თქვენი მობრძანება, ადმინისტრატორო!','success')}
 function doLogout(){document.getElementById('app').classList.remove('visible');document.getElementById('login-screen').style.display='flex'}
 function go(id,el,title){
+  if(id!=='detail') pageStack=[];
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
   const s=document.getElementById('screen-'+id);if(s)s.classList.add('on');
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   if(el)el.classList.add('active');
   document.getElementById('page-title').textContent=title||id;
+  const pc=document.querySelector('.pc'); if(pc)pc.scrollTop=0;
+}
+// ── შიდა გვერდები მოდალების ნაცვლად ──
+let pageStack=[];
+function currentScreenId(){
+  const on=document.querySelector('.screen.on');
+  return on?on.id.replace('screen-',''):'home';
 }
 function showModal(title,body,footer,size){
+  const from=currentScreenId();
+  if(from!=='detail') pageStack.push({id:from,title:document.getElementById('page-title').textContent});
   document.getElementById('modal-title').textContent=title;
   document.getElementById('modal-body').innerHTML=body;
-  document.getElementById('modal-footer').innerHTML=footer||'<button class="btn btn-n" onclick="closeModal()">დახურვა</button>';
+  document.getElementById('modal-footer').innerHTML=footer||'';
   const mb=document.getElementById('modal-box');
-  mb.className='modal'+(size?' '+size:'');
-  document.getElementById('modal-overlay').classList.add('open');
+  mb.className='card'+(size?' '+size:'');
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('on'));
+  document.getElementById('screen-detail').classList.add('on');
+  document.getElementById('page-title').textContent=title;
+  document.querySelector('.pc').scrollTop=0;
 }
-function closeModal(){document.getElementById('modal-overlay').classList.remove('open')}
+function closeModal(){
+  const prev=pageStack.pop();
+  if(prev){
+    document.querySelectorAll('.screen').forEach(x=>x.classList.remove('on'));
+    const sc=document.getElementById('screen-'+prev.id);
+    if(sc)sc.classList.add('on');
+    document.getElementById('page-title').textContent=prev.title||prev.id;
+    document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+    const nav=Array.from(document.querySelectorAll('.ni')).find(n=>(n.getAttribute('onclick')||'').includes("go('"+prev.id+"'"));
+    if(nav)nav.classList.add('active');
+  } else {
+    go('home',document.querySelector('.ni'),'მთავარი');
+  }
+  const pc=document.querySelector('.pc'); if(pc)pc.scrollTop=0;
+}
 function toast(msg,type){
   const t=document.getElementById('toasts');
   const d=document.createElement('div');

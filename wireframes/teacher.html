@@ -103,6 +103,11 @@ tr:hover td{background:var(--bg)}
 .btn-red{background:var(--red);color:#fff}.btn-red:hover{opacity:.85}
 
 /* ── CHIP TAB ── */
+.dp-bar{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.dp-title{font-size:19px;font-weight:700;color:var(--navy);margin:0}
+.dp-foot{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:-4px}
+.dp-foot:empty{display:none}
+#screen-detail #modal-box.modal-lg{max-width:900px}
 .chip-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
 .chip{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);transition:all .15s}
 .chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
@@ -828,21 +833,22 @@ tr:hover td{background:var(--bg)}
   </div>
 </div>
 
+<!-- ══ DETAIL PAGE (მოდალების ნაცვლად შიდა გვერდი) ══ -->
+<div class="screen" id="screen-detail">
+  <div class="dp-bar">
+    <button class="btn btn-outline btn-sm" onclick="closeModal()">← უკან</button>
+    <h3 id="modal-title" class="dp-title"></h3>
+  </div>
+  <div class="card" id="modal-box">
+    <div id="modal-body"></div>
+  </div>
+  <div class="dp-foot" id="modal-foot"></div>
+</div>
+
     </div><!-- /page-content -->
   </div><!-- /main -->
 </div><!-- /app -->
 
-<!-- ══ MODAL ══ -->
-<div id="modal-overlay">
-  <div class="modal" id="modal-box">
-    <div class="modal-head">
-      <h3 id="modal-title"></h3>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-body" id="modal-body"></div>
-    <div class="modal-foot" id="modal-foot"></div>
-  </div>
-</div>
 
 <!-- ══ TOASTS ══ -->
 <div id="toasts"></div>
@@ -927,16 +933,40 @@ const INSTRUMENT_STATUS_LBL={draft:['მონახაზი','badge-navy'],sub
 const romanYear=n=>['—','I','II','III','IV','V','VI'][n]||n;
 
 // ── CORE UI ──
+// ── შიდა გვერდები მოდალების ნაცვლად ──
+let pageStack=[]
+function currentScreenId(){
+  const on=document.querySelector('.screen.on')
+  return on?on.id.replace('screen-',''):'home'
+}
 function showModal(title, body, foot, large){
+  const from=currentScreenId()
+  if(from!=='detail') pageStack.push({id:from,title:document.getElementById('topbar-title').textContent})
   document.getElementById('modal-title').innerHTML = title
   document.getElementById('modal-body').innerHTML = body
-  document.getElementById('modal-foot').innerHTML = foot||'<button class="btn btn-ghost" onclick="closeModal()">დახურვა</button>'
+  document.getElementById('modal-foot').innerHTML = foot||''
   const box = document.getElementById('modal-box')
-  box.className = large ? 'modal modal-lg' : 'modal'
-  document.getElementById('modal-overlay').classList.add('open')
+  box.className = large ? 'card modal-lg' : 'card'
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('on'))
+  document.getElementById('screen-detail').classList.add('on')
+  document.getElementById('topbar-title').textContent = String(title).replace(/<[^>]*>/g,'')
+  const pc=document.querySelector('.page-content'); if(pc)pc.scrollTop=0
 }
-function closeModal(){document.getElementById('modal-overlay').classList.remove('open')}
-document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal()})
+function closeModal(){
+  const prev=pageStack.pop()
+  if(prev){
+    document.querySelectorAll('.screen').forEach(x=>x.classList.remove('on'))
+    const sc=document.getElementById('screen-'+prev.id)
+    if(sc)sc.classList.add('on')
+    document.getElementById('topbar-title').textContent = prev.title||prev.id
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'))
+    const nav=Array.from(document.querySelectorAll('.nav-item')).find(n=>(n.getAttribute('onclick')||'').includes("go('"+prev.id+"'"))
+    if(nav)nav.classList.add('active')
+  } else {
+    go('home',document.querySelector('.nav-item'),'მთავარი')
+  }
+  const pc=document.querySelector('.page-content'); if(pc)pc.scrollTop=0
+}
 
 function toast(msg, type){
   const t = document.createElement('div')
@@ -948,6 +978,7 @@ function toast(msg, type){
 }
 
 function go(id, el, title){
+  if(id!=='detail') pageStack=[]
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'))
   const s = document.getElementById('screen-'+id)
   if(s) s.classList.add('on')
@@ -959,6 +990,7 @@ function go(id, el, title){
   if(id==='grades'){ buildOutcomes(); buildOutcomeList() }
   if(id==='modules'){ renderMyModules(); buildCalendarPlans(); buildRegisters() }
   if(id==='schedule') buildScheduleWeek()
+  const pc=document.querySelector('.page-content'); if(pc)pc.scrollTop=0
 }
 
 // ── AUTH ──
