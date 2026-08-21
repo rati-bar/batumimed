@@ -409,6 +409,10 @@ textarea.fi{resize:vertical;min-height:80px}
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <input class="fi" style="width:240px" placeholder="🔍  სახელი, ID, ელ. ფოსტა..." oninput="filterStudents(this.value)" id="stu-search">
+      <select class="fi" style="width:auto" onchange="filterStudentBranch(this.value)" id="stu-branch-filter">
+        <option value="">ყველა ფილიალი</option>
+        <option value="BR-1">მთავარი კამპუსი</option><option value="BR-2">სტომ. პოლიკლინიკა</option><option value="BR-3">სიმულაციური ცენტრი</option>
+      </select>
       <select class="fi" style="width:auto" onchange="filterStudentProgram(this.value)" id="stu-prog-filter">
         <option value="">ყველა პროგრამა</option>
         <option value="PRG-1">საექთნო განათლება</option><option value="PRG-2">ექთნის თანაშემწე</option><option value="PRG-3">ფარმაცია (სააფთიაქო)</option><option value="PRG-4">კბილის სატექნიკო საქმე</option>
@@ -465,10 +469,13 @@ textarea.fi{resize:vertical;min-height:80px}
 
 <!-- ══ MODULES ══ -->
 <div class="screen" id="screen-modules">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-    <div style="font-size:14px;color:var(--text2)">სასწავლო მოდულები (ინსტანცია + კალენდარული გეგმა) · 2025–2026 სასწავლო წელი</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+    <div id="mod-crumb" style="font-size:13px;color:var(--text2)"></div>
     <button class="btn btn-b" onclick="addModuleModal()">➕ შაბლონიდან ინსტანცირება</button>
   </div>
+  <div id="mod-step-intake"></div>
+  <div id="mod-step-prog" style="display:none"></div>
+  <div id="mod-step-list" style="display:none">
   <div class="card">
     <div class="tw">
       <table id="modules-table">
@@ -476,6 +483,7 @@ textarea.fi{resize:vertical;min-height:80px}
         <tbody id="modules-tbody"></tbody>
       </table>
     </div>
+  </div>
   </div>
 </div>
 
@@ -487,6 +495,16 @@ textarea.fi{resize:vertical;min-height:80px}
       <select class="fi" style="width:auto" id="sched-group"><option value="">ყველა ჯგუფი</option><option>ჯგუფი 101</option><option>ჯგუფი 102</option><option>ჯგუფი 201</option><option>ჯგუფი 301</option></select>
     </div>
     <button class="btn btn-b" onclick="addLessonModal()">➕ მეცადინეობის დამატება</button>
+  </div>
+  <div class="g2" style="align-items:start">
+    <div class="card">
+      <div class="ch"><div class="ct">დაუგეგმავი მეცადინეობა</div><span style="font-size:11px;color:var(--text3)">გადაათრიეთ ბადეში</span></div>
+      <div class="cb" id="lesson-palette" style="display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">ბოლო დაგეგმილი</div></div>
+      <div class="cb"><div class="tw"><table><thead><tr><th>მეცადინეობა</th><th>ჯგუფი</th><th>მასწავლებელი</th><th>სივრცე</th></tr></thead><tbody id="planned-tbody"></tbody></table></div></div>
+    </div>
   </div>
   <div class="card">
     <div class="tw"><table id="schedule-table">
@@ -753,6 +771,10 @@ textarea.fi{resize:vertical;min-height:80px}
     <div class="ch"><div class="ct">სასწავლო წელი</div><span style="font-size:11px;color:var(--text3)">დამტკიცებულია დირექტორის ბრძანებით · სემესტრები არ არსებობს</span></div>
     <div class="tw"><table><thead><tr><th>დასახელება</th><th>დაწყება</th><th>დასრულება</th><th>არდადეგები</th><th>ბრძანება</th></tr></thead><tbody id="ref-years"></tbody></table></div>
   </div>
+  <div class="card">
+    <div class="ch"><div class="ct">ფილიალი / ლოკაცია</div><button class="btn btn-b btn-sm" onclick="addBranchModal()">➕ ფილიალის დამატება</button></div>
+    <div class="tw"><table><thead><tr><th>ID</th><th>დასახელება</th><th>მისამართი</th><th>სტატუსი</th><th>მოქმედება</th></tr></thead><tbody id="ref-branches"></tbody></table></div>
+  </div>
   <div class="g2">
     <div class="card">
       <div class="ch"><div class="ct">აუდიტორია / სივრცე</div></div>
@@ -768,15 +790,18 @@ textarea.fi{resize:vertical;min-height:80px}
 <!-- ══ MODULE TEMPLATES (§2.5) ══ -->
 <div class="screen" id="screen-templates">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-    <div style="font-size:13px;color:var(--text2)">მოდულის შაბლონი — <strong>ეროვნული სტანდარტის მოდული</strong> სარეგისტრაციო ნომრით. სხეული = სწავლის შედეგები. შაბლონი უკავშირდება რამდენიმე პროგრამას (M:N).</div>
-    <button class="btn btn-b" onclick="toast('შაბლონი რეგისტრირდება დირექტორის ბრძანებით','info')">➕ შაბლონის რეგისტრაცია</button>
+    <div id="tpl-crumb" style="font-size:13px;color:var(--text2)">მოდულის შაბლონი — <strong>ეროვნული სტანდარტის მოდული</strong> სარეგისტრაციო ნომრით. აირჩიეთ პროგრამა.</div>
+    <button class="btn btn-b" onclick="addTemplateModal()">➕ შაბლონის რეგისტრაცია</button>
   </div>
+  <div id="tpl-step-prog"></div>
+  <div id="tpl-step-list" style="display:none">
   <div class="card">
     <div class="ch"><div class="ct">მოდულის შაბლონები</div><button class="btn btn-n btn-sm" onclick="toast('შაბლონები Excel-ში ჩამოიტვირთა ✓','success')">⬇ Excel</button></div>
     <div class="tw"><table>
       <thead><tr><th>სარეგ. №</th><th>მოდული</th><th>სახეობა</th><th>კრედ.</th><th>სწ. შედეგი</th><th>საკ./დამ./შეფ.</th><th>წინაპირობა</th><th>პროგრამები</th><th>რევიზიები</th><th></th></tr></thead>
       <tbody id="templates-tbody"></tbody>
     </table></div>
+  </div>
   </div>
 </div>
 
@@ -876,6 +901,9 @@ function go(id,el,title){
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   if(el)el.classList.add('active');
   document.getElementById('page-title').textContent=title||id;
+  if(id==='modules')renderModuleDrill();
+  if(id==='templates')renderTemplateDrill();
+  if(id==='schedule'){renderPalette();renderPlanned();}
   const pc=document.querySelector('.pc'); if(pc)pc.scrollTop=0;
 }
 // ── შიდა გვერდები მოდალების ნაცვლად ──
@@ -1062,6 +1090,11 @@ const slotTemplates=[
   {id:'SL-6',ordinal:'VI',startsAt:'14:45',endsAt:'15:25'},
   {id:'SL-7',ordinal:'VII',startsAt:'15:30',endsAt:'16:10'},
 ];
+const branchesData=[
+  {id:'BR-1',name:'მთავარი კამპუსი — ტბეთის ქ. 4',address:'ბათუმი, ტბეთის ქ. 4',active:true},
+  {id:'BR-2',name:'სტომატოლოგიური პოლიკლინიკა',address:'ბათუმი, ტბეთის ქ. 4 (კორპ. B)',active:true},
+  {id:'BR-3',name:'სიმულაციური ცენტრი',address:'ბათუმი, ტბეთის ქ. 4 (III სართ.)',active:true},
+];
 const partnersData=[
   {id:'PO-1',name:'ბათუმის რესპუბლიკური საავადმყოფო',agreementNo:'თ-14/2025',agreementDate:'10.09.2025',kind:'dual',active:true},
   {id:'PO-2',name:'აჭარის სამედიცინო ცენტრი',agreementNo:'თ-19/2025',agreementDate:'22.09.2025',kind:'cooperative',active:true},
@@ -1070,26 +1103,26 @@ const partnersData=[
 // ── PEOPLE ──
 // სტატუსი (§1.13): applicant | active | suspended | terminated — მხოლოდ ბრძანებით
 const students=[
-  {id:'BMA-2401',name:'ნინო მამულაძე',group:'ჯგუფი 101',programId:'PRG-1',intakeId:'INT-2',studyYear:2,balance:0,status:'active',email:'n.mamuladze@student.bmeda.edu.ge',phone:'+995 555 111 001',enrolOrderId:'ORD-4',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2402',name:'გიორგი ბერიძე',group:'ჯგუფი 101',programId:'PRG-1',intakeId:'INT-2',studyYear:2,balance:3100,status:'active',email:'g.beridze@student.bmeda.edu.ge',phone:'+995 555 111 002',enrolOrderId:'ORD-4',hasSen:false,socialStatus:['socially_vulnerable'],legalRepName:'ლალი ბერიძე',legalRepRelation:'დედა',legalRepPhone:'+995 555 911 002'},
-  {id:'BMA-2403',name:'მარიამ ჩხეიძე',group:'ჯგუფი 102',programId:'PRG-1',intakeId:'INT-2',studyYear:2,balance:0,status:'active',email:'m.chkheidze@student.bmeda.edu.ge',phone:'+995 555 111 003',enrolOrderId:'ORD-4',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2404',name:'ლუკა კვარაცხელია',group:'ჯგუფი 102',programId:'PRG-3',intakeId:'INT-2',studyYear:1,balance:0,status:'active',email:'l.kvaratskhelia@student.bmeda.edu.ge',phone:'+995 555 111 004',enrolOrderId:'ORD-4',hasSen:true,socialStatus:['sen'],legalRepName:'ზაზა კვარაცხელია',legalRepRelation:'მამა',legalRepPhone:'+995 555 911 004'},
-  {id:'BMA-2301',name:'ანა გელაშვილი',group:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,balance:0,status:'active',email:'a.gelashvili@student.bmeda.edu.ge',phone:'+995 555 222 001',enrolOrderId:'ORD-4',hasSen:false,socialStatus:['state_grant'],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2302',name:'დავით ხაჭაპურიძე',group:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,balance:6200,status:'terminated',email:'d.khachapuridze@student.bmeda.edu.ge',phone:'+995 555 222 002',enrolOrderId:'ORD-4',terminatedOn:'10.03.2026',terminationReason:'financial_debt',terminationOrderId:'ORD-8',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2303',name:'სოფო ნიჟარაძე',group:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,balance:0,status:'active',email:'s.nizharadze@student.bmeda.edu.ge',phone:'+995 555 222 003',enrolOrderId:'ORD-4',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2201',name:'ვახო ლომიძე',group:'ჯგუფი 301',programId:'PRG-3',intakeId:'INT-3',studyYear:2,balance:1550,status:'suspended',email:'v.lomidze@student.bmeda.edu.ge',phone:'+995 555 333 001',enrolOrderId:'ORD-4',suspendedOn:'12.02.2026',suspensionReason:'own_application',suspensionExpiresOn:'12.02.2031',suspensionOrderId:'ORD-6',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2202',name:'ეკა თავდგირიძე',group:'ჯგუფი 301',programId:'PRG-4',intakeId:'INT-3',studyYear:2,balance:0,status:'active',email:'e.tavdgiridze@student.bmeda.edu.ge',phone:'+995 555 333 002',enrolOrderId:'ORD-4',hasSen:false,socialStatus:['idp'],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2101',name:'ბექა ჩიტიძე',group:'ჯგუფი 401',programId:'PRG-2',intakeId:'INT-3',studyYear:2,balance:0,status:'active',email:'b.chitidze@student.bmeda.edu.ge',phone:'+995 555 444 001',enrolOrderId:'ORD-4',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2601',name:'თეონა აბაშიძე',group:'—',programId:'PRG-1',intakeId:'INT-1',studyYear:1,balance:0,status:'applicant',email:'t.abashidze@student.bmeda.edu.ge',phone:'+995 555 555 011',appliedOn:'02.02.2026',hasSen:false,socialStatus:[],legalRepName:'ნათია აბაშიძე',legalRepRelation:'დედა',legalRepPhone:'+995 555 955 011'},
+  {id:'BMA-2401',branchId:'BR-1',name:'ნინო მამულაძე',group:'ჯგუფი 101',programId:'PRG-1',intakeId:'INT-2',studyYear:2,balance:0,status:'active',email:'n.mamuladze@student.bmeda.edu.ge',phone:'+995 555 111 001',enrolOrderId:'ORD-4',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {id:'BMA-2402',branchId:'BR-1',name:'გიორგი ბერიძე',group:'ჯგუფი 101',programId:'PRG-1',intakeId:'INT-2',studyYear:2,balance:3100,status:'active',email:'g.beridze@student.bmeda.edu.ge',phone:'+995 555 111 002',enrolOrderId:'ORD-4',hasSen:false,socialStatus:['socially_vulnerable'],legalRepName:'ლალი ბერიძე',legalRepRelation:'დედა',legalRepPhone:'+995 555 911 002'},
+  {id:'BMA-2403',branchId:'BR-1',name:'მარიამ ჩხეიძე',group:'ჯგუფი 102',programId:'PRG-1',intakeId:'INT-2',studyYear:2,balance:0,status:'active',email:'m.chkheidze@student.bmeda.edu.ge',phone:'+995 555 111 003',enrolOrderId:'ORD-4',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {id:'BMA-2404',branchId:'BR-1',name:'ლუკა კვარაცხელია',group:'ჯგუფი 102',programId:'PRG-3',intakeId:'INT-2',studyYear:1,balance:0,status:'active',email:'l.kvaratskhelia@student.bmeda.edu.ge',phone:'+995 555 111 004',enrolOrderId:'ORD-4',hasSen:true,socialStatus:['sen'],legalRepName:'ზაზა კვარაცხელია',legalRepRelation:'მამა',legalRepPhone:'+995 555 911 004'},
+  {id:'BMA-2301',branchId:'BR-1',name:'ანა გელაშვილი',group:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,balance:0,status:'active',email:'a.gelashvili@student.bmeda.edu.ge',phone:'+995 555 222 001',enrolOrderId:'ORD-4',hasSen:false,socialStatus:['state_grant'],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {id:'BMA-2302',branchId:'BR-1',name:'დავით ხაჭაპურიძე',group:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,balance:6200,status:'terminated',email:'d.khachapuridze@student.bmeda.edu.ge',phone:'+995 555 222 002',enrolOrderId:'ORD-4',terminatedOn:'10.03.2026',terminationReason:'financial_debt',terminationOrderId:'ORD-8',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {id:'BMA-2303',branchId:'BR-1',name:'სოფო ნიჟარაძე',group:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,balance:0,status:'active',email:'s.nizharadze@student.bmeda.edu.ge',phone:'+995 555 222 003',enrolOrderId:'ORD-4',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {id:'BMA-2201',branchId:'BR-1',name:'ვახო ლომიძე',group:'ჯგუფი 301',programId:'PRG-3',intakeId:'INT-3',studyYear:2,balance:1550,status:'suspended',email:'v.lomidze@student.bmeda.edu.ge',phone:'+995 555 333 001',enrolOrderId:'ORD-4',suspendedOn:'12.02.2026',suspensionReason:'own_application',suspensionExpiresOn:'12.02.2031',suspensionOrderId:'ORD-6',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {id:'BMA-2202',branchId:'BR-1',name:'ეკა თავდგირიძე',group:'ჯგუფი 301',programId:'PRG-4',intakeId:'INT-3',studyYear:2,balance:0,status:'active',email:'e.tavdgiridze@student.bmeda.edu.ge',phone:'+995 555 333 002',enrolOrderId:'ORD-4',hasSen:false,socialStatus:['idp'],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {id:'BMA-2101',branchId:'BR-1',name:'ბექა ჩიტიძე',group:'ჯგუფი 401',programId:'PRG-2',intakeId:'INT-3',studyYear:2,balance:0,status:'active',email:'b.chitidze@student.bmeda.edu.ge',phone:'+995 555 444 001',enrolOrderId:'ORD-4',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {id:'BMA-2601',branchId:'BR-1',name:'თეონა აბაშიძე',group:'—',programId:'PRG-1',intakeId:'INT-1',studyYear:1,balance:0,status:'applicant',email:'t.abashidze@student.bmeda.edu.ge',phone:'+995 555 555 011',appliedOn:'02.02.2026',hasSen:false,socialStatus:[],legalRepName:'ნათია აბაშიძე',legalRepRelation:'დედა',legalRepPhone:'+995 555 955 011'},
 ];
 // implementer_type (§0.8): vocational_teacher | instructor | clinical_teaching_person | invited_specialist | lab_assistant
 const teachers=[
-  {id:'T-001',name:'ნინო კაპანაძე',implementerType:'vocational_teacher',spec:'ანატომია',modules:['ბიოქიმია','ნეირო-ანატომია'],email:'n.kapanadze@bmeda.edu.ge',phone:'+995 555 001 001',workStartedOn:'01.09.2016',appointOrderId:'ORD-4',status:'active'},
-  {id:'T-002',name:'გიორგი ბახტაძე',implementerType:'vocational_teacher',spec:'ფიზიოლოგია',modules:['ფიზიოლოგია'],email:'g.bakhtadze@bmeda.edu.ge',phone:'+995 555 001 002',workStartedOn:'15.09.2018',appointOrderId:'ORD-4',status:'active'},
-  {id:'T-003',name:'მარინე ლომთაძე',implementerType:'clinical_teaching_person',spec:'ფარმაკოლოგია',modules:['ფარმაკოლოგია'],email:'m.lomtadze@bmeda.edu.ge',phone:'+995 555 001 003',workStartedOn:'01.02.2020',appointOrderId:'ORD-4',status:'active'},
-  {id:'T-004',name:'ზვიად ქობულია',implementerType:'invited_specialist',spec:'შინმოვლა',modules:['შინმოვლა','კლინიკური პრაქტიკა'],email:'z.kobuliya@bmeda.edu.ge',phone:'+995 555 001 004',workStartedOn:'10.09.2021',appointOrderId:'ORD-4',status:'active'},
-  {id:'T-005',name:'ნანა ჯაფარიძე',implementerType:'lab_assistant',spec:'მიკრობიოლოგია',modules:['მიკრობიოლოგია'],email:'n.japaridze@bmeda.edu.ge',phone:'+995 555 001 005',workStartedOn:'01.09.2022',appointOrderId:'ORD-4',status:'inactive'},
-  {id:'T-006',name:'ლია გოგიაშვილი',implementerType:'instructor',spec:'პრაქტიკული სწავლება',modules:['შინმოვლა'],email:'l.gogiashvili@bmeda.edu.ge',phone:'+995 555 001 006',workStartedOn:'05.09.2023',appointOrderId:'ORD-4',status:'active'},
+  {id:'T-001',branchId:'BR-1',name:'ნინო კაპანაძე',implementerType:'vocational_teacher',spec:'ანატომია',modules:['ბიოქიმია','ნეირო-ანატომია'],email:'n.kapanadze@bmeda.edu.ge',phone:'+995 555 001 001',workStartedOn:'01.09.2016',qualification:'ბიოლოგიის მეცნიერებათა მაგისტრი, ბათუმის შოთა რუსთაველის სახელმწიფო უნივერსიტეტი (2014). ბიოქიმიის სწავლების 10-წლიანი გამოცდილება.',appointOrderId:'ORD-4',status:'active'},
+  {id:'T-002',branchId:'BR-1',name:'გიორგი ბახტაძე',implementerType:'vocational_teacher',spec:'ფიზიოლოგია',modules:['ფიზიოლოგია'],email:'g.bakhtadze@bmeda.edu.ge',phone:'+995 555 001 002',workStartedOn:'15.09.2018',qualification:'მედიცინის დოქტორი, თბილისის სახელმწიფო სამედიცინო უნივერსიტეტი (2012).',appointOrderId:'ORD-4',status:'active'},
+  {id:'T-003',branchId:'BR-1',name:'მარინე ლომთაძე',implementerType:'clinical_teaching_person',spec:'ფარმაკოლოგია',modules:['ფარმაკოლოგია'],email:'m.lomtadze@bmeda.edu.ge',phone:'+995 555 001 003',workStartedOn:'01.02.2020',qualification:'ფარმაციის მაგისტრი; კლინიკური ფარმაკოლოგიის სერტიფიკატი (2019).',appointOrderId:'ORD-4',status:'active'},
+  {id:'T-004',branchId:'BR-1',name:'ზვიად ქობულია',implementerType:'invited_specialist',spec:'შინმოვლა',modules:['შინმოვლა','კლინიკური პრაქტიკა'],email:'z.kobuliya@bmeda.edu.ge',phone:'+995 555 001 004',workStartedOn:'10.09.2021',qualification:'პრაქტიკოსი ექთანი; შინმოვლის ინსტრუქტორის სერტიფიკატი.',appointOrderId:'ORD-4',status:'active'},
+  {id:'T-005',branchId:'BR-1',name:'ნანა ჯაფარიძე',implementerType:'lab_assistant',spec:'მიკრობიოლოგია',modules:['მიკრობიოლოგია'],email:'n.japaridze@bmeda.edu.ge',phone:'+995 555 001 005',workStartedOn:'01.09.2022',qualification:'ლაბორატორიული დიაგნოსტიკის სპეციალისტი.',appointOrderId:'ORD-4',status:'inactive'},
+  {id:'T-006',branchId:'BR-1',name:'ლია გოგიაშვილი',implementerType:'instructor',spec:'პრაქტიკული სწავლება',modules:['შინმოვლა'],email:'l.gogiashvili@bmeda.edu.ge',phone:'+995 555 001 006',workStartedOn:'05.09.2023',qualification:'პრაქტიკოსი ექთანი; სიმულაციური სწავლების ინსტრუქტორი.',appointOrderId:'ORD-4',status:'active'},
 ];
 // მასწავლებლის გაცდენა/დაგვიანება (§2.3, 34.3.4–34.3.6)
 const teacherAbsences=[
@@ -1103,12 +1136,12 @@ const admins=[
 ];
 // ── GROUPS (§1.9) — identity = group number + Program + Intake ──
 const groupsData=[
-  {id:'GRP-101',name:'ჯგუფი 101',programId:'PRG-1',intakeId:'INT-2',studyYear:2,students:24,active:true},
-  {id:'GRP-102',name:'ჯგუფი 102',programId:'PRG-1',intakeId:'INT-2',studyYear:2,students:22,active:true},
-  {id:'GRP-201',name:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,students:26,active:true},
-  {id:'GRP-202',name:'ჯგუფი 202',programId:'PRG-2',intakeId:'INT-3',studyYear:2,students:23,active:true},
-  {id:'GRP-301',name:'ჯგუფი 301',programId:'PRG-3',intakeId:'INT-3',studyYear:2,students:20,active:true},
-  {id:'GRP-401',name:'ჯგუფი 401',programId:'PRG-4',intakeId:'INT-3',studyYear:2,students:18,active:true},
+  {id:'GRP-101',branchId:'BR-1',name:'ჯგუფი 101',programId:'PRG-1',intakeId:'INT-2',studyYear:2,students:24,active:true},
+  {id:'GRP-102',branchId:'BR-1',name:'ჯგუფი 102',programId:'PRG-1',intakeId:'INT-2',studyYear:2,students:22,active:true},
+  {id:'GRP-201',branchId:'BR-1',name:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,students:26,active:true},
+  {id:'GRP-202',branchId:'BR-1',name:'ჯგუფი 202',programId:'PRG-2',intakeId:'INT-3',studyYear:2,students:23,active:true},
+  {id:'GRP-301',branchId:'BR-1',name:'ჯგუფი 301',programId:'PRG-3',intakeId:'INT-3',studyYear:2,students:20,active:true},
+  {id:'GRP-401',branchId:'BR-1',name:'ჯგუფი 401',programId:'PRG-4',intakeId:'INT-3',studyYear:2,students:18,active:true},
 ];
 // ── MODULE TEMPLATES (§2.5) — national standard masters ──
 const moduleTemplates=[
@@ -1128,14 +1161,74 @@ const templateOutcomes=[
   {id:'TO-6',templateId:'MT-1',no:6,title:'ატარებს ბიოქიმიურ ანალიზს ლაბორატორიაში',direction:'practical_task_observed',contactH:12,selfH:2,assessH:2},
   {id:'TO-7',templateId:'MT-1',no:7,title:'ინტერპრეტირებს ბიოქიმიური კვლევის შედეგებს',direction:'practical_task',contactH:8,selfH:2,assessH:2},
 ];
+// ── მეცადინეობა შაბლონში (§1.4–1.5) — სლოტების რაოდენობა = პროგრამის ხანგრძლივობა ──
+const LECTURE_KIND_LBL={theory:'თეორია',practice:'პრაქტიკა',simulation:'სიმულაცია',work_based:'სამუშაოზე დაფუძნებული',consultation:'კონსულტაცია'};
+const MATERIAL_LBL={module_description:'მოდულის აღწერა',calendar_plan:'კალენდარული გეგმა',assessment_instrument:'შეფასების ინსტრუმენტი',syllabus:'სილაბუსი',lesson_plan:'მეცადინეობის გეგმა',homework:'დამოუკიდებელი დავალება',exam:'შეფასების მასალა',presentation:'პრეზენტაცია',video:'ვიდეო',link:'ბმული',learning_resource:'სასწავლო რესურსი'};
+const templateLectures=[
+  {id:'TL-1',templateId:'MT-1',slot:1,seq:1,title:'შესავალი ბიოქიმიაში — უჯრედის ქიმიური შემადგენლობა',kind:'theory',outcomeNo:1,durationMin:40},
+  {id:'TL-2',templateId:'MT-1',slot:1,seq:2,title:'წყალი, ელექტროლიტები, pH და ბუფერული სისტემები',kind:'theory',outcomeNo:1,durationMin:40},
+  {id:'TL-3',templateId:'MT-1',slot:1,seq:3,title:'ცილების სტრუქტურა და კლასიფიკაცია',kind:'theory',outcomeNo:2,durationMin:40},
+  {id:'TL-4',templateId:'MT-1',slot:1,seq:4,title:'ამინომჟავები — თვისებები და ფუნქციები',kind:'theory',outcomeNo:2,durationMin:40},
+  {id:'TL-5',templateId:'MT-1',slot:2,seq:1,title:'ნახშირწყლების მეტაბოლიზმი — გლიკოლიზი',kind:'theory',outcomeNo:3,durationMin:40},
+  {id:'TL-6',templateId:'MT-1',slot:2,seq:2,title:'ლიპიდების მეტაბოლიზმი',kind:'theory',outcomeNo:4,durationMin:40},
+  {id:'TL-7',templateId:'MT-1',slot:2,seq:3,title:'ფერმენტები — მოქმედების მექანიზმი',kind:'theory',outcomeNo:5,durationMin:40},
+  {id:'TL-8',templateId:'MT-1',slot:2,seq:4,title:'ლაბორატორიული სამუშაო — ბიოქიმიური ანალიზი',kind:'practice',outcomeNo:6,durationMin:80},
+  {id:'TL-9',templateId:'MT-1',slot:3,seq:1,title:'ბიოქიმიური კვლევის შედეგების ინტერპრეტაცია',kind:'practice',outcomeNo:7,durationMin:40},
+  {id:'TL-10',templateId:'MT-2',slot:1,seq:1,title:'შინმოვლის საფუძვლები და ეთიკა',kind:'theory',outcomeNo:1,durationMin:40},
+  {id:'TL-11',templateId:'MT-2',slot:1,seq:2,title:'პაციენტის მოვლა — პრაქტიკული უნარები',kind:'simulation',outcomeNo:2,durationMin:80},
+  {id:'TL-12',templateId:'MT-2',slot:2,seq:1,title:'სამუშაო გარემოში პრაქტიკა',kind:'work_based',outcomeNo:3,durationMin:120},
+  {id:'TL-13',templateId:'MT-3',slot:1,seq:1,title:'ფარმაკოკინეტიკა და ფარმაკოდინამიკა',kind:'theory',outcomeNo:1,durationMin:40},
+  {id:'TL-14',templateId:'MT-3',slot:1,seq:2,title:'ანტიბიოტიკების ჯგუფები',kind:'theory',outcomeNo:2,durationMin:40},
+  {id:'TL-15',templateId:'MT-4',slot:1,seq:1,title:'კლინიკური პრაქტიკა — შესავალი',kind:'work_based',outcomeNo:1,durationMin:120},
+  {id:'TL-16',templateId:'MT-5',slot:1,seq:1,title:'მიკროორგანიზმების აგებულება',kind:'theory',outcomeNo:1,durationMin:40},
+];
+// ── მეცადინეობა მოდულის ინსტანციაში — ჩატარების აღრიცხვა (§1.5, [სპწ] 34.3.3) ──
+const moduleLectures=[
+  {id:'ML-1',moduleCode:'MOD-101',templateLectureId:'TL-1',slot:1,seq:1,title:'შესავალი ბიოქიმიაში — უჯრედის ქიმიური შემადგენლობა',kind:'theory',outcomeNo:1,durationMin:40,conducted:true,conductedOn:'12.02.2026',note:''},
+  {id:'ML-2',moduleCode:'MOD-101',templateLectureId:'TL-2',slot:1,seq:2,title:'წყალი, ელექტროლიტები, pH და ბუფერული სისტემები',kind:'theory',outcomeNo:1,durationMin:40,conducted:true,conductedOn:'19.02.2026',note:''},
+  {id:'ML-3',moduleCode:'MOD-101',templateLectureId:'TL-3',slot:1,seq:3,title:'ცილების სტრუქტურა და კლასიფიკაცია',kind:'theory',outcomeNo:2,durationMin:40,conducted:true,conductedOn:'26.02.2026',note:''},
+  {id:'ML-4',moduleCode:'MOD-101',templateLectureId:'TL-4',slot:1,seq:4,title:'ამინომჟავები — თვისებები და ფუნქციები',kind:'theory',outcomeNo:2,durationMin:40,conducted:true,conductedOn:'05.03.2026',note:''},
+  {id:'ML-5',moduleCode:'MOD-101',templateLectureId:'TL-5',slot:2,seq:1,title:'ნახშირწყლების მეტაბოლიზმი — გლიკოლიზი',kind:'theory',outcomeNo:3,durationMin:40,conducted:true,conductedOn:'12.03.2026',note:''},
+  {id:'ML-6',moduleCode:'MOD-101',templateLectureId:'TL-6',slot:2,seq:2,title:'ლიპიდების მეტაბოლიზმი',kind:'theory',outcomeNo:4,durationMin:40,conducted:true,conductedOn:'19.03.2026',note:''},
+  {id:'ML-7',moduleCode:'MOD-101',templateLectureId:'TL-7',slot:2,seq:3,title:'ფერმენტები — მოქმედების მექანიზმი',kind:'theory',outcomeNo:5,durationMin:40,conducted:false,conductedOn:null,note:'გადატანილია მასწავლებლის წინასწარი შეტყობინებით'},
+  {id:'ML-8',moduleCode:'MOD-101',templateLectureId:'TL-8',slot:2,seq:4,title:'ლაბორატორიული სამუშაო — ბიოქიმიური ანალიზი',kind:'practice',outcomeNo:6,durationMin:80,conducted:false,conductedOn:null,note:''},
+  {id:'ML-9',moduleCode:'MOD-101',templateLectureId:'TL-9',slot:3,seq:1,title:'ბიოქიმიური კვლევის შედეგების ინტერპრეტაცია',kind:'practice',outcomeNo:7,durationMin:40,conducted:false,conductedOn:null,note:''},
+  {id:'ML-10',moduleCode:'MOD-102',templateLectureId:'TL-10',slot:1,seq:1,title:'შინმოვლის საფუძვლები და ეთიკა',kind:'theory',outcomeNo:1,durationMin:40,conducted:true,conductedOn:'17.02.2026',note:''},
+  {id:'ML-11',moduleCode:'MOD-102',templateLectureId:'TL-11',slot:1,seq:2,title:'პაციენტის მოვლა — პრაქტიკული უნარები',kind:'simulation',outcomeNo:2,durationMin:80,conducted:true,conductedOn:'24.02.2026',note:''},
+  {id:'ML-12',moduleCode:'MOD-102',templateLectureId:'TL-12',slot:2,seq:1,title:'სამუშაო გარემოში პრაქტიკა',kind:'work_based',outcomeNo:3,durationMin:120,conducted:false,conductedOn:null,note:''},
+  {id:'ML-13',moduleCode:'MOD-103',templateLectureId:'TL-13',slot:1,seq:1,title:'ფარმაკოკინეტიკა და ფარმაკოდინამიკა',kind:'theory',outcomeNo:1,durationMin:40,conducted:true,conductedOn:'03.03.2026',note:''},
+  {id:'ML-14',moduleCode:'MOD-103',templateLectureId:'TL-14',slot:1,seq:2,title:'ანტიბიოტიკების ჯგუფები',kind:'theory',outcomeNo:2,durationMin:40,conducted:false,conductedOn:null,note:''},
+  {id:'ML-15',moduleCode:'MOD-104',templateLectureId:'TL-15',slot:1,seq:1,title:'კლინიკური პრაქტიკა — შესავალი',kind:'work_based',outcomeNo:1,durationMin:120,conducted:true,conductedOn:'04.02.2026',note:''},
+  {id:'ML-16',moduleCode:'MOD-105',templateLectureId:'TL-16',slot:1,seq:1,title:'მიკროორგანიზმების აგებულება',kind:'theory',outcomeNo:1,durationMin:40,conducted:true,conductedOn:'12.03.2026',note:''},
+  {id:'ML-17',moduleCode:'MOD-106',templateLectureId:'TL-1',slot:1,seq:1,title:'შესავალი ბიოქიმიაში — უჯრედის ქიმიური შემადგენლობა',kind:'theory',outcomeNo:1,durationMin:40,conducted:false,conductedOn:null,note:''},
+];
+// ── სასწავლო მასალა მეცადინეობაზე (§1.6) — ვიდეო მხოლოდ ჩამოტვირთვადი ──
+const lectureMaterials=[
+  {id:'LM-1',lectureId:'ML-1',scope:'module',type:'syllabus',title:'ბიოქიმიის სილაბუსი 2026',fileUrl:'/files/biochem-syllabus.pdf',link:'',downloadable:true},
+  {id:'LM-2',lectureId:'ML-1',scope:'module',type:'presentation',title:'უჯრედის ქიმიური შემადგენლობა (სლაიდები)',fileUrl:'/files/cell-chem.pptx',link:'',downloadable:true},
+  {id:'LM-3',lectureId:'ML-1',scope:'module',type:'video',title:'ვიდეო ლექცია — უჯრედის ქიმია',fileUrl:'/files/cell-chem.mp4',link:'',downloadable:true},
+  {id:'LM-4',lectureId:'ML-3',scope:'module',type:'lesson_plan',title:'მეცადინეობის გეგმა — ცილები',fileUrl:'/files/proteins-plan.pdf',link:'',downloadable:true},
+  {id:'LM-5',lectureId:'ML-3',scope:'module',type:'learning_resource',title:'ბიოქიმია — სახელმძღვანელო (ბიბლიოთეკა)',fileUrl:'',link:'978-9941-28-001-2',downloadable:false},
+  {id:'LM-6',lectureId:'ML-8',scope:'module',type:'homework',title:'ლაბორატორიული ოქმის ფორმა',fileUrl:'/files/lab-protocol.docx',link:'',downloadable:true},
+  {id:'LM-7',lectureId:'TL-1',scope:'template',type:'syllabus',title:'ბიოქიმიის სილაბუსი (შაბლონი)',fileUrl:'/files/biochem-syllabus-master.pdf',link:'',downloadable:true},
+  {id:'LM-8',lectureId:'TL-8',scope:'template',type:'exam',title:'ლაბორატორიული შეფასების მასალა',fileUrl:'/files/lab-assessment.pdf',link:'',downloadable:true},
+  {id:'LM-9',lectureId:'ML-11',scope:'module',type:'video',title:'სიმულაცია — პაციენტის მოვლა',fileUrl:'/files/patient-care.mp4',link:'',downloadable:true},
+];
+// helpers
+const modLectures=code=>moduleLectures.filter(l=>l.moduleCode===code).sort((a,b)=>a.slot-b.slot||a.seq-b.seq);
+const tplLectures=tid=>templateLectures.filter(l=>l.templateId===tid).sort((a,b)=>a.slot-b.slot||a.seq-b.seq);
+const lecMaterials=(lid,scope)=>lectureMaterials.filter(m=>m.lectureId===lid&&m.scope===scope);
+const branchName=id=>(branchesData.find(b=>b.id===id)||{}).name||'—';
+const progSlots=pid=>(programsData.find(x=>x.id===pid)||{}).durationYears||1;
+
 // ── LEARNING MODULES (§2.6) — instance = კალენდარული გეგმა ──
 const modulesData=[
-  {code:'MOD-101',templateId:'MT-1',name:'ბიოქიმია',regNo:'0910919',programId:'PRG-1',intakeId:'INT-2',groupId:'GRP-101',teacherId:'T-001',studyYear:2,credits:4,startsOn:'10.02.2026',endsOn:'25.05.2026',planStatus:'approved',planSubmitted:'01.02.2026',planReviewed:'02.02.2026',reviewer:'სპმს უფროსი',outcomes:7,conducted:18,totalLectures:24},
-  {code:'MOD-102',templateId:'MT-2',name:'შინმოვლა',regNo:'0910917',programId:'PRG-1',intakeId:'INT-2',groupId:'GRP-102',teacherId:'T-004',studyYear:2,credits:6,startsOn:'15.02.2026',endsOn:'10.06.2026',planStatus:'approved',planSubmitted:'05.02.2026',planReviewed:'06.02.2026',reviewer:'სპმს უფროსი',outcomes:5,conducted:22,totalLectures:30},
-  {code:'MOD-103',templateId:'MT-3',name:'ფარმაკოლოგია',regNo:'0910922',programId:'PRG-3',intakeId:'INT-3',groupId:'GRP-301',teacherId:'T-003',studyYear:2,credits:5,startsOn:'01.03.2026',endsOn:'20.06.2026',planStatus:'recommendations_issued',planSubmitted:'20.02.2026',planReviewed:'21.02.2026',reviewer:'სპმს უფროსი',outcomes:6,conducted:12,totalLectures:26},
-  {code:'MOD-104',templateId:'MT-4',name:'კლინიკური პრაქტიკა',regNo:'0910931',programId:'PRG-1',intakeId:'INT-3',groupId:'GRP-201',teacherId:'T-004',studyYear:3,credits:8,startsOn:'01.02.2026',endsOn:'30.06.2026',planStatus:'approved',planSubmitted:'20.01.2026',planReviewed:'21.01.2026',reviewer:'სპმს უფროსი',outcomes:4,conducted:28,totalLectures:40},
-  {code:'MOD-105',templateId:'MT-5',name:'მიკრობიოლოგია',regNo:'0910905',programId:'PRG-2',intakeId:'INT-3',groupId:'GRP-202',teacherId:'T-005',studyYear:2,credits:4,startsOn:'10.03.2026',endsOn:'15.06.2026',planStatus:'submitted',planSubmitted:'03.03.2026',planReviewed:null,reviewer:null,outcomes:5,conducted:8,totalLectures:22},
-  {code:'MOD-106',templateId:'MT-1',name:'ბიოქიმია',regNo:'0910919',programId:'PRG-3',intakeId:'INT-3',groupId:'GRP-401',teacherId:'T-001',studyYear:2,credits:4,startsOn:'12.02.2026',endsOn:'28.05.2026',planStatus:'draft',planSubmitted:null,planReviewed:null,reviewer:null,outcomes:7,conducted:0,totalLectures:24},
+  {code:'MOD-101',templateId:'MT-1',name:'ბიოქიმია',regNo:'0910919',programId:'PRG-1',intakeId:'INT-2',groupId:'GRP-101',teacherId:'T-001',studyYear:2,credits:4,startsOn:'10.02.2026',endsOn:'25.05.2026',branchId:'BR-1',planStatus:'approved',planSubmitted:'01.02.2026',planReviewed:'02.02.2026',reviewer:'სპმს უფროსი',outcomes:7,conducted:18,totalLectures:24},
+  {code:'MOD-102',templateId:'MT-2',name:'შინმოვლა',regNo:'0910917',programId:'PRG-1',intakeId:'INT-2',groupId:'GRP-102',teacherId:'T-004',studyYear:2,credits:6,startsOn:'15.02.2026',endsOn:'10.06.2026',branchId:'BR-1',planStatus:'approved',planSubmitted:'05.02.2026',planReviewed:'06.02.2026',reviewer:'სპმს უფროსი',outcomes:5,conducted:22,totalLectures:30},
+  {code:'MOD-103',templateId:'MT-3',name:'ფარმაკოლოგია',regNo:'0910922',programId:'PRG-3',intakeId:'INT-3',groupId:'GRP-301',teacherId:'T-003',studyYear:2,credits:5,startsOn:'01.03.2026',endsOn:'20.06.2026',branchId:'BR-3',planStatus:'recommendations_issued',planSubmitted:'20.02.2026',planReviewed:'21.02.2026',reviewer:'სპმს უფროსი',outcomes:6,conducted:12,totalLectures:26},
+  {code:'MOD-104',templateId:'MT-4',name:'კლინიკური პრაქტიკა',regNo:'0910931',programId:'PRG-1',intakeId:'INT-3',groupId:'GRP-201',teacherId:'T-004',studyYear:3,credits:8,startsOn:'01.02.2026',endsOn:'30.06.2026',branchId:'BR-2',planStatus:'approved',planSubmitted:'20.01.2026',planReviewed:'21.01.2026',reviewer:'სპმს უფროსი',outcomes:4,conducted:28,totalLectures:40},
+  {code:'MOD-105',templateId:'MT-5',name:'მიკრობიოლოგია',regNo:'0910905',programId:'PRG-2',intakeId:'INT-3',groupId:'GRP-202',teacherId:'T-005',studyYear:2,credits:4,startsOn:'10.03.2026',endsOn:'15.06.2026',branchId:'BR-1',planStatus:'submitted',planSubmitted:'03.03.2026',planReviewed:null,reviewer:null,outcomes:5,conducted:8,totalLectures:22},
+  {code:'MOD-106',templateId:'MT-1',name:'ბიოქიმია',regNo:'0910919',programId:'PRG-3',intakeId:'INT-3',groupId:'GRP-401',teacherId:'T-001',studyYear:2,credits:4,startsOn:'12.02.2026',endsOn:'28.05.2026',branchId:'BR-1',planStatus:'draft',planSubmitted:null,planReviewed:null,reviewer:null,outcomes:7,conducted:0,totalLectures:24},
 ];
 // ── ASSESSMENT SPINE (§1.8) — ბინარული: confirmed | not_confirmed ──
 const outcomeResults=[
@@ -1303,6 +1396,7 @@ function filterStudents(q){renderStudents(students.filter(s=>s.name.includes(q)|
 function filterStudentGroup(g){renderStudents(g?students.filter(s=>s.group===g):students)}
 function filterStudentStatus(st){renderStudents(st?students.filter(s=>s.status===st):students)}
 function filterStudentProgram(pid){renderStudents(pid?students.filter(s=>s.programId===pid):students)}
+function filterStudentBranch(b){renderStudents(b?students.filter(s=>s.branchId===b):students)}
 
 function renderTeachers(list){
   const tb=document.getElementById('teachers-tbody');
@@ -1358,7 +1452,8 @@ function renderGroups(){
 function renderModules(){
   const tb=document.getElementById('modules-tbody');
   if(!tb)return;
-  tb.innerHTML=modulesData.map(m=>{
+  const src=(modSel.intake&&modSel.prog)?modulesData.filter(m=>m.intakeId===modSel.intake&&m.programId===modSel.prog):modulesData;
+  tb.innerHTML=src.map(m=>{
     const ps=PLAN_STATUS_LBL[m.planStatus]||[m.planStatus,'bd-n'];
     const pct=m.totalLectures?Math.round(m.conducted/m.totalLectures*100):0;
     return `<tr>
@@ -1387,7 +1482,24 @@ function renderSchedule(){
       <div style="font-size:13px;color:var(--blue)">${slot.ordinal}</div>
       <div style="font-size:10px;font-weight:400">${slot.startsAt}–${slot.endsAt}</div>
     </td>
-    ${(scheduleData[ri]||[]).map(cell=>`<td style="font-size:12px">${cell==='—'?'<span style="color:var(--text3)">—</span>':`<div style="background:var(--blue-lt);border-left:3px solid var(--blue);border-radius:4px;padding:6px 8px;font-size:11px;line-height:1.4;cursor:pointer" onclick="editLessonModal()">${cell.replace(/\n/g,'<br>')}</div>`}</td>`).join('')}
+    ${[1,2,3,4,5].map(day=>{
+      const cell=(scheduleData[ri]||[])[day-1]||'—';
+      const pl=plannedLessons.filter(x=>x.slot===slot.ordinal&&x.day===day);
+      const plHtml=pl.map(x=>{
+        const l=moduleLectures.find(y=>y.id===x.lectureId);
+        const m=l?modulesData.find(y=>y.code===l.moduleCode):null;
+        const v=venuesData.find(y=>y.id===x.venueId);
+        return `<div style="background:var(--green-lt);border-left:3px solid var(--green);border-radius:4px;padding:5px 7px;font-size:10px;line-height:1.4;margin-top:3px">
+          <div style="font-weight:700;color:var(--green)">${l?l.title.substring(0,24):''}</div>
+          <div>${m?groupName(m.groupId):''} · ${v?v.code:''}</div>
+          <div style="color:var(--text2)">${teacherName(x.teacherId)}</div></div>`;
+      }).join('');
+      return `<td style="font-size:12px;vertical-align:top;min-width:130px" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)" ondrop="dropLecture(event,'${slot.ordinal}',${day})">
+        ${cell==='—'&&!plHtml?'<span style="color:var(--text3)">—</span>':''}
+        ${cell!=='—'?`<div style="background:var(--blue-lt);border-left:3px solid var(--blue);border-radius:4px;padding:6px 8px;font-size:11px;line-height:1.4;cursor:pointer" onclick="editLessonModal()">${cell.replace(/\n/g,'<br>')}</div>`:''}
+        ${plHtml}
+      </td>`;
+    }).join('')}
   </tr>`).join('');
 }
 
@@ -1825,6 +1937,168 @@ function viewProgram(id){
     </tbody></table></div>
     <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2);margin-top:12px">მოდულის შაბლონი <strong>M:N</strong> უკავშირდება პროგრამებს — ერთი მოდული რამდენიმე პროგრამას ემსახურება. ცვლილება მხოლოდ დირექტორის ბრძანებით.</div>`,null,'xl');
 }
+// ── drill-down: სასწავლო მოდულები (მიღება → პროგრამა → სია) ──
+let modSel={intake:null,prog:null};
+function renderModuleDrill(){
+  const ci=document.getElementById('mod-crumb');
+  const s1=document.getElementById('mod-step-intake'), s2=document.getElementById('mod-step-prog'), s3=document.getElementById('mod-step-list');
+  if(!s1)return;
+  s1.style.display=modSel.intake?'none':'block';
+  s2.style.display=modSel.intake&&!modSel.prog?'block':'none';
+  s3.style.display=modSel.prog?'block':'none';
+  if(ci)ci.innerHTML = !modSel.intake ? 'სასწავლო მოდულები — აირჩიეთ <strong>მიღება</strong>'
+    : !modSel.prog ? `<span style="cursor:pointer;color:var(--blue)" onclick="modSel={intake:null,prog:null};renderModuleDrill()">მიღება</span> › <strong>${intakeName(modSel.intake)}</strong> — აირჩიეთ პროგრამა`
+    : `<span style="cursor:pointer;color:var(--blue)" onclick="modSel={intake:null,prog:null};renderModuleDrill()">მიღება</span> › <span style="cursor:pointer;color:var(--blue)" onclick="modSel.prog=null;renderModuleDrill()">${intakeName(modSel.intake)}</span> › <strong>${progName(modSel.prog)}</strong>`;
+  if(!modSel.intake){
+    s1.innerHTML='<div class="grid-3">'+intakesData.map(it=>{
+      const n=modulesData.filter(m=>m.intakeId===it.id).length;
+      return `<div class="card" style="cursor:pointer" onclick="modSel.intake='${it.id}';renderModuleDrill()">
+        <div class="ch"><div class="ct">${it.name}</div><span class="bd ${it.season==='spring'?'bd-g':'bd-a'}">${it.season==='spring'?'საგაზაფხულო':'საშემოდგომო'}</span></div>
+        <div class="cb"><div style="display:flex;justify-content:space-between;font-size:13px"><span>მოდულები</span><strong>${n}</strong></div></div></div>`;
+    }).join('')+'</div>';
+  } else if(!modSel.prog){
+    const progs=[...new Set(modulesData.filter(m=>m.intakeId===modSel.intake).map(m=>m.programId))];
+    s2.innerHTML=progs.length?'<div class="grid-3">'+progs.map(pid=>{
+      const n=modulesData.filter(m=>m.intakeId===modSel.intake&&m.programId===pid).length;
+      return `<div class="card" style="cursor:pointer" onclick="modSel.prog='${pid}';renderModuleDrill()">
+        <div class="ch"><div class="ct">${progName(pid)}</div></div>
+        <div class="cb"><div style="display:flex;justify-content:space-between;font-size:13px"><span>მოდულები</span><strong>${n}</strong></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px">სლოტები: ${progSlots(pid)} სასწავლო წელი</div></div></div>`;
+    }).join('')+'</div>':'<div class="card"><div class="cb" style="color:var(--text3)">ამ მიღებაზე მოდული არ არის</div></div>';
+  } else renderModules();
+}
+// ── drill-down: მოდულის შაბლონები (პროგრამა → სია) ──
+let tplSelProg=null;
+function renderTemplateDrill(){
+  const c=document.getElementById('tpl-crumb');
+  const s1=document.getElementById('tpl-step-prog'), s2=document.getElementById('tpl-step-list');
+  if(!s1)return;
+  s1.style.display=tplSelProg?'none':'block';
+  s2.style.display=tplSelProg?'block':'none';
+  if(c)c.innerHTML = tplSelProg
+    ? `<span style="cursor:pointer;color:var(--blue)" onclick="tplSelProg=null;renderTemplateDrill()">პროგრამები</span> › <strong>${progName(tplSelProg)}</strong> — ${progSlots(tplSelProg)} სასწავლო წლის სლოტი (ფიქსირებული)`
+    : 'მოდულის შაბლონი — <strong>ეროვნული სტანდარტის მოდული</strong> სარეგისტრაციო ნომრით. აირჩიეთ პროგრამა.';
+  if(!tplSelProg){
+    s1.innerHTML='<div class="grid-3">'+programsData.map(pr=>{
+      const n=moduleTemplates.filter(t=>t.programs.includes(pr.id)).length;
+      return `<div class="card" style="cursor:pointer" onclick="tplSelProg='${pr.id}';renderTemplateDrill()">
+        <div class="ch"><div class="ct">${pr.name}</div><span class="bd bd-b">${n}</span></div>
+        <div class="cb"><div style="font-size:12px;color:var(--text3)">${pr.qualification}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:6px">${pr.durationYears} სასწავლო წელი · ${pr.totalCredits} კრედიტი</div></div></div>`;
+    }).join('')+'</div>';
+  } else renderTemplates();
+}
+function addTemplateModal(){
+  showModal('მოდულის შაბლონის რეგისტრაცია',`
+    <div class="fg"><label class="fl">პროგრამა</label><select class="fi" id="nt-prog">${programsData.map(x=>`<option value="${x.id}" ${x.id===tplSelProg?'selected':''}>${x.name}</option>`).join('')}</select>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px">სლოტების რაოდენობა განისაზღვრება პროგრამის ხანგრძლივობით — ხელით არ იცვლება</div></div>
+    <div class="fg2"><div><label class="fl">სარეგისტრაციო ნომერი</label><input class="fi" id="nt-reg" placeholder="0910XXX"></div>
+      <div><label class="fl">კრედიტი</label><input class="fi" id="nt-cr" type="number" value="4"></div></div>
+    <div class="fg2"><div><label class="fl">დასახელება</label><input class="fi" id="nt-title" placeholder="მოდულის სახელი"></div>
+      <div><label class="fl">სახეობა</label><select class="fi" id="nt-kind">${Object.entries(MODULE_KIND_LBL).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div></div>
+    <div class="fg"><label class="fl">სლოტები (პროგრამიდან)</label><input class="fi" id="nt-slots" value="${progSlots(tplSelProg||'PRG-1')}" disabled></div>
+    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">ახალი მოდული იქმნება <strong>მხოლოდ შაბლონად</strong>; „სასწავლო მოდულები" მხოლოდ ინსტანცირებას ახდენს. რეგისტრაცია მოითხოვს დირექტორის ბრძანებას.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveTemplate()">✓ რეგისტრაცია</button>`,'lg');
+}
+function saveTemplate(){
+  const reg=document.getElementById('nt-reg').value.trim(), title=document.getElementById('nt-title').value.trim();
+  if(!reg||!title){toast('შეავსეთ სარეგისტრაციო ნომერი და დასახელება','error');return;}
+  const pid=document.getElementById('nt-prog').value;
+  moduleTemplates.push({id:'MT-'+(moduleTemplates.length+1),regNo:reg,title,titleEn:'',credits:+document.getElementById('nt-cr').value,
+    kind:document.getElementById('nt-kind').value,kindLabel:null,prerequisite:null,revisions:'—',orderId:'ORD-4',
+    outcomes:0,contactH:0,selfH:0,assessH:0,programs:[pid]});
+  tplSelProg=pid;renderTemplateDrill();closeModal();toast('შაბლონი რეგისტრირდა ✓','success');
+}
+// ── ფილიალი (§2.1) ──
+function renderBranches(){
+  const el=document.getElementById('ref-branches');
+  if(!el)return;
+  el.innerHTML=branchesData.map(b=>`<tr>
+    <td style="font-weight:700;color:var(--blue);font-size:11px">${b.id}</td>
+    <td>${b.name}</td>
+    <td style="font-size:12px;color:var(--text2)">${b.address||'—'}</td>
+    <td><span class="bd ${b.active?'bd-g':'bd-n'}">${b.active?'აქტიური':'არააქტიური'}</span></td>
+    <td><button class="btn btn-xs btn-ghost" onclick="editBranchModal('${b.id}')">✏</button></td>
+  </tr>`).join('');
+}
+function addBranchModal(){
+  showModal('ფილიალის დამატება',`
+    <div class="fg"><label class="fl">დასახელება</label><input class="fi" id="nb-name" placeholder="ფილიალის სახელი"></div>
+    <div class="fg"><label class="fl">მისამართი</label><input class="fi" id="nb-addr" placeholder="ქალაქი, ქუჩა, №"></div>
+    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">ფილიალი — ლოკაციის ჩანაწერი ანგარიშგებისთვის. <strong>ხელმძღვანელი არ ენიშნება</strong> — მართვა ცენტრალიზებულია.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const n=document.getElementById('nb-name').value.trim();if(!n){toast('შეავსეთ დასახელება','error');return}branchesData.push({id:'BR-'+(branchesData.length+1),name:n,address:document.getElementById('nb-addr').value,active:true});renderBranches();closeModal();toast('ფილიალი დამატებულია ✓','success')})()">✓ დამატება</button>`);
+}
+function editBranchModal(id){
+  const b=branchesData.find(x=>x.id===id);if(!b)return;
+  showModal('ფილიალის რედაქტირება',`
+    <div class="fg"><label class="fl">დასახელება</label><input class="fi" id="eb-name" value="${b.name}"></div>
+    <div class="fg"><label class="fl">მისამართი</label><input class="fi" id="eb-addr" value="${b.address||''}"></div>
+    <div class="fg"><label class="fl">სტატუსი</label><select class="fi" id="eb-act"><option value="1" ${b.active?'selected':''}>აქტიური</option><option value="0" ${!b.active?'selected':''}>არააქტიური</option></select></div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const b=branchesData.find(x=>x.id==='${id}');b.name=document.getElementById('eb-name').value;b.address=document.getElementById('eb-addr').value;b.active=document.getElementById('eb-act').value==='1';renderBranches();closeModal();toast('ფილიალი განახლდა ✓','success')})()">💾 შენახვა</button>`);
+}
+// ── განრიგი: drag & drop + მასწავლებლის მინიჭება (§2.7) ──
+const plannedLessons=[];
+function renderPalette(){
+  const el=document.getElementById('lesson-palette');
+  if(!el)return;
+  const pending=moduleLectures.filter(l=>!l.conducted&&!plannedLessons.some(x=>x.lectureId===l.id));
+  el.innerHTML=pending.length?pending.map(l=>{
+    const m=modulesData.find(x=>x.code===l.moduleCode);
+    return `<div draggable="true" ondragstart="dragLecture(event,'${l.id}')"
+      style="background:var(--blue-lt);border-left:3px solid var(--blue);border-radius:6px;padding:8px 10px;cursor:grab;font-size:11px">
+      <div style="font-weight:700;color:var(--navy)">${l.title.substring(0,42)}${l.title.length>42?'…':''}</div>
+      <div style="color:var(--text2);margin-top:2px">${m?m.name:''} · ${m?groupName(m.groupId):''} · ${l.durationMin} წთ</div>
+    </div>`;
+  }).join(''):'<div style="color:var(--text3);font-size:12px">დაუგეგმავი მეცადინეობა არ არის</div>';
+}
+function dragLecture(e,lid){ e.dataTransfer.setData('text/plain',lid); e.dataTransfer.effectAllowed='move'; }
+function allowDrop(e){ e.preventDefault(); e.currentTarget.style.background='var(--green-lt)'; }
+function leaveDrop(e){ e.currentTarget.style.background=''; }
+function dropLecture(e,slotOrd,day){
+  e.preventDefault(); e.currentTarget.style.background='';
+  const lid=e.dataTransfer.getData('text/plain');
+  if(lid) assignLecturerModal(lid,slotOrd,day);
+}
+function assignLecturerModal(lid,slotOrd,day){
+  const l=moduleLectures.find(x=>x.id===lid); if(!l)return;
+  const m=modulesData.find(x=>x.code===l.moduleCode);
+  const days=['','ორშაბათი','სამშაბათი','ოთხშაბათი','ხუთშაბათი','პარასკევი'];
+  const slot=slotTemplates.find(t=>t.ordinal===slotOrd);
+  showModal('მეცადინეობის დაგეგმვა — მასწავლებლის მინიჭება',`
+    <div class="fg"><label class="fl">მეცადინეობა</label><div style="font-weight:700">${l.title}</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:2px">${m?m.name+' · '+groupName(m.groupId):''} · ${LECTURE_KIND_LBL[l.kind]} · ${l.durationMin} წთ</div></div>
+    <div class="fg2"><div><label class="fl">დღე</label><div>${days[day]||'—'}</div></div>
+      <div><label class="fl">სლოტი</label><div>${slotOrd} · ${slot?slot.startsAt+'–'+slot.endsAt:''}</div></div></div>
+    <div class="fg"><label class="fl">მასწავლებელი (განმახორციელებელი)</label>
+      <select class="fi" id="al-teacher">${teachers.filter(t=>t.status==='active').map(t=>`<option value="${t.id}" ${m&&t.id===m.teacherId?'selected':''}>${t.name} — ${IMPLEMENTER_LBL[t.implementerType]}</option>`).join('')}</select>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px">მასწავლებელი ჯგუფს/მოდულს არ ებმის — ინიშნება <strong>თითო მეცადინეობაზე</strong></div></div>
+    <div class="fg"><label class="fl">სივრცე</label>
+      <select class="fi" id="al-venue">${venuesData.filter(v=>v.active).map(v=>`<option value="${v.id}">${v.code} — ${VENUE_TYPE_LBL[v.type]}</option>`).join('')}</select></div>
+    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">შემოწმდება: ≤8 საკონტაქტო საათი დღეში, მასწავლებლისა და სივრცის ორმაგი დაჯავშნა, მოდულის პერიოდში მოხვედრა.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="savePlannedLesson('${lid}','${slotOrd}',${day})">✓ დაგეგმვა</button>`,'lg');
+}
+function savePlannedLesson(lid,slotOrd,day){
+  const l=moduleLectures.find(x=>x.id===lid);
+  const tid=document.getElementById('al-teacher').value, vid=document.getElementById('al-venue').value;
+  const clash=plannedLessons.find(x=>x.slot===slotOrd&&x.day===day&&(x.teacherId===tid||x.venueId===vid));
+  if(clash){toast('კონფლიქტი — მასწავლებელი ან სივრცე ამ სლოტზე დაკავებულია','error');return;}
+  plannedLessons.unshift({lectureId:lid,slot:slotOrd,day,teacherId:tid,venueId:vid});
+  renderPalette();renderPlanned();renderSchedule();closeModal();
+  toast('მეცადინეობა დაიგეგმა ✓','success');
+}
+function renderPlanned(){
+  const el=document.getElementById('planned-tbody');
+  if(!el)return;
+  el.innerHTML=plannedLessons.length?plannedLessons.slice(0,6).map(x=>{
+    const l=moduleLectures.find(y=>y.id===x.lectureId);
+    const m=l?modulesData.find(y=>y.code===l.moduleCode):null;
+    const v=venuesData.find(y=>y.id===x.venueId);
+    return `<tr><td style="font-size:11px">${l?l.title.substring(0,30):'—'}</td>
+      <td style="font-size:11px">${m?groupName(m.groupId):'—'}</td>
+      <td style="font-size:11px">${teacherName(x.teacherId)}</td>
+      <td style="font-size:11px">${v?v.code:'—'}</td></tr>`;
+  }).join(''):'<tr><td colspan="4" style="color:var(--text3);font-size:12px">ჯერ არაფერია დაგეგმილი</td></tr>';
+}
 // ── საცნობარო მონაცემები (§2.1) ──
 function renderReference(){
   const iv=document.getElementById('ref-intakes');
@@ -1842,7 +2116,8 @@ function renderReference(){
 function renderTemplates(){
   const tb=document.getElementById('templates-tbody');
   if(!tb)return;
-  tb.innerHTML=moduleTemplates.map(t=>`<tr>
+  const src=tplSelProg?moduleTemplates.filter(t=>t.programs.includes(tplSelProg)):moduleTemplates;
+  tb.innerHTML=src.map(t=>`<tr>
     <td style="font-weight:700;color:var(--blue)">${t.regNo}</td>
     <td><strong>${t.title}</strong><div style="font-size:10px;color:var(--text3)">${t.titleEn}</div></td>
     <td style="font-size:12px">${MODULE_KIND_LBL[t.kind]}${t.kindLabel?`<div style="font-size:10px;color:var(--text3)">${t.kindLabel}</div>`:''}</td>
@@ -1858,13 +2133,35 @@ function renderTemplates(){
 function viewTemplate(id){
   const t=moduleTemplates.find(x=>x.id===id);if(!t)return;
   const outs=templateOutcomes.filter(o=>o.templateId===id);
+  const lecs=tplLectures(id);
+  const slots=Math.max(...t.programs.map(pid=>progSlots(pid)),1);
+  const slotBlocks=Array.from({length:slots},(_,k)=>k+1).map(sl=>{
+    const rows=lecs.filter(l=>l.slot===sl);
+    return `<div class="card" style="margin-bottom:12px">
+      <div class="ch"><div class="ct">${romanYear(sl)} სასწავლო წელი <span style="font-size:11px;font-weight:400;color:var(--text3)">${rows.length} მეცადინეობა</span></div></div>
+      ${rows.length?`<div class="tw"><table>
+        <thead><tr><th style="width:34px">#</th><th>მეცადინეობა</th><th>სახეობა</th><th>სწ. შედეგი</th><th>ხანგრძ.</th><th>მასალა</th><th></th></tr></thead>
+        <tbody>${rows.map(l=>{const mats=lecMaterials(l.id,'template').length;
+          return `<tr><td style="text-align:center;color:var(--text3)">${l.seq}</td>
+            <td style="font-size:12px">${l.title}</td>
+            <td style="font-size:11px">${LECTURE_KIND_LBL[l.kind]||l.kind}</td>
+            <td style="text-align:center"><span class="bd bd-n" style="font-size:10px">№${l.outcomeNo}</span></td>
+            <td style="text-align:center;font-size:11px">${l.durationMin} წთ</td>
+            <td style="text-align:center">${mats?`<span class="bd bd-b">${mats}</span>`:'<span style="color:var(--text3)">—</span>'}</td>
+            <td><button class="btn btn-xs btn-ghost" onclick="editLecturePage('${l.id}','template')">✏</button></td></tr>`}).join('')}
+        </tbody></table></div>`:'<div class="cb" style="color:var(--text3);font-size:12px">მეცადინეობა არ არის</div>'}
+    </div>`;
+  }).join('');
   showModal(`${t.title} — სარეგ. № ${t.regNo}`,`
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
       <span class="bd bd-b">${t.credits} კრედიტი</span><span class="bd bd-p">${MODULE_KIND_LBL[t.kind]}</span>
       ${t.kindLabel?`<span class="bd bd-n">${t.kindLabel}</span>`:''}<span class="bd bd-n">${outs.length||t.outcomes} სწავლის შედეგი</span>
+      <span class="bd bd-n">${lecs.length} მეცადინეობა</span>
     </div>
     <div class="fg"><label class="fl">გამოქვეყნების / ცვლილების თარიღები</label><div style="font-size:12px">${t.revisions}</div></div>
     <div class="fg"><label class="fl">მოდულზე დაშვების წინაპირობა</label><div style="font-size:12px">${t.prerequisite?moduleTemplates.find(x=>x.id===t.prerequisite)?.title:'— არ არის —'}</div></div>
+    <div class="fg"><label class="fl">პროგრამები (M:N)</label><div>${t.programs.map(pid=>`<span class="bd bd-p" style="font-size:10px">${progName(pid)}</span>`).join(' ')}</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px">სლოტების რაოდენობა განისაზღვრება პროგრამის ხანგრძლივობით — მოდულზე ხელით არ იცვლება</div></div>
     <div class="fg"><label class="fl">საათების განაწილება</label>
       <div class="tw"><table><thead><tr><th>საკონტაქტო</th><th>დამოუკიდებელი</th><th>შეფასება</th><th>სულ</th></tr></thead>
       <tbody><tr><td style="text-align:center">${t.contactH}</td><td style="text-align:center">${t.selfH}</td><td style="text-align:center">${t.assessH}</td><td style="text-align:center"><strong>${t.contactH+t.selfH+t.assessH}</strong></td></tr></tbody></table></div></div>
@@ -1872,29 +2169,154 @@ function viewTemplate(id){
       <div class="tw"><table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>შეფასების მიმართულება</th><th>საკ./დამ./შეფ.</th></tr></thead><tbody>
       ${outs.map(o=>`<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${o.no}</td><td style="font-size:12px">${o.title}</td><td style="font-size:11px">${DIRECTION_LBL[o.direction]}</td><td style="text-align:center;font-size:11px">${o.contactH}/${o.selfH}/${o.assessH}</td></tr>`).join('')}
       </tbody></table></div></div>`:''}
-    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">${orderRef(t.orderId)} — მოდულის ნებისმიერი ცვლილება (თემატიკა, მეთოდები, საათები, რესურსები) მოითხოვს დირექტორის ბრძანებას. — [სპწ] 19.3</div>`,null,'xl');
+    <div class="fg"><label class="fl">სასწავლო წლის სლოტები და მეცადინეობა</label>${slotBlocks}</div>
+    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">${orderRef(t.orderId)} — შაბლონის რედაქტირება მოქმედებს <strong>მხოლოდ ახალ ინსტანციებზე</strong>; უკვე ინსტანცირებული მოდულები იმართება „სასწავლო მოდულებიდან". ცვლილება მოითხოვს დირექტორის ბრძანებას. — [სპწ] 19.3</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">უკან</button><button class="btn btn-o" onclick="toast('შაბლონი Excel-ში ჩამოიტვირთა ✓','success')">⬇ Excel</button>`,'xl');
 }
 // ── მოდულის დეტალები / კალენდარული გეგმა (§2.6) ──
 function viewModule(code){
   const m=modulesData.find(x=>x.code===code);if(!m)return;
   const ins=instrumentsData.filter(x=>x.moduleCode===code);
   const outs=templateOutcomes.filter(o=>o.templateId===m.templateId);
+  const lecs=modLectures(code);
+  const done=lecs.filter(l=>l.conducted).length;
+  const slots=progSlots(m.programId);
+  const slotBlocks=Array.from({length:slots},(_,k)=>k+1).map(sl=>{
+    const rows=lecs.filter(l=>l.slot===sl);
+    return `<div class="card" style="margin-bottom:12px">
+      <div class="ch"><div class="ct">${romanYear(sl)} სასწავლო წელი <span style="font-size:11px;font-weight:400;color:var(--text3)">${rows.filter(r=>r.conducted).length}/${rows.length} ჩატარებული</span></div></div>
+      ${rows.length?`<div class="tw"><table>
+        <thead><tr><th style="width:34px">#</th><th>მეცადინეობა</th><th>სახეობა</th><th>სწ. შედეგი</th><th>ხანგრძ.</th><th>მასალა</th><th>ჩატარება</th><th></th></tr></thead>
+        <tbody>${rows.map(l=>{
+          const mats=lecMaterials(l.id,'module').length;
+          return `<tr>
+            <td style="text-align:center;color:var(--text3)">${l.seq}</td>
+            <td><div style="font-size:12px">${l.title}</div>${l.note?`<div style="font-size:10px;color:var(--amber)">⚠ ${l.note}</div>`:''}</td>
+            <td style="font-size:11px">${LECTURE_KIND_LBL[l.kind]||l.kind}</td>
+            <td style="text-align:center"><span class="bd bd-n" style="font-size:10px">№${l.outcomeNo}</span></td>
+            <td style="text-align:center;font-size:11px">${l.durationMin} წთ</td>
+            <td style="text-align:center">${mats?`<span class="bd bd-b">${mats}</span>`:'<span style="color:var(--text3)">—</span>'}</td>
+            <td><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:11px">
+              <input type="checkbox" ${l.conducted?'checked':''} onchange="toggleConducted('${l.id}',this.checked)" style="width:15px;height:15px;accent-color:var(--green);cursor:pointer">
+              ${l.conducted?`<span style="color:var(--green)">${l.conductedOn}</span>`:'<span style="color:var(--text3)">არ ჩატარდა</span>'}
+            </label></td>
+            <td><button class="btn btn-xs btn-ghost" onclick="editLecturePage('${l.id}','module')" title="მეცადინეობის რედაქტირება">✏</button></td>
+          </tr>`}).join('')}</tbody></table></div>`
+      :'<div class="cb" style="color:var(--text3);font-size:12px">მეცადინეობა არ არის დაგეგმილი</div>'}
+    </div>`;
+  }).join('');
   showModal(`${m.name} — ${groupName(m.groupId)}`,`
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
       <span class="bd bd-p">${progName(m.programId)}</span><span class="bd bd-b">${intakeName(m.intakeId)}</span>
       <span class="bd bd-n">სარეგ. № ${m.regNo}</span><span class="bd bd-n">${m.credits} კრედიტი</span>
+      <span class="bd bd-n">${branchName(m.branchId)}</span>
     </div>
     <div class="fg2"><div><label class="fl">მოდულის პერიოდი</label><div>${m.startsOn||'—'} – ${m.endsOn||'—'}</div></div><div><label class="fl">მასწავლებელი</label><div>${teacherName(m.teacherId)}</div></div></div>
-    <div class="fg"><label class="fl">ჩატარებული მეცადინეობა</label>
-      <div style="font-size:13px;margin-bottom:4px">${m.conducted} / ${m.totalLectures}</div>
-      <div style="height:8px;background:var(--border);border-radius:4px;overflow:hidden"><div style="height:100%;width:${m.totalLectures?Math.round(m.conducted/m.totalLectures*100):0}%;background:var(--blue)"></div></div></div>
+    <div class="fg"><label class="fl">ჩატარებული მეცადინეობა (მთელი მოდულის მაჩვენებელი)</label>
+      <div style="font-size:13px;margin-bottom:4px">${done} / ${lecs.length}</div>
+      <div style="height:8px;background:var(--border);border-radius:4px;overflow:hidden"><div style="height:100%;width:${lecs.length?Math.round(done/lecs.length*100):0}%;background:var(--blue)"></div></div></div>
+    <div class="fg"><label class="fl">სასწავლო წლის სლოტები და მეცადინეობა</label>${slotBlocks}</div>
     ${outs.length?`<div class="fg"><label class="fl">სწავლის შედეგები და შეფასების ინსტრუმენტი</label>
       <div class="tw"><table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>მიმართულება</th><th>ინსტრუმენტი</th></tr></thead><tbody>
       ${outs.map(o=>{const ii=ins.find(x=>x.outcomeNo===o.no);const st=ii?INSTRUMENT_STATUS_LBL[ii.status]:['არ არის','bd-n'];
         return `<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${o.no}</td><td style="font-size:12px">${o.title}</td><td style="font-size:11px">${DIRECTION_LBL[o.direction]}</td><td><span class="bd ${st[1]}">${st[0]}</span>${ii&&ii.status==='rejected'?`<div style="font-size:10px;color:var(--red)">${ii.rejectReason}</div>`:''}</td></tr>`}).join('')}
       </tbody></table></div></div>`:''}
-    <div style="background:var(--amber-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">შეფასების ინსტრუმენტი ვალიდირდება <strong>ავტორისგან განსხვავებული</strong> პირის მიერ (ინტერესთა კონფლიქტი გამორიცხულია). არავალიდირებული ინსტრუმენტის გამოყენება აკრძალულია. — [სპწ] 21.4–21.8</div>`,
-    `<button class="btn btn-n" onclick="closeModal()">დახურვა</button><button class="btn btn-b" onclick="closeModal();viewCalendarPlan('${code}')">📋 კალენდარული გეგმა</button>`,'xl');
+    <div style="background:var(--amber-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">შეფასების ინსტრუმენტი ვალიდირდება <strong>ავტორისგან განსხვავებული</strong> პირის მიერ. მეცადინეობის ჩატარებას აღრიცხავს მასწავლებელი, ვერიფიცირებს სპმს კოორდინატორი. — [სპწ] 21.4–21.8, 34.3.3</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">უკან</button>
+     <button class="btn btn-o" onclick="exportModule('${code}')">⬇ Excel</button>
+     <button class="btn btn-b" onclick="closeModal();viewCalendarPlan('${code}')">📋 კალენდარული გეგმა</button>`,'xl');
+}
+function toggleConducted(lid,val){
+  const l=moduleLectures.find(x=>x.id===lid); if(!l)return;
+  l.conducted=val; l.conductedOn=val?'დღეს':null;
+  const m=modulesData.find(x=>x.code===l.moduleCode);
+  if(m){const lecs=modLectures(m.code);m.conducted=lecs.filter(x=>x.conducted).length;m.totalLectures=lecs.length;}
+  auditLog.unshift({id:'AUD-'+String(auditLog.length+1).padStart(3,'0'),actor:'ადმინისტრატორი',role:'spms_coordinator',action:'UPDATE',entity:'module_lecture',entityId:lid,at:'დღეს',ip:'10.0.4.18'});
+  renderModules();renderAudit();viewModule(l.moduleCode);
+  toast(val?'მეცადინეობა მონიშნულია ჩატარებულად ✓':'ჩატარების ნიშნული მოხსნილია','info');
+}
+function exportModule(code){toast('მოდული Excel-ში ჩამოიტვირთა ✓','success')}
+// ── მეცადინეობის რედაქტირება: ყველა ველი + მიმაგრებული ფაილები ──
+function editLecturePage(lid,scope){
+  const l=(scope==='module'?moduleLectures:templateLectures).find(x=>x.id===lid); if(!l)return;
+  const mats=lecMaterials(lid,scope);
+  showModal(`მეცადინეობის რედაქტირება — ${l.title.substring(0,40)}`,`
+    <div class="fg"><label class="fl">სათაური (თემატიკა)</label><input class="fi" id="el-title" value="${l.title}"></div>
+    <div class="fg2"><div><label class="fl">სახეობა</label>
+      <select class="fi" id="el-kind">${Object.entries(LECTURE_KIND_LBL).map(([k,v])=>`<option value="${k}" ${k===l.kind?'selected':''}>${v}</option>`).join('')}</select></div>
+      <div><label class="fl">ხანგრძლივობა (წთ)</label><input class="fi" id="el-dur" type="number" value="${l.durationMin}"></div></div>
+    <div class="fg2"><div><label class="fl">სასწავლო წლის სლოტი</label><input class="fi" id="el-slot" type="number" min="1" value="${l.slot}"></div>
+      <div><label class="fl">რიგითობა</label><input class="fi" id="el-seq" type="number" min="1" value="${l.seq}"></div></div>
+    <div class="fg"><label class="fl">სწავლის შედეგი</label><input class="fi" id="el-out" type="number" min="1" value="${l.outcomeNo}"></div>
+    <div class="fg"><label class="fl">აღწერა</label><textarea class="fi" id="el-desc" style="min-height:70px">${l.description||''}</textarea></div>
+    ${scope==='module'?`
+    <div class="fg2"><div><label class="fl">ჩატარება</label>
+      <select class="fi" id="el-cond"><option value="0" ${!l.conducted?'selected':''}>არ ჩატარდა</option><option value="1" ${l.conducted?'selected':''}>ჩატარდა</option></select></div>
+      <div><label class="fl">ჩატარების თარიღი</label><input class="fi" id="el-condon" value="${l.conductedOn||''}" placeholder="დდ.თთ.წწწწ"></div></div>
+    <div class="fg"><label class="fl">შენიშვნა (გადატანა / შემცვლელი)</label><input class="fi" id="el-note" value="${l.note||''}"></div>`:''}
+    <div class="fg"><label class="fl">მიმაგრებული მასალა</label>
+      ${mats.length?`<div class="tw"><table><thead><tr><th>სახეობა</th><th>დასახელება</th><th>წყარო</th><th></th></tr></thead><tbody>
+        ${mats.map(mt=>`<tr>
+          <td><span class="bd ${mt.type==='video'?'bd-p':'bd-n'}" style="font-size:10px">${MATERIAL_LBL[mt.type]||mt.type}</span></td>
+          <td style="font-size:12px">${mt.title}</td>
+          <td style="font-size:11px;color:var(--text3)">${mt.fileUrl?'ფაილი':mt.link?'ბმული: '+mt.link:'—'}</td>
+          <td style="white-space:nowrap">
+            ${mt.downloadable?`<button class="btn btn-xs btn-o" onclick="toast('${mt.type==='video'?'ვიდეო ჩამოიტვირთება — ბრაუზერში დაკვრა გამორთულია':'ფაილი ჩამოიტვირთა'} ✓','success')">⬇</button>`:''}
+            <button class="btn btn-xs btn-r" onclick="removeMaterial('${mt.id}','${lid}','${scope}')">✕</button>
+          </td></tr>`).join('')}
+        </tbody></table></div>`:'<div style="color:var(--text3);font-size:12px;margin-bottom:8px">მასალა არ არის მიმაგრებული</div>'}
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+        <button class="btn btn-xs btn-o" onclick="addMaterialPage('${lid}','${scope}','file')">➕ ფაილის მიმაგრება</button>
+        <button class="btn btn-xs btn-o" onclick="addMaterialPage('${lid}','${scope}','link')">🔗 ბმულის მიმაგრება</button>
+      </div>
+      <div style="background:var(--blue-lt);border-radius:6px;padding:8px;font-size:11px;color:var(--text2);margin-top:8px">ვიდეო მასალა <strong>მხოლოდ ჩამოტვირთვადია</strong> — ბრაუზერში დაკვრა არ ხდება.</div>
+    </div>`,
+    `<button class="btn btn-n" onclick="closeModal()">უკან</button><button class="btn btn-b" onclick="saveLecture('${lid}','${scope}')">💾 შენახვა</button>`,'lg');
+}
+function saveLecture(lid,scope){
+  const arr=scope==='module'?moduleLectures:templateLectures;
+  const l=arr.find(x=>x.id===lid); if(!l)return;
+  l.title=document.getElementById('el-title').value;
+  l.kind=document.getElementById('el-kind').value;
+  l.durationMin=+document.getElementById('el-dur').value;
+  l.slot=+document.getElementById('el-slot').value;
+  l.seq=+document.getElementById('el-seq').value;
+  l.outcomeNo=+document.getElementById('el-out').value;
+  l.description=document.getElementById('el-desc').value;
+  if(scope==='module'){
+    l.conducted=document.getElementById('el-cond').value==='1';
+    l.conductedOn=document.getElementById('el-condon').value||null;
+    l.note=document.getElementById('el-note').value;
+    const m=modulesData.find(x=>x.code===l.moduleCode);
+    if(m){const lecs=modLectures(m.code);m.conducted=lecs.filter(x=>x.conducted).length;m.totalLectures=lecs.length;}
+    renderModules();
+  }
+  closeModal();toast('მეცადინეობა განახლდა ✓','success');
+}
+function addMaterialPage(lid,scope,mode){
+  showModal(mode==='file'?'ფაილის მიმაგრება':'ბმულის მიმაგრება',`
+    <div class="fg"><label class="fl">სახეობა</label>
+      <select class="fi" id="nm-type">${Object.entries(MATERIAL_LBL).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">დასახელება</label><input class="fi" id="nm-title" placeholder="მასალის დასახელება"></div>
+    ${mode==='file'
+      ?'<div class="fg"><label class="fl">ფაილი</label><input class="fi" type="file" id="nm-file"></div>'
+      :'<div class="fg"><label class="fl">ბმული / ISBN</label><input class="fi" id="nm-link" placeholder="https://... ან 978-9941-..."></div>'}
+    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">ვიდეო ავტომატურად ინიშნება <strong>ჩამოტვირთვადად</strong>. სასწავლო რესურსი უკავშირდება ბიბლიოთეკის კატალოგს.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveMaterial('${lid}','${scope}','${mode}')">✓ მიმაგრება</button>`);
+}
+function saveMaterial(lid,scope,mode){
+  const title=document.getElementById('nm-title').value.trim();
+  if(!title){toast('შეავსეთ დასახელება','error');return;}
+  const type=document.getElementById('nm-type').value;
+  lectureMaterials.push({id:'LM-'+(lectureMaterials.length+1),lectureId:lid,scope,type,title,
+    fileUrl:mode==='file'?'/files/'+title:'',link:mode==='link'?(document.getElementById('nm-link').value||''):'',
+    downloadable:mode==='file'});
+  closeModal();editLecturePage(lid,scope);toast('მასალა მიმაგრდა ✓','success');
+}
+function removeMaterial(mid,lid,scope){
+  const i=lectureMaterials.findIndex(x=>x.id===mid);
+  if(i>-1)lectureMaterials.splice(i,1);
+  editLecturePage(lid,scope);toast('მასალა მოხსნილია','warn');
 }
 function viewCalendarPlan(code){
   const m=modulesData.find(x=>x.code===code);if(!m)return;
@@ -2196,7 +2618,10 @@ function viewTeacher(id){
   const t=teachers.find(x=>x.id===id);if(!t)return;
   const abs=teacherAbsences.filter(a=>a.teacherId===t.id);
   const mods=modulesData.filter(m=>m.teacherId===t.id);
-  const contactH=mods.reduce((a,m)=>a+m.conducted,0)*40;
+  const myLecs=moduleLectures.filter(l=>mods.some(m=>m.code===l.moduleCode));
+  const contactH=Math.round(myLecs.filter(l=>l.conducted).reduce((a,l)=>a+l.durationMin,0)/60);
+  const monthH=Math.round(myLecs.filter(l=>l.conducted&&(l.conductedOn||'').includes('.03.')||l.conductedOn==='დღეს').reduce((a,l)=>a+l.durationMin,0)/60);
+  const sched=plannedLessons.filter(x=>x.teacherId===t.id);
   showModal('მასწავლებლის პროფილი',`
     <div style="display:flex;gap:14px;align-items:center;margin-bottom:16px">
       <div style="width:56px;height:56px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800">${t.name.charAt(0)}</div>
@@ -2207,8 +2632,15 @@ function viewTeacher(id){
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
       <div style="background:var(--bg);border-radius:6px;padding:10px"><div style="font-size:11px;color:var(--text3)">მუშაობის დაწყება</div><div style="font-size:14px;font-weight:700;margin-top:4px">${t.workStartedOn||'—'}</div></div>
       <div style="background:var(--bg);border-radius:6px;padding:10px"><div style="font-size:11px;color:var(--text3)">საკონტაქტო საათი (სულ)</div><div style="font-size:20px;font-weight:800;color:var(--blue);margin-top:2px">${contactH}</div></div>
+      <div style="background:var(--bg);border-radius:6px;padding:10px"><div style="font-size:11px;color:var(--text3)">ამ თვეში (საათი)</div><div style="font-size:20px;font-weight:800;color:var(--green);margin-top:2px">${monthH}</div></div>
       <div style="background:var(--bg);border-radius:6px;padding:10px"><div style="font-size:11px;color:var(--text3)">მოდულები</div><div style="font-size:20px;font-weight:800;margin-top:2px">${mods.length}</div></div>
     </div>
+    ${t.qualification?`<div class="fg"><label class="fl">კვალიფიკაცია / ბიოგრაფია</label><div style="font-size:12px;line-height:1.7;color:var(--text2)">${t.qualification}</div></div>`:''}
+    <div class="fg"><label class="fl">სამუშაო განრიგი</label>
+      ${sched.length?`<div class="tw"><table><thead><tr><th>დღე</th><th>სლოტი</th><th>მეცადინეობა</th><th>ჯგუფი</th><th>სივრცე</th></tr></thead><tbody>
+        ${sched.map(x=>{const l=moduleLectures.find(y=>y.id===x.lectureId);const m=l?modulesData.find(y=>y.code===l.moduleCode):null;const v=venuesData.find(y=>y.id===x.venueId);
+          return `<tr><td style="font-size:12px">${['','ორშ.','სამ.','ოთხ.','ხუთ.','პარ.'][x.day]||'—'}</td><td style="font-size:12px">${x.slot}</td><td style="font-size:11px">${l?l.title.substring(0,32):'—'}</td><td style="font-size:11px">${m?groupName(m.groupId):'—'}</td><td style="font-size:11px">${v?v.code:'—'}</td></tr>`}).join('')}
+      </tbody></table></div>`:'<div style="color:var(--text3);font-size:12px">დაგეგმილი მეცადინეობა არ არის</div>'}</div>
     <div class="fg"><label class="fl">მოდულები (კალენდარული გეგმის ავტორი)</label>
       ${mods.length?`<div class="tw"><table><thead><tr><th>კოდი</th><th>მოდული</th><th>ჯგუფი</th><th>გეგმა</th></tr></thead><tbody>
       ${mods.map(m=>{const ps=PLAN_STATUS_LBL[m.planStatus];return `<tr><td style="font-size:11px;color:var(--blue)">${m.code}</td><td>${m.name}</td><td style="font-size:12px">${groupName(m.groupId)}</td><td><span class="bd ${ps[1]}">${ps[0]}</span></td></tr>`}).join('')}
@@ -2557,7 +2989,13 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderAudit();
   renderPrograms();
   renderReference();
-  renderTemplates();
+  // მოდულის ჩატარების მაჩვენებელი გამოითვლება მეცადინეობის ჩანაწერებიდან
+  modulesData.forEach(m=>{const l=modLectures(m.code);if(l.length){m.conducted=l.filter(x=>x.conducted).length;m.totalLectures=l.length;}});
+  renderBranches();
+  renderModuleDrill();
+  renderTemplateDrill();
+  renderPalette();
+  renderPlanned();
   renderGroups();
   renderModules();
   renderSchedule();
