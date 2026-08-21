@@ -203,7 +203,7 @@ textarea.fi{resize:vertical;min-height:80px}
       <button class="ni" onclick="go('templates',this,'მოდულის შაბლონები')"><span class="ni-icon">📗</span>მოდულის შაბლონები</button>
 
       <div class="sb-section">სასწავლო პროცესი</div>
-      <button class="ni" onclick="go('users',this,'მომხმარებლების მართვა')"><span class="ni-icon">👤</span>მომხმარებლების მართვა</button>
+      <button class="ni" onclick="go('users',this,'მომხმარებლები და როლები')"><span class="ni-icon">👤</span>მომხმარებლები და როლები</button>
       <button class="ni" onclick="go('students',this,'პროფესიული სტუდენტები')"><span class="ni-icon">🎓</span>პროფესიული სტუდენტები</button>
       <button class="ni" onclick="go('teachers',this,'პროფესიული განათლების მასწავლებლები')"><span class="ni-icon">👨‍🏫</span>მასწავლებლები</button>
       <button class="ni" onclick="go('groups',this,'ჯგუფები')"><span class="ni-icon">👥</span>ჯგუფები</button>
@@ -223,7 +223,6 @@ textarea.fi{resize:vertical;min-height:80px}
 
       <div class="sb-section">მმართველობა</div>
       <button class="ni" onclick="go('orders',this,'ბრძანებები')"><span class="ni-icon">📜</span>ბრძანებები</button>
-      <button class="ni" onclick="go('roles',this,'როლები და უფლებები')"><span class="ni-icon">🔐</span>როლები და უფლებები</button>
       <button class="ni" onclick="go('audit',this,'აუდიტის ჟურნალი')"><span class="ni-icon">🛡️</span>აუდიტის ჟურნალი</button>
 
       <div class="sb-section">სისტემა</div>
@@ -314,7 +313,7 @@ textarea.fi{resize:vertical;min-height:80px}
     <div class="card">
       <div class="ch"><div class="ct">სწრაფი მოქმედებები</div></div>
       <div class="cb" style="display:flex;flex-direction:column;gap:8px">
-        <button class="btn btn-b btn-sm" style="justify-content:flex-start" onclick="go('users',null,'მომხმარებლების მართვა');setTimeout(addUserModal,300)">➕ მომხმარებლის დამატება</button>
+        <button class="btn btn-b btn-sm" style="justify-content:flex-start" onclick="go('users',null,'მომხმარებლები და როლები');setTimeout(addUserModal,300)">➕ მომხმარებლის დამატება</button>
         <button class="btn btn-n btn-sm" style="justify-content:flex-start" onclick="go('news',null,'სიახლეები');setTimeout(addNewsModal,300)">📰 სიახლის გამოქვეყნება</button>
         <button class="btn btn-n btn-sm" style="justify-content:flex-start" onclick="go('surveys',null,'გამოკითხვები');setTimeout(addSurveyModal,300)">📝 გამოკითხვის შექმნა</button>
       </div>
@@ -362,23 +361,46 @@ textarea.fi{resize:vertical;min-height:80px}
 <!-- ══ STUDENTS ══ -->
 <!-- ══ USERS — ცენტრალიზებული მართვა ══ -->
 <div class="screen" id="screen-users">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-      <input class="fi" style="width:240px" placeholder="🔍  სახელი, ID, ელ. ფოსტა..." oninput="renderUsers()" id="usr-search">
-      <button class="chip active" id="usr-chip-all" onclick="filterUsersRole('',this)">ყველა</button>
-      <button class="chip" id="usr-chip-student" onclick="filterUsersRole('პროფესიული სტუდენტი',this)">🎓 პროფ. სტუდენტი</button>
-      <button class="chip" id="usr-chip-lecturer" onclick="filterUsersRole('პროფესიული განათლების მასწავლებელი',this)">👨‍🏫 მასწავლებელი</button>
-      <button class="chip" id="usr-chip-admin" onclick="filterUsersRole('ადმინისტრაციული პერსონალი',this)">🛡️ ადმინისტრაცია</button>
-    </div>
-    <button class="btn btn-b" onclick="addUserModal()">➕ მომხმარებლის დამატება</button>
+  <div class="chip-tabs" style="display:flex;gap:8px;margin-bottom:18px">
+    <button class="chip active" id="ur-tab-users" onclick="switchUserTab('users',this)">👤 მომხმარებლები</button>
+    <button class="chip" id="ur-tab-roles" onclick="switchUserTab('roles',this)">🔐 როლები და წვდომები</button>
   </div>
-  <div class="card">
-    <div class="ch"><div class="ct">მომხმარებლები <span id="usr-count" style="font-size:12px;font-weight:400;color:var(--text3)"></span></div></div>
-    <div class="tw">
-      <table>
-        <thead><tr><th>ID</th><th>სახელი</th><th>როლი</th><th>დამატ. ინფო</th><th>კონტაქტი</th><th>სტატუსი</th></tr></thead>
-        <tbody id="users-tbody"></tbody>
-      </table>
+
+  <!-- ── მომხმარებლები ── -->
+  <div id="ur-pane-users">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <input class="fi" style="width:240px" placeholder="🔍  სახელი, ID, ელ. ფოსტა..." oninput="renderUsers()" id="usr-search">
+        <button class="chip active" id="usr-chip-all" onclick="filterUsersRole('',this)">ყველა</button>
+        <button class="chip" id="usr-chip-student" onclick="filterUsersRole('პროფესიული სტუდენტი',this)">🎓 პროფ. სტუდენტი</button>
+        <button class="chip" id="usr-chip-lecturer" onclick="filterUsersRole('პროფესიული განათლების მასწავლებელი',this)">👨‍🏫 მასწავლებელი</button>
+        <button class="chip" id="usr-chip-admin" onclick="filterUsersRole('ადმინისტრაციული პერსონალი',this)">🛡️ ადმინისტრაცია</button>
+      </div>
+      <button class="btn btn-b" onclick="addUserModal()">➕ მომხმარებლის დამატება</button>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">მომხმარებლები <span id="usr-count" style="font-size:12px;font-weight:400;color:var(--text3)"></span></div></div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>ID</th><th>სახელი</th><th>ტიპი</th><th>სისტემური როლი</th><th>დამატ. ინფო</th><th>კონტაქტი</th><th>სტატუსი</th><th></th></tr></thead>
+          <tbody id="users-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── როლები და წვდომები ── -->
+  <div id="ur-pane-roles" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div style="font-size:13px;color:var(--text2);max-width:760px">როლებზე დაფუძნებული, <strong>მინიმალური საკმარისი წვდომა</strong> [ორგ]-ის სტრუქტურის მიხედვით. თითოეულ როლზე იმართება <strong>CRUD წვდომა</strong> რესურსების ჭრილში. 🔒 = სპეც. კატეგორიის მონაცემები (სსსმ, შშმ, სოც. სტატუსი, ჯანმრთელობის დოკუმენტი). — [პმპ] 9.4</div>
+      <button class="btn btn-b" onclick="addRoleModal()">➕ როლის დამატება</button>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">როლები <span id="role-count" style="font-size:12px;font-weight:400;color:var(--text3)"></span></div></div>
+      <div class="tw"><table>
+        <thead><tr><th>როლი</th><th>დასახელება</th><th>წვდომის არეალი</th><th>მომხმარებელი</th><th>CRUD წვდომა</th><th>სპეც. კატ.</th><th>მოქმედება</th></tr></thead>
+        <tbody id="roles-tbody"></tbody>
+      </table></div>
     </div>
   </div>
 </div>
@@ -683,18 +705,6 @@ textarea.fi{resize:vertical;min-height:80px}
   </div>
 </div>
 
-<!-- ══ ROLES (§7.2) ══ -->
-<div class="screen" id="screen-roles">
-  <div style="font-size:13px;color:var(--text2);margin-bottom:16px">როლებზე დაფუძნებული, მინიმალური საკმარისი წვდომა [ორგ]-ის სტრუქტურის მიხედვით. 🔒 = სპეც. კატეგორიის მონაცემებზე წვდომა (სსსმ, შშმ, სოც. სტატუსი, ჯანმრთელობის დოკუმენტი). — [პმპ] 9.4</div>
-  <div class="card">
-    <div class="ch"><div class="ct">როლები და უფლებები</div></div>
-    <div class="tw"><table>
-      <thead><tr><th>როლი</th><th>დასახელება</th><th>წვდომის არეალი</th><th>მომხმარებელი</th><th>სპეც. კატ.</th></tr></thead>
-      <tbody id="roles-tbody"></tbody>
-    </table></div>
-  </div>
-</div>
-
 <!-- ══ AUDIT LOG (§7.3) ══ -->
 <div class="screen" id="screen-audit">
   <div style="font-size:13px;color:var(--text2);margin-bottom:16px">პერსონალურ მონაცემებზე ყოველი შექმნა/ცვლილება/წაშლა აღირიცხება. მფლობელი — პერსონალურ მონაცემთა დაცვის ოფიცერი. — [პმპ] 9.9</div>
@@ -939,6 +949,78 @@ const rolesData=[
   {id:'it_manager',label:'IT მენეჯერი',scope:'ანგარიშები, ინტეგრაციები, სარეზერვო ასლები',users:1,special:false},
   {id:'student',label:'პროფესიული სტუდენტი',scope:'საკუთარი მონაცემები, შედეგები, განაცხადები',users:187,special:false},
 ];
+// ── CRUD წვდომის რესურსები (§7.2) ──
+const PERM_RESOURCES=[
+  {key:'students',    label:'პროფესიული სტუდენტები', group:'სასწავლო პროცესი'},
+  {key:'teachers',    label:'მასწავლებლები',          group:'სასწავლო პროცესი'},
+  {key:'groups',      label:'ჯგუფები',                group:'სასწავლო პროცესი'},
+  {key:'programs',    label:'საგანმანათლებლო პროგრამები', group:'სასწავლო პროცესი'},
+  {key:'templates',   label:'მოდულის შაბლონები',      group:'სასწავლო პროცესი'},
+  {key:'modules',     label:'სასწავლო მოდულები',      group:'სასწავლო პროცესი'},
+  {key:'plans',       label:'კალენდარული გეგმა',       group:'სასწავლო პროცესი'},
+  {key:'schedule',    label:'განრიგი / მეცადინეობა',  group:'სასწავლო პროცესი'},
+  {key:'outcomes',    label:'სწავლის შედეგები',        group:'შეფასება'},
+  {key:'instruments', label:'შეფასების ინსტრუმენტი',   group:'შეფასება'},
+  {key:'registers',   label:'უწყისი',                 group:'შეფასება'},
+  {key:'attendance',  label:'დასწრების რეგისტრი',      group:'შეფასება'},
+  {key:'interim',     label:'შუალედური შეფასება',      group:'შეფასება'},
+  {key:'isp',         label:'ინდივიდუალური სასწავლო გეგმა', group:'შეფასება'},
+  {key:'appeals',     label:'აპელაცია',               group:'შეფასება'},
+  {key:'payments',    label:'გადახდები',              group:'ფინანსები და განაცხადები'},
+  {key:'applications',label:'განაცხადები',            group:'ფინანსები და განაცხადები'},
+  {key:'library',     label:'ბიბლიოთეკა',             group:'კონტენტი'},
+  {key:'news',        label:'სიახლეები',              group:'კონტენტი'},
+  {key:'surveys',     label:'გამოკითხვები',           group:'კონტენტი'},
+  {key:'career',      label:'კარიერა / ვაკანსიები',    group:'კონტენტი'},
+  {key:'orders',      label:'ბრძანებები',             group:'მმართველობა'},
+  {key:'users_roles', label:'მომხმარებლები და როლები', group:'მმართველობა'},
+  {key:'audit',       label:'აუდიტის ჟურნალი',        group:'მმართველობა'},
+  {key:'reports',     label:'ანგარიშები',             group:'მმართველობა'},
+  {key:'special_data',label:'🔒 სპეც. კატეგორიის მონაცემები', group:'მმართველობა'},
+];
+const CRUD=[['c','შექმნა'],['r','ნახვა'],['u','რედაქტ.'],['d','წაშლა']];
+// მინიმალური საკმარისი წვდომის საწყისი კონფიგურაცია
+const PERM_SEED={
+  director:{'*':'crud'},
+  spms_head:{students:'ru',teachers:'ru',groups:'cru',programs:'r',templates:'r',modules:'cru',plans:'cru',schedule:'crud',
+             outcomes:'r',instruments:'ru',registers:'cru',attendance:'r',interim:'cru',isp:'cru',appeals:'r',
+             orders:'r',reports:'cr',special_data:'r',users_roles:'r'},
+  spms_specialist:{students:'cru',teachers:'r',groups:'cru',programs:'r',templates:'r',modules:'cru',plans:'r',schedule:'cru',
+                   outcomes:'r',registers:'r',attendance:'cru',interim:'r',orders:'cr',reports:'cr',applications:'cru'},
+  spms_coordinator:{students:'r',groups:'r',modules:'r',plans:'r',schedule:'r',outcomes:'ru',registers:'ru',
+                    attendance:'cru',instruments:'r',reports:'cr'},
+  program_head:{students:'r',teachers:'r',groups:'r',programs:'ru',templates:'ru',modules:'ru',plans:'ru',
+                outcomes:'r',instruments:'ru',isp:'cru',interim:'r',reports:'cr',special_data:'r'},
+  qa_manager:{plans:'r',modules:'r',schedule:'r',outcomes:'r',instruments:'r',registers:'r',attendance:'r',reports:'cru'},
+  inclusive_specialist:{students:'ru',isp:'crud',outcomes:'r',attendance:'r',special_data:'crud',reports:'cr'},
+  career_specialist:{students:'r',career:'crud',news:'cru',surveys:'cru',reports:'cr'},
+  teacher:{students:'r',groups:'r',modules:'r',plans:'cru',schedule:'r',outcomes:'cru',instruments:'cru',
+           registers:'cru',attendance:'cru',library:'r',surveys:'r'},
+  librarian:{library:'crud',students:'r',modules:'r',reports:'cr'},
+  dpo:{audit:'r',users_roles:'r',students:'r',teachers:'r',special_data:'r',reports:'cr'},
+  finance_manager:{payments:'crud',students:'r',applications:'r',reports:'cru',programs:'r'},
+  records_manager:{orders:'crud',applications:'cru',students:'r',teachers:'r',reports:'cr'},
+  it_manager:{users_roles:'crud',audit:'r',reports:'r'},
+  student:{outcomes:'r',attendance:'r',schedule:'r',modules:'r',library:'r',surveys:'r',news:'r',career:'r',
+           applications:'cr',payments:'r',orders:'r'},
+};
+const rolePermissions={};
+function seedPermissions(){
+  rolesData.forEach(role=>{
+    const spec=PERM_SEED[role.id]||{};
+    rolePermissions[role.id]={};
+    PERM_RESOURCES.forEach(res=>{
+      const g=spec['*']||spec[res.key]||'';
+      rolePermissions[role.id][res.key]={c:g.includes('c'),r:g.includes('r'),u:g.includes('u'),d:g.includes('d')};
+    });
+  });
+}
+function permCount(roleId){
+  const pm=rolePermissions[roleId]||{};
+  let n=0; Object.values(pm).forEach(v=>CRUD.forEach(([k])=>{if(v[k])n++}));
+  return n;
+}
+const PERM_TOTAL=()=>PERM_RESOURCES.length*4;
 // ── AUDIT LOG (§7.3) — [პმპ] 9.9 ──
 const auditLog=[
   {id:'AUD-001',actor:'თ. ბერიძე',role:'spms_specialist',action:'UPDATE',entity:'student',entityId:'BMA-2402',at:'09.07.2026 14:22',ip:'10.0.4.18'},
@@ -1533,17 +1615,166 @@ function saveOrder(){
   ordersData.unshift({id:'ORD-'+(ordersData.length+1),no,date:document.getElementById('no-date').value||'—',index:document.getElementById('no-index').value,subject:document.getElementById('no-subj').value,eflow:document.getElementById('no-eflow').value,eSign:true,pSign:false,amends:document.getElementById('no-amends').value||null});
   renderOrders();closeModal();toast('ბრძანება რეგისტრირდა ✓','success');
 }
-// ── როლები (§7.2) ──
+// ── როლები და CRUD წვდომები (§7.2) ──
+function switchUserTab(tab,btn){
+  document.getElementById('ur-pane-users').style.display = tab==='users'?'block':'none';
+  document.getElementById('ur-pane-roles').style.display = tab==='roles'?'block':'none';
+  document.querySelectorAll('[id^=ur-tab-]').forEach(c=>c.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  if(tab==='roles')renderRoles();
+}
 function renderRoles(){
   const tb=document.getElementById('roles-tbody');
   if(!tb)return;
-  tb.innerHTML=rolesData.map(r=>`<tr>
-    <td style="font-size:11px;font-weight:700;color:var(--blue)">${r.id}</td>
-    <td><strong style="font-size:13px">${r.label}</strong></td>
-    <td style="font-size:12px;color:var(--text2)">${r.scope}</td>
-    <td style="text-align:center"><span class="bd bd-b">${r.users}</span></td>
-    <td>${r.special?'<span class="bd bd-a" title="სპეც. კატეგორიის მონაცემებზე წვდომა">🔒 სპეც. კატ.</span>':'<span style="color:var(--text3)">—</span>'}</td>
-  </tr>`).join('');
+  tb.innerHTML=rolesData.map(r=>{
+    const n=permCount(r.id), tot=PERM_TOTAL();
+    const pct=Math.round(n/tot*100);
+    const col=pct>=90?'var(--red)':pct>=40?'var(--amber)':'var(--green)';
+    return `<tr>
+      <td style="font-size:11px;font-weight:700;color:var(--blue)">${r.id}</td>
+      <td><strong style="font-size:13px">${r.label}</strong></td>
+      <td style="font-size:12px;color:var(--text2)">${r.scope}</td>
+      <td style="text-align:center"><span class="bd bd-b">${r.users}</span></td>
+      <td style="min-width:130px">
+        <div style="font-size:11px;margin-bottom:3px">${n} / ${tot}</div>
+        <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${col}"></div></div>
+      </td>
+      <td>${r.special?'<span class="bd bd-a" title="სპეც. კატეგორიის მონაცემებზე წვდომა">🔒 დიახ</span>':'<span style="color:var(--text3)">—</span>'}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-xs btn-o" onclick="rolePermissionsPage('${r.id}')">🔐 წვდომები</button>
+        <button class="btn btn-xs btn-ghost" onclick="editRoleModal('${r.id}')">✏</button>
+        ${['director','student','teacher'].includes(r.id)?'':`<button class="btn btn-xs btn-r" onclick="removeRole('${r.id}')">✕</button>`}
+      </td></tr>`;
+  }).join('');
+  const c=document.getElementById('role-count'); if(c)c.textContent=rolesData.length+' როლი';
+}
+// ── CRUD მატრიცა ──
+function permMatrixBody(roleId){
+  const groups=[...new Set(PERM_RESOURCES.map(x=>x.group))];
+  return groups.map(g=>{
+    const rows=PERM_RESOURCES.filter(x=>x.group===g).map(res=>{
+      const pm=rolePermissions[roleId][res.key];
+      const all=CRUD.every(([k])=>pm[k]);
+      return `<tr>
+        <td style="font-size:12px">${res.label}</td>
+        ${CRUD.map(([k])=>`<td style="text-align:center"><input type="checkbox" ${pm[k]?'checked':''} onchange="setPerm('${roleId}','${res.key}','${k}',this.checked)" style="width:16px;height:16px;cursor:pointer;accent-color:var(--blue)"></td>`).join('')}
+        <td style="text-align:center"><input type="checkbox" ${all?'checked':''} onchange="setPermRow('${roleId}','${res.key}',this.checked)" style="width:16px;height:16px;cursor:pointer;accent-color:var(--green)" title="მთელი სტრიქონი"></td>
+      </tr>`;
+    }).join('');
+    return `<tr><td colspan="6" style="background:var(--blue-lt);font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.4px;padding:8px 10px">${g}</td></tr>${rows}`;
+  }).join('');
+}
+function refreshPermMatrix(roleId){
+  const tb=document.querySelector('#perm-table tbody');
+  if(!tb){rolePermissionsPage(roleId);return;}
+  tb.innerHTML=permMatrixBody(roleId);
+  refreshPermSummary(roleId);
+}
+function rolePermissionsPage(roleId){
+  const r=rolesData.find(x=>x.id===roleId); if(!r)return;
+  const body=permMatrixBody(roleId);
+  showModal(`წვდომები — ${r.label}`,`
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;align-items:center">
+      <span class="bd bd-p">${r.id}</span><span class="bd bd-b">${r.users} მომხმარებელი</span>
+      <span class="bd bd-n" id="perm-summary">${permCount(roleId)} / ${PERM_TOTAL()} წვდომა</span>
+      ${r.special?'<span class="bd bd-a">🔒 სპეც. კატეგორია</span>':''}
+    </div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:12px">${r.scope}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+      ${CRUD.map(([k,l])=>`<button class="btn btn-xs btn-o" onclick="setPermCol('${roleId}','${k}',true)">+ ყველა ${l}</button>`).join('')}
+      <button class="btn btn-xs btn-ghost" onclick="setPermAll('${roleId}',true)">✓ სრული წვდომა</button>
+      <button class="btn btn-xs btn-r" onclick="setPermAll('${roleId}',false)">✕ წვდომის მოხსნა</button>
+    </div>
+    <div class="tw"><table id="perm-table">
+      <thead><tr>
+        <th style="min-width:220px">რესურსი</th>
+        ${CRUD.map(([k,l])=>`<th style="text-align:center;cursor:pointer" onclick="togglePermCol('${roleId}','${k}')" title="სვეტის გადართვა">${l}<div style="font-size:9px;font-weight:400;color:var(--text3)">${k.toUpperCase()}</div></th>`).join('')}
+        <th style="text-align:center">ყველა</th>
+      </tr></thead>
+      <tbody>${body}</tbody>
+    </table></div>
+    <div style="background:var(--amber-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2);margin-top:12px">
+      მინიმალური საკმარისი წვდომის პრინციპი — როლს მიენიჭოს <strong>მხოლოდ</strong> ის უფლებები, რაც ფუნქციისთვის აუცილებელია. სპეც. კატეგორიის მონაცემები ხელმისაწვდომია მხოლოდ უფლებამოსილი როლებისთვის. ყოველი ცვლილება აისახება აუდიტის ჟურნალში. — [პმპ] 9.4, 9.9</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">უკან</button><button class="btn btn-b" onclick="savePermissions('${roleId}')">💾 წვდომების შენახვა</button>`,'xl');
+}
+function refreshPermSummary(roleId){
+  const el=document.getElementById('perm-summary');
+  if(el)el.textContent=permCount(roleId)+' / '+PERM_TOTAL()+' წვდომა';
+}
+function setPerm(roleId,resKey,k,val){
+  rolePermissions[roleId][resKey][k]=val;
+  if(k!=='r'&&val)rolePermissions[roleId][resKey].r=true;   // შექმნა/რედაქტ./წაშლა მოითხოვს ნახვას
+  if(k==='r'&&!val){rolePermissions[roleId][resKey].c=false;rolePermissions[roleId][resKey].u=false;rolePermissions[roleId][resKey].d=false;}
+  refreshPermMatrix(roleId);
+}
+function setPermRow(roleId,resKey,val){
+  CRUD.forEach(([k])=>rolePermissions[roleId][resKey][k]=val);
+  refreshPermMatrix(roleId);
+}
+function setPermCol(roleId,k,val){
+  PERM_RESOURCES.forEach(res=>{
+    rolePermissions[roleId][res.key][k]=val;
+    if(k!=='r'&&val)rolePermissions[roleId][res.key].r=true;
+  });
+  refreshPermMatrix(roleId);
+}
+function togglePermCol(roleId,k){
+  const allOn=PERM_RESOURCES.every(res=>rolePermissions[roleId][res.key][k]);
+  setPermCol(roleId,k,!allOn);
+}
+function setPermAll(roleId,val){
+  PERM_RESOURCES.forEach(res=>CRUD.forEach(([k])=>rolePermissions[roleId][res.key][k]=val));
+  refreshPermMatrix(roleId);
+}
+function savePermissions(roleId){
+  const r=rolesData.find(x=>x.id===roleId);
+  r.special=rolePermissions[roleId].special_data.r;
+  auditLog.unshift({id:'AUD-'+String(auditLog.length+1).padStart(3,'0'),actor:'ადმინისტრატორი',role:'it_manager',
+    action:'UPDATE',entity:'role_permission',entityId:roleId,at:'დღეს',ip:'10.0.4.18'});
+  renderRoles();renderAudit();closeModal();
+  toast(`წვდომები შენახულია — ${r.label} (${permCount(roleId)}/${PERM_TOTAL()}) ✓`,'success');
+}
+// ── როლის CRUD ──
+function addRoleModal(){
+  showModal('როლის დამატება',`
+    <div class="fg2"><div><label class="fl">როლის კოდი (ლათინური)</label><input class="fi" id="nr-id" placeholder="new_role"></div>
+      <div><label class="fl">დასახელება</label><input class="fi" id="nr-label" placeholder="ახალი როლი"></div></div>
+    <div class="fg"><label class="fl">წვდომის არეალი</label><textarea class="fi" id="nr-scope" style="min-height:70px" placeholder="რას აკეთებს ეს როლი..."></textarea></div>
+    <div class="fg"><label class="fl">საწყისი წვდომა</label>
+      <select class="fi" id="nr-base"><option value="">— წვდომის გარეშე —</option>${rolesData.map(r=>`<option value="${r.id}">${r.label}-ის ასლი</option>`).join('')}</select></div>
+    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">როლის შექმნის შემდეგ CRUD წვდომები დაზუსტდება წვდომების გვერდზე.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveNewRole()">✓ დამატება</button>`,'lg');
+}
+function saveNewRole(){
+  const id=document.getElementById('nr-id').value.trim();
+  const label=document.getElementById('nr-label').value.trim();
+  if(!id||!label){toast('შეავსეთ კოდი და დასახელება','error');return;}
+  if(rolesData.some(r=>r.id===id)){toast('ამ კოდით როლი უკვე არსებობს','error');return;}
+  rolesData.push({id,label,scope:document.getElementById('nr-scope').value||'—',users:0,special:false});
+  const base=document.getElementById('nr-base').value;
+  rolePermissions[id]={};
+  PERM_RESOURCES.forEach(res=>{
+    const src=base?rolePermissions[base][res.key]:null;
+    rolePermissions[id][res.key]=src?{...src}:{c:false,r:false,u:false,d:false};
+  });
+  auditLog.unshift({id:'AUD-'+String(auditLog.length+1).padStart(3,'0'),actor:'ადმინისტრატორი',role:'it_manager',action:'CREATE',entity:'role',entityId:id,at:'დღეს',ip:'10.0.4.18'});
+  renderRoles();renderAudit();closeModal();toast('როლი დამატებულია ✓','success');
+}
+function editRoleModal(roleId){
+  const r=rolesData.find(x=>x.id===roleId); if(!r)return;
+  showModal('როლის რედაქტირება',`
+    <div class="fg2"><div><label class="fl">კოდი</label><input class="fi" value="${r.id}" disabled></div>
+      <div><label class="fl">დასახელება</label><input class="fi" id="er-label" value="${r.label}"></div></div>
+    <div class="fg"><label class="fl">წვდომის არეალი</label><textarea class="fi" id="er-scope" style="min-height:70px">${r.scope}</textarea></div>
+    <div class="fg"><label class="fl">CRUD წვდომა</label><div style="font-size:13px">${permCount(roleId)} / ${PERM_TOTAL()} — <span style="color:var(--blue);cursor:pointer;text-decoration:underline" onclick="closeModal();rolePermissionsPage('${roleId}')">წვდომების მართვა →</span></div></div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const r=rolesData.find(x=>x.id==='${roleId}');r.label=document.getElementById('er-label').value;r.scope=document.getElementById('er-scope').value;renderRoles();renderUsers();closeModal();toast('როლი განახლდა ✓','success')})()">💾 შენახვა</button>`,'lg');
+}
+function removeRole(roleId){
+  const r=rolesData.find(x=>x.id===roleId); if(!r)return;
+  if(r.users>0){toast(`ვერ იშლება — როლს ${r.users} მომხმარებელი აქვს`,'error');return;}
+  showModal('როლის წაშლა',`<p style="font-size:13px">გსურთ როლის <strong>${r.label}</strong> (<code>${r.id}</code>) წაშლა?</p>
+    <div style="background:var(--red-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--red);margin-top:10px">მოქმედება აისახება აუდიტის ჟურნალში.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="(function(){const i=rolesData.findIndex(x=>x.id==='${roleId}');if(i>-1)rolesData.splice(i,1);delete rolePermissions['${roleId}'];auditLog.unshift({id:'AUD-'+String(auditLog.length+1).padStart(3,'0'),actor:'ადმინისტრატორი',role:'it_manager',action:'DELETE',entity:'role',entityId:'${roleId}',at:'დღეს',ip:'10.0.4.18'});renderRoles();renderAudit();closeModal();toast('როლი წაშლილია','warn')})()">✕ წაშლა</button>`);
 }
 // ── აუდიტის ჟურნალი (§7.3) ──
 function renderAudit(){
@@ -1750,26 +1981,42 @@ function usersAll(){
     :x==='suspended'?['შეჩერებული','bd-a']:x==='terminated'?['შეწყვეტილი','bd-r']
     :x==='inactive'?['არააქტიური','bd-n']:[x,'bd-n'];
   return [
-    ...students.map(x=>({id:x.id,name:x.name,role:'პროფესიული სტუდენტი',rc:'bd-b',info:progName(x.programId)+' · '+x.group,contact:x.email,st:stLbl(x.status)})),
-    ...teachers.map(x=>({id:x.id,name:x.name,role:'პროფესიული განათლების მასწავლებელი',rc:'bd-p',info:IMPLEMENTER_LBL[x.implementerType]+' · '+x.spec,contact:x.email,st:stLbl(x.status)})),
-    ...admins.map(x=>({id:x.id,name:x.name,role:'ადმინისტრაციული პერსონალი',rc:'bd-a',info:(rolesData.find(r=>r.id===x.role)||{}).label||x.dept,contact:x.email,st:stLbl(x.status)})),
+    ...students.map(x=>({uid:x.id,id:x.id,name:x.name,kind:'პროფესიული სტუდენტი',rc:'bd-b',roleId:'student',
+      info:progName(x.programId)+' · '+x.group,contact:x.email,st:stLbl(x.status)})),
+    ...teachers.map(x=>({uid:x.id,id:x.id,name:x.name,kind:'პროფესიული განათლების მასწავლებელი',rc:'bd-p',roleId:'teacher',
+      info:IMPLEMENTER_LBL[x.implementerType]+' · '+x.spec,contact:x.email,st:stLbl(x.status)})),
+    ...admins.map(x=>({uid:x.id,id:x.id,name:x.name,kind:'ადმინისტრაციული პერსონალი',rc:'bd-a',roleId:x.role,
+      info:x.dept,contact:x.email,st:stLbl(x.status)})),
   ];
 }
 function renderUsers(){
   const q=(document.getElementById('usr-search')?.value||'').trim();
   let list=usersAll();
-  if(usrRole) list=list.filter(u=>u.role===usrRole);
+  if(usrRole) list=list.filter(u=>u.kind===usrRole);
   if(q) list=list.filter(u=>u.name.includes(q)||u.id.includes(q)||(u.contact||'').includes(q));
   const el=document.getElementById('users-tbody'); if(!el) return;
-  el.innerHTML=list.map(u=>`<tr>
+  el.innerHTML=list.map(u=>{
+    const role=rolesData.find(r=>r.id===u.roleId);
+    return `<tr>
     <td style="font-weight:600;color:var(--blue)">${u.id}</td>
     <td>${u.name}</td>
-    <td><span class="bd ${u.rc}">${u.role}</span></td>
+    <td><span class="bd ${u.rc}">${u.kind}</span></td>
+    <td>${role?`<span class="bd bd-n" style="cursor:pointer" onclick="rolePermissionsPage('${role.id}')" title="წვდომების ნახვა">🔐 ${role.label}</span>`:'<span style="color:var(--text3)">—</span>'}</td>
     <td style="color:var(--text2);font-size:12px">${u.info||'—'}</td>
     <td style="font-size:12px;color:var(--text2)">${u.contact||'—'}</td>
     <td><span class="bd ${u.st[1]}">${u.st[0]}</span></td>
-  </tr>`).join('');
+    <td>${u.kind==='ადმინისტრაციული პერსონალი'?`<button class="btn btn-xs btn-ghost" onclick="assignRoleModal('${u.id}')" title="როლის მინიჭება">⇄</button>`:''}</td>
+  </tr>`}).join('');
   const c=document.getElementById('usr-count'); if(c)c.textContent=list.length+' მომხმარებელი';
+}
+function assignRoleModal(uid){
+  const a=admins.find(x=>x.id===uid); if(!a)return;
+  showModal('სისტემური როლის მინიჭება',`
+    <div class="fg"><label class="fl">მომხმარებელი</label><div style="font-weight:700">${a.name} · ${a.id}</div></div>
+    <div class="fg"><label class="fl">სისტემური როლი</label>
+      <select class="fi" id="ar-role">${rolesData.filter(r=>!['student','teacher'].includes(r.id)).map(r=>`<option value="${r.id}" ${r.id===a.role?'selected':''}>${r.label}</option>`).join('')}</select></div>
+    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">როლის ცვლილება ცვლის მომხმარებლის CRUD წვდომებს და აისახება აუდიტის ჟურნალში.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const a=admins.find(x=>x.id==='${uid}');const nv=document.getElementById('ar-role').value;a.role=nv;const rr=rolesData.find(r=>r.id===nv);a.dept=rr?rr.label:a.dept;auditLog.unshift({id:'AUD-'+String(auditLog.length+1).padStart(3,'0'),actor:'ადმინისტრატორი',role:'it_manager',action:'UPDATE',entity:'user_role',entityId:'${uid}',at:'დღეს',ip:'10.0.4.18'});renderUsers();renderAudit();closeModal();toast('როლი მინიჭებულია ✓','success')})()">✓ მინიჭება</button>`,'lg');
 }
 function filterUsersRole(role,el){usrRole=role;document.querySelectorAll('[id^=usr-chip]').forEach(c=>c.classList.remove('active'));if(el)el.classList.add('active');renderUsers();}
 function addUserModal(){
@@ -2299,7 +2546,9 @@ function clearBg(){
 document.addEventListener('DOMContentLoaded',()=>{
   renderStudents(students);
   renderTeachers(teachers);
+  seedPermissions();
   renderUsers();
+  renderRoles();
   renderOutcomes();
   renderAttendance();
   renderInterim();
