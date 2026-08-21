@@ -636,8 +636,7 @@ tr:hover td{background:#eff8f1}
         <div class="ch"><div class="ct">დასწრების რეგისტრი</div></div>
         <div class="cb">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:13px;color:var(--text2)">დაესწრო</span><span style="font-size:18px;font-weight:800;color:var(--green)" id="at-p">—</span></div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:13px;color:var(--text2)">გააცდინა</span><span style="font-size:18px;font-weight:800;color:var(--red)" id="at-a">—</span></div>
-          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--text2)">დააგვიანა</span><span style="font-size:18px;font-weight:800;color:var(--amber)" id="at-l">—</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--text2)">გააცდინა</span><span style="font-size:18px;font-weight:800;color:var(--red)" id="at-a">—</span></div>
           <div style="margin-top:10px;font-size:11px;color:var(--text3)">დასწრება რეგისტრია — პროცენტული ზღვარი და ქულა არ არსებობს</div>
         </div>
       </div>
@@ -1007,7 +1006,7 @@ const RESULT_LBL={confirmed:['დადასტურდა','bd-g'],not_confir
 const SOURCE_LBL={assessment:'შეფასება',formal_recognition:'ფორმალური აღიარება',non_formal_recognition:'არაფორმალური აღიარება',mobility_transfer:'მობილობით გადატანა'};
 const myModules=[
   {code:'MOD-101',regNo:'0910919',name:'ბიოქიმია',teacher:'ლია გოგიაშვილი',credits:4,startsOn:'10.02.2026',endsOn:'25.05.2026',
-   present:22,absent:1,late:1,survey:true,surveyUrl:'https://forms.google.com/biochem-survey',
+   present:22,absent:1,survey:true,surveyUrl:'https://forms.google.com/biochem-survey',
    outcomes:[
      {no:1,title:'აღწერს უჯრედის ქიმიურ შემადგენლობას',direction:'survey',result:'confirmed',attempt:1,on:'20.03.2026',source:'assessment',evidence:2},
      {no:2,title:'ახასიათებს ცილების სტრუქტურასა და ფუნქციას',direction:'survey',result:'confirmed',attempt:1,on:'03.04.2026',source:'assessment',evidence:1},
@@ -1018,7 +1017,7 @@ const myModules=[
      {no:7,title:'ინტერპრეტირებს ბიოქიმიური კვლევის შედეგებს',direction:'practical_task',result:null,attempt:null,on:null,source:null,evidence:0},
    ]},
   {code:'MOD-107',regNo:'0910922',name:'ფარმაკოლოგია',teacher:'მარინა ბერიძე',credits:5,startsOn:'01.03.2026',endsOn:'20.06.2026',
-   present:18,absent:4,late:2,survey:true,surveyUrl:'https://forms.google.com/pharmacology-survey',
+   present:18,absent:4,survey:true,surveyUrl:'https://forms.google.com/pharmacology-survey',
    outcomes:[
      {no:1,title:'ახასიათებს წამლის ფარმაკოკინეტიკას',direction:'survey',result:'confirmed',attempt:1,on:'25.03.2026',source:'assessment',evidence:1},
      {no:2,title:'აღწერს ანტიბიოტიკების ჯგუფებს',direction:'survey',result:'not_confirmed',attempt:2,on:'20.04.2026',source:'assessment',evidence:1},
@@ -1028,7 +1027,7 @@ const myModules=[
      {no:6,title:'იცავს წამლის შენახვის წესებს',direction:'practical_task',result:null,attempt:null,on:null,source:null,evidence:0},
    ]},
   {code:'MOD-108',regNo:'0910931',name:'კლინიკური პრაქტიკა',teacher:'ვასო ლომიძე',credits:8,startsOn:'01.02.2026',endsOn:'30.06.2026',
-   present:27,absent:1,late:0,survey:false,surveyUrl:'',
+   present:27,absent:1,survey:false,surveyUrl:'',
    outcomes:[
      {no:1,title:'ახორციელებს პაციენტის მოვლას ზედამხედველობით',direction:'practical_task_observed',result:'confirmed',attempt:1,on:'15.04.2026',source:'assessment',evidence:4},
      {no:2,title:'ზომავს სასიცოცხლო მაჩვენებლებს',direction:'practical_task_observed',result:'confirmed',attempt:1,on:'22.04.2026',source:'assessment',evidence:3},
@@ -1036,7 +1035,7 @@ const myModules=[
      {no:4,title:'იცავს ინფექციის კონტროლის პროტოკოლს',direction:'practical_task_observed',result:null,attempt:null,on:null,source:null,evidence:0},
    ]},
   {code:'MOD-105',regNo:'0910905',name:'მიკრობიოლოგია',teacher:'ნინო ახვლედიანი',credits:4,startsOn:'10.03.2026',endsOn:'15.06.2026',
-   present:20,absent:0,late:1,survey:false,surveyUrl:'',
+   present:20,absent:0,survey:false,surveyUrl:'',
    outcomes:[
      {no:1,title:'აღწერს მიკროორგანიზმების აგებულებას',direction:'survey',result:'confirmed',attempt:1,on:'02.04.2026',source:'assessment',evidence:1},
      {no:2,title:'ახასიათებს მიკროორგანიზმების კლასიფიკაციას',direction:'survey',result:'confirmed',attempt:1,on:'02.05.2026',source:'mobility_transfer',evidence:1},
@@ -1073,7 +1072,6 @@ function showModuleModal(idx){
       <div class="stat-box" style="flex:1"><div class="stat-num" style="color:var(--green)">${conf}<span style="font-size:16px;color:var(--text3)">/${m.outcomes.length}</span></div><div class="stat-lbl">დადასტურებული შედეგი</div></div>
       <div class="stat-box" style="flex:1"><div class="stat-num">${m.present}</div><div class="stat-lbl">დაესწრო</div></div>
       <div class="stat-box" style="flex:1"><div class="stat-num" style="color:${m.absent?'var(--red)':'var(--green)'}">${m.absent}</div><div class="stat-lbl">გააცდინა</div></div>
-      <div class="stat-box" style="flex:1"><div class="stat-num" style="color:${m.late?'var(--amber)':'var(--green)'}">${m.late}</div><div class="stat-lbl">დააგვიანა</div></div>
     </div>
     <div style="font-size:12px;color:var(--text2);margin-bottom:10px">პროფესიული განათლების მასწავლებელი: <b>${m.teacher}</b></div>
     <table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>მტკიც.</th><th>შედეგი</th></tr></thead><tbody>${rows}</tbody></table>
@@ -1092,7 +1090,6 @@ function updateJournalSummary(){
   const bar=document.getElementById('oc-bar'); if(bar)bar.style.width=pct+'%';
   set('at-p',myModules.reduce((a,m)=>a+m.present,0));
   set('at-a',myModules.reduce((a,m)=>a+m.absent,0));
-  set('at-l',myModules.reduce((a,m)=>a+m.late,0));
 }
 const jEl=document.getElementById('subjects');
 if(jEl) myModules.forEach((m,idx)=>{

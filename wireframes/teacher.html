@@ -123,7 +123,6 @@ tr:hover td{background:var(--bg)}
 .attendance-cell{width:32px;height:32px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s}
 .att-present{background:var(--green-lt);color:var(--green)}
 .att-absent{background:var(--red-lt);color:var(--red)}
-.att-late{background:var(--amber-lt);color:var(--amber)}
 .att-empty{background:var(--bg);color:var(--muted);border:1px dashed var(--border)}
 .att-empty:hover{background:var(--blue-lt)}
 .grade-input{width:48px;border:1.5px solid var(--border);border-radius:6px;padding:4px 6px;font-size:13px;font-weight:600;text-align:center;font-family:inherit;outline:none}
@@ -427,18 +426,8 @@ tr:hover td{background:var(--bg)}
     </div>
     <div style="overflow-x:auto">
     <table>
-      <thead><tr><th>კოდი</th><th>მოდული</th><th>პროგრამა / მიღება</th><th>ჯგუფი</th><th>სასწ. წელი</th><th>კრედ.</th><th>პერიოდი</th><th>სწ. შედეგი</th><th>ჩატარებული</th><th>კალენდ. გეგმა</th><th>მოქმედება</th></tr></thead>
+      <thead><tr><th>კოდი</th><th>მოდული</th><th>პროგრამა / მიღება</th><th>ჯგუფი</th><th>სასწ. წელი</th><th>კრედ.</th><th>პერიოდი</th><th>სწ. შედეგი</th><th>ჩატარებული</th><th>მოქმედება</th></tr></thead>
       <tbody id="modules-body"></tbody>
-    </table></div>
-  </div>
-  <div class="card">
-    <div class="card-title">კალენდარული გეგმები
-      <span style="font-size:11px;font-weight:400;color:var(--muted)">ავტორი — მოდულის მასწავლებელი · წარდგენა ≥1 კვირით ადრე</span>
-    </div>
-    <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>კოდი</th><th>მოდული</th><th>ჯგუფი</th><th>პერიოდი</th><th>სტატუსი</th><th></th></tr></thead>
-      <tbody id="plan-list"></tbody>
     </table></div>
   </div>
   <div class="card">
@@ -867,13 +856,13 @@ const slotTemplates=[
 // ── ჩემი სასწავლო მოდულები (ინსტანცია + კალენდარული გეგმა §2.6) ──
 const moduleData = [
   {code:'MOD-101', regNo:'0910919', name:'ბიოქიმია', programId:'PRG-1', intakeId:'INT-2', group:'ჯგუფი 101', groupId:'GRP-101', studyYear:2, credits:4, students:24,
-   startsOn:'10.02.2026', endsOn:'25.05.2026', planStatus:'approved', outcomes:7, conducted:18, totalLectures:24},
+   startsOn:'10.02.2026', endsOn:'25.05.2026', outcomes:7, conducted:18, totalLectures:24},
   {code:'MOD-106', regNo:'0910919', name:'ბიოქიმია', programId:'PRG-3', intakeId:'INT-3', group:'ჯგუფი 401', groupId:'GRP-401', studyYear:2, credits:4, students:18,
-   startsOn:'12.02.2026', endsOn:'28.05.2026', planStatus:'draft', outcomes:7, conducted:0, totalLectures:24},
+   startsOn:'12.02.2026', endsOn:'28.05.2026', outcomes:7, conducted:0, totalLectures:24},
   {code:'MOD-107', regNo:'0910922', name:'ფარმაკოლოგია', programId:'PRG-1', intakeId:'INT-2', group:'ჯგუფი 102', groupId:'GRP-102', studyYear:2, credits:5, students:22,
-   startsOn:'01.03.2026', endsOn:'20.06.2026', planStatus:'recommendations_issued', outcomes:6, conducted:12, totalLectures:26},
+   startsOn:'01.03.2026', endsOn:'20.06.2026', outcomes:6, conducted:12, totalLectures:26},
   {code:'MOD-108', regNo:'0910931', name:'კლინიკური პრაქტიკა', programId:'PRG-1', intakeId:'INT-3', group:'ჯგუფი 201', groupId:'GRP-201', studyYear:3, credits:8, students:26,
-   startsOn:'01.02.2026', endsOn:'30.06.2026', planStatus:'approved', outcomes:4, conducted:28, totalLectures:40},
+   startsOn:'01.02.2026', endsOn:'30.06.2026', outcomes:4, conducted:28, totalLectures:40},
 ]
 // ── სწავლის შედეგები — ბიოქიმია 0910919 (72/14/14) §1.5 ──
 const moduleOutcomes = [
@@ -889,7 +878,7 @@ const moduleOutcomes = [
 const journalStudents = [
   {id:'BMA-2401', name:'ბერიძე გიორგი',  att:['ი','ი','ი','არ','ი','ი','ი','ი']},
   {id:'BMA-2402', name:'გოგია თამარ',    att:['ი','ი','ი','ი','ი','ი','ი','ი']},
-  {id:'BMA-2403', name:'ჯოჯუა ანა',      att:['ი','ი','დ','ი','ი','ი','ი','ი']},
+  {id:'BMA-2403', name:'ჯოჯუა ანა',      att:['ი','ი','ი','ი','ი','ი','ი','ი']},
   {id:'BMA-2404', name:'მახარაძე ლევან', att:['ი','ი','ი','ი','ი','ი','ი','ი']},
   {id:'BMA-2405', name:'კვარაცხელია ლაშა',att:['ი','არ','ი','ი','ი','ი','ი','ი']},
   {id:'BMA-2406', name:'ჩხეიძე ნინო',    att:['ი','ი','ი','ი','ი','ი','ი','ი']},
@@ -921,14 +910,9 @@ const myRegisters = [
   {id:'REG-001', moduleCode:'MOD-101', module:'ბიოქიმია', compiledOn:'28.05.2026', dueOn:'01.06.2026', signedAt:'29.05.2026', journalNo:'უწყ-014/2026'},
   {id:'REG-003', moduleCode:'MOD-108', module:'კლინიკური პრაქტიკა', compiledOn:'02.07.2026', dueOn:'07.07.2026', signedAt:null, journalNo:null},
 ]
-// ── ჩემი გაცდენა / დაგვიანება (§2.3) ──
-const myAbsences = [
-  {kind:'lateness', on:'02.07.2026', minutesLate:12, substitute:null, note:'ტრანსპორტი'},
-]
 // ── LOOKUPS ──
 const DIRECTION_LBL={survey:'გამოკითხვა',practical_task:'პრაქტიკული დავალება',practical_task_observed:'პრაქტიკული დავალება დაკვირვებით'};
 const RESULT_LBL={confirmed:['დადასტურდა','badge-green'],not_confirmed:['ვერ დადასტურდა','badge-red']};
-const PLAN_STATUS_LBL={draft:['მონახაზი','badge-navy'],submitted:['წარდგენილი','badge-blue'],recommendations_issued:['რეკომენდაციები','badge-amber'],approved:['შეთანხმებული','badge-green'],rejected:['უარყოფილი','badge-red']};
 const INSTRUMENT_STATUS_LBL={draft:['მონახაზი','badge-navy'],submitted:['წარდგენილი','badge-blue'],validated:['ვალიდირებული','badge-green'],rejected:['უარყოფილი','badge-red']};
 const romanYear=n=>['—','I','II','III','IV','V','VI'][n]||n;
 
@@ -988,7 +972,7 @@ function go(id, el, title){
   // lazy init
   if(id==='journal') buildJournal()
   if(id==='grades'){ buildOutcomes(); buildOutcomeList() }
-  if(id==='modules'){ renderMyModules(); buildCalendarPlans(); buildRegisters() }
+  if(id==='modules'){ renderMyModules(); buildRegisters() }
   if(id==='schedule') buildScheduleWeek()
   const pc=document.querySelector('.page-content'); if(pc)pc.scrollTop=0
 }
@@ -1044,7 +1028,7 @@ function logout(){
 
 
 // ── JOURNAL ──
-const attCycle = ['ი','არ','დ','']
+const attCycle = ['ი','არ','']
 const journalDates = ['03.06','06.06','10.06','13.06','17.06','20.06','24.06','27.06','01.07','02.07','06.07','08.07']
 const todayDate = '02.07'
 
@@ -1060,23 +1044,22 @@ function buildJournal(){
         ? `<th style="cursor:pointer;white-space:nowrap;background:var(--green-lt);color:var(--green);font-weight:800;border-bottom:2px solid var(--green)" onclick="bulkMarkSession(${ai},'${d}')" title="დღეს — ჯგუფური შეყვანა">📅 ${d} ●</th>`
         : `<th style="white-space:nowrap;color:var(--muted)">${d}</th>`;
     }).join('') +
-    '<th>დაესწრო</th><th>გააცდინა</th><th>დააგვიანა</th><th>მოქმედება</th></tr>'
+    '<th>დაესწრო</th><th>გააცდინა</th><th>მოქმედება</th></tr>'
   journalStudents.forEach(s=>{ while(s.att.length < journalDates.length) s.att.push('') })
   body.innerHTML = journalStudents.map((s,si)=>{
     const attCells = journalDates.map((_,ai)=>{
       const a = s.att[ai]||''
-      const cls = a==='ი'?'att-present':a==='არ'?'att-absent':a==='დ'?'att-late':'att-empty'
+      const cls = a==='ი'?'att-present':a==='არ'?'att-absent':'att-empty'
       const isT = journalDates[ai]===todayDate
       return `<td><div class="attendance-cell ${cls}" ${isT?`onclick="cycleAtt(${si},${ai})" id="att-${si}-${ai}" title="კლიკი — სტატუსის შეცვლა"`:'style="opacity:0.55;cursor:default"'}>${a||'·'}</div></td>`
     }).join('')
     const arr=s.att.slice(0,journalDates.length);
-    const pres=arr.filter(a=>a==='ი').length, abs=arr.filter(a=>a==='არ').length, late=arr.filter(a=>a==='დ').length;
+    const pres=arr.filter(a=>a==='ი').length, abs=arr.filter(a=>a==='არ').length;
     return `<tr>
       <td>${s.name}<div style="font-size:10px;color:var(--subtle)">${s.id}</div></td>
       ${attCells}
       <td><span class="badge badge-green">${pres}</span></td>
       <td><span class="badge ${abs?'badge-red':'badge-navy'}">${abs}</span></td>
-      <td><span class="badge ${late?'badge-amber':'badge-navy'}">${late}</span></td>
       <td><button class="btn btn-ghost btn-sm" onclick="studentDetail(${si})">👤</button></td>
     </tr>`
   }).join('')
@@ -1086,7 +1069,7 @@ function cycleAtt(si,ai){
   const next = attCycle[(attCycle.indexOf(cur)+1)%attCycle.length]
   journalStudents[si].att[ai] = next
   const cell = document.getElementById(`att-${si}-${ai}`)
-  cell.className = 'attendance-cell '+(next==='ი'?'att-present':next==='არ'?'att-absent':next==='დ'?'att-late':'att-empty')
+  cell.className = 'attendance-cell '+(next==='ი'?'att-present':next==='არ'?'att-absent':'att-empty')
   cell.textContent = next||'·'
 }
 
@@ -1098,7 +1081,6 @@ function bulkMarkSession(ai, date){
      <div style="display:flex;flex-direction:column;gap:8px">
        <button class="btn btn-green" style="width:100%;justify-content:flex-start;gap:10px" onclick="applyBulkMark(${ai},'ი')"><strong>ი</strong> — ყველა სტუდენტი დასწრებულია</button>
        <button class="btn btn-red" style="width:100%;justify-content:flex-start;gap:10px" onclick="applyBulkMark(${ai},'არ')"><strong>არ</strong> — ყველა გამოუცხადებელია</button>
-       <button class="btn btn-outline" style="width:100%;justify-content:flex-start;gap:10px" onclick="applyBulkMark(${ai},'დ')"><strong>დ</strong> — ყველა დაგვიანებულია</button>
        <button class="btn btn-ghost" style="width:100%;justify-content:flex-start;gap:10px" onclick="applyBulkMark(${ai},'')">ცარიელი — გასუფთავება</button>
      </div>`,
     `<button class="btn btn-ghost" onclick="closeModal()">დახურვა</button>`
@@ -1110,7 +1092,7 @@ function applyBulkMark(ai, val){
     journalStudents[si].att[ai]=val
     const cell = document.getElementById(`att-${si}-${ai}`)
     if(cell){
-      cell.className='attendance-cell '+(val==='ი'?'att-present':val==='არ'?'att-absent':val==='დ'?'att-late':'att-empty')
+      cell.className='attendance-cell '+(val==='ი'?'att-present':val==='არ'?'att-absent':'att-empty')
       cell.textContent=val||'·'
     }
   })
@@ -1159,7 +1141,6 @@ function renderMyModules(){
   const b=document.getElementById('modules-body');
   if(!b)return;
   b.innerHTML=moduleData.map((m,i)=>{
-    const ps=PLAN_STATUS_LBL[m.planStatus];
     const pct=m.totalLectures?Math.round(m.conducted/m.totalLectures*100):0;
     return `<tr>
       <td style="font-weight:700;color:var(--blue);font-size:11px">${m.code}</td>
@@ -1171,7 +1152,6 @@ function renderMyModules(){
       <td style="font-size:11px;white-space:nowrap">${m.startsOn}<br>${m.endsOn}</td>
       <td style="text-align:center">${m.outcomes}</td>
       <td><div style="font-size:11px">${m.conducted}/${m.totalLectures}</div><div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden;min-width:44px"><div style="height:100%;width:${pct}%;background:var(--blue)"></div></div></td>
-      <td><span class="badge ${ps[1]}">${ps[0]}</span></td>
       <td style="white-space:nowrap">
         <button class="btn btn-outline btn-sm" onclick="openModuleDetail(${i})">ჟურნალი</button>
         <button class="btn btn-ghost btn-sm" onclick="manageSurvey(${i},'${m.name}','${m.group}')">📊</button>
@@ -1246,58 +1226,17 @@ function buildRegisters(){
     <td>${r.signedAt?'':'<button class="btn btn-blue btn-sm" onclick="toast(\'უწყისი ხელმოწერილია ✓\',\'success\')">✍</button>'}</td>
   </tr>`).join('');
 }
-function buildCalendarPlans(){
-  const el=document.getElementById('plan-list');
-  if(!el)return;
-  el.innerHTML=moduleData.map(m=>{
-    const ps=PLAN_STATUS_LBL[m.planStatus];
-    return `<tr>
-      <td style="font-weight:700;color:var(--blue)">${m.code}</td>
-      <td>${m.name}<div style="font-size:10px;color:var(--subtle)">სარეგ. № ${m.regNo}</div></td>
-      <td>${m.group}</td>
-      <td style="font-size:11px">${m.startsOn}<br>${m.endsOn}</td>
-      <td><span class="badge ${ps[1]}">${ps[0]}</span></td>
-      <td><button class="btn btn-ghost btn-sm" onclick="planModal('${m.code}')">📋</button></td>
-    </tr>`;
-  }).join('');
-}
-function planModal(code){
-  const m=moduleData.find(x=>x.code===code);if(!m)return;
-  const ps=PLAN_STATUS_LBL[m.planStatus];
-  showModal(`კალენდარული გეგმა — ${m.name}`,
-    `<div style="margin-bottom:12px"><span class="badge ${ps[1]}">${ps[0]}</span> <span class="badge badge-navy">${m.group}</span></div>
-     <table style="font-size:12px;margin-bottom:12px">
-       <tr><td style="color:var(--muted)">პროგრამა</td><td>${PROGRAMS[m.programId]}</td></tr>
-       <tr><td style="color:var(--muted)">მიღება</td><td>${INTAKES[m.intakeId]||'—'}</td></tr>
-       <tr><td style="color:var(--muted)">მოდულის პერიოდი</td><td>${m.startsOn} – ${m.endsOn}</td></tr>
-       <tr><td style="color:var(--muted)">კრედიტი</td><td>${m.credits}</td></tr>
-       <tr><td style="color:var(--muted)">სწავლის შედეგი</td><td>${m.outcomes}</td></tr>
-       <tr><td style="color:var(--muted)">ჩატარებული მეცადინეობა</td><td>${m.conducted}/${m.totalLectures}</td></tr>
-     </table>
-     <p style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">ᏚᎪᏙᎪᏞᎠᎬᏴᏌᏞᎾ ᏦᎾᎷᏢᎾᏁᎬᏁᎢᎬᏴᏆ (23.6)</p>
-     <div style="font-size:12px;line-height:2;margin-bottom:12px">
-       <div>${m.planStatus!=='draft'?'✅':'⬜'} თემატიკა</div>
-       <div>${m.planStatus!=='draft'?'✅':'⬜'} საათების რაოდენობა</div>
-       <div>${m.startsOn?'✅':'⬜'} განხორციელების პერიოდი</div>
-       <div>${m.planStatus==='approved'?'✅':'⬜'} საჭირო რესურსები</div>
-       <div>${m.planStatus==='approved'?'✅':'⬜'} შეფასების ვადები</div>
-     </div>
-     <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--muted)">
-       გეგმა დგება <strong>ჯგუფის მიხედვით ინდივიდუალურად</strong>, დირექტორის დამტკიცებულ ფორმაზე; წარედგინება სპმს უფროსს <strong>დაწყებამდე ≥1 კვირით</strong>; განხილვა <strong>≤1 სამუშაო დღე</strong>; რეკომენდაციები სრულდება <strong>24 საათში</strong>. — [სპწ] მუხ. 23</div>`,
-    `<button class="btn btn-ghost" onclick="closeModal()">დახურვა</button>${m.planStatus==='draft'?'<button class="btn btn-blue" onclick="closeModal();toast(\'გეგმა წარდგენილია სპმს უფროსთან\',\'success\')">📤 წარდგენა</button>':''}`,true)
-}
 function studentDetail(si){
   const s = journalStudents[si]
   const row = outcomeMatrix[s.id]||{}
   const arr = s.att.slice(0,journalDates.length)
-  const pres=arr.filter(a=>a==='ი').length, abs=arr.filter(a=>a==='არ').length, late=arr.filter(a=>a==='დ').length
+  const pres=arr.filter(a=>a==='ი').length, abs=arr.filter(a=>a==='არ').length
   const conf=moduleOutcomes.filter(o=>row[o.no]==='confirmed').length
   showModal(`პროფესიული სტუდენტი: ${s.name}`,
     `<div style="display:flex;flex-direction:column;gap:12px">
-      <div class="stat-grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
         <div class="stat-card"><div class="sc-label">დაესწრო</div><div class="sc-value" style="color:var(--green)">${pres}</div></div>
         <div class="stat-card"><div class="sc-label">გააცდინა</div><div class="sc-value" style="color:var(--red)">${abs}</div></div>
-        <div class="stat-card"><div class="sc-label">დააგვიანა</div><div class="sc-value" style="color:var(--amber)">${late}</div></div>
         <div class="stat-card"><div class="sc-label">დადასტურდა</div><div class="sc-value">${conf}</div><div class="sc-sub">/${moduleOutcomes.length} შედეგი</div></div>
       </div>
       <div>
@@ -1311,7 +1250,7 @@ function studentDetail(si){
       <div>
         <p style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">ᏔᎪᏚᏔᎡᎬᏴᎪ — ᎡᎬᏳᏆᏚᎢᎡᏆ</p>
         <div style="display:flex;gap:4px;flex-wrap:wrap">
-          ${arr.map(a=>`<div class="attendance-cell ${a==='ი'?'att-present':a==='არ'?'att-absent':a==='დ'?'att-late':'att-empty'}">${a||'·'}</div>`).join('')}
+          ${arr.map(a=>`<div class="attendance-cell ${a==='ი'?'att-present':a==='არ'?'att-absent':'att-empty'}">${a||'·'}</div>`).join('')}
         </div>
       </div>
       <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--muted)">
@@ -1529,7 +1468,6 @@ buildJournal()
 buildOutcomes()
 buildOutcomeList()
 renderMyModules()
-buildCalendarPlans()
 buildRegisters()
 buildScheduleWeek()
 </script>
