@@ -243,12 +243,12 @@ textarea.fi{resize:vertical;min-height:80px}
       <button class="ni" onclick="go('programs',this,'საგანმანათლებლო პროგრამები')"><span class="ni-icon">🎯</span>პროგრამები</button>
       <button class="ni" onclick="go('registry',this,'მოდულების რეესტრი')"><span class="ni-icon">📗</span>მოდულების რეესტრი</button>
       <button class="ni" onclick="go('intakes',this,'მიღებები')"><span class="ni-icon">🗂️</span>მიღებები</button>
+      <button class="ni" onclick="go('schedule',this,'განრიგი')"><span class="ni-icon">📅</span>განრიგი</button>
 
       <div class="sb-section">სასწავლო პროცესი</div>
       <button class="ni" onclick="go('students',this,'პროფესიული სტუდენტები')"><span class="ni-icon">🎓</span>პროფესიული სტუდენტები</button>
       <button class="ni" onclick="go('teachers',this,'პროფესიული განათლების მასწავლებლები')"><span class="ni-icon">👨‍🏫</span>მასწავლებლები</button>
       <button class="ni" onclick="go('groups',this,'ჯგუფები')"><span class="ni-icon">👥</span>ჯგუფები</button>
-      <button class="ni" onclick="go('schedule',this,'განრიგი')"><span class="ni-icon">📅</span>განრიგი</button>
       <button class="ni" onclick="go('grades',this,'სწავლის შედეგები')"><span class="ni-icon">🎯</span>სწავლის შედეგები</button>
 
       <div class="sb-section">ფინანსები და განაცხადები</div>
@@ -489,34 +489,36 @@ textarea.fi{resize:vertical;min-height:80px}
 
 <!-- ══ SCHEDULE ══ -->
 <div class="screen" id="screen-schedule">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-    <div style="display:flex;gap:8px">
-      <select class="fi" style="width:auto" id="sched-week"><option>კვირა: 07.07 – 11.07.2026</option><option>კვირა: 14.07 – 18.07.2026</option><option>კვირა: 21.07 – 25.07.2026</option></select>
-      <select class="fi" style="width:auto" id="sched-group"><option value="">ყველა ჯგუფი</option><option>ჯგუფი 101</option><option>ჯგუფი 102</option><option>ჯგუფი 201</option><option>ჯგუფი 301</option></select>
-    </div>
-    <button class="btn btn-b" onclick="addLessonModal()">➕ მეცადინეობის დამატება</button>
-  </div>
   <div class="page-head">
     <div>
-      <h2>განრიგი</h2>
-      <div class="ph-sub">გადაათრიეთ მეცადინეობა თავისუფალ სლოტში · სლოტები I–VII (40 წთ) · ≤8 საკონტაქტო საათი დღეში</div>
+      <h2>განრიგი — კვირის ბადე</h2>
+      <div class="ph-sub">წინასწარ განსაზღვრული საათები დაგენერირებულია <strong>მიღებებზე მიბმული ჯგუფებისა და მოდულების</strong> მიხედვით. აირჩიეთ საათი და დააჭირეთ ცარიელ სლოტს — ან გადაანაწილეთ მთელი კვირა ავტომატურად.</div>
     </div>
     <button class="btn btn-b" onclick="toast('ცხრილს ხელს აწერს სპმს უფროსი','info')">✍ ცხრილის ხელმოწერა</button>
   </div>
+  <div class="filter-card">
+    <div class="filter-row">
+      <select class="fi" id="sched-week" onchange="setSchedWeek(this.value)"></select>
+      <select class="fi" id="sched-group" onchange="setSchedGroup(this.value)"><option value="">ჯგუფი: ყველა</option></select>
+      <button class="btn btn-b btn-sm" onclick="autoFillWeek()">🪄 კვირის ავტომატური განაწილება</button>
+      <button class="btn btn-n btn-sm" onclick="clearWeek()">🗑 კვირის გასუფთავება</button>
+      <span class="filter-hint" id="sched-hint"></span>
+    </div>
+  </div>
   <div class="g2" style="align-items:start">
     <div class="card">
-      <div class="ch"><div class="ct">დაუგეგმავი მეცადინეობა</div><span style="font-size:11px;color:var(--text3)">გადაათრიეთ ბადეში</span></div>
-      <div class="cb" id="lesson-palette" style="display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto"></div>
+      <div class="ch"><div class="ct">გასანაწილებელი საათები <span id="sched-left" style="font-size:12px;font-weight:400;color:var(--text3)"></span></div></div>
+      <div class="cb" id="lesson-palette" style="display:flex;flex-direction:column;gap:6px;max-height:360px;overflow-y:auto"></div>
     </div>
     <div class="card">
-      <div class="ch"><div class="ct">ბოლო დაგეგმილი</div></div>
-      <div class="cb"><div class="tw"><table><thead><tr><th>მეცადინეობა</th><th>ჯგუფი</th><th>მასწავლებელი</th><th>სივრცე</th></tr></thead><tbody id="planned-tbody"></tbody></table></div></div>
+      <div class="ch"><div class="ct">კვირის დატვირთვა ჯგუფების ჭრილში</div></div>
+      <div class="cb"><div class="tw"><table><thead><tr><th>ჯგუფი</th><th>პროგრამა</th><th style="width:80px">საჭირო</th><th style="width:80px">გაწერილი</th><th style="width:80px">დარჩენილი</th></tr></thead><tbody id="sched-load"></tbody></table></div></div>
     </div>
   </div>
   <div class="card">
-    <div class="ch"><div class="ct">კვირის ბადე</div><span style="font-size:11px;color:var(--text3)">drag & drop — მეცადინეობა → სლოტი → მასწავლებელი</span></div>
+    <div class="ch"><div class="ct">კვირის ბადე</div><span style="font-size:11px;color:var(--text3)">სლოტები I–VII (40 წთ) · ერთი ჯგუფი — ერთი სლოტში ერთხელ</span></div>
     <div class="tw"><table id="schedule-table">
-      <thead><tr><th>სლოტი</th><th>ორშაბათი</th><th>სამშაბათი</th><th>ოთხშაბათი</th><th>ხუთშაბათი</th><th>პარასკევი</th></tr></thead>
+      <thead><tr><th style="width:90px">სლოტი</th><th>ორშაბათი</th><th>სამშაბათი</th><th>ოთხშაბათი</th><th>ხუთშაბათი</th><th>პარასკევი</th></tr></thead>
       <tbody id="schedule-tbody"></tbody>
     </table></div>
   </div>
@@ -1427,15 +1429,15 @@ const savedReports=[
   {name:'უწყისების რეგისტრი — 2026',date:'20.06.2026',type:'excel'},
 ];
 // ── SCHEDULE (§1.10) — slot ordinals I–VII, ~40 წთ ──
-const scheduleData=[
-  ['ბიოქიმია\nჯგ.101 · 603','შინმოვლა\nჯგ.102 · სიმ. 1','ბიოქიმია\nჯგ.401 · 618','ფარმაკოლ.\nჯგ.301 · ფარმ. ლაბ.','კლინ. პრაქტ.\nჯგ.201 · პარტნიორი'],
-  ['შინმოვლა\nჯგ.102 · სიმ. 1','ბიოქიმია\nჯგ.101 · 603','—','მიკრობიოლ.\nჯგ.202 · 620','ბიოქიმია\nჯგ.401 · 618'],
-  ['—','კლინ. პრაქტ.\nჯგ.201 · პარტნიორი','ფარმაკოლ.\nჯგ.301 · ფარმ. ლაბ.','ბიოქიმია\nჯგ.101 · 603','—'],
-  ['მიკრობიოლ.\nჯგ.202 · 620','—','შინმოვლა\nჯგ.102 · სიმ. 1','—','ფარმაკოლ.\nჯგ.301 · ფარმ. ლაბ.'],
-  ['კონსულტაცია\nჯგ.101 · 603','—','მიკრობიოლ.\nჯგ.202 · 620','შუალედური შეფ.\nჯგ.101 · 603','—'],
-  ['—','ბიოქიმია\nჯგ.401 · 618','—','—','კლინ. პრაქტ.\nჯგ.201 · პარტნიორი'],
-  ['—','—','კონსულტაცია\nჯგ.301 · 618','—','—'],
+// ══ განრიგი: განაწილებული საათები (კვირა × დღე × სლოტი) ══
+const schedPlacements=[
+  {id:'SP-1',week:1,day:1,slot:1,groupId:'GRP-101',imId:'IM-1'},
+  {id:'SP-2',week:1,day:1,slot:2,groupId:'GRP-102',imId:'IM-2'},
+  {id:'SP-3',week:1,day:2,slot:1,groupId:'GRP-101',imId:'IM-1'},
+  {id:'SP-4',week:1,day:3,slot:3,groupId:'GRP-301',imId:'IM-4'},
 ];
+let spSeq=4, schedWeek=1, schedGroup='', schedPick=null;
+
 // ── ATTENDANCE (§4.5) — რეგისტრი: present | absent | late. პროცენტი/ქულა არ არსებობს
 const attendanceData=[
   {studentId:'BMA-2401',name:'ნინო მამულაძე',moduleCode:'MOD-101',present:22,absent:1},
@@ -1621,7 +1623,70 @@ function renderModules(){
   }).join('');
 }
 
+// ══════════ განრიგი: მოთხოვნა მიღებებზე მიბმული ჯგუფებიდან და მოდულებიდან ══════════
+const schedMaxWeek=()=>Math.max(1,...intakeModuleWeeks.map(x=>x.week));
+function schedDemand(week){
+  const out=[];
+  groupsData.filter(g=>g.active).forEach(g=>{
+    const ip=ipOf(g.intakeId,g.programId); if(!ip)return;
+    ipModules(ip.id).forEach(im=>{
+      const w=imWeeks(im.id).find(x=>x.week===week);
+      if(!w||!w.contactH)return;
+      out.push({groupId:g.id,imId:im.id,need:Math.round(w.contactH)});
+    });
+  });
+  return out;
+}
+const spOf=(week,day,slot)=>schedPlacements.find(x=>x.week===week&&x.day===day&&x.slot===slot);
+const spPlaced=(week,groupId,imId)=>schedPlacements.filter(x=>x.week===week&&x.groupId===groupId&&x.imId===imId).length;
+const groupBusy=(week,day,slot,groupId)=>schedPlacements.some(x=>x.week===week&&x.day===day&&x.slot===slot&&x.groupId===groupId);
 function renderSchedule(){
+  const wsel=document.getElementById('sched-week');
+  if(!wsel)return;
+  const mx=schedMaxWeek();
+  if(schedWeek>mx)schedWeek=1;
+  wsel.innerHTML=Array.from({length:mx},(_,k)=>k+1).map(w=>`<option value="${w}" ${w===schedWeek?'selected':''}>სასწავლო კვირა ${w}</option>`).join('');
+  const gsel=document.getElementById('sched-group');
+  if(gsel)gsel.innerHTML='<option value="">ჯგუფი: ყველა</option>'+groupsData.filter(g=>g.active).map(g=>`<option value="${g.id}" ${g.id===schedGroup?'selected':''}>${g.name}</option>`).join('');
+  renderPalette();renderSchedLoad();renderSchedGrid();
+}
+function renderPalette(){
+  const el=document.getElementById('lesson-palette');
+  if(!el)return;
+  const dem=schedDemand(schedWeek).filter(d=>!schedGroup||d.groupId===schedGroup);
+  const open=dem.map(d=>({...d,left:d.need-spPlaced(schedWeek,d.groupId,d.imId)})).filter(d=>d.left>0);
+  const total=dem.reduce((a,d)=>a+d.need,0), left=open.reduce((a,d)=>a+d.left,0);
+  const lf=document.getElementById('sched-left'); if(lf)lf.textContent=left+' / '+total+' საათი დარჩენილია';
+  const hint=document.getElementById('sched-hint');
+  if(hint)hint.textContent=schedPick?'აირჩიეთ ცარიელი სლოტი ბადეში':'აირჩიეთ საათი მარცხნიდან';
+  el.innerHTML=open.length?open.map(d=>{
+    const on=schedPick&&schedPick.groupId===d.groupId&&schedPick.imId===d.imId;
+    return `<div onclick="pickLesson('${d.groupId}','${d.imId}')" style="background:${on?'var(--blue)':'var(--blue-lt)'};color:${on?'#fff':'inherit'};border-left:3px solid var(--blue);border-radius:6px;padding:8px 10px;cursor:pointer;font-size:11px">
+      <div style="font-weight:700;color:${on?'#fff':'var(--navy)'}">${regName((intakeModules.find(x=>x.id===d.imId)||{}).moduleId)}</div>
+      <div style="margin-top:2px;opacity:.85">${groupName(d.groupId)} · დარჩენილია <strong>${d.left}</strong> / ${d.need} სთ</div></div>`;
+  }).join(''):'<div style="font-size:12px;color:var(--text3)">ამ კვირისთვის ყველა საათი გაწერილია</div>';
+}
+function renderSchedLoad(){
+  const tb=document.getElementById('sched-load');
+  if(!tb)return;
+  const dem=schedDemand(schedWeek);
+  const byGroup={};
+  dem.forEach(d=>{
+    const g=byGroup[d.groupId]||(byGroup[d.groupId]={need:0,done:0});
+    g.need+=d.need; g.done+=Math.min(d.need,spPlaced(schedWeek,d.groupId,d.imId));
+  });
+  const rows=Object.entries(byGroup);
+  tb.innerHTML=rows.length?rows.map(([gid,v])=>{
+    const g=groupsData.find(x=>x.id===gid)||{};
+    const left=v.need-v.done;
+    return `<tr><td><strong style="font-size:12px">${g.name||gid}</strong></td>
+      <td style="font-size:11px">${progName(g.programId)}</td>
+      <td style="text-align:center">${v.need}</td>
+      <td style="text-align:center;color:var(--green);font-weight:700">${v.done}</td>
+      <td style="text-align:center"><span class="bd ${left?'bd-a':'bd-g'}">${left}</span></td></tr>`;
+  }).join(''):'<tr><td colspan="5" style="font-size:12px;color:var(--text3)">ამ კვირისთვის საათები არ არის განსაზღვრული</td></tr>';
+}
+function renderSchedGrid(){
   const tb=document.getElementById('schedule-tbody');
   if(!tb)return;
   tb.innerHTML=slotTemplates.map((slot,ri)=>`<tr>
@@ -1630,13 +1695,62 @@ function renderSchedule(){
       <div style="font-size:10px;font-weight:400">${slot.startsAt}–${slot.endsAt}</div>
     </td>
     ${[1,2,3,4,5].map(day=>{
-      const cell=(scheduleData[ri]||[])[day-1]||'—';
-      return `<td style="font-size:12px;vertical-align:top;min-width:130px">
-        ${cell==='—'?'<div style="border:1.5px dashed var(--border);border-radius:5px;padding:10px 6px;text-align:center;font-size:10px;color:var(--text3)">—</div>':''}
-        ${cell!=='—'?`<div style="background:var(--blue-lt);border-left:3px solid var(--blue);border-radius:4px;padding:6px 8px;font-size:11px;line-height:1.4;cursor:pointer" onclick="editLessonModal()">${cell.replace(/\n/g,'<br>')}</div>`:''}
+      const cells=schedPlacements.filter(x=>x.week===schedWeek&&x.day===day&&x.slot===ri+1&&(!schedGroup||x.groupId===schedGroup));
+      return `<td style="font-size:12px;vertical-align:top;min-width:140px">
+        ${cells.map(c=>`<div style="background:var(--green-lt);border-left:3px solid var(--green);border-radius:5px;padding:6px 8px;font-size:11px;line-height:1.4;margin-bottom:4px">
+          <div style="font-weight:700;color:var(--green)">${regName((intakeModules.find(x=>x.id===c.imId)||{}).moduleId)}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
+            <span>${groupName(c.groupId)}</span>
+            <button class="btn btn-xs btn-r" onclick="unplace('${c.id}')" title="მოხსნა">✕</button></div></div>`).join('')}
+        <div onclick="placeHere(${day},${ri+1})" style="border:1.5px dashed ${schedPick?'var(--blue)':'var(--border)'};border-radius:5px;padding:8px 6px;text-align:center;font-size:10px;color:${schedPick?'var(--blue)':'var(--text3)'};cursor:pointer">${schedPick?'+ აქ განთავსება':'—'}</div>
       </td>`;
     }).join('')}
   </tr>`).join('');
+}
+function setSchedWeek(v){schedWeek=+v;schedPick=null;renderSchedule();}
+function setSchedGroup(v){schedGroup=v;schedPick=null;renderSchedule();}
+function pickLesson(groupId,imId){
+  schedPick=(schedPick&&schedPick.groupId===groupId&&schedPick.imId===imId)?null:{groupId,imId};
+  renderPalette();renderSchedGrid();
+}
+function placeHere(day,slot){
+  if(!schedPick){toast('პირველ რიგში აირჩიეთ საათი','info');return;}
+  if(groupBusy(schedWeek,day,slot,schedPick.groupId)){toast('ამ სლოტში ჯგუფს უკვე აქვს მეცადინეობა','error');return;}
+  const d=schedDemand(schedWeek).find(x=>x.groupId===schedPick.groupId&&x.imId===schedPick.imId);
+  if(d&&spPlaced(schedWeek,schedPick.groupId,schedPick.imId)>=d.need){toast('ამ მოდულის ყველა საათი გაწერილია','error');return;}
+  schedPlacements.push({id:'SP-'+(++spSeq),week:schedWeek,day,slot,groupId:schedPick.groupId,imId:schedPick.imId});
+  renderPalette();renderSchedLoad();renderSchedGrid();
+  toast('საათი განთავსდა განრიგში ✓','success');
+}
+function unplace(id){
+  const i=schedPlacements.findIndex(x=>x.id===id);
+  if(i>-1)schedPlacements.splice(i,1);
+  renderPalette();renderSchedLoad();renderSchedGrid();
+  toast('საათი მოხსნილია განრიგიდან','warn');
+}
+function autoFillWeek(){
+  const dem=schedDemand(schedWeek).filter(d=>!schedGroup||d.groupId===schedGroup);
+  let placed=0, skipped=0;
+  dem.forEach(d=>{
+    let left=d.need-spPlaced(schedWeek,d.groupId,d.imId);
+    for(let day=1;day<=5&&left>0;day++)
+      for(let slot=1;slot<=slotTemplates.length&&left>0;slot++){
+        if(groupBusy(schedWeek,day,slot,d.groupId))continue;
+        schedPlacements.push({id:'SP-'+(++spSeq),week:schedWeek,day,slot,groupId:d.groupId,imId:d.imId});
+        left--; placed++;
+      }
+    skipped+=left;
+  });
+  schedPick=null;renderSchedule();
+  toast(skipped?`განთავსდა ${placed} საათი — ${skipped} საათი ვერ მოთავსდა (სლოტები ამოიწურა)`:`კვირა გადანაწილდა — ${placed} საათი ✓`,skipped?'warn':'success');
+}
+function clearWeek(){
+  for(let k=schedPlacements.length-1;k>=0;k--){
+    const x=schedPlacements[k];
+    if(x.week===schedWeek&&(!schedGroup||x.groupId===schedGroup))schedPlacements.splice(k,1);
+  }
+  schedPick=null;renderSchedule();
+  toast('კვირა გასუფთავებულია','warn');
 }
 
 function renderPayments(list){
@@ -2290,21 +2404,13 @@ function addIntakeModule(ipId){
      <div class="fg"><label class="fl">მოდული (რეესტრი)</label>
        ${free.length?`<select class="fi" id="im-mod">${free.map(x=>`<option value="${x.id}">${x.title}</option>`).join('')}</select>`
          :'<div style="color:var(--text3);font-size:12px">რეესტრის ყველა მოდული უკვე დამატებულია</div>'}</div>
-     <div class="fg2"><div><label class="fl">კვირების რაოდენობა (საწყისი)</label><input class="fi" id="im-weeks" type="number" min="0" max="52" value="8"></div>
-       <div><label class="fl">საკონტაქტო საათი / კვირა</label><input class="fi" id="im-ch" type="number" min="0" step="0.5" value="8"></div></div>
-     <div class="fg2"><div><label class="fl">დამოუკიდებელი სამუშაო / კვირა</label><input class="fi" id="im-sh" type="number" min="0" step="0.5" value="2"></div>
-       <div><label class="fl">შეფასება / კვირა</label><input class="fi" id="im-ah" type="number" min="0" step="0.5" value="0"></div></div>
-     <div class="note">კვირები შეიქმნება ერთნაირი საათებით — შემდეგ თითოეული კვირა ცალკე რედაქტირდება.</div>`,
+     <div class="note">საათები კვირების მიხედვით დაემატება მოდულის დამატების შემდეგ — ღილაკით <strong>🗓️ საათები</strong>.</div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button>${free.length?`<button class="btn btn-b" onclick="saveIntakeModule('${ipId}')">✓ დამატება</button>`:''}`,'lg');
 }
 function saveIntakeModule(ipId){
   const sel=document.getElementById('im-mod'); if(!sel)return;
-  const imId='IM-'+(++imSeq);
-  intakeModules.push({id:imId,ipId,moduleId:sel.value});
-  const n=Math.max(0,+document.getElementById('im-weeks').value||0);
-  const ch=+document.getElementById('im-ch').value||0, sh=+document.getElementById('im-sh').value||0, ah=+document.getElementById('im-ah').value||0;
-  for(let w=1;w<=n;w++)intakeModuleWeeks.push({id:'IW-'+(++iwSeq),imId,week:w,contactH:ch,selfH:sh,assessH:ah});
-  renderIntakes();closeModal();viewIntakeProgram(ipId);toast('მოდული დამატებულია ✓','success');
+  intakeModules.push({id:'IM-'+(++imSeq),ipId,moduleId:sel.value});
+  renderIntakes();closeModal();viewIntakeProgram(ipId);toast('მოდული დამატებულია — მიუთითეთ საათები კვირების მიხედვით ✓','success');
 }
 function removeIntakeModule(imId){
   const im=intakeModules.find(x=>x.id===imId);if(!im)return;
@@ -3127,18 +3233,6 @@ function saveNewModule(){
   const t=moduleTemplates.find(x=>x.id===tid);
   modulesData.push({code:'MOD-'+(100+modulesData.length+1),templateId:tid,name:t.title,regNo:t.regNo,programId:document.getElementById('nm-prog').value,intakeId:document.getElementById('nm-intake').value,groupId:document.getElementById('nm-group').value,teacherId:document.getElementById('nm-teacher').value,studyYear:1,credits:t.credits,startsOn:document.getElementById('nm-start').value,endsOn:document.getElementById('nm-end').value,outcomes:t.outcomes,conducted:0,totalLectures:24});
   renderModules();closeModal();toast('მოდული ინსტანცირდა — კალენდარული გეგმა მონახაზშია ✓','success');
-}
-function addLessonModal(){
-  showModal('გაკვეთილის დამატება',`
-    <div class="fg"><label class="fl">მოდული</label><select class="fi">${modulesData.map(m=>'<option>'+m.name+'</option>').join('')}</select></div>
-    <div class="fg"><label class="fl">ჯგუფი</label><select class="fi">${groupsData.map(g=>'<option>'+g.name+'</option>').join('')}</select></div>
-    <div class="fg2"><div><label class="fl">დღე</label><select class="fi"><option>ორშაბათი</option><option>სამშაბათი</option><option>ოთხშაბათი</option><option>ხუთშაბათი</option><option>პარასკევი</option></select></div><div><label class="fl">დრო</label><select class="fi">${scheduleSlots.map(s=>'<option>'+s+'</option>').join('')}</select></div></div>
-    <div class="fg"><label class="fl">სალი</label><input class="fi" placeholder="201"></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="closeModal();toast('გაკვეთილი დაემატა განრიგში ✓','success')">✓ დამატება</button>`);
-}
-function editLessonModal(){
-  showModal('გაკვეთილის რედ.',`<div class="fg"><label class="fl">მოდული</label><select class="fi">${modulesData.map(m=>'<option>'+m.name+'</option>').join('')}</select></div><div class="fg"><label class="fl">სალი</label><input class="fi" value="201"></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="closeModal();toast('გაკვეთილი წაშლილია','warn')">✕ წაშლა</button><button class="btn btn-b" onclick="closeModal();toast('განახლდა ✓','success')">💾 შენახვა</button>`);
 }
 </script>
 <script>
