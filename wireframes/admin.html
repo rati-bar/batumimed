@@ -241,6 +241,8 @@ textarea.fi{resize:vertical;min-height:80px}
 
       <div class="sb-section">საცნობარო მონაცემები</div>
       <button class="ni" onclick="go('programs',this,'საგანმანათლებლო პროგრამები')"><span class="ni-icon">🎯</span>პროგრამები</button>
+      <button class="ni" onclick="go('registry',this,'მოდულების რეესტრი')"><span class="ni-icon">📗</span>მოდულების რეესტრი</button>
+      <button class="ni" onclick="go('intakes',this,'მიღებები')"><span class="ni-icon">🗂️</span>მიღებები</button>
 
       <div class="sb-section">სასწავლო პროცესი</div>
       <button class="ni" onclick="go('students',this,'პროფესიული სტუდენტები')"><span class="ni-icon">🎓</span>პროფესიული სტუდენტები</button>
@@ -680,6 +682,31 @@ textarea.fi{resize:vertical;min-height:80px}
   <div class="grid-3" id="programs-grid"></div>
 </div>
 
+<!-- ══ MODULE REGISTRY ══ -->
+<div class="screen" id="screen-registry">
+  <div class="page-head">
+    <div><h2>მოდულების რეესტრი</h2>
+      <div class="ph-sub">ყველა მოდულის ერთიანი რეესტრი — მოდულს მხოლოდ <strong>დასახელება</strong> აქვს. საათები და კვირები განისაზღვრება მიღების პროგრამაში.</div></div>
+    <button class="btn btn-b" onclick="addRegModal()">➕ მოდულის შექმნა</button>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">მოდულები <span id="reg-count" style="font-size:12px;font-weight:400;color:var(--text3)"></span></div></div>
+    <div class="tw"><table>
+      <thead><tr><th style="width:90px">ID</th><th>დასახელება</th><th style="width:150px">გამოყენება</th><th style="width:120px">მოქმედება</th></tr></thead>
+      <tbody id="registry-tbody"></tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ══ INTAKES ══ -->
+<div class="screen" id="screen-intakes">
+  <div class="page-head">
+    <div><h2>მიღებები</h2>
+      <div class="ph-sub">მიღება → პროგრამები → მოდულები რეესტრიდან → საათების განაწილება კვირების მიხედვით</div></div>
+  </div>
+  <div class="grid-3" id="intakes-grid"></div>
+</div>
+
 
 
 
@@ -780,7 +807,7 @@ function go(id,el,title){
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   if(el)el.classList.add('active');
   document.getElementById('page-title').textContent=title||id;
-  if(id==='schedule'){renderPalette();renderPlanned();}
+  if(id==='schedule')renderSchedule();
   const pc=document.querySelector('.pc'); if(pc)pc.scrollTop=0;
 }
 // ── შიდა გვერდები მოდალების ნაცვლად ──
@@ -1052,86 +1079,197 @@ const moduleTemplates=[
   {id:'MT-4',regNo:'0910931',title:'კლინიკური პრაქტიკა',titleEn:'Clinical Practice',credits:8,kind:'work_based',kindLabel:null,prerequisite:'MT-2',revisions:'11.02.2021',orderId:'ORD-4',outcomes:4,contactH:120,selfH:10,assessH:20,programs:['PRG-1']},
   {id:'MT-5',regNo:'0910905',title:'მიკრობიოლოგია',titleEn:'Microbiology',credits:4,kind:'theoretical',kindLabel:'საბაზო მეცნიერებები',prerequisite:null,revisions:'21.05.2018',orderId:'ORD-4',outcomes:5,contactH:64,selfH:12,assessH:10,programs:['PRG-1','PRG-2','PRG-3']},
 ];
-// ── საათების განაწილება კვირების მიხედვით (სასწავლო გეგმა, დანართი 2) ──
-// ერთი კვირა = საკონტაქტო + დამოუკიდებელი სამუშაო + შეფასების საათები
-const templateWeekPlan=[
-  {id:'TW-1',templateId:'MT-1',week:1,contactH:8,selfH:2,assessH:0,topic:'უჯრედის ქიმიური შემადგენლობა'},
-  {id:'TW-2',templateId:'MT-1',week:2,contactH:8,selfH:2,assessH:0,topic:'წყალი, ელექტროლიტები, pH'},
-  {id:'TW-3',templateId:'MT-1',week:3,contactH:8,selfH:2,assessH:0,topic:'ცილების სტრუქტურა და ფუნქცია'},
-  {id:'TW-4',templateId:'MT-1',week:4,contactH:8,selfH:2,assessH:2,topic:'ამინომჟავები — შუალედური შეფასება'},
-  {id:'TW-5',templateId:'MT-1',week:5,contactH:8,selfH:2,assessH:0,topic:'ნახშირწყლების მეტაბოლიზმი'},
-  {id:'TW-6',templateId:'MT-1',week:6,contactH:8,selfH:2,assessH:0,topic:'ლიპიდების მეტაბოლიზმი'},
-  {id:'TW-7',templateId:'MT-1',week:7,contactH:8,selfH:2,assessH:2,topic:'ფერმენტები — შეფასება'},
-  {id:'TW-8',templateId:'MT-1',week:8,contactH:8,selfH:0,assessH:4,topic:'ლაბორატორიული სამუშაო'},
-  {id:'TW-9',templateId:'MT-1',week:9,contactH:8,selfH:0,assessH:6,topic:'შედეგების ინტერპრეტაცია — დასკვნითი შეფასება'},
-  {id:'TW-10',templateId:'MT-2',week:1,contactH:10,selfH:3,assessH:0,topic:'შინმოვლის საფუძვლები'},
-  {id:'TW-11',templateId:'MT-2',week:2,contactH:10,selfH:3,assessH:0,topic:'პაციენტის უსაფრთხო გარემო'},
-  {id:'TW-12',templateId:'MT-2',week:3,contactH:10,selfH:3,assessH:2,topic:'ჰიგიენური მოვლა — შეფასება'},
-  {id:'TW-13',templateId:'MT-2',week:4,contactH:10,selfH:3,assessH:0,topic:'კვება და დიეტა'},
-  {id:'TW-14',templateId:'MT-2',week:5,contactH:10,selfH:2,assessH:0,topic:'სიმულაციური სავარჯიშო'},
-  {id:'TW-15',templateId:'MT-2',week:6,contactH:10,selfH:2,assessH:2,topic:'მედიკამენტის მიცემა — შეფასება'},
-  {id:'TW-16',templateId:'MT-2',week:7,contactH:10,selfH:2,assessH:0,topic:'სამუშაო გარემოში პრაქტიკა'},
-  {id:'TW-17',templateId:'MT-2',week:8,contactH:10,selfH:1,assessH:4,topic:'სამუშაო გარემოში პრაქტიკა'},
-  {id:'TW-18',templateId:'MT-2',week:9,contactH:10,selfH:1,assessH:8,topic:'დასკვნითი შეფასება'},
-  {id:'TW-19',templateId:'MT-3',week:1,contactH:10,selfH:3,assessH:0,topic:'ფარმაკოკინეტიკა'},
-  {id:'TW-20',templateId:'MT-3',week:2,contactH:10,selfH:3,assessH:0,topic:'ფარმაკოდინამიკა'},
-  {id:'TW-21',templateId:'MT-3',week:3,contactH:10,selfH:2,assessH:2,topic:'ანტიბიოტიკები — შეფასება'},
-  {id:'TW-22',templateId:'MT-3',week:4,contactH:10,selfH:2,assessH:0,topic:'ტკივილგამაყუჩებელი საშუალებები'},
-  {id:'TW-23',templateId:'MT-3',week:5,contactH:10,selfH:2,assessH:0,topic:'გულ-სისხლძარღვთა პრეპარატები'},
-  {id:'TW-24',templateId:'MT-3',week:6,contactH:10,selfH:2,assessH:2,topic:'დოზირება — შეფასება'},
-  {id:'TW-25',templateId:'MT-3',week:7,contactH:10,selfH:2,assessH:2,topic:'გვერდითი მოვლენები'},
-  {id:'TW-26',templateId:'MT-3',week:8,contactH:10,selfH:2,assessH:6,topic:'დასკვნითი შეფასება'},
-  {id:'TW-27',templateId:'MT-4',week:1,contactH:15,selfH:2,assessH:0,topic:'კლინიკური პრაქტიკა — შესავალი'},
-  {id:'TW-28',templateId:'MT-4',week:2,contactH:15,selfH:2,assessH:0,topic:'პაციენტის მოვლა ზედამხედველობით'},
-  {id:'TW-29',templateId:'MT-4',week:3,contactH:15,selfH:2,assessH:2,topic:'პროცედურების შესრულება — შეფასება'},
-  {id:'TW-30',templateId:'MT-4',week:4,contactH:15,selfH:1,assessH:0,topic:'დოკუმენტაციის წარმოება'},
-  {id:'TW-31',templateId:'MT-4',week:5,contactH:15,selfH:1,assessH:0,topic:'გუნდური მუშაობა კლინიკაში'},
-  {id:'TW-32',templateId:'MT-4',week:6,contactH:15,selfH:1,assessH:4,topic:'პრაქტიკული დავალება დაკვირვებით'},
-  {id:'TW-33',templateId:'MT-4',week:7,contactH:15,selfH:1,assessH:4,topic:'პორტფოლიოს შედგენა'},
-  {id:'TW-34',templateId:'MT-4',week:8,contactH:15,selfH:0,assessH:10,topic:'დასკვნითი შეფასება'},
-  {id:'TW-35',templateId:'MT-5',week:1,contactH:8,selfH:2,assessH:0,topic:'მიკროორგანიზმების აგებულება'},
-  {id:'TW-36',templateId:'MT-5',week:2,contactH:8,selfH:2,assessH:0,topic:'ბაქტერიები და ვირუსები'},
-  {id:'TW-37',templateId:'MT-5',week:3,contactH:8,selfH:2,assessH:2,topic:'სტერილიზაცია და დეზინფექცია — შეფასება'},
-  {id:'TW-38',templateId:'MT-5',week:4,contactH:8,selfH:2,assessH:0,topic:'იმუნიტეტი'},
-  {id:'TW-39',templateId:'MT-5',week:5,contactH:8,selfH:2,assessH:0,topic:'ნიმუშის აღება და ტრანსპორტირება'},
-  {id:'TW-40',templateId:'MT-5',week:6,contactH:8,selfH:1,assessH:2,topic:'ლაბორატორიული დიაგნოსტიკა'},
-  {id:'TW-41',templateId:'MT-5',week:7,contactH:8,selfH:1,assessH:2,topic:'ინფექციის კონტროლი'},
-  {id:'TW-42',templateId:'MT-5',week:8,contactH:8,selfH:0,assessH:4,topic:'დასკვნითი შეფასება'},
+// ══ მოდულის რეესტრი — მოდულს მხოლოდ დასახელება აქვს ══
+const moduleRegistry=[
+  {id:'MR-1',title:'ბიოქიმია'},
+  {id:'MR-2',title:'შინმოვლა'},
+  {id:'MR-3',title:'ფარმაკოლოგია'},
+  {id:'MR-4',title:'კლინიკური პრაქტიკა'},
+  {id:'MR-5',title:'მიკრობიოლოგია'},
+  {id:'MR-6',title:'ანატომია და ფიზიოლოგია'},
+  {id:'MR-7',title:'ინფექციის კონტროლი'},
+  {id:'MR-8',title:'პირველადი გადაუდებელი დახმარება'},
+  {id:'MR-9',title:'ინტერპერსონალური კომუნიკაცია'},
 ];
-let twSeq=42;
-const tplWeeks=tid=>templateWeekPlan.filter(x=>x.templateId===tid).sort((a,b)=>a.week-b.week);
-const tplWeekTotals=tid=>tplWeeks(tid).reduce((a,x)=>({contactH:a.contactH+x.contactH,selfH:a.selfH+x.selfH,assessH:a.assessH+x.assessH}),{contactH:0,selfH:0,assessH:0});
-const tplWeekSum=tid=>{const t=tplWeekTotals(tid);return t.contactH+t.selfH+t.assessH};
+let mrSeq=9;
+const regName=id=>(moduleRegistry.find(x=>x.id===id)||{}).title||'—';
+// ══ მიღება → პროგრამა (პროგრამა ემატება წინასწარ განსაზღვრული ჩამონათვალიდან) ══
+const intakePrograms=[
+  {id:'IP-1',intakeId:'INT-2',programId:'PRG-1'},
+  {id:'IP-2',intakeId:'INT-3',programId:'PRG-3'},
+  {id:'IP-3',intakeId:'INT-1',programId:'PRG-1'},
+  {id:'IP-4',intakeId:'INT-1',programId:'PRG-2'},
+  {id:'IP-5',intakeId:'INT-3',programId:'PRG-1'},
+  {id:'IP-6',intakeId:'INT-3',programId:'PRG-2'},
+];
+let ipSeq=6;
+// ══ მიღება+პროგრამა → რეესტრის მოდული ══
+const intakeModules=[
+  {id:'IM-1',ipId:'IP-1',moduleId:'MR-1'},
+  {id:'IM-2',ipId:'IP-1',moduleId:'MR-2'},
+  {id:'IM-3',ipId:'IP-1',moduleId:'MR-4'},
+  {id:'IM-4',ipId:'IP-2',moduleId:'MR-3'},
+  {id:'IM-5',ipId:'IP-2',moduleId:'MR-5'},
+  {id:'IM-6',ipId:'IP-3',moduleId:'MR-1'},
+  {id:'IM-7',ipId:'IP-3',moduleId:'MR-2'},
+  {id:'IM-8',ipId:'IP-4',moduleId:'MR-5'},
+  {id:'IM-9',ipId:'IP-1',moduleId:'MR-3'},
+  {id:'IM-10',ipId:'IP-1',moduleId:'MR-5'},
+  {id:'IM-11',ipId:'IP-2',moduleId:'MR-1'},
+  {id:'IM-12',ipId:'IP-5',moduleId:'MR-4'},
+  {id:'IM-13',ipId:'IP-6',moduleId:'MR-5'},
+];
+let imSeq=13;
+// ══ საათების განაწილება კვირების მიხედვით: საკონტაქტო / დამოუკიდებელი სამუშაო / შეფასება ══
+const intakeModuleWeeks=[
+  {id:'IW-1',imId:'IM-1',week:1,contactH:8,selfH:2,assessH:0},
+  {id:'IW-2',imId:'IM-1',week:2,contactH:8,selfH:2,assessH:0},
+  {id:'IW-3',imId:'IM-1',week:3,contactH:8,selfH:2,assessH:0},
+  {id:'IW-4',imId:'IM-1',week:4,contactH:8,selfH:2,assessH:2},
+  {id:'IW-5',imId:'IM-1',week:5,contactH:8,selfH:2,assessH:0},
+  {id:'IW-6',imId:'IM-1',week:6,contactH:8,selfH:2,assessH:0},
+  {id:'IW-7',imId:'IM-1',week:7,contactH:8,selfH:2,assessH:2},
+  {id:'IW-8',imId:'IM-1',week:8,contactH:8,selfH:0,assessH:4},
+  {id:'IW-9',imId:'IM-1',week:9,contactH:8,selfH:0,assessH:6},
+  {id:'IW-10',imId:'IM-2',week:1,contactH:10,selfH:3,assessH:0},
+  {id:'IW-11',imId:'IM-2',week:2,contactH:10,selfH:3,assessH:0},
+  {id:'IW-12',imId:'IM-2',week:3,contactH:10,selfH:3,assessH:2},
+  {id:'IW-13',imId:'IM-2',week:4,contactH:10,selfH:3,assessH:0},
+  {id:'IW-14',imId:'IM-2',week:5,contactH:10,selfH:2,assessH:0},
+  {id:'IW-15',imId:'IM-2',week:6,contactH:10,selfH:2,assessH:2},
+  {id:'IW-16',imId:'IM-2',week:7,contactH:10,selfH:2,assessH:0},
+  {id:'IW-17',imId:'IM-2',week:8,contactH:10,selfH:1,assessH:4},
+  {id:'IW-18',imId:'IM-2',week:9,contactH:10,selfH:1,assessH:8},
+  {id:'IW-19',imId:'IM-3',week:1,contactH:15,selfH:2,assessH:0},
+  {id:'IW-20',imId:'IM-3',week:2,contactH:15,selfH:2,assessH:0},
+  {id:'IW-21',imId:'IM-3',week:3,contactH:15,selfH:2,assessH:2},
+  {id:'IW-22',imId:'IM-3',week:4,contactH:15,selfH:1,assessH:0},
+  {id:'IW-23',imId:'IM-3',week:5,contactH:15,selfH:1,assessH:0},
+  {id:'IW-24',imId:'IM-3',week:6,contactH:15,selfH:1,assessH:4},
+  {id:'IW-25',imId:'IM-3',week:7,contactH:15,selfH:1,assessH:4},
+  {id:'IW-26',imId:'IM-3',week:8,contactH:15,selfH:0,assessH:10},
+  {id:'IW-27',imId:'IM-4',week:1,contactH:10,selfH:3,assessH:0},
+  {id:'IW-28',imId:'IM-4',week:2,contactH:10,selfH:3,assessH:0},
+  {id:'IW-29',imId:'IM-4',week:3,contactH:10,selfH:2,assessH:2},
+  {id:'IW-30',imId:'IM-4',week:4,contactH:10,selfH:2,assessH:0},
+  {id:'IW-31',imId:'IM-4',week:5,contactH:10,selfH:2,assessH:0},
+  {id:'IW-32',imId:'IM-4',week:6,contactH:10,selfH:2,assessH:2},
+  {id:'IW-33',imId:'IM-4',week:7,contactH:10,selfH:2,assessH:2},
+  {id:'IW-34',imId:'IM-4',week:8,contactH:10,selfH:2,assessH:6},
+  {id:'IW-35',imId:'IM-5',week:1,contactH:8,selfH:2,assessH:0},
+  {id:'IW-36',imId:'IM-5',week:2,contactH:8,selfH:2,assessH:0},
+  {id:'IW-37',imId:'IM-5',week:3,contactH:8,selfH:2,assessH:2},
+  {id:'IW-38',imId:'IM-5',week:4,contactH:8,selfH:2,assessH:0},
+  {id:'IW-39',imId:'IM-5',week:5,contactH:8,selfH:2,assessH:0},
+  {id:'IW-40',imId:'IM-5',week:6,contactH:8,selfH:1,assessH:2},
+  {id:'IW-41',imId:'IM-5',week:7,contactH:8,selfH:1,assessH:2},
+  {id:'IW-42',imId:'IM-5',week:8,contactH:8,selfH:0,assessH:4},
+  {id:'IW-43',imId:'IM-6',week:1,contactH:8,selfH:2,assessH:0},
+  {id:'IW-44',imId:'IM-6',week:2,contactH:8,selfH:2,assessH:0},
+  {id:'IW-45',imId:'IM-6',week:3,contactH:8,selfH:2,assessH:0},
+  {id:'IW-46',imId:'IM-6',week:4,contactH:8,selfH:2,assessH:2},
+  {id:'IW-47',imId:'IM-6',week:5,contactH:8,selfH:2,assessH:0},
+  {id:'IW-48',imId:'IM-6',week:6,contactH:8,selfH:2,assessH:0},
+  {id:'IW-49',imId:'IM-6',week:7,contactH:8,selfH:2,assessH:2},
+  {id:'IW-50',imId:'IM-6',week:8,contactH:8,selfH:0,assessH:4},
+  {id:'IW-51',imId:'IM-6',week:9,contactH:8,selfH:0,assessH:6},
+  {id:'IW-52',imId:'IM-7',week:1,contactH:10,selfH:3,assessH:0},
+  {id:'IW-53',imId:'IM-7',week:2,contactH:10,selfH:3,assessH:0},
+  {id:'IW-54',imId:'IM-7',week:3,contactH:10,selfH:3,assessH:2},
+  {id:'IW-55',imId:'IM-7',week:4,contactH:10,selfH:3,assessH:0},
+  {id:'IW-56',imId:'IM-7',week:5,contactH:10,selfH:2,assessH:0},
+  {id:'IW-57',imId:'IM-7',week:6,contactH:10,selfH:2,assessH:2},
+  {id:'IW-58',imId:'IM-7',week:7,contactH:10,selfH:2,assessH:0},
+  {id:'IW-59',imId:'IM-7',week:8,contactH:10,selfH:1,assessH:4},
+  {id:'IW-60',imId:'IM-7',week:9,contactH:10,selfH:1,assessH:8},
+  {id:'IW-61',imId:'IM-8',week:1,contactH:8,selfH:2,assessH:0},
+  {id:'IW-62',imId:'IM-8',week:2,contactH:8,selfH:2,assessH:0},
+  {id:'IW-63',imId:'IM-8',week:3,contactH:8,selfH:2,assessH:2},
+  {id:'IW-64',imId:'IM-8',week:4,contactH:8,selfH:2,assessH:0},
+  {id:'IW-65',imId:'IM-8',week:5,contactH:8,selfH:2,assessH:0},
+  {id:'IW-66',imId:'IM-8',week:6,contactH:8,selfH:1,assessH:2},
+  {id:'IW-67',imId:'IM-8',week:7,contactH:8,selfH:1,assessH:2},
+  {id:'IW-68',imId:'IM-8',week:8,contactH:8,selfH:0,assessH:4},
+  {id:'IW-69',imId:'IM-9',week:1,contactH:10,selfH:3,assessH:0},
+  {id:'IW-70',imId:'IM-9',week:2,contactH:10,selfH:3,assessH:0},
+  {id:'IW-71',imId:'IM-9',week:3,contactH:10,selfH:2,assessH:2},
+  {id:'IW-72',imId:'IM-9',week:4,contactH:10,selfH:2,assessH:0},
+  {id:'IW-73',imId:'IM-9',week:5,contactH:10,selfH:2,assessH:0},
+  {id:'IW-74',imId:'IM-9',week:6,contactH:10,selfH:2,assessH:2},
+  {id:'IW-75',imId:'IM-9',week:7,contactH:10,selfH:2,assessH:2},
+  {id:'IW-76',imId:'IM-9',week:8,contactH:10,selfH:2,assessH:6},
+  {id:'IW-77',imId:'IM-10',week:1,contactH:8,selfH:2,assessH:0},
+  {id:'IW-78',imId:'IM-10',week:2,contactH:8,selfH:2,assessH:0},
+  {id:'IW-79',imId:'IM-10',week:3,contactH:8,selfH:2,assessH:2},
+  {id:'IW-80',imId:'IM-10',week:4,contactH:8,selfH:2,assessH:0},
+  {id:'IW-81',imId:'IM-10',week:5,contactH:8,selfH:2,assessH:0},
+  {id:'IW-82',imId:'IM-10',week:6,contactH:8,selfH:1,assessH:2},
+  {id:'IW-83',imId:'IM-10',week:7,contactH:8,selfH:1,assessH:2},
+  {id:'IW-84',imId:'IM-10',week:8,contactH:8,selfH:0,assessH:4},
+  {id:'IW-85',imId:'IM-11',week:1,contactH:8,selfH:2,assessH:0},
+  {id:'IW-86',imId:'IM-11',week:2,contactH:8,selfH:2,assessH:0},
+  {id:'IW-87',imId:'IM-11',week:3,contactH:8,selfH:2,assessH:0},
+  {id:'IW-88',imId:'IM-11',week:4,contactH:8,selfH:2,assessH:2},
+  {id:'IW-89',imId:'IM-11',week:5,contactH:8,selfH:2,assessH:0},
+  {id:'IW-90',imId:'IM-11',week:6,contactH:8,selfH:2,assessH:0},
+  {id:'IW-91',imId:'IM-11',week:7,contactH:8,selfH:2,assessH:2},
+  {id:'IW-92',imId:'IM-11',week:8,contactH:8,selfH:0,assessH:4},
+  {id:'IW-93',imId:'IM-11',week:9,contactH:8,selfH:0,assessH:6},
+  {id:'IW-94',imId:'IM-12',week:1,contactH:15,selfH:2,assessH:0},
+  {id:'IW-95',imId:'IM-12',week:2,contactH:15,selfH:2,assessH:0},
+  {id:'IW-96',imId:'IM-12',week:3,contactH:15,selfH:2,assessH:2},
+  {id:'IW-97',imId:'IM-12',week:4,contactH:15,selfH:1,assessH:0},
+  {id:'IW-98',imId:'IM-12',week:5,contactH:15,selfH:1,assessH:0},
+  {id:'IW-99',imId:'IM-12',week:6,contactH:15,selfH:1,assessH:4},
+  {id:'IW-100',imId:'IM-12',week:7,contactH:15,selfH:1,assessH:4},
+  {id:'IW-101',imId:'IM-12',week:8,contactH:15,selfH:0,assessH:10},
+  {id:'IW-102',imId:'IM-13',week:1,contactH:8,selfH:2,assessH:0},
+  {id:'IW-103',imId:'IM-13',week:2,contactH:8,selfH:2,assessH:0},
+  {id:'IW-104',imId:'IM-13',week:3,contactH:8,selfH:2,assessH:2},
+  {id:'IW-105',imId:'IM-13',week:4,contactH:8,selfH:2,assessH:0},
+  {id:'IW-106',imId:'IM-13',week:5,contactH:8,selfH:2,assessH:0},
+  {id:'IW-107',imId:'IM-13',week:6,contactH:8,selfH:1,assessH:2},
+  {id:'IW-108',imId:'IM-13',week:7,contactH:8,selfH:1,assessH:2},
+  {id:'IW-109',imId:'IM-13',week:8,contactH:8,selfH:0,assessH:4},
+];
+let iwSeq=109;
+const ipsOf=intakeId=>intakePrograms.filter(x=>x.intakeId===intakeId);
+const ipOf=(intakeId,programId)=>intakePrograms.find(x=>x.intakeId===intakeId&&x.programId===programId);
+const ipModules=ipId=>intakeModules.filter(x=>x.ipId===ipId);
+const imWeeks=imId=>intakeModuleWeeks.filter(x=>x.imId===imId).sort((a,b)=>a.week-b.week);
+const imTotals=imId=>imWeeks(imId).reduce((a,x)=>({contactH:a.contactH+x.contactH,selfH:a.selfH+x.selfH,assessH:a.assessH+x.assessH}),{contactH:0,selfH:0,assessH:0});
+const imSum=imId=>{const t=imTotals(imId);return t.contactH+t.selfH+t.assessH};
+const ipHours=ipId=>ipModules(ipId).reduce((a,im)=>a+imSum(im.id),0);
 // სწავლის შედეგები (§1.5) — ბიოქიმია 0910919, 72/14/14
 const templateOutcomes=[
-  {id:'TO-1',templateId:'MT-1',no:1,title:'აღწერს უჯრედის ქიმიურ შემადგენლობას',direction:'survey',contactH:10,selfH:2,assessH:2},
-  {id:'TO-2',templateId:'MT-1',no:2,title:'ახასიათებს ცილების სტრუქტურასა და ფუნქციას',direction:'survey',contactH:10,selfH:2,assessH:2},
-  {id:'TO-3',templateId:'MT-1',no:3,title:'აღწერს ნახშირწყლების მეტაბოლიზმს',direction:'survey',contactH:10,selfH:2,assessH:2},
-  {id:'TO-4',templateId:'MT-1',no:4,title:'ახასიათებს ლიპიდების მეტაბოლიზმს',direction:'survey',contactH:10,selfH:2,assessH:2},
-  {id:'TO-5',templateId:'MT-1',no:5,title:'აღწერს ფერმენტების მოქმედების მექანიზმს',direction:'practical_task',contactH:12,selfH:2,assessH:2},
-  {id:'TO-6',templateId:'MT-1',no:6,title:'ატარებს ბიოქიმიურ ანალიზს ლაბორატორიაში',direction:'practical_task_observed',contactH:12,selfH:2,assessH:2},
-  {id:'TO-7',templateId:'MT-1',no:7,title:'ინტერპრეტირებს ბიოქიმიური კვლევის შედეგებს',direction:'practical_task',contactH:8,selfH:2,assessH:2},
+  {id:'TO-1',templateId:'MT-1',moduleId:'MR-1',no:1,title:'აღწერს უჯრედის ქიმიურ შემადგენლობას',direction:'survey',contactH:10,selfH:2,assessH:2},
+  {id:'TO-2',templateId:'MT-1',moduleId:'MR-1',no:2,title:'ახასიათებს ცილების სტრუქტურასა და ფუნქციას',direction:'survey',contactH:10,selfH:2,assessH:2},
+  {id:'TO-3',templateId:'MT-1',moduleId:'MR-1',no:3,title:'აღწერს ნახშირწყლების მეტაბოლიზმს',direction:'survey',contactH:10,selfH:2,assessH:2},
+  {id:'TO-4',templateId:'MT-1',moduleId:'MR-1',no:4,title:'ახასიათებს ლიპიდების მეტაბოლიზმს',direction:'survey',contactH:10,selfH:2,assessH:2},
+  {id:'TO-5',templateId:'MT-1',moduleId:'MR-1',no:5,title:'აღწერს ფერმენტების მოქმედების მექანიზმს',direction:'practical_task',contactH:12,selfH:2,assessH:2},
+  {id:'TO-6',templateId:'MT-1',moduleId:'MR-1',no:6,title:'ატარებს ბიოქიმიურ ანალიზს ლაბორატორიაში',direction:'practical_task_observed',contactH:12,selfH:2,assessH:2},
+  {id:'TO-7',templateId:'MT-1',moduleId:'MR-1',no:7,title:'ინტერპრეტირებს ბიოქიმიური კვლევის შედეგებს',direction:'practical_task',contactH:8,selfH:2,assessH:2},
 ];
 // ── მეცადინეობა შაბლონში (§1.4–1.5) — სლოტების რაოდენობა = პროგრამის ხანგრძლივობა ──
 const LECTURE_KIND_LBL={theory:'თეორია',practice:'პრაქტიკა',simulation:'სიმულაცია',work_based:'სამუშაოზე დაფუძნებული',consultation:'კონსულტაცია'};
 const MATERIAL_LBL={module_description:'მოდულის აღწერა',calendar_plan:'კალენდარული გეგმა',assessment_instrument:'შეფასების ინსტრუმენტი',syllabus:'სილაბუსი',lesson_plan:'მეცადინეობის გეგმა',homework:'დამოუკიდებელი დავალება',exam:'შეფასების მასალა',presentation:'პრეზენტაცია',video:'ვიდეო',link:'ბმული',learning_resource:'სასწავლო რესურსი'};
 const templateLectures=[
-  {id:'TL-1',templateId:'MT-1',slot:1,seq:1,title:'შესავალი ბიოქიმიაში — უჯრედის ქიმიური შემადგენლობა',kind:'theory',outcomeNo:1,durationMin:40},
-  {id:'TL-2',templateId:'MT-1',slot:1,seq:2,title:'წყალი, ელექტროლიტები, pH და ბუფერული სისტემები',kind:'theory',outcomeNo:1,durationMin:40},
-  {id:'TL-3',templateId:'MT-1',slot:1,seq:3,title:'ცილების სტრუქტურა და კლასიფიკაცია',kind:'theory',outcomeNo:2,durationMin:40},
-  {id:'TL-4',templateId:'MT-1',slot:1,seq:4,title:'ამინომჟავები — თვისებები და ფუნქციები',kind:'theory',outcomeNo:2,durationMin:40},
-  {id:'TL-5',templateId:'MT-1',slot:2,seq:1,title:'ნახშირწყლების მეტაბოლიზმი — გლიკოლიზი',kind:'theory',outcomeNo:3,durationMin:40},
-  {id:'TL-6',templateId:'MT-1',slot:2,seq:2,title:'ლიპიდების მეტაბოლიზმი',kind:'theory',outcomeNo:4,durationMin:40},
-  {id:'TL-7',templateId:'MT-1',slot:2,seq:3,title:'ფერმენტები — მოქმედების მექანიზმი',kind:'theory',outcomeNo:5,durationMin:40},
-  {id:'TL-8',templateId:'MT-1',slot:2,seq:4,title:'ლაბორატორიული სამუშაო — ბიოქიმიური ანალიზი',kind:'practice',outcomeNo:6,durationMin:80},
-  {id:'TL-9',templateId:'MT-1',slot:3,seq:1,title:'ბიოქიმიური კვლევის შედეგების ინტერპრეტაცია',kind:'practice',outcomeNo:7,durationMin:40},
-  {id:'TL-10',templateId:'MT-2',slot:1,seq:1,title:'შინმოვლის საფუძვლები და ეთიკა',kind:'theory',outcomeNo:1,durationMin:40},
-  {id:'TL-11',templateId:'MT-2',slot:1,seq:2,title:'პაციენტის მოვლა — პრაქტიკული უნარები',kind:'simulation',outcomeNo:2,durationMin:80},
-  {id:'TL-12',templateId:'MT-2',slot:2,seq:1,title:'სამუშაო გარემოში პრაქტიკა',kind:'work_based',outcomeNo:3,durationMin:120},
-  {id:'TL-13',templateId:'MT-3',slot:1,seq:1,title:'ფარმაკოკინეტიკა და ფარმაკოდინამიკა',kind:'theory',outcomeNo:1,durationMin:40},
-  {id:'TL-14',templateId:'MT-3',slot:1,seq:2,title:'ანტიბიოტიკების ჯგუფები',kind:'theory',outcomeNo:2,durationMin:40},
-  {id:'TL-15',templateId:'MT-4',slot:1,seq:1,title:'კლინიკური პრაქტიკა — შესავალი',kind:'work_based',outcomeNo:1,durationMin:120},
-  {id:'TL-16',templateId:'MT-5',slot:1,seq:1,title:'მიკროორგანიზმების აგებულება',kind:'theory',outcomeNo:1,durationMin:40},
+  {id:'TL-1',templateId:'MT-1',moduleId:'MR-1',slot:1,seq:1,title:'შესავალი ბიოქიმიაში — უჯრედის ქიმიური შემადგენლობა',kind:'theory',outcomeNo:1,durationMin:40},
+  {id:'TL-2',templateId:'MT-1',moduleId:'MR-1',slot:1,seq:2,title:'წყალი, ელექტროლიტები, pH და ბუფერული სისტემები',kind:'theory',outcomeNo:1,durationMin:40},
+  {id:'TL-3',templateId:'MT-1',moduleId:'MR-1',slot:1,seq:3,title:'ცილების სტრუქტურა და კლასიფიკაცია',kind:'theory',outcomeNo:2,durationMin:40},
+  {id:'TL-4',templateId:'MT-1',moduleId:'MR-1',slot:1,seq:4,title:'ამინომჟავები — თვისებები და ფუნქციები',kind:'theory',outcomeNo:2,durationMin:40},
+  {id:'TL-5',templateId:'MT-1',moduleId:'MR-1',slot:2,seq:1,title:'ნახშირწყლების მეტაბოლიზმი — გლიკოლიზი',kind:'theory',outcomeNo:3,durationMin:40},
+  {id:'TL-6',templateId:'MT-1',moduleId:'MR-1',slot:2,seq:2,title:'ლიპიდების მეტაბოლიზმი',kind:'theory',outcomeNo:4,durationMin:40},
+  {id:'TL-7',templateId:'MT-1',moduleId:'MR-1',slot:2,seq:3,title:'ფერმენტები — მოქმედების მექანიზმი',kind:'theory',outcomeNo:5,durationMin:40},
+  {id:'TL-8',templateId:'MT-1',moduleId:'MR-1',slot:2,seq:4,title:'ლაბორატორიული სამუშაო — ბიოქიმიური ანალიზი',kind:'practice',outcomeNo:6,durationMin:80},
+  {id:'TL-9',templateId:'MT-1',moduleId:'MR-1',slot:3,seq:1,title:'ბიოქიმიური კვლევის შედეგების ინტერპრეტაცია',kind:'practice',outcomeNo:7,durationMin:40},
+  {id:'TL-10',templateId:'MT-2',moduleId:'MR-2',slot:1,seq:1,title:'შინმოვლის საფუძვლები და ეთიკა',kind:'theory',outcomeNo:1,durationMin:40},
+  {id:'TL-11',templateId:'MT-2',moduleId:'MR-2',slot:1,seq:2,title:'პაციენტის მოვლა — პრაქტიკული უნარები',kind:'simulation',outcomeNo:2,durationMin:80},
+  {id:'TL-12',templateId:'MT-2',moduleId:'MR-2',slot:2,seq:1,title:'სამუშაო გარემოში პრაქტიკა',kind:'work_based',outcomeNo:3,durationMin:120},
+  {id:'TL-13',templateId:'MT-3',moduleId:'MR-3',slot:1,seq:1,title:'ფარმაკოკინეტიკა და ფარმაკოდინამიკა',kind:'theory',outcomeNo:1,durationMin:40},
+  {id:'TL-14',templateId:'MT-3',moduleId:'MR-3',slot:1,seq:2,title:'ანტიბიოტიკების ჯგუფები',kind:'theory',outcomeNo:2,durationMin:40},
+  {id:'TL-15',templateId:'MT-4',moduleId:'MR-4',slot:1,seq:1,title:'კლინიკური პრაქტიკა — შესავალი',kind:'work_based',outcomeNo:1,durationMin:120},
+  {id:'TL-16',templateId:'MT-5',moduleId:'MR-5',slot:1,seq:1,title:'მიკროორგანიზმების აგებულება',kind:'theory',outcomeNo:1,durationMin:40},
 ];
 // ── მეცადინეობა მოდულის ინსტანციაში — ჩატარების აღრიცხვა (§1.5, [სპწ] 34.3.3) ──
 const moduleLectures=[
@@ -1174,19 +1312,22 @@ const progSlots=pid=>(programsData.find(x=>x.id===pid)||{}).durationYears||1;
 
 // ── LEARNING MODULES (§2.6) — instance = კალენდარული გეგმა ──
 const modulesData=[
-  {code:'MOD-101',templateId:'MT-1',name:'ბიოქიმია',regNo:'0910919',programId:'PRG-1',intakeId:'INT-2',groupId:'GRP-101',teacherId:'T-001',studyYear:2,credits:4,startsOn:'10.02.2026',endsOn:'25.05.2026',branchId:'BR-1',outcomes:7,conducted:18,totalLectures:24},
-  {code:'MOD-102',templateId:'MT-2',name:'შინმოვლა',regNo:'0910917',programId:'PRG-1',intakeId:'INT-2',groupId:'GRP-102',teacherId:'T-004',studyYear:2,credits:6,startsOn:'15.02.2026',endsOn:'10.06.2026',branchId:'BR-1',outcomes:5,conducted:22,totalLectures:30},
-  {code:'MOD-103',templateId:'MT-3',name:'ფარმაკოლოგია',regNo:'0910922',programId:'PRG-3',intakeId:'INT-3',groupId:'GRP-301',teacherId:'T-003',studyYear:2,credits:5,startsOn:'01.03.2026',endsOn:'20.06.2026',branchId:'BR-3',outcomes:6,conducted:12,totalLectures:26},
-  {code:'MOD-104',templateId:'MT-4',name:'კლინიკური პრაქტიკა',regNo:'0910931',programId:'PRG-1',intakeId:'INT-3',groupId:'GRP-201',teacherId:'T-004',studyYear:3,credits:8,startsOn:'01.02.2026',endsOn:'30.06.2026',branchId:'BR-2',outcomes:4,conducted:28,totalLectures:40},
-  {code:'MOD-105',templateId:'MT-5',name:'მიკრობიოლოგია',regNo:'0910905',programId:'PRG-2',intakeId:'INT-3',groupId:'GRP-202',teacherId:'T-005',studyYear:2,credits:4,startsOn:'10.03.2026',endsOn:'15.06.2026',branchId:'BR-1',outcomes:5,conducted:8,totalLectures:22},
-  {code:'MOD-106',templateId:'MT-1',name:'ბიოქიმია',regNo:'0910919',programId:'PRG-3',intakeId:'INT-3',groupId:'GRP-401',teacherId:'T-001',studyYear:2,credits:4,startsOn:'12.02.2026',endsOn:'28.05.2026',branchId:'BR-1',outcomes:7,conducted:0,totalLectures:24},
+  {code:'MOD-101',templateId:'MT-1',moduleId:'MR-1',name:'ბიოქიმია',regNo:'0910919',programId:'PRG-1',intakeId:'INT-2',groupId:'GRP-101',teacherId:'T-001',studyYear:2,credits:4,startsOn:'10.02.2026',endsOn:'25.05.2026',branchId:'BR-1',outcomes:7,conducted:18,totalLectures:24},
+  {code:'MOD-102',templateId:'MT-2',moduleId:'MR-2',name:'შინმოვლა',regNo:'0910917',programId:'PRG-1',intakeId:'INT-2',groupId:'GRP-102',teacherId:'T-004',studyYear:2,credits:6,startsOn:'15.02.2026',endsOn:'10.06.2026',branchId:'BR-1',outcomes:5,conducted:22,totalLectures:30},
+  {code:'MOD-103',templateId:'MT-3',moduleId:'MR-3',name:'ფარმაკოლოგია',regNo:'0910922',programId:'PRG-3',intakeId:'INT-3',groupId:'GRP-301',teacherId:'T-003',studyYear:2,credits:5,startsOn:'01.03.2026',endsOn:'20.06.2026',branchId:'BR-3',outcomes:6,conducted:12,totalLectures:26},
+  {code:'MOD-104',templateId:'MT-4',moduleId:'MR-4',name:'კლინიკური პრაქტიკა',regNo:'0910931',programId:'PRG-1',intakeId:'INT-3',groupId:'GRP-201',teacherId:'T-004',studyYear:3,credits:8,startsOn:'01.02.2026',endsOn:'30.06.2026',branchId:'BR-2',outcomes:4,conducted:28,totalLectures:40},
+  {code:'MOD-105',templateId:'MT-5',moduleId:'MR-5',name:'მიკრობიოლოგია',regNo:'0910905',programId:'PRG-2',intakeId:'INT-3',groupId:'GRP-202',teacherId:'T-005',studyYear:2,credits:4,startsOn:'10.03.2026',endsOn:'15.06.2026',branchId:'BR-1',outcomes:5,conducted:8,totalLectures:22},
+  {code:'MOD-106',templateId:'MT-1',moduleId:'MR-1',name:'ბიოქიმია',regNo:'0910919',programId:'PRG-3',intakeId:'INT-3',groupId:'GRP-401',teacherId:'T-001',studyYear:2,credits:4,startsOn:'12.02.2026',endsOn:'28.05.2026',branchId:'BR-1',outcomes:7,conducted:0,totalLectures:24},
 ];
 // ── მოდულის კვირეული გეგმა: რომელ კვირაში, რამდენი საათი ──
 // მოდულის ინსტანციის კვირეული განაწილება = მისი შაბლონის საათების განაწილება
 const modTemplateId=code=>(modulesData.find(x=>x.code===code)||{}).templateId;
-const modWeeks=code=>tplWeeks(modTemplateId(code));
-const modHours=code=>tplWeekSum(modTemplateId(code));
-const modWeekTotals=code=>tplWeekTotals(modTemplateId(code));
+const modIm=code=>{const m=modulesData.find(x=>x.code===code);if(!m)return null;
+  const ip=ipOf(m.intakeId,m.programId); if(!ip)return null;
+  return intakeModules.find(x=>x.ipId===ip.id&&x.moduleId===m.moduleId)||null;};
+const modWeeks=code=>{const im=modIm(code);return im?imWeeks(im.id):[]};
+const modWeekTotals=code=>{const im=modIm(code);return im?imTotals(im.id):{contactH:0,selfH:0,assessH:0}};
+const modHours=code=>{const t=modWeekTotals(code);return t.contactH+t.selfH+t.assessH};
 // ── ხელახალი გავლა: მოდულის ვერ დაძლევა → სხვა ჯგუფთან ერთად ──
 const retakesData=[
   {id:'RT-1',studentId:'BMA-2402',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,
@@ -1920,7 +2061,7 @@ function renderPrograms(){
   const el=document.getElementById('programs-grid');
   if(!el)return;
   el.innerHTML=programsData.map(pr=>{
-    const mods=moduleTemplates.filter(t=>t.programs.includes(pr.id));
+    const ints=intakePrograms.filter(x=>x.programId===pr.id).length;
     return `<div class="card">
       <div class="ch"><div class="ct">${pr.name}</div><span class="bd ${pr.status==='active'?'bd-g':pr.status==='phasing_out'?'bd-a':'bd-r'}">${pr.status==='active'?'აქტიური':pr.status==='phasing_out'?'ეტაპობრივად წყდება':'გაუქმებული'}</span></div>
       <div class="cb">
@@ -1928,13 +2069,12 @@ function renderPrograms(){
         <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>კვალიფიკაცია</span><strong style="font-size:12px;text-align:right">${pr.qualification}</strong></div>
         <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>ხანგრძლივობა</span><strong>${pr.durationYears} სასწავლო წელი</strong></div>
         <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>კრედიტები</span><strong>${pr.totalCredits}</strong></div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>მოდულები</span><strong>${mods.length}</strong></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>მიღებები</span><strong>${ints}</strong></div>
         <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px"><span>სტუდენტები</span><strong>${pr.students}</strong></div>
         <div style="font-size:11px;color:var(--text3);border-top:1px solid var(--border);padding-top:8px">${orderRef(pr.orderId)}</div>
         <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
-          <button class="btn btn-xs btn-o" onclick="viewProgram('${pr.id}')">მოდულები →</button>
-          <button class="btn btn-xs btn-ghost" onclick="editProgramModal('${pr.id}')">✏ რედ.</button>
-          <button class="btn btn-xs btn-r" onclick="removeProgram('${pr.id}')">✕</button>
+          <button class="btn btn-xs btn-o" onclick="viewProgram('${pr.id}')">👁 დეტალები</button>
+          <button class="btn btn-xs btn-r" onclick="removeProgram('${pr.id}')">✕ წაშლა</button>
         </div>
       </div>
     </div>`;
@@ -1942,16 +2082,12 @@ function renderPrograms(){
 }
 function viewProgram(id){
   const pr=programsData.find(x=>x.id===id);if(!pr)return;
-  const mods=moduleTemplates.filter(t=>t.programs.includes(id));
   const F=(l,v)=>`<div><label class="fl">${l}</label><div class="fv">${v||'—'}</div></div>`;
   showModal(`${pr.name}`,`
     <div class="dhead">
       <div><div class="dhead-name">${pr.name}</div>
       <div class="dhead-meta">${pr.nameEn||''} · ${PROGRAM_TYPE_LBL[pr.type]} · NQF ${pr.nqf} · ${pr.qualification}</div></div>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-o" onclick="closeModal();editProgramModal('${id}')">✏ რედაქტირება</button>
-        <button class="btn btn-r" onclick="removeProgram('${id}')">✕ წაშლა</button>
-      </div>
+      <button class="btn btn-r" onclick="removeProgram('${id}')">✕ წაშლა</button>
     </div>
     <div class="chips">
       <span class="bd ${pr.status==='active'?'bd-g':pr.status==='phasing_out'?'bd-a':'bd-r'}">${pr.status==='active'?'აქტიური':pr.status==='phasing_out'?'ეტაპობრივად წყდება':'გაუქმებული'}</span>
@@ -1960,29 +2096,9 @@ function viewProgram(id){
     </div>
     <div class="f3">
       ${F('კვალიფიკაცია',pr.qualification)}${F('NQF დონე',pr.nqf)}${F('ხანგრძლივობა',pr.durationYears+' სასწავლო წელი')}
-      ${F('კრედიტები სულ',pr.totalCredits)}${F('სტუდენტები',pr.students)}${F('მოდულები',mods.length)}
+      ${F('კრედიტები სულ',pr.totalCredits)}${F('სტუდენტები',pr.students)}${F('მიღებები',intakePrograms.filter(x=>x.programId===id).length)}
     </div>
-    <div class="card" style="margin-top:16px">
-      <div class="ch"><div class="ct">პროგრამის მოდულები</div>
-        <button class="btn btn-b btn-sm" onclick="addProgramModule('${id}')">➕ მოდულის დამატება</button></div>
-      ${mods.length?`<div class="tw"><table>
-        <thead><tr><th>სარეგ. №</th><th>მოდული</th><th>სახეობა</th><th>კრედ.</th><th>სწ. შედეგი</th><th>საკ./დამ./შეფ.</th><th>წინაპირობა</th><th>მოქმედება</th></tr></thead>
-        <tbody>${mods.map(t=>`<tr>
-          <td style="font-weight:700;color:var(--blue);font-size:11px">${t.regNo}</td>
-          <td><strong>${t.title}</strong>${t.titleEn?`<div style="font-size:10px;color:var(--text3)">${t.titleEn}</div>`:''}</td>
-          <td style="font-size:12px">${MODULE_KIND_LBL[t.kind]}${t.kindLabel?`<div style="font-size:10px;color:var(--text3)">${t.kindLabel}</div>`:''}</td>
-          <td style="text-align:center">${t.credits}</td>
-          <td style="text-align:center">${t.outcomes}</td>
-          <td style="text-align:center;font-size:11px">${t.contactH}/${t.selfH}/${t.assessH}</td>
-          <td style="font-size:11px">${t.prerequisite?(moduleTemplates.find(x=>x.id===t.prerequisite)||{}).title||'—':'<span style="color:var(--text3)">—</span>'}</td>
-          <td style="white-space:nowrap">
-            <button class="btn btn-xs btn-o" onclick="viewTemplate('${t.id}')">👁 დეტალები</button>
-            <button class="btn btn-xs btn-ghost" onclick="editProgramModule('${id}','${t.id}')">✏</button>
-            <button class="btn btn-xs btn-r" onclick="removeProgramModule('${id}','${t.id}')">✕</button>
-          </td></tr>`).join('')}</tbody></table></div>`
-        :'<div class="cb" style="color:var(--text3);font-size:12px">მოდული არ არის დამატებული</div>'}
-      <div class="note">ℹ️ მოდული შეიძლება <strong>რამდენიმე პროგრამას</strong> ემსახურებოდეს. აქედან წაშლა მოდულს პროგრამიდან <strong>მოხსნის</strong>; თუ სხვა პროგრამას აღარ ემსახურება, მოდული სრულად იშლება.</div>
-    </div>`,
+    <div class="note">ℹ️ მოდულები პროგრამას <strong>მიღების ჭრილში</strong> ემატება — მენიუ „მიღებები" → მიღება → პროგრამა. ერთიანი მოდულების სია იმართება მენიუში „მოდულების რეესტრი".</div>`,
     '','xl');
 }
 function addProgramModal(){
@@ -2005,34 +2121,6 @@ function saveNewProgram(){
     totalCredits:+document.getElementById('np-credits').value,orderId:null,status:'active',students:0});
   renderPrograms();closeModal();toast('პროგრამა დამატებულია ✓','success');
 }
-function editProgramModal(id){
-  const pr=programsData.find(x=>x.id===id);if(!pr)return;
-  showModal('პროგრამის რედაქტირება',`
-    <div class="fg2"><div><label class="fl">დასახელება</label><input class="fi" id="ep-name" value="${pr.name}"></div>
-      <div><label class="fl">დასახელება (EN)</label><input class="fi" id="ep-nameen" value="${pr.nameEn||''}"></div></div>
-    <div class="fg2"><div><label class="fl">ტიპი</label><select class="fi" id="ep-type">${Object.entries(PROGRAM_TYPE_LBL).map(([k,v])=>`<option value="${k}" ${k===pr.type?'selected':''}>${v}</option>`).join('')}</select></div>
-      <div><label class="fl">NQF დონე</label><input class="fi" id="ep-nqf" type="number" min="1" max="8" value="${pr.nqf}"></div></div>
-    <div class="fg"><label class="fl">კვალიფიკაცია</label><input class="fi" id="ep-qual" value="${pr.qualification}"></div>
-    <div class="fg2"><div><label class="fl">ხანგრძლივობა (სასწავლო წელი)</label><input class="fi" id="ep-years" type="number" min="1" max="6" value="${pr.durationYears}"></div>
-      <div><label class="fl">კრედიტები სულ</label><input class="fi" id="ep-credits" type="number" min="1" value="${pr.totalCredits}"></div></div>
-    <div class="fg"><label class="fl">სტატუსი</label><select class="fi" id="ep-status">
-      <option value="active" ${pr.status==='active'?'selected':''}>აქტიური</option>
-      <option value="phasing_out" ${pr.status==='phasing_out'?'selected':''}>ეტაპობრივად წყდება</option>
-      <option value="cancelled" ${pr.status==='cancelled'?'selected':''}>გაუქმებული</option></select></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveProgram('${id}')">💾 შენახვა</button>`,'lg');
-}
-function saveProgram(id){
-  const pr=programsData.find(x=>x.id===id);if(!pr)return;
-  pr.name=document.getElementById('ep-name').value;
-  pr.nameEn=document.getElementById('ep-nameen').value;
-  pr.type=document.getElementById('ep-type').value;
-  pr.nqf=+document.getElementById('ep-nqf').value;
-  pr.qualification=document.getElementById('ep-qual').value;
-  pr.durationYears=+document.getElementById('ep-years').value;
-  pr.totalCredits=+document.getElementById('ep-credits').value;
-  pr.status=document.getElementById('ep-status').value;
-  renderPrograms();closeModal();toast('პროგრამა განახლდა ✓','success');
-}
 function removeProgram(id){
   const pr=programsData.find(x=>x.id===id);if(!pr)return;
   const stu=students.filter(x=>x.programId===id).length;
@@ -2046,163 +2134,248 @@ function removeProgram(id){
       for(let k=periodWeeks.length-1;k>=0;k--)if(periodWeeks[k].programId==='${id}')periodWeeks.splice(k,1);
       renderPrograms();closeModal();toast('პროგრამა წაშლილია','warn')})()">✕ წაშლა</button>`);
 }
-// ── მოდულების მართვა პროგრამის შიდა გვერდზე ──
-function addProgramModule(pid){
-  const existing=moduleTemplates.filter(t=>!t.programs.includes(pid));
-  showModal('მოდულის დამატება პროგრამაზე',`
-    <div class="fg"><label class="fl">პროგრამა</label><div class="fv">${progName(pid)}</div></div>
-    <div class="chip-tabs" style="display:flex;gap:8px;margin-bottom:14px">
-      <button class="chip active" id="apm-tab-new" onclick="apmTab('new',this)">ახალი მოდული</button>
-      <button class="chip" id="apm-tab-link" onclick="apmTab('link',this)">არსებულის მიბმა</button>
-    </div>
-    <div id="apm-new">
-      <div class="fg2"><div><label class="fl">სარეგისტრაციო ნომერი</label><input class="fi" id="nm-reg" placeholder="0910XXX"></div>
-        <div><label class="fl">კრედიტი</label><input class="fi" id="nm-cr" type="number" min="1" value="4"></div></div>
-      <div class="fg2"><div><label class="fl">დასახელება</label><input class="fi" id="nm-title" placeholder="მოდულის სახელი"></div>
-        <div><label class="fl">დასახელება (EN)</label><input class="fi" id="nm-titleen" placeholder="Module name"></div></div>
-      <div class="fg2"><div><label class="fl">სახეობა</label><select class="fi" id="nm-kind">${Object.entries(MODULE_KIND_LBL).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div>
-        <div><label class="fl">სწავლის შედეგების რაოდენობა</label><input class="fi" id="nm-outs" type="number" min="0" value="5"></div></div>
-      <div class="fg"><label class="fl">საათები — საკონტაქტო / დამოუკიდებელი / შეფასება</label>
-        <div style="display:flex;gap:8px"><input class="fi" id="nm-ch" type="number" min="0" value="64" placeholder="საკ.">
-          <input class="fi" id="nm-sh" type="number" min="0" value="12" placeholder="დამ."><input class="fi" id="nm-ah" type="number" min="0" value="10" placeholder="შეფ."></div></div>
-      <div class="fg"><label class="fl">წინაპირობა (სურვ.)</label><select class="fi" id="nm-pre"><option value="">— არ არის —</option>${moduleTemplates.map(t=>`<option value="${t.id}">${t.title}</option>`).join('')}</select></div>
-    </div>
-    <div id="apm-link" style="display:none">
-      <div class="fg"><label class="fl">არსებული მოდული</label>
-        ${existing.length?`<select class="fi" id="nm-link">${existing.map(t=>`<option value="${t.id}">${t.regNo} · ${t.title} (${t.credits} კრედ.)</option>`).join('')}</select>`
-          :'<div style="color:var(--text3);font-size:12px">ყველა მოდული უკვე მიბმულია ამ პროგრამაზე</div>'}</div>
-      <div class="note">ერთი მოდული <strong>რამდენიმე პროგრამას</strong> ემსახურება — მიბმა ახალ ჩანაწერს არ ქმნის.</div>
-    </div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveProgramModule('${pid}')">✓ დამატება</button>`,'lg');
+// ══════════ მოდულების რეესტრი ══════════
+function regUsage(mrId){return intakeModules.filter(x=>x.moduleId===mrId).length}
+function renderRegistry(){
+  const tb=document.getElementById('registry-tbody');
+  if(!tb)return;
+  tb.innerHTML=moduleRegistry.map(m=>{
+    const u=regUsage(m.id);
+    return `<tr>
+      <td class="row-id">${m.id}</td>
+      <td><strong style="font-size:13px">${m.title}</strong></td>
+      <td>${u?`<span class="bd bd-b">${u} პროგრამა/მიღება</span>`:'<span style="color:var(--text3);font-size:12px">არ არის გამოყენებული</span>'}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-xs btn-ghost" onclick="editRegModal('${m.id}')" title="დასახელების რედაქტირება">✏</button>
+        <button class="btn btn-xs btn-r" onclick="removeReg('${m.id}')" title="წაშლა">✕</button>
+      </td></tr>`;
+  }).join('');
+  const c=document.getElementById('reg-count'); if(c)c.textContent=moduleRegistry.length+' მოდული';
 }
-let apmMode='new';
-function apmTab(m,btn){
-  apmMode=m;
-  document.getElementById('apm-new').style.display=m==='new'?'block':'none';
-  document.getElementById('apm-link').style.display=m==='link'?'block':'none';
-  document.querySelectorAll('[id^=apm-tab-]').forEach(c=>c.classList.remove('active'));
-  if(btn)btn.classList.add('active');
+function addRegModal(){
+  showModal('მოდულის შექმნა',
+    `<div class="fg"><label class="fl">მოდულის დასახელება</label><input class="fi" id="mr-title" placeholder="მაგ: ბიოქიმია"></div>
+     <div class="note">მოდულს რეესტრში <strong>მხოლოდ დასახელება</strong> აქვს. საათები და კვირები განისაზღვრება მიღების კონკრეტულ პროგრამაში.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveNewReg()">✓ შექმნა</button>`);
 }
-function saveProgramModule(pid){
-  if(apmMode==='link'){
-    const sel=document.getElementById('nm-link');
-    if(!sel){toast('მისაბმელი მოდული არ არის','error');return;}
-    const t=moduleTemplates.find(x=>x.id===sel.value);
-    if(t&&!t.programs.includes(pid))t.programs.push(pid);
-    renderPrograms();closeModal();viewProgram(pid);toast('მოდული მიებმა პროგრამას ✓','success');return;
-  }
-  const reg=document.getElementById('nm-reg').value.trim(), title=document.getElementById('nm-title').value.trim();
-  if(!reg||!title){toast('შეავსეთ სარეგისტრაციო ნომერი და დასახელება','error');return;}
-  moduleTemplates.push({id:'MT-'+(moduleTemplates.length+1),regNo:reg,title,titleEn:document.getElementById('nm-titleen').value,
-    credits:+document.getElementById('nm-cr').value,kind:document.getElementById('nm-kind').value,kindLabel:null,
-    prerequisite:document.getElementById('nm-pre').value||null,revisions:'—',orderId:null,
-    outcomes:+document.getElementById('nm-outs').value,contactH:+document.getElementById('nm-ch').value,
-    selfH:+document.getElementById('nm-sh').value,assessH:+document.getElementById('nm-ah').value,programs:[pid]});
-  renderPrograms();closeModal();viewProgram(pid);toast('მოდული დამატებულია ✓','success');
+function saveNewReg(){
+  const t=document.getElementById('mr-title').value.trim();
+  if(!t){toast('შეავსეთ დასახელება','error');return;}
+  if(moduleRegistry.some(x=>x.title===t)){toast('ამ დასახელებით მოდული უკვე არსებობს','error');return;}
+  moduleRegistry.push({id:'MR-'+(++mrSeq),title:t});
+  renderRegistry();closeModal();toast('მოდული შექმნილია ✓','success');
 }
-function editProgramModule(pid,tid){
-  const t=moduleTemplates.find(x=>x.id===tid);if(!t)return;
-  showModal('მოდულის რედაქტირება',`
-    <div class="fg2"><div><label class="fl">სარეგისტრაციო ნომერი</label><input class="fi" id="em-reg" value="${t.regNo}"></div>
-      <div><label class="fl">კრედიტი</label><input class="fi" id="em-cr" type="number" min="1" value="${t.credits}"></div></div>
-    <div class="fg2"><div><label class="fl">დასახელება</label><input class="fi" id="em-title" value="${t.title}"></div>
-      <div><label class="fl">დასახელება (EN)</label><input class="fi" id="em-titleen" value="${t.titleEn||''}"></div></div>
-    <div class="fg2"><div><label class="fl">სახეობა</label><select class="fi" id="em-kind">${Object.entries(MODULE_KIND_LBL).map(([k,v])=>`<option value="${k}" ${k===t.kind?'selected':''}>${v}</option>`).join('')}</select></div>
-      <div><label class="fl">სწავლის შედეგები</label><input class="fi" id="em-outs" type="number" min="0" value="${t.outcomes}"></div></div>
-    <div class="fg"><label class="fl">საათები — საკონტაქტო / დამოუკიდებელი / შეფასება</label>
-      <div style="display:flex;gap:8px"><input class="fi" id="em-ch" type="number" min="0" value="${t.contactH}">
-        <input class="fi" id="em-sh" type="number" min="0" value="${t.selfH}"><input class="fi" id="em-ah" type="number" min="0" value="${t.assessH}"></div></div>
-    <div class="fg"><label class="fl">წინაპირობა</label><select class="fi" id="em-pre"><option value="">— არ არის —</option>${moduleTemplates.filter(x=>x.id!==tid).map(x=>`<option value="${x.id}" ${x.id===t.prerequisite?'selected':''}>${x.title}</option>`).join('')}</select></div>
-    <div class="fg"><label class="fl">პროგრამები</label><div>${t.programs.map(x=>`<span class="bd bd-p" style="font-size:10px">${progName(x)}</span>`).join(' ')}</div></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveProgramModuleEdit('${pid}','${tid}')">💾 შენახვა</button>`,'lg');
+function editRegModal(id){
+  const m=moduleRegistry.find(x=>x.id===id);if(!m)return;
+  showModal('მოდულის რედაქტირება',
+    `<div class="fg"><label class="fl">მოდულის დასახელება</label><input class="fi" id="mr-title" value="${m.title}"></div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveReg('${id}')">💾 შენახვა</button>`);
 }
-function saveProgramModuleEdit(pid,tid){
-  const t=moduleTemplates.find(x=>x.id===tid);if(!t)return;
-  t.regNo=document.getElementById('em-reg').value;
-  t.credits=+document.getElementById('em-cr').value;
-  t.title=document.getElementById('em-title').value;
-  t.titleEn=document.getElementById('em-titleen').value;
-  t.kind=document.getElementById('em-kind').value;
-  t.outcomes=+document.getElementById('em-outs').value;
-  t.contactH=+document.getElementById('em-ch').value;
-  t.selfH=+document.getElementById('em-sh').value;
-  t.assessH=+document.getElementById('em-ah').value;
-  t.prerequisite=document.getElementById('em-pre').value||null;
-  renderPrograms();closeModal();viewProgram(pid);toast('მოდული განახლდა ✓','success');
+function saveReg(id){
+  const m=moduleRegistry.find(x=>x.id===id);if(!m)return;
+  const t=document.getElementById('mr-title').value.trim();
+  if(!t){toast('შეავსეთ დასახელება','error');return;}
+  m.title=t; renderRegistry();closeModal();toast('მოდული განახლდა ✓','success');
 }
-function removeProgramModule(pid,tid){
-  const t=moduleTemplates.find(x=>x.id===tid);if(!t)return;
-  const other=t.programs.filter(x=>x!==pid);
-  showModal('მოდულის მოხსნა',`<p style="font-size:13px">გსურთ მოდულის <strong>${t.title}</strong> მოხსნა პროგრამიდან <strong>${progName(pid)}</strong>?</p>
-    <div class="note ${other.length?'':'note-a'}">${other.length
-      ? `მოდული დარჩება პროგრამებში: <strong>${other.map(x=>progName(x)).join(', ')}</strong>.`
-      : '⚠ სხვა პროგრამას აღარ ემსახურება — მოდული <strong>სრულად წაიშლება</strong> მეცადინეობებთან და მასალებთან ერთად.'}</div>`,
+function removeReg(id){
+  const m=moduleRegistry.find(x=>x.id===id);if(!m)return;
+  const u=regUsage(id);
+  if(u){toast(`ვერ იშლება — მოდული გამოყენებულია ${u} მიღების პროგრამაში`,'error');return;}
+  showModal('მოდულის წაშლა',`<p style="font-size:13px">გსურთ მოდულის <strong>${m.title}</strong> წაშლა რეესტრიდან?</p>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="(function(){
-      const t=moduleTemplates.find(x=>x.id==='${tid}');
-      t.programs=t.programs.filter(x=>x!=='${pid}');
-      if(!t.programs.length){const i=moduleTemplates.findIndex(x=>x.id==='${tid}');if(i>-1)moduleTemplates.splice(i,1);}
-      renderPrograms();closeModal();viewProgram('${pid}');toast('მოდული მოხსნილია','warn')})()">✕ მოხსნა</button>`);
+      const i=moduleRegistry.findIndex(x=>x.id==='${id}');if(i>-1)moduleRegistry.splice(i,1);
+      renderRegistry();closeModal();toast('მოდული წაშლილია','warn')})()">✕ წაშლა</button>`);
 }
-// ── საათების განაწილება კვირების მიხედვით: დამატება / რედაქტირება / წაშლა ──
-function tplWeekTable(tid){
-  const ws=tplWeeks(tid), t=tplWeekTotals(tid);
-  if(!ws.length)return '<div style="color:var(--text3);font-size:12px">საათების განაწილება ჯერ არ არის გაწერილი — დაამატეთ სასწავლო კვირა</div>';
-  const num=(w,f)=>`<input class="fi" type="number" min="0" step="0.5" value="${w[f]}" onchange="setTplWeek('${tid}','${w.id}','${f}',this.value)" style="width:70px;text-align:center;padding:5px 6px">`;
+// ══════════ მიღებები ══════════
+function renderIntakes(){
+  const el=document.getElementById('intakes-grid');
+  if(!el)return;
+  el.innerHTML=intakesData.map(it=>{
+    const ps=ipsOf(it.id);
+    const mods=ps.reduce((a,x)=>a+ipModules(x.id).length,0);
+    const hrs=ps.reduce((a,x)=>a+ipHours(x.id),0);
+    const stu=students.filter(x=>x.intakeId===it.id).length;
+    return `<div class="card" style="cursor:pointer" onclick="viewIntake('${it.id}')">
+      <div class="ch"><div class="ct">${it.name}</div><span class="bd ${it.season==='autumn'?'bd-a':'bd-g'}">${it.season==='autumn'?'საშემოდგომო':'საგაზაფხულო'}</span></div>
+      <div class="cb">
+        <div style="font-size:12px;color:var(--text3);margin-bottom:10px">${it.id} · ${it.year} წელი</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>პროგრამები</span><strong>${ps.length}</strong></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>მოდულები</span><strong>${mods}</strong></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>საათები სულ</span><strong>${hrs}</strong></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px"><span>პროფ. სტუდენტები</span><strong>${stu}</strong></div>
+        <button class="btn btn-xs btn-o" style="width:100%" onclick="event.stopPropagation();viewIntake('${it.id}')">პროგრამები →</button>
+      </div></div>`;
+  }).join('');
+}
+function viewIntake(id){
+  const it=intakesData.find(x=>x.id===id);if(!it)return;
+  const ps=ipsOf(id);
+  showModal(it.name,`
+    <div class="dhead"><div><div class="dhead-name">${it.name}</div>
+      <div class="dhead-meta">${it.id} · ${it.season==='autumn'?'საშემოდგომო':'საგაზაფხულო'} მიღება · ${it.year}</div></div>
+      <button class="btn btn-b" onclick="addIntakeProgram('${id}')">➕ პროგრამის დამატება</button></div>
+    ${ps.length?`<div class="grid-3">${ps.map(x=>{
+      const pr=programsData.find(y=>y.id===x.programId)||{name:'—'};
+      const mods=ipModules(x.id);
+      return `<div class="card" style="cursor:pointer" onclick="viewIntakeProgram('${x.id}')">
+        <div class="ch"><div class="ct">${pr.name}</div></div>
+        <div class="cb">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:8px">${x.id} · ${pr.qualification||''}</div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>მოდულები</span><strong>${mods.length}</strong></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px"><span>საათები</span><strong>${ipHours(x.id)}</strong></div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-xs btn-o" style="flex:1" onclick="event.stopPropagation();viewIntakeProgram('${x.id}')">მოდულები →</button>
+            <button class="btn btn-xs btn-r" onclick="event.stopPropagation();removeIntakeProgram('${x.id}')">✕</button>
+          </div></div></div>`}).join('')}</div>`
+      :'<div style="color:var(--text3);font-size:12px">პროგრამა ჯერ არ არის დამატებული</div>'}
+    <div class="note">პროგრამა ემატება <strong>წინასწარ განსაზღვრული პროგრამების ჩამონათვალიდან</strong> (მენიუ „პროგრამები").</div>`,
+    '','xl');
+}
+function addIntakeProgram(intakeId){
+  const used=ipsOf(intakeId).map(x=>x.programId);
+  const free=programsData.filter(x=>!used.includes(x.id));
+  showModal('პროგრამის დამატება მიღებაზე',
+    `<div class="fg"><label class="fl">მიღება</label><div class="fv">${intakeName(intakeId)}</div></div>
+     <div class="fg"><label class="fl">პროგრამა (წინასწარ განსაზღვრული ჩამონათვალი)</label>
+       ${free.length?`<select class="fi" id="ip-prog">${free.map(x=>`<option value="${x.id}">${x.name} · ${PROGRAM_TYPE_LBL[x.type]} · NQF ${x.nqf}</option>`).join('')}</select>`
+         :'<div style="color:var(--text3);font-size:12px">ყველა პროგრამა უკვე დამატებულია ამ მიღებაზე</div>'}</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button>${free.length?`<button class="btn btn-b" onclick="saveIntakeProgram('${intakeId}')">✓ დამატება</button>`:''}`,'lg');
+}
+function saveIntakeProgram(intakeId){
+  const sel=document.getElementById('ip-prog'); if(!sel)return;
+  intakePrograms.push({id:'IP-'+(++ipSeq),intakeId,programId:sel.value});
+  renderIntakes();renderPrograms();closeModal();viewIntake(intakeId);toast('პროგრამა დამატებულია მიღებაზე ✓','success');
+}
+function removeIntakeProgram(ipId){
+  const x=intakePrograms.find(y=>y.id===ipId);if(!x)return;
+  const mods=ipModules(ipId).length;
+  showModal('პროგრამის მოხსნა მიღებიდან',
+    `<p style="font-size:13px">გსურთ პროგრამის <strong>${progName(x.programId)}</strong> მოხსნა მიღებიდან <strong>${intakeName(x.intakeId)}</strong>?</p>
+     ${mods?`<div class="note note-a">⚠ წაიშლება ${mods} მოდული და მათი საათების განაწილება.</div>`:''}`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="(function(){
+      ipModules('${ipId}').forEach(im=>{for(let k=intakeModuleWeeks.length-1;k>=0;k--)if(intakeModuleWeeks[k].imId===im.id)intakeModuleWeeks.splice(k,1)});
+      for(let k=intakeModules.length-1;k>=0;k--)if(intakeModules[k].ipId==='${ipId}')intakeModules.splice(k,1);
+      const i=intakePrograms.findIndex(y=>y.id==='${ipId}');if(i>-1)intakePrograms.splice(i,1);
+      renderIntakes();renderPrograms();closeModal();viewIntake('${x.intakeId}');toast('პროგრამა მოხსნილია','warn')})()">✕ მოხსნა</button>`);
+}
+function viewIntakeProgram(ipId){
+  const x=intakePrograms.find(y=>y.id===ipId);if(!x)return;
+  const mods=ipModules(ipId);
+  showModal(`${progName(x.programId)} — ${intakeName(x.intakeId)}`,`
+    <div class="dhead"><div><div class="dhead-name">${progName(x.programId)}</div>
+      <div class="dhead-meta">${intakeName(x.intakeId)} · ${ipId}</div></div>
+      <button class="btn btn-b" onclick="addIntakeModule('${ipId}')">➕ მოდულის დამატება რეესტრიდან</button></div>
+    <div class="chips"><span class="bd bd-b">${mods.length} მოდული</span><span class="bd bd-n">${ipHours(ipId)} საათი სულ</span></div>
+    ${mods.length?`<div class="tw"><table>
+      <thead><tr><th style="width:80px">ID</th><th>მოდული</th><th style="width:80px">კვირა</th><th style="width:96px">საკონტაქტო</th><th style="width:110px">დამოუკიდებელი</th><th style="width:90px">შეფასება</th><th style="width:60px">სულ</th><th style="width:150px">მოქმედება</th></tr></thead>
+      <tbody>${mods.map(im=>{const t=imTotals(im.id);return `<tr>
+        <td class="row-id">${im.id}</td>
+        <td><strong style="font-size:13px">${regName(im.moduleId)}</strong><div style="font-size:10px;color:var(--text3)">${im.moduleId}</div></td>
+        <td style="text-align:center">${imWeeks(im.id).length}</td>
+        <td style="text-align:center">${t.contactH}</td><td style="text-align:center">${t.selfH}</td><td style="text-align:center">${t.assessH}</td>
+        <td style="text-align:center;font-weight:700">${t.contactH+t.selfH+t.assessH}</td>
+        <td style="white-space:nowrap">
+          <button class="btn btn-xs btn-o" onclick="imWeeksPage('${im.id}')" title="საათების განაწილება">🗓️ საათები</button>
+          <button class="btn btn-xs btn-r" onclick="removeIntakeModule('${im.id}')">✕</button>
+        </td></tr>`}).join('')}</tbody></table></div>`
+      :'<div style="color:var(--text3);font-size:12px">მოდული ჯერ არ არის დამატებული</div>'}
+    <div class="note">მოდული ემატება <strong>რეესტრიდან</strong>; საათები (ლექციები — საკონტაქტო, დამოუკიდებელი სამუშაო, შეფასება) იწერება <strong>კვირების მიხედვით</strong>, ამ მიღების ამ პროგრამისთვის.</div>`,
+    '','xl');
+}
+function addIntakeModule(ipId){
+  const used=ipModules(ipId).map(x=>x.moduleId);
+  const free=moduleRegistry.filter(x=>!used.includes(x.id));
+  showModal('მოდულის დამატება რეესტრიდან',
+    `<div class="fg"><label class="fl">მიღება / პროგრამა</label><div class="fv">${(()=>{const x=intakePrograms.find(y=>y.id===ipId);return x?intakeName(x.intakeId)+' · '+progName(x.programId):'—'})()}</div></div>
+     <div class="fg"><label class="fl">მოდული (რეესტრი)</label>
+       ${free.length?`<select class="fi" id="im-mod">${free.map(x=>`<option value="${x.id}">${x.title}</option>`).join('')}</select>`
+         :'<div style="color:var(--text3);font-size:12px">რეესტრის ყველა მოდული უკვე დამატებულია</div>'}</div>
+     <div class="fg2"><div><label class="fl">კვირების რაოდენობა (საწყისი)</label><input class="fi" id="im-weeks" type="number" min="0" max="52" value="8"></div>
+       <div><label class="fl">საკონტაქტო საათი / კვირა</label><input class="fi" id="im-ch" type="number" min="0" step="0.5" value="8"></div></div>
+     <div class="fg2"><div><label class="fl">დამოუკიდებელი სამუშაო / კვირა</label><input class="fi" id="im-sh" type="number" min="0" step="0.5" value="2"></div>
+       <div><label class="fl">შეფასება / კვირა</label><input class="fi" id="im-ah" type="number" min="0" step="0.5" value="0"></div></div>
+     <div class="note">კვირები შეიქმნება ერთნაირი საათებით — შემდეგ თითოეული კვირა ცალკე რედაქტირდება.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button>${free.length?`<button class="btn btn-b" onclick="saveIntakeModule('${ipId}')">✓ დამატება</button>`:''}`,'lg');
+}
+function saveIntakeModule(ipId){
+  const sel=document.getElementById('im-mod'); if(!sel)return;
+  const imId='IM-'+(++imSeq);
+  intakeModules.push({id:imId,ipId,moduleId:sel.value});
+  const n=Math.max(0,+document.getElementById('im-weeks').value||0);
+  const ch=+document.getElementById('im-ch').value||0, sh=+document.getElementById('im-sh').value||0, ah=+document.getElementById('im-ah').value||0;
+  for(let w=1;w<=n;w++)intakeModuleWeeks.push({id:'IW-'+(++iwSeq),imId,week:w,contactH:ch,selfH:sh,assessH:ah});
+  renderIntakes();closeModal();viewIntakeProgram(ipId);toast('მოდული დამატებულია ✓','success');
+}
+function removeIntakeModule(imId){
+  const im=intakeModules.find(x=>x.id===imId);if(!im)return;
+  showModal('მოდულის მოხსნა',
+    `<p style="font-size:13px">გსურთ მოდულის <strong>${regName(im.moduleId)}</strong> მოხსნა ამ მიღების პროგრამიდან?</p>
+     <div class="note note-a">⚠ წაიშლება საათების განაწილება (${imWeeks(imId).length} კვირა). რეესტრში მოდული რჩება.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="(function(){
+      for(let k=intakeModuleWeeks.length-1;k>=0;k--)if(intakeModuleWeeks[k].imId==='${imId}')intakeModuleWeeks.splice(k,1);
+      const i=intakeModules.findIndex(x=>x.id==='${imId}');if(i>-1)intakeModules.splice(i,1);
+      renderIntakes();renderRegistry();closeModal();viewIntakeProgram('${im.ipId}');toast('მოდული მოხსნილია','warn')})()">✕ მოხსნა</button>`);
+}
+// ══════════ საათების განაწილება კვირების მიხედვით ══════════
+function imWeekTable(imId){
+  const ws=imWeeks(imId), t=imTotals(imId);
+  if(!ws.length)return '<div style="color:var(--text3);font-size:12px">კვირა ჯერ არ არის დამატებული</div>';
+  const num=(w,f)=>`<input class="fi" type="number" min="0" step="0.5" value="${w[f]}" onchange="setImWeek('${imId}','${w.id}','${f}',this.value)" style="width:74px;text-align:center;padding:5px 6px">`;
   return `<div class="tw"><table>
-    <thead><tr><th style="width:78px">კვირა</th><th>თემატიკა</th><th style="width:96px">საკონტაქტო</th><th style="width:110px">დამოუკიდებელი</th><th style="width:96px">შეფასება</th><th style="width:60px">სულ</th><th style="width:44px"></th></tr></thead>
+    <thead><tr><th style="width:80px">კვირა</th><th style="width:120px">ლექციები (საკონტაქტო)</th><th style="width:140px">დამოუკიდებელი სამუშაო</th><th style="width:110px">შეფასება</th><th style="width:70px">სულ</th><th style="width:44px"></th></tr></thead>
     <tbody>${ws.map(w=>`<tr>
-      <td><input class="fi" type="number" min="1" max="52" value="${w.week}" onchange="setTplWeek('${tid}','${w.id}','week',this.value)" style="width:64px;text-align:center;padding:5px 6px;font-weight:700;color:var(--blue)"></td>
-      <td><input class="fi" value="${(w.topic||'').replace(/"/g,'&quot;')}" onchange="setTplWeek('${tid}','${w.id}','topic',this.value)" placeholder="თემატიკა" style="padding:5px 8px;font-size:12px"></td>
+      <td><input class="fi" type="number" min="1" max="52" value="${w.week}" onchange="setImWeek('${imId}','${w.id}','week',this.value)" style="width:66px;text-align:center;padding:5px 6px;font-weight:700;color:var(--blue)"></td>
       <td style="text-align:center">${num(w,'contactH')}</td>
       <td style="text-align:center">${num(w,'selfH')}</td>
       <td style="text-align:center">${num(w,'assessH')}</td>
       <td style="text-align:center;font-weight:700">${w.contactH+w.selfH+w.assessH}</td>
-      <td><button class="btn btn-xs btn-r" onclick="rmTplWeek('${tid}','${w.id}')" title="კვირის წაშლა">✕</button></td>
+      <td><button class="btn btn-xs btn-r" onclick="rmImWeek('${imId}','${w.id}')" title="კვირის წაშლა">✕</button></td>
     </tr>`).join('')}
     <tr style="background:var(--blue-lt)">
-      <td colspan="2" style="font-weight:700;font-size:12px">სულ — ${ws.length} კვირა</td>
+      <td style="font-weight:700;font-size:12px">სულ — ${ws.length} კვირა</td>
       <td style="text-align:center;font-weight:800;color:var(--blue)">${t.contactH}</td>
       <td style="text-align:center;font-weight:800;color:var(--blue)">${t.selfH}</td>
       <td style="text-align:center;font-weight:800;color:var(--blue)">${t.assessH}</td>
       <td style="text-align:center;font-weight:800">${t.contactH+t.selfH+t.assessH}</td><td></td>
     </tr></tbody></table></div>`;
 }
-function syncTplHours(tid){
-  const t=moduleTemplates.find(x=>x.id===tid); if(!t)return;
-  if(!tplWeeks(tid).length)return;
-  const w=tplWeekTotals(tid); t.contactH=w.contactH; t.selfH=w.selfH; t.assessH=w.assessH;
+function imWeeksPage(imId){
+  const im=intakeModules.find(x=>x.id===imId);if(!im)return;
+  const ip=intakePrograms.find(y=>y.id===im.ipId)||{};
+  showModal(`საათების განაწილება — ${regName(im.moduleId)}`,`
+    <div class="dhead"><div><div class="dhead-name">${regName(im.moduleId)}</div>
+      <div class="dhead-meta">${intakeName(ip.intakeId)} · ${progName(ip.programId)}</div></div>
+      <button class="btn btn-b" onclick="addImWeek('${imId}')">➕ კვირის დამატება</button></div>
+    <div id="iw-wrap">${imWeekTable(imId)}</div>
+    <div class="note">თითოეული სასწავლო კვირისთვის იწერება <strong>ლექციების (საკონტაქტო)</strong>, <strong>დამოუკიდებელი სამუშაოს</strong> და <strong>შეფასების</strong> საათები. ცვლილება ინახება ავტომატურად.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">უკან</button>`,'xl');
 }
-function refreshTplWeeks(tid){
-  syncTplHours(tid);
-  const el=document.getElementById('tw-wrap'); if(el)el.innerHTML=tplWeekTable(tid);
-  renderPrograms();
+function refreshImWeeks(imId){
+  const el=document.getElementById('iw-wrap'); if(el)el.innerHTML=imWeekTable(imId);
+  renderIntakes();
 }
-function setTplWeek(tid,wid,field,val){
-  const w=templateWeekPlan.find(x=>x.id===wid); if(!w)return;
-  if(field==='topic'){w.topic=val;}
-  else{
-    const n=Math.max(0,+val||0);
-    if(field==='week'){
-      const dup=templateWeekPlan.find(x=>x.templateId===tid&&x.id!==wid&&x.week===n);
-      if(dup){toast('ამ ნომრით სასწავლო კვირა უკვე არსებობს','error');refreshTplWeeks(tid);return;}
-      w.week=Math.max(1,n);
-    } else w[field]=n;
-  }
-  refreshTplWeeks(tid);
+function setImWeek(imId,wid,field,val){
+  const w=intakeModuleWeeks.find(x=>x.id===wid); if(!w)return;
+  const n=Math.max(0,+val||0);
+  if(field==='week'){
+    if(intakeModuleWeeks.some(x=>x.imId===imId&&x.id!==wid&&x.week===n)){toast('ამ ნომრით კვირა უკვე არსებობს','error');refreshImWeeks(imId);return;}
+    w.week=Math.max(1,n);
+  } else w[field]=n;
+  refreshImWeeks(imId);
   toast('საათების განაწილება განახლდა ✓','success');
 }
-function addTplWeek(tid){
-  const ws=tplWeeks(tid);
+function addImWeek(imId){
+  const ws=imWeeks(imId);
   const next=ws.length?Math.max(...ws.map(x=>x.week))+1:1;
-  templateWeekPlan.push({id:'TW-'+(++twSeq),templateId:tid,week:next,contactH:0,selfH:0,assessH:0,topic:''});
-  refreshTplWeeks(tid);
-  toast(next+'-ე სასწავლო კვირა დამატებულია ✓','success');
+  intakeModuleWeeks.push({id:'IW-'+(++iwSeq),imId,week:next,contactH:0,selfH:0,assessH:0});
+  refreshImWeeks(imId);
+  toast(next+'-ე კვირა დამატებულია ✓','success');
 }
-function rmTplWeek(tid,wid){
-  const w=templateWeekPlan.find(x=>x.id===wid); if(!w)return;
-  const i=templateWeekPlan.indexOf(w); templateWeekPlan.splice(i,1);
-  refreshTplWeeks(tid);
-  toast(w.week+'-ე სასწავლო კვირა წაშლილია','warn');
+function rmImWeek(imId,wid){
+  const w=intakeModuleWeeks.find(x=>x.id===wid); if(!w)return;
+  intakeModuleWeeks.splice(intakeModuleWeeks.indexOf(w),1);
+  refreshImWeeks(imId);
+  toast(w.week+'-ე კვირა წაშლილია','warn');
 }
 function viewTemplate(id){
   const t=moduleTemplates.find(x=>x.id===id);if(!t)return;
@@ -2236,14 +2409,7 @@ function viewTemplate(id){
     <div class="fg"><label class="fl">მოდულზე დაშვების წინაპირობა</label><div style="font-size:12px">${t.prerequisite?moduleTemplates.find(x=>x.id===t.prerequisite)?.title:'— არ არის —'}</div></div>
     <div class="fg"><label class="fl">პროგრამები (M:N)</label><div>${t.programs.map(pid=>`<span class="bd bd-p" style="font-size:10px">${progName(pid)}</span>`).join(' ')}</div>
       <div style="font-size:11px;color:var(--text3);margin-top:4px">სლოტების რაოდენობა განისაზღვრება პროგრამის ხანგრძლივობით — მოდულზე ხელით არ იცვლება</div></div>
-    <div class="fg"><label class="fl">საათების განაწილება კვირების მიხედვით</label>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
-        <span class="bd bd-b">${tplWeeks(id).length} სასწავლო კვირა</span>
-        <span class="bd bd-n">${tplWeekSum(id)} საათი სულ</span>
-        <button class="btn btn-xs btn-b" onclick="addTplWeek('${id}')">➕ კვირის დამატება</button>
-      </div>
-      <div id="tw-wrap">${tplWeekTable(id)}</div>
-      <div class="note">ერთი სასწავლო კვირისთვის იწერება <strong>საკონტაქტო</strong>, <strong>დამოუკიდებელი სამუშაო</strong> და <strong>შეფასების</strong> საათები. ველში ჩაწერა ინახება ავტომატურად; შაბლონის ჯამური საათები გამოითვლება კვირების ჯამიდან.</div></div>
+    <div class="note">ℹ️ საათების განაწილება კვირების მიხედვით იწერება მენიუში <strong>„მიღებები"</strong> → მიღება → პროგრამა → მოდული.</div>
     ${outs.length?`<div class="fg"><label class="fl">სწავლის შედეგები</label>
       <div class="tw"><table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>შეფასების მიმართულება</th><th>საკ./დამ./შეფ.</th></tr></thead><tbody>
       ${outs.map(o=>`<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${o.no}</td><td style="font-size:12px">${o.title}</td><td style="font-size:11px">${DIRECTION_LBL[o.direction]}</td><td style="text-align:center;font-size:11px">${o.contactH}/${o.selfH}/${o.assessH}</td></tr>`).join('')}
@@ -3240,7 +3406,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderOrders();
   renderRoles();
   renderAudit();
-  moduleTemplates.forEach(t=>syncTplHours(t.id));
+  renderRegistry();
+  renderIntakes();
   renderPrograms();
   // მოდულის ჩატარების მაჩვენებელი გამოითვლება მეცადინეობის ჩანაწერებიდან
   modulesData.forEach(m=>{const l=modLectures(m.code);if(l.length){m.conducted=l.filter(x=>x.conducted).length;m.totalLectures=l.length;}});
