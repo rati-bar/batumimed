@@ -516,9 +516,9 @@ textarea.fi{resize:vertical;min-height:80px}
     </div>
   </div>
   <div class="card">
-    <div class="ch"><div class="ct">კვირის ბადე</div><span style="font-size:11px;color:var(--text3)">სლოტები I–VII (40 წთ) · ერთი ჯგუფი — ერთი სლოტში ერთხელ</span></div>
+    <div class="ch"><div class="ct">კვირის ბადე</div><span style="font-size:11px;color:var(--text3)">ერთ საათზე იმდენი სლოტია, რამდენი აქტიური აუდიტორიაა · ერთი ჯგუფი და ერთი ლექტორი — ერთ საათზე ერთხელ</span></div>
     <div class="tw"><table id="schedule-table">
-      <thead><tr><th style="width:90px">სლოტი</th><th>ორშაბათი</th><th>სამშაბათი</th><th>ოთხშაბათი</th><th>ხუთშაბათი</th><th>პარასკევი</th></tr></thead>
+      <thead><tr><th style="width:90px">სლოტი</th><th style="width:110px">აუდიტორია</th><th>ორშაბათი</th><th>სამშაბათი</th><th>ოთხშაბათი</th><th>ხუთშაბათი</th><th>პარასკევი</th></tr></thead>
       <tbody id="schedule-tbody"></tbody>
     </table></div>
   </div>
@@ -752,6 +752,17 @@ textarea.fi{resize:vertical;min-height:80px}
             <button class="btn btn-b" onclick="applyBgSettings()">✓ გამოყენება</button>
             <button class="btn btn-n" onclick="clearBg()">✕ ფონის წაშლა</button>
           </div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="ch"><div class="ct">აუდიტორიები და სივრცეები</div>
+          <button class="btn btn-b btn-sm" onclick="addVenueModal()">➕ დამატება</button></div>
+        <div class="cb">
+          <div class="tw"><table>
+            <thead><tr><th>კოდი</th><th>სახეობა</th><th style="width:80px">ადგილი</th><th style="width:90px">სტატუსი</th><th style="width:90px"></th></tr></thead>
+            <tbody id="venues-tbody"></tbody>
+          </table></div>
+          <div class="note">განრიგის ბადეში ერთ საათზე გამოჩნდება <strong>იმდენი სლოტი, რამდენი აქტიური აუდიტორიაა</strong>.</div>
         </div>
       </div>
       <div class="card">
@@ -1107,19 +1118,19 @@ const intakePrograms=[
 let ipSeq=6;
 // ══ მიღება+პროგრამა → რეესტრის მოდული ══
 const intakeModules=[
-  {id:'IM-1',ipId:'IP-1',moduleId:'MR-1'},
-  {id:'IM-2',ipId:'IP-1',moduleId:'MR-2'},
-  {id:'IM-3',ipId:'IP-1',moduleId:'MR-4'},
-  {id:'IM-4',ipId:'IP-2',moduleId:'MR-3'},
-  {id:'IM-5',ipId:'IP-2',moduleId:'MR-5'},
-  {id:'IM-6',ipId:'IP-3',moduleId:'MR-1'},
-  {id:'IM-7',ipId:'IP-3',moduleId:'MR-2'},
-  {id:'IM-8',ipId:'IP-4',moduleId:'MR-5'},
-  {id:'IM-9',ipId:'IP-1',moduleId:'MR-3'},
-  {id:'IM-10',ipId:'IP-1',moduleId:'MR-5'},
-  {id:'IM-11',ipId:'IP-2',moduleId:'MR-1'},
-  {id:'IM-12',ipId:'IP-5',moduleId:'MR-4'},
-  {id:'IM-13',ipId:'IP-6',moduleId:'MR-5'},
+  {id:'IM-1',ipId:'IP-1',moduleId:'MR-1',teacherId:'T-001'},
+  {id:'IM-2',ipId:'IP-1',moduleId:'MR-2',teacherId:'T-004'},
+  {id:'IM-3',ipId:'IP-1',moduleId:'MR-4',teacherId:'T-005'},
+  {id:'IM-4',ipId:'IP-2',moduleId:'MR-3',teacherId:'T-003'},
+  {id:'IM-5',ipId:'IP-2',moduleId:'MR-5',teacherId:'T-002'},
+  {id:'IM-6',ipId:'IP-3',moduleId:'MR-1',teacherId:'T-001'},
+  {id:'IM-7',ipId:'IP-3',moduleId:'MR-2',teacherId:'T-004'},
+  {id:'IM-8',ipId:'IP-4',moduleId:'MR-5',teacherId:'T-002'},
+  {id:'IM-9',ipId:'IP-1',moduleId:'MR-3',teacherId:'T-003'},
+  {id:'IM-10',ipId:'IP-1',moduleId:'MR-5',teacherId:'T-002'},
+  {id:'IM-11',ipId:'IP-2',moduleId:'MR-1',teacherId:'T-001'},
+  {id:'IM-12',ipId:'IP-5',moduleId:'MR-4',teacherId:'T-005'},
+  {id:'IM-13',ipId:'IP-6',moduleId:'MR-5',teacherId:'T-002'},
 ];
 let imSeq=13;
 // ══ საათების განაწილება კვირების მიხედვით: საკონტაქტო / დამოუკიდებელი სამუშაო / შეფასება ══
@@ -1327,6 +1338,8 @@ const modTemplateId=code=>(modulesData.find(x=>x.code===code)||{}).templateId;
 const modIm=code=>{const m=modulesData.find(x=>x.code===code);if(!m)return null;
   const ip=ipOf(m.intakeId,m.programId); if(!ip)return null;
   return intakeModules.find(x=>x.ipId===ip.id&&x.moduleId===m.moduleId)||null;};
+const modTeacherId=code=>{const im=modIm(code);const m=modulesData.find(x=>x.code===code)||{};
+  return (im&&im.teacherId)||m.teacherId||null;};
 const modWeeks=code=>{const im=modIm(code);return im?imWeeks(im.id):[]};
 const modWeekTotals=code=>{const im=modIm(code);return im?imTotals(im.id):{contactH:0,selfH:0,assessH:0}};
 const modHours=code=>{const t=modWeekTotals(code);return t.contactH+t.selfH+t.assessH};
@@ -1431,10 +1444,10 @@ const savedReports=[
 // ── SCHEDULE (§1.10) — slot ordinals I–VII, ~40 წთ ──
 // ══ განრიგი: განაწილებული საათები (კვირა × დღე × სლოტი) ══
 const schedPlacements=[
-  {id:'SP-1',week:1,day:1,slot:1,groupId:'GRP-101',imId:'IM-1'},
-  {id:'SP-2',week:1,day:1,slot:2,groupId:'GRP-102',imId:'IM-2'},
-  {id:'SP-3',week:1,day:2,slot:1,groupId:'GRP-101',imId:'IM-1'},
-  {id:'SP-4',week:1,day:3,slot:3,groupId:'GRP-301',imId:'IM-4'},
+  {id:'SP-1',week:1,day:1,slot:1,venueId:'VEN-1',groupId:'GRP-101',imId:'IM-1'},
+  {id:'SP-2',week:1,day:1,slot:2,venueId:'VEN-4',groupId:'GRP-102',imId:'IM-2'},
+  {id:'SP-3',week:1,day:2,slot:1,venueId:'VEN-1',groupId:'GRP-101',imId:'IM-1'},
+  {id:'SP-4',week:1,day:3,slot:3,venueId:'VEN-5',groupId:'GRP-301',imId:'IM-4'},
 ];
 let spSeq=4, schedWeek=1, schedGroup='', schedPick=null;
 
@@ -1554,7 +1567,7 @@ function renderTeachers(list){
   const tb=document.getElementById('teachers-tbody');
   if(!tb)return;
   tb.innerHTML=list.length?list.map(t=>{
-    const mods=modulesData.filter(m=>m.teacherId===t.id);
+    const mods=modulesData.filter(m=>modTeacherId(m.code)===t.id);
     const myLecs=moduleLectures.filter(l=>mods.some(m=>m.code===l.moduleCode));
     const h=Math.round(myLecs.filter(l=>l.conducted).reduce((a,l)=>a+l.durationMin,0)/60);
     return `<tr>
@@ -1610,7 +1623,7 @@ function renderModules(){
       <td><strong>${m.name}</strong><div style="font-size:10px;color:var(--text3)">სარეგ. № ${m.regNo}</div></td>
       <td><div style="font-size:12px">${progName(m.programId)}</div><div style="font-size:10px;color:var(--text3)">${intakeName(m.intakeId)}</div></td>
       <td style="font-size:12px">${groupName(m.groupId)}</td>
-      <td><div style="font-size:12px">${teacherName(m.teacherId)}</div><div style="font-size:10px;color:var(--text3)">${m.teacherId}</div></td>
+      <td><div style="font-size:12px">${teacherName(modTeacherId(m.code))}</div><div style="font-size:10px;color:var(--text3)">${modTeacherId(m.code)||'—'}</div></td>
       <td style="text-align:center">${m.credits}</td>
       <td style="font-size:11px;white-space:nowrap">${m.startsOn||'—'}<br>${m.endsOn||'—'}</td>
       <td style="text-align:center;font-size:11px">${modWeeks(m.code).length} კვ.<div style="color:var(--text3)">${modHours(m.code)} სთ</div></td>
@@ -1637,9 +1650,12 @@ function schedDemand(week){
   });
   return out;
 }
-const spOf=(week,day,slot)=>schedPlacements.find(x=>x.week===week&&x.day===day&&x.slot===slot);
+const activeVenues=()=>venuesData.filter(v=>v.active);
+const spAt=(week,day,slot,venueId)=>schedPlacements.find(x=>x.week===week&&x.day===day&&x.slot===slot&&x.venueId===venueId);
 const spPlaced=(week,groupId,imId)=>schedPlacements.filter(x=>x.week===week&&x.groupId===groupId&&x.imId===imId).length;
 const groupBusy=(week,day,slot,groupId)=>schedPlacements.some(x=>x.week===week&&x.day===day&&x.slot===slot&&x.groupId===groupId);
+const teacherBusy=(week,day,slot,teacherId)=>!!teacherId&&schedPlacements.some(x=>x.week===week&&x.day===day&&x.slot===slot&&(intakeModules.find(m=>m.id===x.imId)||{}).teacherId===teacherId);
+const imTeacher=imId=>teacherName((intakeModules.find(x=>x.id===imId)||{}).teacherId);
 function renderSchedule(){
   const wsel=document.getElementById('sched-week');
   if(!wsel)return;
@@ -1663,7 +1679,8 @@ function renderPalette(){
     const on=schedPick&&schedPick.groupId===d.groupId&&schedPick.imId===d.imId;
     return `<div onclick="pickLesson('${d.groupId}','${d.imId}')" style="background:${on?'var(--blue)':'var(--blue-lt)'};color:${on?'#fff':'inherit'};border-left:3px solid var(--blue);border-radius:6px;padding:8px 10px;cursor:pointer;font-size:11px">
       <div style="font-weight:700;color:${on?'#fff':'var(--navy)'}">${regName((intakeModules.find(x=>x.id===d.imId)||{}).moduleId)}</div>
-      <div style="margin-top:2px;opacity:.85">${groupName(d.groupId)} · დარჩენილია <strong>${d.left}</strong> / ${d.need} სთ</div></div>`;
+      <div style="margin-top:2px;opacity:.85">${groupName(d.groupId)} · ${imTeacher(d.imId)}</div>
+      <div style="margin-top:1px;opacity:.85">დარჩენილია <strong>${d.left}</strong> / ${d.need} სთ</div></div>`;
   }).join(''):'<div style="font-size:12px;color:var(--text3)">ამ კვირისთვის ყველა საათი გაწერილია</div>';
 }
 function renderSchedLoad(){
@@ -1689,23 +1706,30 @@ function renderSchedLoad(){
 function renderSchedGrid(){
   const tb=document.getElementById('schedule-tbody');
   if(!tb)return;
-  tb.innerHTML=slotTemplates.map((slot,ri)=>`<tr>
-    <td style="font-size:12px;font-weight:700;color:var(--text2);white-space:nowrap;background:#eff8f1">
+  const vens=activeVenues();
+  if(!vens.length){tb.innerHTML='<tr><td colspan="6" style="font-size:12px;color:var(--text3)">აქტიური აუდიტორია არ არის — დაამატეთ პარამეტრებში</td></tr>';return;}
+  tb.innerHTML=slotTemplates.map((slot,ri)=>vens.map((v,vi)=>`<tr style="${vi===0?'border-top:2px solid var(--border)':''}">
+    ${vi===0?`<td rowspan="${vens.length}" style="font-size:12px;font-weight:700;color:var(--text2);white-space:nowrap;background:#eff8f1;vertical-align:top">
       <div style="font-size:13px;color:var(--blue)">${slot.ordinal}</div>
       <div style="font-size:10px;font-weight:400">${slot.startsAt}–${slot.endsAt}</div>
-    </td>
+      <div style="font-size:9px;font-weight:400;color:var(--text3);margin-top:4px">${vens.length} აუდიტორია</div></td>`:''}
+    <td style="font-size:11px;font-weight:700;color:var(--navy);white-space:nowrap;background:var(--blue-lt)">
+      ${v.code}<div style="font-size:9px;font-weight:400;color:var(--text3)">${v.capacity} ადგილი</div></td>
     ${[1,2,3,4,5].map(day=>{
-      const cells=schedPlacements.filter(x=>x.week===schedWeek&&x.day===day&&x.slot===ri+1&&(!schedGroup||x.groupId===schedGroup));
-      return `<td style="font-size:12px;vertical-align:top;min-width:140px">
-        ${cells.map(c=>`<div style="background:var(--green-lt);border-left:3px solid var(--green);border-radius:5px;padding:6px 8px;font-size:11px;line-height:1.4;margin-bottom:4px">
+      const c=spAt(schedWeek,day,ri+1,v.id);
+      const hid=c&&schedGroup&&c.groupId!==schedGroup;
+      if(c&&!hid)return `<td style="font-size:12px;vertical-align:top;min-width:150px">
+        <div style="background:var(--green-lt);border-left:3px solid var(--green);border-radius:5px;padding:5px 7px;font-size:11px;line-height:1.35">
           <div style="font-weight:700;color:var(--green)">${regName((intakeModules.find(x=>x.id===c.imId)||{}).moduleId)}</div>
+          <div>${groupName(c.groupId)}</div>
           <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
-            <span>${groupName(c.groupId)}</span>
-            <button class="btn btn-xs btn-r" onclick="unplace('${c.id}')" title="მოხსნა">✕</button></div></div>`).join('')}
-        <div onclick="placeHere(${day},${ri+1})" style="border:1.5px dashed ${schedPick?'var(--blue)':'var(--border)'};border-radius:5px;padding:8px 6px;text-align:center;font-size:10px;color:${schedPick?'var(--blue)':'var(--text3)'};cursor:pointer">${schedPick?'+ აქ განთავსება':'—'}</div>
-      </td>`;
+            <span style="color:var(--text2)">${imTeacher(c.imId)}</span>
+            <button class="btn btn-xs btn-r" onclick="unplace('${c.id}')" title="მოხსნა">✕</button></div></div></td>`;
+      if(c&&hid)return `<td style="font-size:12px;vertical-align:top;min-width:150px"><div style="border-radius:5px;padding:8px 6px;text-align:center;font-size:10px;color:var(--text3);background:var(--bg)">დაკავებულია</div></td>`;
+      return `<td style="font-size:12px;vertical-align:top;min-width:150px">
+        <div onclick="placeHere(${day},${ri+1},'${v.id}')" style="border:1.5px dashed ${schedPick?'var(--blue)':'var(--border)'};border-radius:5px;padding:8px 6px;text-align:center;font-size:10px;color:${schedPick?'var(--blue)':'var(--text3)'};cursor:pointer">${schedPick?'+ აქ':'—'}</div></td>`;
     }).join('')}
-  </tr>`).join('');
+  </tr>`).join('')).join('');
 }
 function setSchedWeek(v){schedWeek=+v;schedPick=null;renderSchedule();}
 function setSchedGroup(v){schedGroup=v;schedPick=null;renderSchedule();}
@@ -1713,12 +1737,15 @@ function pickLesson(groupId,imId){
   schedPick=(schedPick&&schedPick.groupId===groupId&&schedPick.imId===imId)?null:{groupId,imId};
   renderPalette();renderSchedGrid();
 }
-function placeHere(day,slot){
+function placeHere(day,slot,venueId){
   if(!schedPick){toast('პირველ რიგში აირჩიეთ საათი','info');return;}
-  if(groupBusy(schedWeek,day,slot,schedPick.groupId)){toast('ამ სლოტში ჯგუფს უკვე აქვს მეცადინეობა','error');return;}
+  if(spAt(schedWeek,day,slot,venueId)){toast('აუდიტორია ამ საათზე დაკავებულია','error');return;}
+  if(groupBusy(schedWeek,day,slot,schedPick.groupId)){toast('ამ საათზე ჯგუფს უკვე აქვს მეცადინეობა','error');return;}
+  const tid=(intakeModules.find(x=>x.id===schedPick.imId)||{}).teacherId;
+  if(teacherBusy(schedWeek,day,slot,tid)){toast('ლექტორს ამ საათზე უკვე აქვს მეცადინეობა','error');return;}
   const d=schedDemand(schedWeek).find(x=>x.groupId===schedPick.groupId&&x.imId===schedPick.imId);
   if(d&&spPlaced(schedWeek,schedPick.groupId,schedPick.imId)>=d.need){toast('ამ მოდულის ყველა საათი გაწერილია','error');return;}
-  schedPlacements.push({id:'SP-'+(++spSeq),week:schedWeek,day,slot,groupId:schedPick.groupId,imId:schedPick.imId});
+  schedPlacements.push({id:'SP-'+(++spSeq),week:schedWeek,day,slot,venueId,groupId:schedPick.groupId,imId:schedPick.imId});
   renderPalette();renderSchedLoad();renderSchedGrid();
   toast('საათი განთავსდა განრიგში ✓','success');
 }
@@ -1733,16 +1760,21 @@ function autoFillWeek(){
   let placed=0, skipped=0;
   dem.forEach(d=>{
     let left=d.need-spPlaced(schedWeek,d.groupId,d.imId);
+    const tid=(intakeModules.find(x=>x.id===d.imId)||{}).teacherId;
+    const vens=activeVenues();
     for(let day=1;day<=5&&left>0;day++)
       for(let slot=1;slot<=slotTemplates.length&&left>0;slot++){
         if(groupBusy(schedWeek,day,slot,d.groupId))continue;
-        schedPlacements.push({id:'SP-'+(++spSeq),week:schedWeek,day,slot,groupId:d.groupId,imId:d.imId});
+        if(teacherBusy(schedWeek,day,slot,tid))continue;
+        const v=vens.find(x=>!spAt(schedWeek,day,slot,x.id));
+        if(!v)continue;
+        schedPlacements.push({id:'SP-'+(++spSeq),week:schedWeek,day,slot,venueId:v.id,groupId:d.groupId,imId:d.imId});
         left--; placed++;
       }
     skipped+=left;
   });
   schedPick=null;renderSchedule();
-  toast(skipped?`განთავსდა ${placed} საათი — ${skipped} საათი ვერ მოთავსდა (სლოტები ამოიწურა)`:`კვირა გადანაწილდა — ${placed} საათი ✓`,skipped?'warn':'success');
+  toast(skipped?`განთავსდა ${placed} საათი — ${skipped} საათი ვერ მოთავსდა (აუდიტორიები/სლოტები ამოიწურა)`:`კვირა გადანაწილდა — ${placed} საათი ✓`,skipped?'warn':'success');
 }
 function clearWeek(){
   for(let k=schedPlacements.length-1;k>=0;k--){
@@ -2248,6 +2280,65 @@ function removeProgram(id){
       for(let k=periodWeeks.length-1;k>=0;k--)if(periodWeeks[k].programId==='${id}')periodWeeks.splice(k,1);
       renderPrograms();closeModal();toast('პროგრამა წაშლილია','warn')})()">✕ წაშლა</button>`);
 }
+// ══════════ აუდიტორიები და სივრცეები ══════════
+let venSeq=6;
+function venueUse(id){return schedPlacements.filter(x=>x.venueId===id).length}
+function renderVenues(){
+  const tb=document.getElementById('venues-tbody');
+  if(!tb)return;
+  tb.innerHTML=venuesData.map(v=>`<tr>
+    <td><strong style="font-size:13px">${v.code}</strong><div style="font-size:10px;color:var(--text3)">${v.id}</div></td>
+    <td style="font-size:12px">${VENUE_TYPE_LBL[v.type]||v.type}</td>
+    <td style="text-align:center">${v.capacity}</td>
+    <td><span class="bd ${v.active?'bd-g':'bd-n'}">${v.active?'აქტიური':'არააქტიური'}</span></td>
+    <td style="white-space:nowrap">
+      <button class="btn btn-xs btn-ghost" onclick="editVenueModal('${v.id}')" title="რედაქტირება">✏</button>
+      <button class="btn btn-xs btn-r" onclick="removeVenue('${v.id}')" title="წაშლა">✕</button>
+    </td></tr>`).join('');
+}
+function venueForm(v){
+  return `<div class="fg2"><div><label class="fl">კოდი / დასახელება</label><input class="fi" id="vn-code" value="${v?v.code:''}" placeholder="მაგ: 603"></div>
+      <div><label class="fl">ადგილების რაოდენობა</label><input class="fi" id="vn-cap" type="number" min="1" value="${v?v.capacity:20}"></div></div>
+    <div class="fg"><label class="fl">სახეობა</label><select class="fi" id="vn-type">${Object.entries(VENUE_TYPE_LBL).map(([k,l])=>`<option value="${k}" ${v&&v.type===k?'selected':''}>${l}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">სტატუსი</label><select class="fi" id="vn-active">
+      <option value="1" ${!v||v.active?'selected':''}>აქტიური</option><option value="0" ${v&&!v.active?'selected':''}>არააქტიური</option></select></div>`;
+}
+function addVenueModal(){
+  showModal('აუდიტორიის დამატება',venueForm(null),
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveNewVenue()">✓ დამატება</button>`,'lg');
+}
+function saveNewVenue(){
+  const code=document.getElementById('vn-code').value.trim();
+  if(!code){toast('შეავსეთ კოდი','error');return;}
+  if(venuesData.some(v=>v.code===code)){toast('ამ კოდით აუდიტორია უკვე არსებობს','error');return;}
+  venuesData.push({id:'VEN-'+(++venSeq),code,type:document.getElementById('vn-type').value,
+    capacity:+document.getElementById('vn-cap').value,active:document.getElementById('vn-active').value==='1'});
+  renderVenues();renderSchedule();closeModal();toast('აუდიტორია დამატებულია ✓','success');
+}
+function editVenueModal(id){
+  const v=venuesData.find(x=>x.id===id);if(!v)return;
+  showModal('აუდიტორიის რედაქტირება',venueForm(v),
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveVenue('${id}')">💾 შენახვა</button>`,'lg');
+}
+function saveVenue(id){
+  const v=venuesData.find(x=>x.id===id);if(!v)return;
+  const code=document.getElementById('vn-code').value.trim();
+  if(!code){toast('შეავსეთ კოდი','error');return;}
+  if(venuesData.some(x=>x.id!==id&&x.code===code)){toast('ამ კოდით აუდიტორია უკვე არსებობს','error');return;}
+  v.code=code; v.type=document.getElementById('vn-type').value;
+  v.capacity=+document.getElementById('vn-cap').value;
+  v.active=document.getElementById('vn-active').value==='1';
+  renderVenues();renderSchedule();closeModal();toast('აუდიტორია განახლდა ✓','success');
+}
+function removeVenue(id){
+  const v=venuesData.find(x=>x.id===id);if(!v)return;
+  const u=venueUse(id);
+  if(u){toast(`ვერ იშლება — აუდიტორია გამოყენებულია განრიგში ${u} სლოტში`,'error');return;}
+  showModal('აუდიტორიის წაშლა',`<p style="font-size:13px">გსურთ აუდიტორიის <strong>${v.code}</strong> წაშლა?</p>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="(function(){
+      const i=venuesData.findIndex(x=>x.id==='${id}');if(i>-1)venuesData.splice(i,1);
+      renderVenues();renderSchedule();closeModal();toast('აუდიტორია წაშლილია','warn')})()">✕ წაშლა</button>`);
+}
 // ══════════ მოდულების რეესტრი ══════════
 function regUsage(mrId){return intakeModules.filter(x=>x.moduleId===mrId).length}
 function renderRegistry(){
@@ -2381,10 +2472,13 @@ function viewIntakeProgram(ipId){
       <button class="btn btn-b" onclick="addIntakeModule('${ipId}')">➕ მოდულის დამატება რეესტრიდან</button></div>
     <div class="chips"><span class="bd bd-b">${mods.length} მოდული</span><span class="bd bd-n">${ipHours(ipId)} საათი სულ</span></div>
     ${mods.length?`<div class="tw"><table>
-      <thead><tr><th style="width:80px">ID</th><th>მოდული</th><th style="width:80px">კვირა</th><th style="width:96px">საკონტაქტო</th><th style="width:110px">დამოუკიდებელი</th><th style="width:90px">შეფასება</th><th style="width:60px">სულ</th><th style="width:150px">მოქმედება</th></tr></thead>
+      <thead><tr><th style="width:80px">ID</th><th>მოდული</th><th style="width:180px">ლექტორი</th><th style="width:70px">კვირა</th><th style="width:90px">საკონტაქტო</th><th style="width:104px">დამოუკიდებელი</th><th style="width:84px">შეფასება</th><th style="width:56px">სულ</th><th style="width:150px">მოქმედება</th></tr></thead>
       <tbody>${mods.map(im=>{const t=imTotals(im.id);return `<tr>
         <td class="row-id">${im.id}</td>
         <td><strong style="font-size:13px">${regName(im.moduleId)}</strong><div style="font-size:10px;color:var(--text3)">${im.moduleId}</div></td>
+        <td><select class="fi" onchange="setImTeacher('${im.id}',this.value)" style="padding:5px 6px;font-size:11px">
+          <option value="">— არ არის მითითებული —</option>
+          ${teachers.filter(t=>t.status==='active').map(t=>`<option value="${t.id}" ${t.id===im.teacherId?'selected':''}>${t.name}</option>`).join('')}</select></td>
         <td style="text-align:center">${imWeeks(im.id).length}</td>
         <td style="text-align:center">${t.contactH}</td><td style="text-align:center">${t.selfH}</td><td style="text-align:center">${t.assessH}</td>
         <td style="text-align:center;font-weight:700">${t.contactH+t.selfH+t.assessH}</td>
@@ -2393,7 +2487,7 @@ function viewIntakeProgram(ipId){
           <button class="btn btn-xs btn-r" onclick="removeIntakeModule('${im.id}')">✕</button>
         </td></tr>`}).join('')}</tbody></table></div>`
       :'<div style="color:var(--text3);font-size:12px">მოდული ჯერ არ არის დამატებული</div>'}
-    <div class="note">მოდული ემატება <strong>რეესტრიდან</strong>; საათები (ლექციები — საკონტაქტო, დამოუკიდებელი სამუშაო, შეფასება) იწერება <strong>კვირების მიხედვით</strong>, ამ მიღების ამ პროგრამისთვის.</div>`,
+    <div class="note">მოდული ემატება <strong>რეესტრიდან</strong> და ენიჭება <strong>ლექტორი</strong>; საათები (ლექციები — საკონტაქტო, დამოუკიდებელი სამუშაო, შეფასება) იწერება <strong>კვირების მიხედვით</strong>, ამ მიღების ამ პროგრამისთვის.</div>`,
     '','xl');
 }
 function addIntakeModule(ipId){
@@ -2404,13 +2498,22 @@ function addIntakeModule(ipId){
      <div class="fg"><label class="fl">მოდული (რეესტრი)</label>
        ${free.length?`<select class="fi" id="im-mod">${free.map(x=>`<option value="${x.id}">${x.title}</option>`).join('')}</select>`
          :'<div style="color:var(--text3);font-size:12px">რეესტრის ყველა მოდული უკვე დამატებულია</div>'}</div>
+     <div class="fg"><label class="fl">პროფესიული განათლების მასწავლებელი</label>
+       <select class="fi" id="im-teacher">${teachers.filter(t=>t.status==='active').map(t=>`<option value="${t.id}">${t.name} · ${t.spec}</option>`).join('')}</select></div>
      <div class="note">საათები კვირების მიხედვით დაემატება მოდულის დამატების შემდეგ — ღილაკით <strong>🗓️ საათები</strong>.</div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button>${free.length?`<button class="btn btn-b" onclick="saveIntakeModule('${ipId}')">✓ დამატება</button>`:''}`,'lg');
 }
 function saveIntakeModule(ipId){
   const sel=document.getElementById('im-mod'); if(!sel)return;
-  intakeModules.push({id:'IM-'+(++imSeq),ipId,moduleId:sel.value});
+  const tsel=document.getElementById('im-teacher');
+  intakeModules.push({id:'IM-'+(++imSeq),ipId,moduleId:sel.value,teacherId:tsel?tsel.value:null});
   renderIntakes();closeModal();viewIntakeProgram(ipId);toast('მოდული დამატებულია — მიუთითეთ საათები კვირების მიხედვით ✓','success');
+}
+function setImTeacher(imId,tid){
+  const im=intakeModules.find(x=>x.id===imId); if(!im)return;
+  im.teacherId=tid||null;
+  renderSchedule();
+  toast(tid?'ლექტორი მინიჭებულია ✓':'ლექტორი მოხსნილია','success');
 }
 function removeIntakeModule(imId){
   const im=intakeModules.find(x=>x.id===imId);if(!im)return;
@@ -2562,7 +2665,7 @@ function viewModule(code){
       <span class="bd bd-n">სარეგ. № ${m.regNo}</span><span class="bd bd-n">${m.credits} კრედიტი</span>
       <span class="bd bd-n">${branchName(m.branchId)}</span>
     </div>
-    <div class="fg2"><div><label class="fl">მოდულის პერიოდი</label><div>${m.startsOn||'—'} – ${m.endsOn||'—'}</div></div><div><label class="fl">მასწავლებელი</label><div>${teacherName(m.teacherId)}</div></div></div>
+    <div class="fg2"><div><label class="fl">მოდულის პერიოდი</label><div>${m.startsOn||'—'} – ${m.endsOn||'—'}</div></div><div><label class="fl">მასწავლებელი</label><div>${teacherName(modTeacherId(m.code))}</div></div></div>
     <div class="fg"><label class="fl">ჩატარებული მეცადინეობა (მთელი მოდულის მაჩვენებელი)</label>
       <div style="font-size:13px;margin-bottom:4px">${done} / ${lecs.length}</div>
       <div style="height:8px;background:var(--border);border-radius:4px;overflow:hidden"><div style="height:100%;width:${lecs.length?Math.round(done/lecs.length*100):0}%;background:var(--blue)"></div></div></div>
@@ -3040,7 +3143,7 @@ function editTeacherModal(id){
 }
 function viewTeacher(id){
   const t=teachers.find(x=>x.id===id);if(!t)return;
-  const mods=modulesData.filter(m=>m.teacherId===t.id);
+  const mods=modulesData.filter(m=>modTeacherId(m.code)===t.id);
   const myLecs=moduleLectures.filter(l=>mods.some(m=>m.code===l.moduleCode));
   const contactH=Math.round(myLecs.filter(l=>l.conducted).reduce((a,l)=>a+l.durationMin,0)/60);
   const monthH=Math.round(myLecs.filter(l=>l.conducted&&((l.conductedOn||'').includes('.03.')||l.conductedOn==='დღეს')).reduce((a,l)=>a+l.durationMin,0)/60);
@@ -3152,7 +3255,7 @@ function viewGroup(id){
     <div class="card"><div class="ch"><div class="ct">ჯგუფის მოდულები</div></div>
       ${mods.length?`<div class="tw"><table><thead><tr><th>კოდი</th><th>მოდული</th><th>მასწავლებელი</th><th>პერიოდი</th><th>ჩატარებული</th><th></th></tr></thead><tbody>
       ${mods.map(m=>{return `<tr><td style="font-size:11px;color:var(--blue);font-weight:700">${m.code}</td><td>${m.name}</td>
-        <td style="font-size:12px">${teacherName(m.teacherId)}</td><td style="font-size:11px">${m.startsOn}–${m.endsOn}</td>
+        <td style="font-size:12px">${teacherName(modTeacherId(m.code))}</td><td style="font-size:11px">${m.startsOn}–${m.endsOn}</td>
         <td style="text-align:center;font-size:12px">${m.conducted}/${m.totalLectures}</td>
         <td><button class="btn btn-xs btn-ghost" onclick="closeModal();viewModule('${m.code}')">👁</button></td></tr>`}).join('')}
       </tbody></table></div>`:'<div class="cb" style="color:var(--text3);font-size:12px">მოდული არ არის</div>'}</div>
@@ -3500,6 +3603,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderOrders();
   renderRoles();
   renderAudit();
+  renderVenues();
   renderRegistry();
   renderIntakes();
   renderPrograms();
