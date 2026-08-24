@@ -1023,19 +1023,19 @@ const moduleRegistry=[
   {id:'IP-5',intakeId:'INT-3',programId:'PRG-1'},
   {id:'IP-6',intakeId:'INT-3',programId:'PRG-2'},
 ];const intakeModules=[
-  {id:'IM-1',ipId:'IP-1',moduleId:'MR-1'},
-  {id:'IM-2',ipId:'IP-1',moduleId:'MR-2'},
-  {id:'IM-3',ipId:'IP-1',moduleId:'MR-4'},
-  {id:'IM-4',ipId:'IP-2',moduleId:'MR-3'},
-  {id:'IM-5',ipId:'IP-2',moduleId:'MR-5'},
-  {id:'IM-6',ipId:'IP-3',moduleId:'MR-1'},
-  {id:'IM-7',ipId:'IP-3',moduleId:'MR-2'},
-  {id:'IM-8',ipId:'IP-4',moduleId:'MR-5'},
-  {id:'IM-9',ipId:'IP-1',moduleId:'MR-3'},
-  {id:'IM-10',ipId:'IP-1',moduleId:'MR-5'},
-  {id:'IM-11',ipId:'IP-2',moduleId:'MR-1'},
-  {id:'IM-12',ipId:'IP-5',moduleId:'MR-4'},
-  {id:'IM-13',ipId:'IP-6',moduleId:'MR-5'},
+  {id:'IM-1',ipId:'IP-1',moduleId:'MR-1',teacherId:'T-001'},
+  {id:'IM-2',ipId:'IP-1',moduleId:'MR-2',teacherId:'T-004'},
+  {id:'IM-3',ipId:'IP-1',moduleId:'MR-4',teacherId:'T-005'},
+  {id:'IM-4',ipId:'IP-2',moduleId:'MR-3',teacherId:'T-003'},
+  {id:'IM-5',ipId:'IP-2',moduleId:'MR-5',teacherId:'T-002'},
+  {id:'IM-6',ipId:'IP-3',moduleId:'MR-1',teacherId:'T-001'},
+  {id:'IM-7',ipId:'IP-3',moduleId:'MR-2',teacherId:'T-004'},
+  {id:'IM-8',ipId:'IP-4',moduleId:'MR-5',teacherId:'T-002'},
+  {id:'IM-9',ipId:'IP-1',moduleId:'MR-3',teacherId:'T-003'},
+  {id:'IM-10',ipId:'IP-1',moduleId:'MR-5',teacherId:'T-002'},
+  {id:'IM-11',ipId:'IP-2',moduleId:'MR-1',teacherId:'T-001'},
+  {id:'IM-12',ipId:'IP-5',moduleId:'MR-4',teacherId:'T-005'},
+  {id:'IM-13',ipId:'IP-6',moduleId:'MR-5',teacherId:'T-002'},
 ];const intakeModuleWeeks=[
   {id:'IW-1',imId:'IM-1',week:1,contactH:8,selfH:2,assessH:0},
   {id:'IW-2',imId:'IM-1',week:2,contactH:8,selfH:2,assessH:0},
@@ -1148,63 +1148,44 @@ const moduleRegistry=[
   {id:'IW-109',imId:'IM-13',week:8,contactH:8,selfH:0,assessH:4},
 ];const regName=id=>(moduleRegistry.find(x=>x.id===id)||{}).title||'—';
 const ipOf=(intakeId,programId)=>intakePrograms.find(x=>x.intakeId===intakeId&&x.programId===programId);
-const imOf=(intakeId,programId,moduleId)=>{const ip=ipOf(intakeId,programId);return ip?intakeModules.find(x=>x.ipId===ip.id&&x.moduleId===moduleId)||null:null};
-const imWeeks=imId=>intakeModuleWeeks.filter(x=>x.imId===imId).sort((a,b)=>a.week-b.week);
-const modWeeks=(intakeId,programId,moduleId)=>{const im=imOf(intakeId,programId,moduleId);return im?imWeeks(im.id):[]};
-const modWeekTotals=(intakeId,programId,moduleId)=>modWeeks(intakeId,programId,moduleId).reduce((a,x)=>({contactH:a.contactH+x.contactH,selfH:a.selfH+x.selfH,assessH:a.assessH+x.assessH}),{contactH:0,selfH:0,assessH:0});
-const modHours=(intakeId,programId,moduleId)=>{const t=modWeekTotals(intakeId,programId,moduleId);return t.contactH+t.selfH+t.assessH};
-function weekHoursTable(intakeId,programId,moduleId){
-  const ws=modWeeks(intakeId,programId,moduleId);
-  if(!ws.length)return '<div style="font-size:12px;color:var(--text3)">საათების განაწილება ჯერ არ არის გაწერილი</div>';
-  const t=modWeekTotals(intakeId,programId,moduleId);
-  return `<div style="overflow-x:auto"><table style="font-size:12px">
-    <thead><tr><th style="width:64px">კვირა</th><th style="width:150px">ლექციები (საკონტაქტო)</th><th style="width:160px">დამოუკიდებელი სამუშაო</th><th style="width:110px">შეფასება</th><th style="width:64px">სულ</th></tr></thead>
-    <tbody>${ws.map(w=>`<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${w.week}</td>
-      <td style="text-align:center">${w.contactH}</td><td style="text-align:center">${w.selfH}</td><td style="text-align:center">${w.assessH}</td>
-      <td style="text-align:center;font-weight:700">${w.contactH+w.selfH+w.assessH}</td></tr>`).join('')}
-    <tr style="background:var(--blue-lt)"><td style="font-weight:700">სულ — ${ws.length} კვ.</td>
-      <td style="text-align:center;font-weight:800;color:var(--blue)">${t.contactH}</td><td style="text-align:center;font-weight:800;color:var(--blue)">${t.selfH}</td>
-      <td style="text-align:center;font-weight:800;color:var(--blue)">${t.assessH}</td><td style="text-align:center;font-weight:800">${t.contactH+t.selfH+t.assessH}</td></tr>
-    </tbody></table></div>`;
-}
 const myModules=[
   {code:'MOD-101',regNo:'0910919',moduleId:'MR-1',intakeId:'INT-2',programId:'PRG-1',name:'ბიოქიმია',teacher:'ლია გოგიაშვილი',credits:4,startsOn:'10.02.2026',endsOn:'25.05.2026',
    present:22,absent:1,survey:true,surveyUrl:'https://forms.google.com/biochem-survey',
    outcomes:[
-     {no:1,title:'აღწერს უჯრედის ქიმიურ შემადგენლობას',direction:'survey',result:'confirmed',attempt:1,on:'20.03.2026',source:'assessment',evidence:2},
-     {no:2,title:'ახასიათებს ცილების სტრუქტურასა და ფუნქციას',direction:'survey',result:'confirmed',attempt:1,on:'03.04.2026',source:'assessment',evidence:1},
-     {no:3,title:'აღწერს ნახშირწყლების მეტაბოლიზმს',direction:'survey',result:'confirmed',attempt:1,on:'17.04.2026',source:'assessment',evidence:2},
-     {no:4,title:'ახასიათებს ლიპიდების მეტაბოლიზმს',direction:'survey',result:'confirmed',attempt:1,on:'28.04.2026',source:'assessment',evidence:1},
-     {no:5,title:'აღწერს ფერმენტების მოქმედების მექანიზმს',direction:'practical_task',result:null,attempt:null,on:null,source:null,evidence:0},
-     {no:6,title:'ატარებს ბიოქიმიურ ანალიზს ლაბორატორიაში',direction:'practical_task_observed',result:'confirmed',attempt:2,on:'15.05.2026',source:'assessment',evidence:3},
-     {no:7,title:'ინტერპრეტირებს ბიოქიმიური კვლევის შედეგებს',direction:'practical_task',result:null,attempt:null,on:null,source:null,evidence:0},
+     {no:1,title:'აღწერს უჯრედის ქიმიურ შემადგენლობას',direction:'survey',result:'confirmed',attempt:1,on:'20.03.2026',source:'assessment'},
+     {no:2,title:'ახასიათებს ცილების სტრუქტურასა და ფუნქციას',direction:'survey',result:'confirmed',attempt:1,on:'03.04.2026',source:'assessment'},
+     {no:3,title:'აღწერს ნახშირწყლების მეტაბოლიზმს',direction:'survey',result:'confirmed',attempt:1,on:'17.04.2026',source:'assessment'},
+     {no:4,title:'ახასიათებს ლიპიდების მეტაბოლიზმს',direction:'survey',result:'confirmed',attempt:1,on:'28.04.2026',source:'assessment'},
+     {no:5,title:'აღწერს ფერმენტების მოქმედების მექანიზმს',direction:'practical_task',result:null,attempt:null,on:null,source:null},
+     {no:6,title:'ატარებს ბიოქიმიურ ანალიზს ლაბორატორიაში',direction:'practical_task_observed',result:'confirmed',attempt:2,on:'15.05.2026',source:'assessment'},
+     {no:7,title:'ინტერპრეტირებს ბიოქიმიური კვლევის შედეგებს',direction:'practical_task',result:null,attempt:null,on:null,source:null},
    ]},
   {code:'MOD-107',regNo:'0910922',moduleId:'MR-3',intakeId:'INT-2',programId:'PRG-1',name:'ფარმაკოლოგია',teacher:'მარინა ბერიძე',credits:5,startsOn:'01.03.2026',endsOn:'20.06.2026',
    present:18,absent:4,survey:true,surveyUrl:'https://forms.google.com/pharmacology-survey',
    outcomes:[
-     {no:1,title:'ახასიათებს წამლის ფარმაკოკინეტიკას',direction:'survey',result:'confirmed',attempt:1,on:'25.03.2026',source:'assessment',evidence:1},
-     {no:2,title:'აღწერს ანტიბიოტიკების ჯგუფებს',direction:'survey',result:'not_confirmed',attempt:2,on:'20.04.2026',source:'assessment',evidence:1},
-     {no:3,title:'ითვლის წამლის დოზირებას',direction:'practical_task',result:null,attempt:null,on:null,source:null,evidence:0},
-     {no:4,title:'ამზადებს სამკურნალო ფორმებს',direction:'practical_task_observed',result:null,attempt:null,on:null,source:null,evidence:0},
-     {no:5,title:'აღრიცხავს გვერდით მოვლენებს',direction:'survey',result:null,attempt:null,on:null,source:null,evidence:0},
-     {no:6,title:'იცავს წამლის შენახვის წესებს',direction:'practical_task',result:null,attempt:null,on:null,source:null,evidence:0},
+     {no:1,title:'ახასიათებს წამლის ფარმაკოკინეტიკას',direction:'survey',result:'confirmed',attempt:1,on:'25.03.2026',source:'assessment'},
+     {no:2,title:'აღწერს ანტიბიოტიკების ჯგუფებს',direction:'survey',result:'not_confirmed',attempt:2,on:'20.04.2026',source:'assessment'},
+     {no:3,title:'ითვლის წამლის დოზირებას',direction:'practical_task',result:null,attempt:null,on:null,source:null},
+     {no:4,title:'ამზადებს სამკურნალო ფორმებს',direction:'practical_task_observed',result:null,attempt:null,on:null,source:null},
+     {no:5,title:'აღრიცხავს გვერდით მოვლენებს',direction:'survey',result:null,attempt:null,on:null,source:null},
+     {no:6,title:'იცავს წამლის შენახვის წესებს',direction:'practical_task',result:null,attempt:null,on:null,source:null},
    ]},
   {code:'MOD-108',regNo:'0910931',moduleId:'MR-4',intakeId:'INT-2',programId:'PRG-1',name:'კლინიკური პრაქტიკა',teacher:'ვასო ლომიძე',credits:8,startsOn:'01.02.2026',endsOn:'30.06.2026',
    present:27,absent:1,survey:false,surveyUrl:'',
    outcomes:[
-     {no:1,title:'ახორციელებს პაციენტის მოვლას ზედამხედველობით',direction:'practical_task_observed',result:'confirmed',attempt:1,on:'15.04.2026',source:'assessment',evidence:4},
-     {no:2,title:'ზომავს სასიცოცხლო მაჩვენებლებს',direction:'practical_task_observed',result:'confirmed',attempt:1,on:'22.04.2026',source:'assessment',evidence:3},
-     {no:3,title:'აწარმოებს სამედიცინო დოკუმენტაციას',direction:'practical_task',result:'confirmed',attempt:1,on:'10.05.2026',source:'formal_recognition',evidence:1},
-     {no:4,title:'იცავს ინფექციის კონტროლის პროტოკოლს',direction:'practical_task_observed',result:null,attempt:null,on:null,source:null,evidence:0},
+     {no:1,title:'ახორციელებს პაციენტის მოვლას ზედამხედველობით',direction:'practical_task_observed',result:'confirmed',attempt:1,on:'15.04.2026',source:'assessment'},
+     {no:2,title:'ზომავს სასიცოცხლო მაჩვენებლებს',direction:'practical_task_observed',result:'confirmed',attempt:1,on:'22.04.2026',source:'assessment'},
+     {no:3,title:'აწარმოებს სამედიცინო დოკუმენტაციას',direction:'practical_task',result:'confirmed',attempt:1,on:'10.05.2026',source:'formal_recognition'},
+     {no:4,title:'იცავს ინფექციის კონტროლის პროტოკოლს',direction:'practical_task_observed',result:null,attempt:null,on:null,source:null},
    ]},
   {code:'MOD-105',regNo:'0910905',moduleId:'MR-5',intakeId:'INT-2',programId:'PRG-1',name:'მიკრობიოლოგია',teacher:'ნინო ახვლედიანი',credits:4,startsOn:'10.03.2026',endsOn:'15.06.2026',
    present:20,absent:0,survey:false,surveyUrl:'',
    outcomes:[
-     {no:1,title:'აღწერს მიკროორგანიზმების აგებულებას',direction:'survey',result:'confirmed',attempt:1,on:'02.04.2026',source:'assessment',evidence:1},
-     {no:2,title:'ახასიათებს მიკროორგანიზმების კლასიფიკაციას',direction:'survey',result:'confirmed',attempt:1,on:'02.05.2026',source:'mobility_transfer',evidence:1},
-     {no:3,title:'ატარებს ბაქტერიოლოგიურ ნათესს',direction:'practical_task_observed',result:null,attempt:null,on:null,source:null,evidence:0},
-     {no:4,title:'იცავს ბიოუსაფრთხოების წესებს',direction:'practical_task',result:null,attempt:null,on:null,source:null,evidence:0},
-     {no:5,title:'ინტერპრეტირებს ანტიბიოტიკოგრამას',direction:'practical_task',result:null,attempt:null,on:null,source:null,evidence:0},
+     {no:1,title:'აღწერს მიკროორგანიზმების აგებულებას',direction:'survey',result:'confirmed',attempt:1,on:'02.04.2026',source:'assessment'},
+     {no:2,title:'ახასიათებს მიკროორგანიზმების კლასიფიკაციას',direction:'survey',result:'confirmed',attempt:1,on:'02.05.2026',source:'mobility_transfer'},
+     {no:3,title:'ატარებს ბაქტერიოლოგიურ ნათესს',direction:'practical_task_observed',result:null,attempt:null,on:null,source:null},
+     {no:4,title:'იცავს ბიოუსაფრთხოების წესებს',direction:'practical_task',result:null,attempt:null,on:null,source:null},
+     {no:5,title:'ინტერპრეტირებს ანტიბიოტიკოგრამას',direction:'practical_task',result:null,attempt:null,on:null,source:null},
    ]},
 ];
 // შუალედური შეფასება — მონაწილეობა გამოცდაზე დაშვების პირობაა
@@ -1223,14 +1204,12 @@ function showModuleModal(idx){
     <td style="text-align:center;font-size:12px">${o.attempt||'—'}</td>
     <td style="font-size:11px">${o.on||'—'}</td>
     <td style="font-size:11px">${o.source?SOURCE_LBL[o.source]:'—'}</td>
-    <td style="text-align:center">${o.evidence?`<span class="bd bd-b">${o.evidence}</span>`:'<span style="color:var(--text3)">—</span>'}</td>
     <td>${modResultBadge(o)}</td></tr>`).join('');
   const surveyBtn=m.survey?`<div style="margin-top:16px;background:var(--blue-lt);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:13px;font-weight:600;color:var(--blue)">📊 გამოკითხვა მოდულზე</div><a href="${m.surveyUrl}" target="_blank" class="btn btn-b btn-sm" onclick="event.stopPropagation()">გამოკითხვაზე გადასვლა ↗</a></div>`:'';
   showModal(m.name+' — სწავლის შედეგები',`
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
       <span class="bd bd-n">სარეგ. № ${m.regNo}</span><span class="bd bd-b">${m.credits} კრედიტი</span>
       <span class="bd bd-n">${m.startsOn} – ${m.endsOn}</span>
-      <span class="bd bd-b">${modWeeks(m.intakeId,m.programId,m.moduleId).length} კვირა · ${modHours(m.intakeId,m.programId,m.moduleId)} სთ</span>
     </div>
     <div style="display:flex;gap:12px;margin-bottom:16px">
       <div class="stat-box" style="flex:1"><div class="stat-num" style="color:var(--green)">${conf}<span style="font-size:16px;color:var(--text3)">/${m.outcomes.length}</span></div><div class="stat-lbl">დადასტურებული შედეგი</div></div>
@@ -1238,12 +1217,9 @@ function showModuleModal(idx){
       <div class="stat-box" style="flex:1"><div class="stat-num" style="color:${m.absent?'var(--red)':'var(--green)'}">${m.absent}</div><div class="stat-lbl">გააცდინა</div></div>
     </div>
     <div style="font-size:12px;color:var(--text2);margin-bottom:10px">პროფესიული განათლების მასწავლებელი: <b>${m.teacher}</b></div>
-    <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:6px">საათების განაწილება კვირების მიხედვით</div>
-    ${weekHoursTable(m.intakeId,m.programId,m.moduleId)}
-    <div style="height:14px"></div>
-    <table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>მტკიც.</th><th>შედეგი</th></tr></thead><tbody>${rows}</tbody></table>
+    <table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>შედეგი</th></tr></thead><tbody>${rows}</tbody></table>
     <div style="background:var(--blue-lt);border-radius:8px;padding:10px;font-size:12px;color:var(--text2);margin-top:12px">
-      კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>. 2 ცდა მოდულის დასრულებიდან 2 კვირაში; III ცდა ფასიანია, თუ მიზეზი არასაპატიოა. ყოველი შედეგი უზრუნველყოფილია <strong>მტკიცებულებით</strong> პორტფოლიოში. — [სპწ] 21.9–21.16</div>
+      კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>. 2 ცდა მოდულის დასრულებიდან 2 კვირაში; III ცდა ფასიანია, თუ მიზეზი არასაპატიოა. — [სპწ] 21.9–21.16</div>
     ${surveyBtn}
   `,'<button class="btn btn-n" onclick="closeModal()">დახურვა</button><button class="btn btn-b" onclick="closeModal();toast(\'PDF ჩამოიტვირთა\',\'success\')">↓ PDF გადმოწერა</button>');
 }

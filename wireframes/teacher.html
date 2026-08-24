@@ -287,10 +287,7 @@ tr:hover td{background:var(--bg)}
     <div class="sidebar-nav">
       <button class="nav-item active" onclick="go('home',this,'მთავარი')"><span class="ni-icon">🏠</span>მთავარი</button>
       <button class="nav-item" onclick="go('modules',this,'ჩემი სასწავლო მოდულები')"><span class="ni-icon">📚</span>ჩემი სასწავლო მოდულები</button>
-      <button class="nav-item" onclick="go('journal',this,'ჟურნალი — დასწრების რეგისტრი')"><span class="ni-icon">📋</span>ჟურნალი (დასწრება)</button>
-      <button class="nav-item" onclick="go('grades',this,'სწავლის შედეგები')"><span class="ni-icon">🎯</span>სწავლის შედეგები</button>
-      <button class="nav-item" onclick="go('schedule',this,'განრიგი')"><span class="ni-icon">📅</span>განრიგი</button>
-      <button class="nav-item" onclick="go('materials',this,'სასწავლო მასალები')"><span class="ni-icon">📁</span>სასწავლო მასალები</button>
+      <button class="nav-item" onclick="go('journal',this,'ჟურნალი — მეცადინეობა და შეფასება')"><span class="ni-icon">📋</span>ჟურნალი</button>
       <button class="nav-item" onclick="go('reports',this,'ანგარიშები')"><span class="ni-icon">📊</span>ანგარიშები</button>
       <button class="nav-item" onclick="go('surveys',this,'გამოკითხვები')"><span class="ni-icon">📝</span>გამოკითხვები</button>
       <button class="nav-item" onclick="go('profile',this,'პროფილი')"><span class="ni-icon">👤</span>პროფილი</button>
@@ -344,7 +341,7 @@ tr:hover td{background:var(--bg)}
     <!-- Today's schedule -->
     <div class="card">
       <div class="card-title">დღევანდელი განრიგი
-        <button class="btn btn-ghost btn-sm" onclick="go('schedule',null,'განრიგი')">ყველა →</button>
+        <button class="btn btn-ghost btn-sm" onclick="go('journal',null,'ჟურნალი')">ჟურნალი →</button>
       </div>
       <table>
         <tr><th>სლოტი</th><th>მოდული</th><th>ჯგუფი</th><th>სივრცე</th></tr>
@@ -426,18 +423,8 @@ tr:hover td{background:var(--bg)}
     </div>
     <div style="overflow-x:auto">
     <table>
-      <thead><tr><th>კოდი</th><th>მოდული</th><th>პროგრამა / მიღება</th><th>ჯგუფი</th><th>სასწ. წელი</th><th>კრედ.</th><th>საათები (კვირა)</th><th>პერიოდი</th><th>სწ. შედეგი</th><th>ჩატარებული</th><th>მოქმედება</th></tr></thead>
+      <thead><tr><th>კოდი</th><th>მოდული</th><th>პროგრამა / მიღება</th><th>ჯგუფი</th><th>სასწ. წელი</th><th>კრედ.</th><th>საათები (კვირა)</th><th>პერიოდი</th><th>მასალა</th><th>მოქმედება</th></tr></thead>
       <tbody id="modules-body"></tbody>
-    </table></div>
-  </div>
-  <div class="card">
-    <div class="card-title">უწყისები
-      <span style="font-size:11px;font-weight:400;color:var(--muted)">≤7 კალენდარული დღე მოდულის დასრულებიდან · ხელს აწერს მასწავლებელი — [სპწ] მუხ. 24</span>
-    </div>
-    <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>უწყისი</th><th>მოდული</th><th>შედგენა</th><th>ვადა</th><th>ხელმოწერა</th><th>ჟურნ. №</th><th></th></tr></thead>
-      <tbody id="register-list"></tbody>
     </table></div>
   </div>
 </div>
@@ -446,199 +433,19 @@ tr:hover td{background:var(--bg)}
 <div class="screen" id="screen-journal">
   <div class="journal-header">
     <div style="display:flex;gap:10px;align-items:center">
-      <select id="journal-module-sel" onchange="loadJournal()" style="border:1.5px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-family:inherit;font-size:13px;outline:none">
-        <option value="0">ბიოქიმია — ჯგუფი 101</option>
-        <option value="1">ბიოქიმია — ჯგუფი 401</option>
-        <option value="2">ფარმაკოლოგია — ჯგუფი 102</option>
-        <option value="3">კლინიკური პრაქტიკა — ჯგუფი 201</option>
-      </select>
-      <select style="border:1.5px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-family:inherit;font-size:13px;outline:none">
-        <option>2025–2026 სასწავლო წელი</option>
-        <option>2024–2025 სასწავლო წელი</option>
-      </select>
+      <select id="journal-module-sel" onchange="loadJournal()" style="border:1.5px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-family:inherit;font-size:13px;outline:none"></select>
     </div>
-    <div style="display:flex;gap:8px">
-      <button class="btn btn-green" onclick="saveJournal()">💾 შენახვა</button>
-      <button class="btn btn-outline" onclick="exportJournal()">⬇️ Excel-ში გადმოწერა</button>
-    </div>
+    <button class="btn btn-outline" onclick="exportJournal()">⬇️ Excel-ში გადმოწერა</button>
   </div>
-
-  <div class="journal-legend" style="margin-bottom:12px">
-    <span><span class="legend-dot" style="background:var(--green)"></span>ი — იყო</span>
-    <span><span class="legend-dot" style="background:var(--red)"></span>არ — არ იყო</span>
-    <span><span class="legend-dot" style="background:var(--amber)"></span>დ — დაგვიანება</span>
-    <span style="color:var(--muted);font-style:italic">· მხოლოდ დღეს (02.07) შეიძლება დასწრების შეყვანა &nbsp;|&nbsp; 📅 დღევ. სვეტზე კლიკი — ჯგუფური შეყვანა</span>
-  </div>
-
-  <div class="card" style="overflow-x:auto">
-    <table id="journal-table">
-      <thead id="journal-head"></thead>
-      <tbody id="journal-body"></tbody>
-    </table>
-  </div>
-</div>
-
-
-<!-- ══ GRADES SCREEN ══ -->
-<div class="screen" id="screen-grades">
-  <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap">
-    <select id="grade-module-sel" style="border:1.5px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-family:inherit;font-size:13px;outline:none" onchange="loadGrades()">
-      <option>ბიოქიმია — ჯგუფი 101</option>
-      <option>ბიოქიმია — ჯგუფი 401</option>
-      <option>ფარმაკოლოგია — ჯგუფი 102</option>
-      <option>კლინიკური პრაქტიკა — ჯგუფი 201</option>
-    </select>
-    <button class="btn btn-green" onclick="saveGrades()">💾 შენახვა</button>
-    <span style="flex:1"></span>
-    <span style="font-size:12px;color:var(--muted)">კლიკი უჯრაზე: ◌ → ✓ დადასტურდა → ✕ ვერ დადასტურდა</span>
-  </div>
-
   <div class="card">
-    <div class="card-title">სწავლის შედეგები და შეფასების ინსტრუმენტი
-      <span style="font-size:11px;font-weight:400;color:var(--muted)">ბიოქიმია · სარეგ. № 0910919 · 72 / 14 / 14 სთ</span>
+    <div class="card-title">მეცადინეობა და შეფასება — საათების ჩამონათვალი
+      <span style="font-size:11px;font-weight:400;color:var(--muted)">საათები გენერირდება მოდულის კვირეული განაწილებიდან · გადადით საათზე დასწრების ან შეფასების შესატანად</span>
     </div>
-    <div id="outcome-list"></div>
-  </div>
-
-  <div class="card" style="overflow-x:auto">
-    <div class="card-title">შედეგების მატრიცა
-      <span style="font-size:11px;font-weight:400;color:var(--muted)">ბინარული — ქულა, საშუალო და გამსვლელობა არ არსებობს</span>
-    </div>
+    <div style="overflow-x:auto">
     <table>
-      <thead id="outcomes-head"></thead>
-      <tbody id="grades-body"></tbody>
-    </table>
-    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--muted);margin-top:12px">
-      კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>. 2 ცდა მოდულის დასრულებიდან 2 კვირაში; III ცდა (არაწინაპირობა მოდულზე) ფასიანია, თუ მიზეზი არასაპატიოა. — [სპწ] 21.9–21.11
-    </div>
-  </div>
-</div>
-
-<!-- ══ SCHEDULE SCREEN ══ -->
-<div class="screen" id="screen-schedule">
-  <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
-    <div class="chip-tabs" style="margin-bottom:0">
-      <div class="chip active" id="sched-chip-week" onclick="schedView('week',this)">კვირა</div>
-      <div class="chip" id="sched-chip-month" onclick="schedView('month',this)">თვე</div>
-    </div>
-    <span style="flex:1"></span>
-    <button class="btn btn-ghost btn-sm" onclick="schedPrev()">◀ წინა</button>
-    <span style="font-size:13px;font-weight:600;color:var(--navy)" id="sched-period">30 ივნისი – 6 ივლისი 2025</span>
-    <button class="btn btn-ghost btn-sm" onclick="schedNext()">შემდ. ▶</button>
-  </div>
-
-  <div class="card" id="sched-week-view">
-    <table class="sched-week">
-      <thead>
-        <tr>
-          <th class="time-col">დრო</th>
-          <th>ორშ</th><th>სამ</th><th>ოთხ</th><th>ხუთ</th><th>პარ</th>
-        </tr>
-      </thead>
-      <tbody id="sched-week-body"></tbody>
-    </table>
-  </div>
-
-  <div id="sched-month-view" style="display:none">
-    <div id="sched-month-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px"></div>
-  </div>
-</div>
-
-
-<!-- ══ MATERIALS SCREEN ══ -->
-<div class="screen" id="screen-materials">
-  <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center">
-    <select id="mat-module-sel" style="border:1.5px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-family:inherit;font-size:13px;outline:none">
-      <option>ყველა მოდული</option>
-      <option>ანატომია I</option>
-      <option>ნეირო-ანატომია</option>
-      <option>კლინიკური ანატომია</option>
-    </select>
-    <span style="flex:1"></span>
-    <button class="btn btn-blue" onclick="uploadMaterial()">⬆️ მასალის ატვირთვა</button>
-  </div>
-
-  <div class="search-bar">
-    <span>🔍</span>
-    <input type="text" placeholder="ძიება მასალებში...">
-  </div>
-
-  <div class="card" style="padding:0;overflow:hidden">
-    <table>
-      <thead>
-        <tr>
-          <th>სახელი</th><th>ტიპი</th><th>მოდული</th><th>ზომა</th>
-          <th>ხელმისაწვდომია სტუდენტებისთვის</th><th>ატვირთვა</th><th>მოქმედება</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>📄 ანატომია I — ლექცია 1.pdf</td>
-          <td><span class="badge badge-blue">PDF</span></td>
-          <td>ანატომია I</td>
-          <td>2.4 MB</td>
-          <td><span class="badge badge-green">ყველა ჯგუფი</span></td>
-          <td style="color:var(--muted)">20 ივნ.</td>
-          <td>
-            <button class="btn btn-ghost btn-sm" onclick="previewMat()">👁</button>
-            <button class="btn btn-ghost btn-sm" onclick="editMat()">✏️</button>
-            <button class="btn btn-ghost btn-sm" onclick="deleteMat()">🗑</button>
-          </td>
-        </tr>
-        <tr>
-          <td>📊 სხეულის სისტემები.pptx</td>
-          <td><span class="badge badge-amber">PPT</span></td>
-          <td>ანატომია I</td>
-          <td>8.1 MB</td>
-          <td><span class="badge badge-green">ყველა ჯგუფი</span></td>
-          <td style="color:var(--muted)">29 ივნ.</td>
-          <td>
-            <button class="btn btn-ghost btn-sm" onclick="previewMat()">👁</button>
-            <button class="btn btn-ghost btn-sm" onclick="editMat()">✏️</button>
-            <button class="btn btn-ghost btn-sm" onclick="deleteMat()">🗑</button>
-          </td>
-        </tr>
-        <tr>
-          <td>🎬 ნეირო-ანატომია: ვიდეო.mp4</td>
-          <td><span class="badge badge-navy">ვიდეო</span></td>
-          <td>ნეირო-ანატომია</td>
-          <td>145 MB</td>
-          <td><span class="badge badge-navy">ჯგუფი 301</span></td>
-          <td style="color:var(--muted)">15 ივნ.</td>
-          <td>
-            <button class="btn btn-ghost btn-sm" onclick="previewMat()">👁</button>
-            <button class="btn btn-ghost btn-sm" onclick="editMat()">✏️</button>
-            <button class="btn btn-ghost btn-sm" onclick="deleteMat()">🗑</button>
-          </td>
-        </tr>
-        <tr>
-          <td>📋 პრაქტიკული სამუშაო #3 — ამოცანები.docx</td>
-          <td><span class="badge badge-blue">DOC</span></td>
-          <td>კლინიკური ანატომია</td>
-          <td>0.8 MB</td>
-          <td><span class="badge badge-navy">ჯგუფი 401</span></td>
-          <td style="color:var(--muted)">22 ივნ.</td>
-          <td>
-            <button class="btn btn-ghost btn-sm" onclick="previewMat()">👁</button>
-            <button class="btn btn-ghost btn-sm" onclick="editMat()">✏️</button>
-            <button class="btn btn-ghost btn-sm" onclick="deleteMat()">🗑</button>
-          </td>
-        </tr>
-        <tr>
-          <td>🔗 Gray's Anatomy — ონლაინ სახელმძღვ.</td>
-          <td><span class="badge badge-green">ბმული</span></td>
-          <td>ყველა</td>
-          <td>—</td>
-          <td><span class="badge badge-green">ყველა ჯგუფი</span></td>
-          <td style="color:var(--muted)">01 სექ.</td>
-          <td>
-            <button class="btn btn-ghost btn-sm" onclick="toast('ბმული კოპირებულია')">🔗</button>
-            <button class="btn btn-ghost btn-sm" onclick="editMat()">✏️</button>
-            <button class="btn btn-ghost btn-sm" onclick="deleteMat()">🗑</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <thead><tr><th style="width:70px">კვირა</th><th style="width:110px">სახეობა</th><th>საათი</th><th style="width:120px">დასწრება</th><th style="width:150px">შეფასება</th><th style="width:120px"></th></tr></thead>
+      <tbody id="session-list"></tbody>
+    </table></div>
   </div>
 </div>
 
@@ -873,19 +680,19 @@ const moduleRegistry=[
   {id:'IP-5',intakeId:'INT-3',programId:'PRG-1'},
   {id:'IP-6',intakeId:'INT-3',programId:'PRG-2'},
 ];const intakeModules=[
-  {id:'IM-1',ipId:'IP-1',moduleId:'MR-1'},
-  {id:'IM-2',ipId:'IP-1',moduleId:'MR-2'},
-  {id:'IM-3',ipId:'IP-1',moduleId:'MR-4'},
-  {id:'IM-4',ipId:'IP-2',moduleId:'MR-3'},
-  {id:'IM-5',ipId:'IP-2',moduleId:'MR-5'},
-  {id:'IM-6',ipId:'IP-3',moduleId:'MR-1'},
-  {id:'IM-7',ipId:'IP-3',moduleId:'MR-2'},
-  {id:'IM-8',ipId:'IP-4',moduleId:'MR-5'},
-  {id:'IM-9',ipId:'IP-1',moduleId:'MR-3'},
-  {id:'IM-10',ipId:'IP-1',moduleId:'MR-5'},
-  {id:'IM-11',ipId:'IP-2',moduleId:'MR-1'},
-  {id:'IM-12',ipId:'IP-5',moduleId:'MR-4'},
-  {id:'IM-13',ipId:'IP-6',moduleId:'MR-5'},
+  {id:'IM-1',ipId:'IP-1',moduleId:'MR-1',teacherId:'T-001'},
+  {id:'IM-2',ipId:'IP-1',moduleId:'MR-2',teacherId:'T-004'},
+  {id:'IM-3',ipId:'IP-1',moduleId:'MR-4',teacherId:'T-005'},
+  {id:'IM-4',ipId:'IP-2',moduleId:'MR-3',teacherId:'T-003'},
+  {id:'IM-5',ipId:'IP-2',moduleId:'MR-5',teacherId:'T-002'},
+  {id:'IM-6',ipId:'IP-3',moduleId:'MR-1',teacherId:'T-001'},
+  {id:'IM-7',ipId:'IP-3',moduleId:'MR-2',teacherId:'T-004'},
+  {id:'IM-8',ipId:'IP-4',moduleId:'MR-5',teacherId:'T-002'},
+  {id:'IM-9',ipId:'IP-1',moduleId:'MR-3',teacherId:'T-003'},
+  {id:'IM-10',ipId:'IP-1',moduleId:'MR-5',teacherId:'T-002'},
+  {id:'IM-11',ipId:'IP-2',moduleId:'MR-1',teacherId:'T-001'},
+  {id:'IM-12',ipId:'IP-5',moduleId:'MR-4',teacherId:'T-005'},
+  {id:'IM-13',ipId:'IP-6',moduleId:'MR-5',teacherId:'T-002'},
 ];const intakeModuleWeeks=[
   {id:'IW-1',imId:'IM-1',week:1,contactH:8,selfH:2,assessH:0},
   {id:'IW-2',imId:'IM-1',week:2,contactH:8,selfH:2,assessH:0},
@@ -1028,16 +835,6 @@ const moduleData = [
    startsOn:'01.02.2026', endsOn:'30.06.2026', outcomes:4, conducted:28, totalLectures:40},
 ]
 // ── სწავლის შედეგები — ბიოქიმია 0910919 (72/14/14) §1.5 ──
-const moduleOutcomes = [
-  {no:1, title:'აღწერს უჯრედის ქიმიურ შემადგენლობას', direction:'survey', contactH:10, selfH:2, assessH:2, plannedOn:'20.03.2026'},
-  {no:2, title:'ახასიათებს ცილების სტრუქტურასა და ფუნქციას', direction:'survey', contactH:10, selfH:2, assessH:2, plannedOn:'03.04.2026'},
-  {no:3, title:'აღწერს ნახშირწყლების მეტაბოლიზმს', direction:'survey', contactH:10, selfH:2, assessH:2, plannedOn:'17.04.2026'},
-  {no:4, title:'ახასიათებს ლიპიდების მეტაბოლიზმს', direction:'survey', contactH:10, selfH:2, assessH:2, plannedOn:'28.04.2026'},
-  {no:5, title:'აღწერს ფერმენტების მოქმედების მექანიზმს', direction:'practical_task', contactH:12, selfH:2, assessH:2, plannedOn:'10.05.2026'},
-  {no:6, title:'ატარებს ბიოქიმიურ ანალიზს ლაბორატორიაში', direction:'practical_task_observed', contactH:12, selfH:2, assessH:2, plannedOn:'15.05.2026'},
-  {no:7, title:'ინტერპრეტირებს ბიოქიმიური კვლევის შედეგებს', direction:'practical_task', contactH:8, selfH:2, assessH:2, plannedOn:'22.05.2026'},
-]
-// ── ჟურნალი: დასწრების რეგისტრი (§4.5 — პროცენტი/ქულა არ არსებობს) ──
 const journalStudents = [
   {id:'BMA-2401', name:'ბერიძე გიორგი',  att:['ი','ი','ი','არ','ი','ი','ი','ი']},
   {id:'BMA-2402', name:'გოგია თამარ',    att:['ი','ი','ი','ი','ი','ი','ი','ი']},
@@ -1049,17 +846,6 @@ const journalStudents = [
   {id:'BMA-2408', name:'ჯაყელი სალომე',  att:['ი','ი','ი','ი','ი','ი','ი','ი']},
 ]
 // ── შედეგების მატრიცა: სტუდენტი × სწავლის შედეგი → confirmed | not_confirmed | null ──
-const outcomeMatrix = {
-  'BMA-2401':{1:'confirmed',2:'confirmed',3:'confirmed',4:'confirmed',5:null,6:'confirmed',7:null},
-  'BMA-2402':{1:'confirmed',2:'confirmed',3:'confirmed',4:'confirmed',5:'confirmed',6:'confirmed',7:'confirmed'},
-  'BMA-2403':{1:'confirmed',2:'confirmed',3:'confirmed',4:null,5:null,6:null,7:null},
-  'BMA-2404':{1:'confirmed',2:'confirmed',3:'confirmed',4:'confirmed',5:'confirmed',6:'confirmed',7:null},
-  'BMA-2405':{1:'confirmed',2:'not_confirmed',3:'confirmed',4:null,5:null,6:null,7:null},
-  'BMA-2406':{1:'confirmed',2:'confirmed',3:null,4:null,5:null,6:null,7:null},
-  'BMA-2407':{1:'confirmed',2:'confirmed',3:'confirmed',4:'confirmed',5:null,6:null,7:null},
-  'BMA-2408':{1:'confirmed',2:'confirmed',3:'confirmed',4:'confirmed',5:'confirmed',6:null,7:null},
-}
-const attemptMatrix = {'BMA-2401':{6:2},'BMA-2405':{2:2}};
 // ── შეფასების ინსტრუმენტი (§2.6) — ავტორი ≠ ვალიდატორი ──
 const myInstruments = [
   {outcomeNo:5, status:'validated', submittedAt:'05.05.2026', validatedBy:'სპმს უფროსი', validatedAt:'12.05.2026'},
@@ -1069,14 +855,8 @@ const myInstruments = [
    rejectReason:'აპელაციის პირობები და ხარვეზის დასაშვები ნორმა არ არის მითითებული'},
 ]
 // ── უწყისი (§1.8, მუხ. 24) ──
-const myRegisters = [
-  {id:'REG-001', moduleCode:'MOD-101', module:'ბიოქიმია', compiledOn:'28.05.2026', dueOn:'01.06.2026', signedAt:'29.05.2026', journalNo:'უწყ-014/2026'},
-  {id:'REG-003', moduleCode:'MOD-108', module:'კლინიკური პრაქტიკა', compiledOn:'02.07.2026', dueOn:'07.07.2026', signedAt:null, journalNo:null},
-]
 // ── LOOKUPS ──
-const DIRECTION_LBL={survey:'გამოკითხვა',practical_task:'პრაქტიკული დავალება',practical_task_observed:'პრაქტიკული დავალება დაკვირვებით'};
 const RESULT_LBL={confirmed:['დადასტურდა','badge-green'],not_confirmed:['ვერ დადასტურდა','badge-red']};
-const INSTRUMENT_STATUS_LBL={draft:['მონახაზი','badge-navy'],submitted:['წარდგენილი','badge-blue'],validated:['ვალიდირებული','badge-green'],rejected:['უარყოფილი','badge-red']};
 const romanYear=n=>['—','I','II','III','IV','V','VI'][n]||n;
 
 // ── CORE UI ──
@@ -1133,10 +913,8 @@ function go(id, el, title){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'))
   if(el) el.classList.add('active')
   // lazy init
-  if(id==='journal') buildJournal()
-  if(id==='grades'){ buildOutcomes(); buildOutcomeList() }
-  if(id==='modules'){ renderMyModules(); buildRegisters() }
-  if(id==='schedule') buildScheduleWeek()
+  if(id==='journal') buildSessionList()
+  if(id==='modules') renderMyModules()
   const pc=document.querySelector('.page-content'); if(pc)pc.scrollTop=0
 }
 
@@ -1165,8 +943,7 @@ function verifyOTP(){
   setTimeout(()=>{
     document.getElementById('login-screen').style.display='none'
     document.getElementById('app').classList.add('visible')
-    buildJournal()
-    buildScheduleWeek()
+    buildSessionList()
     toast('მოგესალმებით, ნინო კაპანაძე!','success')
   },1200)
 }
@@ -1191,80 +968,9 @@ function logout(){
 
 
 // ── JOURNAL ──
-const attCycle = ['ი','არ','']
-const journalDates = ['03.06','06.06','10.06','13.06','17.06','20.06','24.06','27.06','01.07','02.07','06.07','08.07']
 const todayDate = '02.07'
 
-function buildJournal(){
-  const head = document.getElementById('journal-head')
-  const body = document.getElementById('journal-body')
-  if(!head||!body) return
-  head.innerHTML = '<tr>' +
-    '<th style="min-width:160px">პროფესიული სტუდენტი</th>' +
-    journalDates.map((d,ai)=>{
-      const isT=d===todayDate;
-      return isT
-        ? `<th style="cursor:pointer;white-space:nowrap;background:var(--green-lt);color:var(--green);font-weight:800;border-bottom:2px solid var(--green)" onclick="bulkMarkSession(${ai},'${d}')" title="დღეს — ჯგუფური შეყვანა">📅 ${d} ●</th>`
-        : `<th style="white-space:nowrap;color:var(--muted)">${d}</th>`;
-    }).join('') +
-    '<th>დაესწრო</th><th>გააცდინა</th><th>მოქმედება</th></tr>'
-  journalStudents.forEach(s=>{ while(s.att.length < journalDates.length) s.att.push('') })
-  body.innerHTML = journalStudents.map((s,si)=>{
-    const attCells = journalDates.map((_,ai)=>{
-      const a = s.att[ai]||''
-      const cls = a==='ი'?'att-present':a==='არ'?'att-absent':'att-empty'
-      const isT = journalDates[ai]===todayDate
-      return `<td><div class="attendance-cell ${cls}" ${isT?`onclick="cycleAtt(${si},${ai})" id="att-${si}-${ai}" title="კლიკი — სტატუსის შეცვლა"`:'style="opacity:0.55;cursor:default"'}>${a||'·'}</div></td>`
-    }).join('')
-    const arr=s.att.slice(0,journalDates.length);
-    const pres=arr.filter(a=>a==='ი').length, abs=arr.filter(a=>a==='არ').length;
-    return `<tr>
-      <td>${s.name}<div style="font-size:10px;color:var(--subtle)">${s.id}</div></td>
-      ${attCells}
-      <td><span class="badge badge-green">${pres}</span></td>
-      <td><span class="badge ${abs?'badge-red':'badge-navy'}">${abs}</span></td>
-      <td><button class="btn btn-ghost btn-sm" onclick="studentDetail(${si})">👤</button></td>
-    </tr>`
-  }).join('')
-}
-function cycleAtt(si,ai){
-  const cur = journalStudents[si].att[ai]||''
-  const next = attCycle[(attCycle.indexOf(cur)+1)%attCycle.length]
-  journalStudents[si].att[ai] = next
-  const cell = document.getElementById(`att-${si}-${ai}`)
-  cell.className = 'attendance-cell '+(next==='ი'?'att-present':next==='არ'?'att-absent':'att-empty')
-  cell.textContent = next||'·'
-}
-
-
-
-function bulkMarkSession(ai, date){
-  showModal(`ჯგუფური შეყვანა — ${date}`,
-    `<p style="font-size:13px;color:var(--muted);margin-bottom:14px">მონიშნეთ ყველა სტუდენტი ერთდროულად. შემდეგ შეგიძლიათ ინდივიდუალურად შეცვალოთ.</p>
-     <div style="display:flex;flex-direction:column;gap:8px">
-       <button class="btn btn-green" style="width:100%;justify-content:flex-start;gap:10px" onclick="applyBulkMark(${ai},'ი')"><strong>ი</strong> — ყველა სტუდენტი დასწრებულია</button>
-       <button class="btn btn-red" style="width:100%;justify-content:flex-start;gap:10px" onclick="applyBulkMark(${ai},'არ')"><strong>არ</strong> — ყველა გამოუცხადებელია</button>
-       <button class="btn btn-ghost" style="width:100%;justify-content:flex-start;gap:10px" onclick="applyBulkMark(${ai},'')">ცარიელი — გასუფთავება</button>
-     </div>`,
-    `<button class="btn btn-ghost" onclick="closeModal()">დახურვა</button>`
-  )
-}
-
-function applyBulkMark(ai, val){
-  journalStudents.forEach((_,si)=>{
-    journalStudents[si].att[ai]=val
-    const cell = document.getElementById(`att-${si}-${ai}`)
-    if(cell){
-      cell.className='attendance-cell '+(val==='ი'?'att-present':val==='არ'?'att-absent':'att-empty')
-      cell.textContent=val||'·'
-    }
-  })
-  closeModal()
-  toast('ჯგუფური შეყვანა განახლდა ✓','success')
-}
-
 function loadJournal(){buildJournal()}
-function saveJournal(){toast('ჟურნალი შენახულია ✓','success')}
 function exportJournal(){
   showModal('Excel-ში გატანა',
     '<p style="font-size:13px;color:var(--muted)">ჟურნალი Excel ფორმატში მზადდება...</p>',
@@ -1273,38 +979,57 @@ function exportJournal(){
   )
 }
 
-// ── GRADES ──
-function buildOutcomes(){
-  const body = document.getElementById('grades-body')
-  if(!body) return
-  const head = document.getElementById('outcomes-head')
-  if(head) head.innerHTML='<tr><th style="min-width:170px">პროფესიული სტუდენტი</th>'+
-    moduleOutcomes.map(o=>`<th style="text-align:center" title="${o.title}">შედეგი ${o.no}</th>`).join('')+
-    '<th>დადასტ.</th><th></th></tr>'
-  body.innerHTML = journalStudents.map((s,si)=>{
-    const row=outcomeMatrix[s.id]||{};
-    const cells=moduleOutcomes.map(o=>{
-      const v=row[o.no];
-      const att=(attemptMatrix[s.id]||{})[o.no];
-      if(v==='confirmed')return `<td style="text-align:center"><span class="badge badge-green" style="cursor:pointer" onclick="toggleOutcome('${s.id}',${o.no})" title="დადასტურდა${att?' · ცდა '+att:''}">✓${att?'<sup>'+att+'</sup>':''}</span></td>`;
-      if(v==='not_confirmed')return `<td style="text-align:center"><span class="badge badge-red" style="cursor:pointer" onclick="toggleOutcome('${s.id}',${o.no})" title="ვერ დადასტურდა${att?' · ცდა '+att:''}">✕${att?'<sup>'+att+'</sup>':''}</span></td>`;
-      return `<td style="text-align:center"><span class="badge badge-navy" style="cursor:pointer;opacity:.6" onclick="toggleOutcome('${s.id}',${o.no})" title="ჯერ არ შეფასებულა">◌</span></td>`;
-    }).join('');
-    const conf=moduleOutcomes.filter(o=>row[o.no]==='confirmed').length;
-    return `<tr>
-      <td>${s.name}<div style="font-size:10px;color:var(--subtle)">${s.id}</div></td>
-      ${cells}
-      <td><span class="badge ${conf===moduleOutcomes.length?'badge-green':'badge-blue'}">${conf}/${moduleOutcomes.length}</span></td>
-      <td><button class="btn btn-ghost btn-sm" onclick="studentDetail(${si})">👤</button></td>
-    </tr>`
-  }).join('')
+// ══════════ სასწავლო მასალები — მიბმა მოდულზე ══════════
+const MATERIAL_LBL={presentation:'პრეზენტაცია',document:'დოკუმენტი',video:'ვიდეო',link:'ბმული',other:'სხვა'};
+let matSeq=3;
+const moduleMaterials=[
+  {id:'MAT-1',moduleCode:'MOD-101',type:'presentation',title:'უჯრედის ქიმიური შემადგენლობა — სლაიდები',source:'ფაილი'},
+  {id:'MAT-2',moduleCode:'MOD-101',type:'video',title:'ლაბორატორიული ტექნიკა — ვიდეო',source:'ფაილი'},
+  {id:'MAT-3',moduleCode:'MOD-107',type:'link',title:'ფარმაკოლოგიის ცნობარი',source:'https://bmeda.edu.ge/pharm'},
+];
+const modMaterials=code=>moduleMaterials.filter(x=>x.moduleCode===code);
+function materialsPage(code,name){
+  const list=modMaterials(code);
+  showModal(`სასწავლო მასალები — ${name}`,
+    `<div style="margin-bottom:12px"><span class="badge badge-navy">${code}</span> <span class="badge badge-blue">${list.length} მასალა</span></div>
+     ${list.length?`<div style="overflow-x:auto"><table style="font-size:12px">
+       <thead><tr><th style="width:120px">სახეობა</th><th>დასახელება</th><th style="width:180px">წყარო</th><th style="width:44px"></th></tr></thead>
+       <tbody>${list.map(mt=>`<tr>
+         <td><span class="badge ${mt.type==='video'?'badge-amber':'badge-navy'}">${MATERIAL_LBL[mt.type]||mt.type}</span></td>
+         <td>${mt.title}</td>
+         <td style="font-size:11px;color:var(--muted)">${mt.source}</td>
+         <td><button class="btn btn-sm btn-red" onclick="removeMaterial('${mt.id}','${code}','${name}')">✕</button></td>
+       </tr>`).join('')}</tbody></table></div>`
+       :'<div style="font-size:12px;color:var(--subtle)">მასალა ჯერ არ არის მიბმული</div>'}
+     <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--muted);margin-top:12px">
+       ვიდეო მასალა <strong>მხოლოდ ჩამოტვირთვადია</strong> — ბრაუზერში დაკვრა არ ხდება.</div>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">უკან</button>
+     <button class="btn btn-blue" onclick="addMaterialPage('${code}','${name}')">➕ მასალის მიბმა</button>`,true);
 }
-function buildGrades(){ buildOutcomes() }
+function addMaterialPage(code,name){
+  showModal(`მასალის მიბმა — ${name}`,
+    `<div class="fg"><label class="fl">სახეობა</label><select class="fi" id="mt-type">${Object.entries(MATERIAL_LBL).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div>
+     <div class="fg"><label class="fl">დასახელება</label><input class="fi" id="mt-title" placeholder="მასალის დასახელება"></div>
+     <div class="fg"><label class="fl">წყარო — ფაილი ან ბმული</label><input class="fi" id="mt-src" placeholder="ფაილის სახელი ან https://..."></div>`,
+    `<button class="btn btn-ghost" onclick="materialsPage('${code}','${name}')">უკან</button>
+     <button class="btn btn-blue" onclick="saveMaterial('${code}','${name}')">✓ მიბმა</button>`,true);
+}
+function saveMaterial(code,name){
+  const t=document.getElementById('mt-title').value.trim();
+  if(!t){toast('შეავსეთ დასახელება','error');return;}
+  moduleMaterials.push({id:'MAT-'+(++matSeq),moduleCode:code,type:document.getElementById('mt-type').value,
+    title:t,source:document.getElementById('mt-src').value||'ფაილი'});
+  renderMyModules();materialsPage(code,name);toast('მასალა მიბმულია ✓','success');
+}
+function removeMaterial(id,code,name){
+  const i=moduleMaterials.findIndex(x=>x.id===id);
+  if(i>-1)moduleMaterials.splice(i,1);
+  renderMyModules();materialsPage(code,name);toast('მასალა მოხსნილია','warn');
+}
 function renderMyModules(){
   const b=document.getElementById('modules-body');
   if(!b)return;
   b.innerHTML=moduleData.map((m,i)=>{
-    const pct=m.totalLectures?Math.round(m.conducted/m.totalLectures*100):0;
     return `<tr>
       <td style="font-weight:700;color:var(--blue);font-size:11px">${m.code}</td>
       <td><strong>${m.name}</strong><div style="font-size:10px;color:var(--subtle)">სარეგ. № ${m.regNo}</div></td>
@@ -1314,193 +1039,157 @@ function renderMyModules(){
       <td style="text-align:center">${m.credits}</td>
       <td style="text-align:center;font-size:11px;white-space:nowrap">${modHours(m.intakeId,m.programId,m.moduleId)} სთ<div style="color:var(--subtle)">${modWeeks(m.intakeId,m.programId,m.moduleId).length} კვირა</div></td>
       <td style="font-size:11px;white-space:nowrap">${m.startsOn}<br>${m.endsOn}</td>
-      <td style="text-align:center">${m.outcomes}</td>
-      <td><div style="font-size:11px">${m.conducted}/${m.totalLectures}</div><div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden;min-width:44px"><div style="height:100%;width:${pct}%;background:var(--blue)"></div></div></td>
+      <td style="text-align:center">${modMaterials(m.code).length?`<span class="badge badge-blue">${modMaterials(m.code).length}</span>`:'<span style="font-size:11px;color:var(--subtle)">—</span>'}</td>
       <td style="white-space:nowrap">
         <button class="btn btn-outline btn-sm" onclick="openModuleDetail(${i})">ჟურნალი</button>
         <button class="btn btn-ghost btn-sm" onclick="weekHoursModal(${i},'${m.name}')" title="საათების განაწილება კვირების მიხედვით">🗓️</button>
+        <button class="btn btn-ghost btn-sm" onclick="materialsPage('${m.code}','${m.name}')" title="სასწავლო მასალები">📁</button>
         <button class="btn btn-ghost btn-sm" onclick="manageSurvey(${i},'${m.name}','${m.group}')">📊</button>
       </td></tr>`;
   }).join('');
   const c=document.getElementById('mod-count'); if(c)c.textContent=moduleData.length+' მოდული';
 }
 // ბინარული გადართვა: ◌ → დადასტურდა → ვერ დადასტურდა → ◌
-function toggleOutcome(sid,no){
-  if(!outcomeMatrix[sid])outcomeMatrix[sid]={};
-  const cur=outcomeMatrix[sid][no];
-  outcomeMatrix[sid][no]= cur==null?'confirmed' : cur==='confirmed'?'not_confirmed' : null;
-  buildOutcomes();
-  const lbl=outcomeMatrix[sid][no]?RESULT_LBL[outcomeMatrix[sid][no]][0]:'შეფასება მოხსნილია';
-  toast(`შედეგი ${no}: ${lbl}`, outcomeMatrix[sid][no]==='confirmed'?'success':outcomeMatrix[sid][no]?'warn':'info');
+// ══════════ საათების ჩამონათვალი: მეცადინეობა და შეფასება ══════════
+// საათები გენერირდება მოდულის კვირეული განაწილებიდან (საკონტაქტო → მეცადინეობა, შეფასება → შეფასების საათი)
+const sessionAtt={}, sessionOut={};
+const SESSION_KIND_LBL={lecture:['მეცადინეობა','badge-blue'],assessment:['შეფასება','badge-amber']};
+function modSessions(mi){
+  const m=moduleData[mi]; if(!m)return [];
+  const out=[];
+  modWeeks(m.intakeId,m.programId,m.moduleId).forEach(w=>{
+    for(let k=1;k<=Math.round(w.contactH);k++)out.push({id:`${m.code}-W${w.week}-L${k}`,week:w.week,kind:'lecture',no:k,total:Math.round(w.contactH)});
+    for(let k=1;k<=Math.round(w.assessH);k++)out.push({id:`${m.code}-W${w.week}-A${k}`,week:w.week,kind:'assessment',no:k,total:Math.round(w.assessH)});
+  });
+  return out;
 }
-function loadGrades(){buildOutcomes()}
-function saveGrades(){toast('სწავლის შედეგები შენახულია ✓','success')}
-function buildOutcomeList(){
-  const el=document.getElementById('outcome-list');
-  if(!el)return;
-  el.innerHTML=moduleOutcomes.map(o=>{
-    const ins=myInstruments.find(x=>x.outcomeNo===o.no);
-    const st=ins?INSTRUMENT_STATUS_LBL[ins.status]:['არ არის','badge-navy'];
-    const conf=journalStudents.filter(s=>(outcomeMatrix[s.id]||{})[o.no]==='confirmed').length;
-    return `<div style="padding:12px 0;border-bottom:1px solid var(--border)">
-      <div style="display:flex;gap:10px;align-items:flex-start">
-        <div style="min-width:30px;height:30px;border-radius:8px;background:var(--blue-lt);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px">${o.no}</div>
-        <div style="flex:1">
-          <div style="font-size:13px;font-weight:600">${o.title}</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:3px">${DIRECTION_LBL[o.direction]} · საკ. ${o.contactH} / დამ. ${o.selfH} / შეფ. ${o.assessH} სთ · დაგეგმილი შეფასება ${o.plannedOn}</div>
-          <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-            <span class="badge badge-green">${conf}/${journalStudents.length} დადასტურდა</span>
-            <span style="font-size:11px;color:var(--muted)">შეფასების ინსტრუმენტი:</span>
-            <span class="badge ${st[1]}">${st[0]}</span>
-            <button class="btn btn-ghost btn-sm" style="padding:2px 8px;font-size:11px" onclick="instrumentModal(${o.no})">დეტალები</button>
-          </div>
-          ${ins&&ins.status==='rejected'?`<div style="font-size:11px;color:var(--red);margin-top:4px">⚠ ${ins.rejectReason}</div>`:''}
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+const sessAtt=sid=>sessionAtt[sid]||(sessionAtt[sid]={});
+const sessOut=sid=>sessionOut[sid]||(sessionOut[sid]={});
+const attFilled=sid=>journalStudents.filter(s=>sessAtt(sid)[s.id]).length;
+const outFilled=sid=>journalStudents.filter(s=>sessOut(sid)[s.id]).length;
+function loadJournal(){buildSessionList()}
+function buildSessionList(){
+  const sel=document.getElementById('journal-module-sel');
+  if(!sel)return;
+  if(!sel.options.length)
+    sel.innerHTML=moduleData.map((m,i)=>`<option value="${i}">${m.name} — ${m.group}</option>`).join('');
+  const mi=+sel.value||0;
+  const tb=document.getElementById('session-list');
+  if(!tb)return;
+  const list=modSessions(mi);
+  tb.innerHTML=list.length?list.map(x=>{
+    const k=SESSION_KIND_LBL[x.kind];
+    const af=attFilled(x.id), of=outFilled(x.id), n=journalStudents.length;
+    return `<tr>
+      <td style="text-align:center;font-weight:700;color:var(--blue)">${x.week}</td>
+      <td><span class="badge ${k[1]}">${k[0]}</span></td>
+      <td style="font-size:12px">${x.kind==='lecture'?'მეცადინეობა':'შეფასების საათი'} ${x.no}/${x.total}<div style="font-size:10px;color:var(--subtle)">${x.id}</div></td>
+      <td style="text-align:center"><span class="badge ${af===n?'badge-green':af?'badge-amber':'badge-navy'}">${af}/${n}</span></td>
+      <td style="text-align:center">${x.kind==='assessment'?`<span class="badge ${of===n?'badge-green':of?'badge-amber':'badge-navy'}">${of}/${n}</span>`:'<span style="font-size:11px;color:var(--subtle)">—</span>'}</td>
+      <td><button class="btn btn-outline btn-sm" onclick="sessionPage(${mi},'${x.id}')">გახსნა →</button></td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="6" style="font-size:12px;color:var(--subtle)">ამ მოდულს საათები ჯერ არ აქვს გაწერილი — განაწილება იწერება ადმინისტრირების პანელში</td></tr>';
 }
-function instrumentModal(no){
-  const o=moduleOutcomes.find(x=>x.no===no);
-  const ins=myInstruments.find(x=>x.outcomeNo===no);
-  const st=ins?INSTRUMENT_STATUS_LBL[ins.status]:['არ არის','badge-navy'];
-  showModal(`შეფასების ინსტრუმენტი — შედეგი ${no}`,
-    `<div style="margin-bottom:12px"><span class="badge ${st[1]}">${st[0]}</span></div>
-     <div style="font-size:13px;font-weight:600;margin-bottom:10px">${o.title}</div>
-     <table style="font-size:12px">
-       <tr><td style="color:var(--muted)">შეფასების მიმართულება</td><td>${DIRECTION_LBL[o.direction]}</td></tr>
-       <tr><td style="color:var(--muted)">წარდგენილია</td><td>${ins?ins.submittedAt:'—'}</td></tr>
-       <tr><td style="color:var(--muted)">ვალიდატორი</td><td>${ins&&ins.validatedBy?ins.validatedBy:'—'}</td></tr>
-       <tr><td style="color:var(--muted)">ვალიდაციის თარიღი</td><td>${ins&&ins.validatedAt?ins.validatedAt:'—'}</td></tr>
-     </table>
-     ${ins&&ins.status==='rejected'?`<div style="background:var(--red-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--red);margin-top:10px">⚠ ${ins.rejectReason}</div>`:''}
-     <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--muted);margin-top:12px">
-       ინსტრუმენტი წარედგინება სპმს უფროსს <strong>1 კვირით ადრე</strong>; ვალიდაციას ატარებს სპმს უფროსი + პროგრამის ხელმძღვანელი; <strong>ავტორი ვერ ვალიდირებს საკუთარ ინსტრუმენტს</strong>. არავალიდირებული ინსტრუმენტის გამოყენება აკრძალულია. 11 სავალდებულო ველი. — [სპწ] 21.4–21.8, 23.10</div>`,
-    `<button class="btn btn-ghost" onclick="closeModal()">დახურვა</button>${!ins||ins.status!=='validated'?'<button class="btn btn-blue" onclick="closeModal();toast(\'ინსტრუმენტი ვალიდაციისთვის გაიგზავნა\',\'success\')">📤 წარდგენა</button>':''}`)
+function sessionPage(mi,sid){
+  const m=moduleData[mi]; const x=modSessions(mi).find(y=>y.id===sid); if(!m||!x)return;
+  showModal(`${m.name} — ${SESSION_KIND_LBL[x.kind][0]} ${x.no}/${x.total} (კვირა ${x.week})`,
+    sessionBody(mi,sid),
+    `<button class="btn btn-ghost" onclick="closeModal()">უკან</button>
+     <button class="btn btn-green" onclick="markAllPresent('${sid}')">✓ ყველა დაესწრო</button>`,true);
 }
-function buildRegisters(){
-  const el=document.getElementById('register-list');
-  if(!el)return;
-  el.innerHTML=myRegisters.map(r=>`<tr>
-    <td style="font-weight:700;color:var(--blue)">${r.id}</td>
-    <td>${r.module}<div style="font-size:10px;color:var(--subtle)">${r.moduleCode}</div></td>
-    <td>${r.compiledOn}</td>
-    <td style="color:${r.signedAt?'var(--green)':'var(--red)'};font-weight:700">${r.dueOn}</td>
-    <td>${r.signedAt?`<span class="badge badge-green">✓ ${r.signedAt}</span>`:'<span class="badge badge-red">ხელმოწერა აკლია</span>'}</td>
-    <td>${r.journalNo||'<span style="color:var(--subtle)">—</span>'}</td>
-    <td>${r.signedAt?'':'<button class="btn btn-blue btn-sm" onclick="toast(\'უწყისი ხელმოწერილია ✓\',\'success\')">✍</button>'}</td>
-  </tr>`).join('');
+function sessionBody(mi,sid){
+  const m=moduleData[mi]; const x=modSessions(mi).find(y=>y.id===sid);
+  const a=sessAtt(sid), o=sessOut(sid);
+  return `<div style="margin-bottom:12px">
+      <span class="badge ${SESSION_KIND_LBL[x.kind][1]}">${SESSION_KIND_LBL[x.kind][0]}</span>
+      <span class="badge badge-navy">${m.group}</span>
+      <span class="badge badge-navy">კვირა ${x.week}</span>
+      <span class="badge badge-navy">${imTeacherName(m)}</span></div>
+    <div style="overflow-x:auto"><table style="font-size:12px">
+      <thead><tr><th>პროფესიული სტუდენტი</th><th style="width:200px">დასწრება</th>${x.kind==='assessment'?'<th style="width:260px">შეფასების შედეგი</th>':''}</tr></thead>
+      <tbody>${journalStudents.map(s=>`<tr>
+        <td>${s.name}<div style="font-size:10px;color:var(--subtle)">${s.id}</div></td>
+        <td><div style="display:flex;gap:5px">
+          <button class="btn btn-sm ${a[s.id]==='present'?'btn-green':'btn-outline'}" onclick="setAtt('${sid}','${s.id}','present')">დაესწრო</button>
+          <button class="btn btn-sm ${a[s.id]==='absent'?'btn-red':'btn-outline'}" onclick="setAtt('${sid}','${s.id}','absent')">გააცდინა</button>
+        </div></td>
+        ${x.kind==='assessment'?`<td><div style="display:flex;gap:5px">
+          <button class="btn btn-sm ${o[s.id]==='confirmed'?'btn-green':'btn-outline'}" onclick="setSessOut('${sid}','${s.id}','confirmed')">დადასტურდა</button>
+          <button class="btn btn-sm ${o[s.id]==='not_confirmed'?'btn-red':'btn-outline'}" onclick="setSessOut('${sid}','${s.id}','not_confirmed')">ვერ დადასტურდა</button>
+        </div></td>`:''}
+      </tr>`).join('')}</tbody></table></div>
+    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--muted);margin-top:12px">
+      ${x.kind==='assessment'
+        ? 'შეფასების საათზე მასწავლებელი შეიტანს, <strong>დაუდასტურდა თუ არა</strong> სწავლის შედეგი თითოეულ პროფესიულ სტუდენტს. შეფასება ბინარულია.'
+        : 'მეცადინეობის საათზე შეიტანება <strong>დასწრება</strong>. დასწრება რეგისტრია — პროცენტული ზღვარი და ქულა არ არსებობს.'}</div>`;
+}
+function refreshSession(mi,sid){
+  const b=document.getElementById('modal-body');
+  if(b)b.innerHTML=sessionBody(mi,sid);
+  buildSessionList();
+}
+function curMi(){const sel=document.getElementById('journal-module-sel');return sel?(+sel.value||0):0}
+function setAtt(sid,stu,v){
+  const a=sessAtt(sid); a[stu]=a[stu]===v?undefined:v;
+  if(!a[stu])delete a[stu];
+  refreshSession(curMi(),sid);
+}
+function setSessOut(sid,stu,v){
+  const o=sessOut(sid); o[stu]=o[stu]===v?undefined:v;
+  if(!o[stu])delete o[stu];
+  refreshSession(curMi(),sid);
+  toast(v==='confirmed'?'შედეგი დადასტურდა ✓':'შედეგი ვერ დადასტურდა','info');
+}
+function markAllPresent(sid){
+  const a=sessAtt(sid); journalStudents.forEach(s=>a[s.id]='present');
+  refreshSession(curMi(),sid);
+  toast('ყველა მონიშნულია დასწრებულად ✓','success');
+}
+const TEACHER_LBL={'T-001':'ნინო კაპანაძე','T-002':'გიორგი ბახტაძე','T-003':'მარინე ლომთაძე','T-004':'ზვიად ქობულია','T-005':'ნანა ჯაფარიძე','T-006':'ლია გოგიაშვილი'};
+const imTeacherName=m=>{const im=imOf(m.intakeId,m.programId,m.moduleId);return (im&&TEACHER_LBL[im.teacherId])||'—'};
+// ── სტუდენტის დასწრება/შედეგები ყველა საათზე ──
+function studentTotals(stuId,mi){
+  let pres=0,abs=0,conf=0,nconf=0;
+  modSessions(mi).forEach(x=>{
+    const a=(sessionAtt[x.id]||{})[stuId]; if(a==='present')pres++; if(a==='absent')abs++;
+    if(x.kind==='assessment'){const o=(sessionOut[x.id]||{})[stuId]; if(o==='confirmed')conf++; if(o==='not_confirmed')nconf++;}
+  });
+  return {pres,abs,conf,nconf};
 }
 function studentDetail(si){
   const s = journalStudents[si]
-  const row = outcomeMatrix[s.id]||{}
-  const arr = s.att.slice(0,journalDates.length)
-  const pres=arr.filter(a=>a==='ი').length, abs=arr.filter(a=>a==='არ').length
-  const conf=moduleOutcomes.filter(o=>row[o.no]==='confirmed').length
+  const mi = curMi()
+  const t = studentTotals(s.id,mi)
+  const sess = modSessions(mi)
   showModal(`პროფესიული სტუდენტი: ${s.name}`,
     `<div style="display:flex;flex-direction:column;gap:12px">
-      <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
-        <div class="stat-card"><div class="sc-label">დაესწრო</div><div class="sc-value" style="color:var(--green)">${pres}</div></div>
-        <div class="stat-card"><div class="sc-label">გააცდინა</div><div class="sc-value" style="color:var(--red)">${abs}</div></div>
-        <div class="stat-card"><div class="sc-label">დადასტურდა</div><div class="sc-value">${conf}</div><div class="sc-sub">/${moduleOutcomes.length} შედეგი</div></div>
+      <div class="stat-grid" style="grid-template-columns:repeat(4,1fr)">
+        <div class="stat-card"><div class="sc-label">დაესწრო</div><div class="sc-value" style="color:var(--green)">${t.pres}</div></div>
+        <div class="stat-card"><div class="sc-label">გააცდინა</div><div class="sc-value" style="color:var(--red)">${t.abs}</div></div>
+        <div class="stat-card"><div class="sc-label">დადასტურდა</div><div class="sc-value" style="color:var(--green)">${t.conf}</div></div>
+        <div class="stat-card"><div class="sc-label">ვერ დადასტურდა</div><div class="sc-value" style="color:var(--red)">${t.nconf}</div></div>
       </div>
       <div>
-        <p style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">ᏚᏔᎪᏙᏞᏆᏚ ᏚᎻᎬᎠᎬᏳᎬᏴᏆ</p>
-        <table style="font-size:12px">
-          ${moduleOutcomes.map(o=>{const v=row[o.no];const r=v?RESULT_LBL[v]:['ჯერ არ შეფასებულა','badge-navy'];
-            const at=(attemptMatrix[s.id]||{})[o.no];
-            return `<tr><td style="width:26px;font-weight:700;color:var(--blue)">${o.no}</td><td>${o.title}</td><td style="white-space:nowrap">${at?`<span class="badge badge-navy">ცდა ${at}</span> `:''}<span class="badge ${r[1]}">${r[0]}</span></td></tr>`}).join('')}
-        </table>
-      </div>
-      <div>
-        <p style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">ᏔᎪᏚᏔᎡᎬᏴᎪ — ᎡᎬᏳᏆᏚᎢᎡᏆ</p>
-        <div style="display:flex;gap:4px;flex-wrap:wrap">
-          ${arr.map(a=>`<div class="attendance-cell ${a==='ი'?'att-present':a==='არ'?'att-absent':'att-empty'}">${a||'·'}</div>`).join('')}
-        </div>
+        <p style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">ᏚᎪᎪᎢᎬᏴᏆ — ᎠᎪᏚᏔᎡᎬᏴᎪ ᎠᎪ ᏨᎬᔊᎪᏚᎬᏴᎪ</p>
+        <div style="overflow-x:auto"><table style="font-size:12px">
+          <thead><tr><th style="width:56px">კვირა</th><th>საათი</th><th style="width:110px">დასწრება</th><th style="width:150px">შეფასება</th></tr></thead>
+          <tbody>${sess.map(x=>{
+            const a=(sessionAtt[x.id]||{})[s.id], o=(sessionOut[x.id]||{})[s.id];
+            return `<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${x.week}</td>
+              <td>${SESSION_KIND_LBL[x.kind][0]} ${x.no}/${x.total}</td>
+              <td>${a?`<span class="badge ${a==='present'?'badge-green':'badge-red'}">${a==='present'?'დაესწრო':'გააცდინა'}</span>`:'<span class="badge badge-navy">არ არის შეტანილი</span>'}</td>
+              <td>${x.kind==='assessment'?(o?`<span class="badge ${o==='confirmed'?'badge-green':'badge-red'}">${o==='confirmed'?'დადასტურდა':'ვერ დადასტურდა'}</span>`:'<span class="badge badge-navy">ჯერ არ შეფასებულა</span>'):'<span style="color:var(--subtle)">—</span>'}</td></tr>`}).join('')}</tbody>
+        </table></div>
       </div>
       <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--muted)">
-        შეფასება ბინარულია — <strong>დადასტურდა / ვერ დადასტურდა</strong> სწავლის შედეგის მიხედვით. ქულა, საშუალო და გამსვლელობა არ არსებობს. დასწრება რეგისტრია, არა ქულა. — [სპწ] 21.10, 21.11</div>
+        შეფასება ბინარულია — <strong>დადასტურდა / ვერ დადასტურდა</strong>. ქულა, საშუალო და გამსვლელობა არ არსებობს. დასწრება რეგისტრია, არა ქულა. — [სპწ] 21.10, 21.11</div>
     </div>`,
     `<button class="btn btn-ghost" onclick="closeModal()">დახურვა</button>`, true
   )
 }
 
-
 // ── SCHEDULE ──
-const schedSlots = slotTemplates.map(t=>t.ordinal+' · '+t.startsAt+'–'+t.endsAt)
-const schedBlocks = [
-  {day:1,slot:0,name:'ბიოქიმია',group:'ჯგუფი 101',room:'603',kind:'theory',color:'#881176'},
-  {day:1,slot:1,name:'ბიოქიმია',group:'ჯგუფი 401',room:'618',kind:'theory',color:'#881176'},
-  {day:2,slot:2,name:'ფარმაკოლოგია',group:'ჯგუფი 102',room:'ფარმ.-ქიმ. ლაბ.',kind:'practice',color:'#1E8A5E'},
-  {day:3,slot:0,name:'კლინიკური პრაქტიკა',group:'ჯგუფი 201',room:'პარტნიორი',kind:'work_based',color:'#C96A00'},
-  {day:3,slot:3,name:'ბიოქიმია',group:'ჯგუფი 101',room:'603',kind:'theory',color:'#881176'},
-  {day:4,slot:1,name:'ფარმაკოლოგია',group:'ჯგუფი 102',room:'ფარმ.-ქიმ. ლაბ.',kind:'practice',color:'#1E8A5E'},
-  {day:4,slot:4,name:'შუალედური შეფასება',group:'ჯგუფი 101',room:'603',kind:'interim_assessment',color:'#C0392B'},
-  {day:5,slot:2,name:'კლინიკური პრაქტიკა',group:'ჯგუფი 201',room:'პარტნიორი',kind:'work_based',color:'#C96A00'},
-  {day:5,slot:5,name:'კონსულტაცია',group:'ჯგუფი 101',room:'603',kind:'consultation',color:'#4A5568'},
-]
 const LESSON_KIND_LBL={theory:'თეორია',practice:'პრაქტიკა',simulation:'სიმულაცია',work_based:'სამუშაოზე დაფუძნებული',consultation:'კონსულტაცია',interim_assessment:'შუალედური შეფასება',summative_assessment:'განმსაზღვრელი შეფასება',qualification_exam:'საკვალიფიკაციო გამოცდა'};
-function buildScheduleWeek(){
-  const body = document.getElementById('sched-week-body')
-  if(!body) return
-  body.innerHTML = schedSlots.map((slot,si)=>`
-    <tr>
-      <td class="time-col">${slot}</td>
-      ${[1,2,3,4,5].map(di=>{
-        const blk = schedBlocks.find(b=>b.day===di&&b.slot===si)
-        return `<td>${blk?`<div class="class-block" style="background:${blk.color}15;color:${blk.color};border-left:3px solid ${blk.color}" onclick="schedBlockClick('${blk.name}','${blk.group}','${blk.room}','${slot}')">
-          <div style="font-weight:700">${blk.name}</div>
-          <div style="font-size:10px">${blk.group} · აუდიტ. ${blk.room}</div><div style="font-size:9px;opacity:.8">${LESSON_KIND_LBL[blk.kind]||''}</div>
-        </div>`:''}
-        </td>`
-      }).join('')}
-    </tr>`).join('')
-}
-function schedBlockClick(name,group,room,time){
-  showModal(`${name} — ${group}`,
-    `<p><strong>დრო:</strong> ${time}</p>
-     <p><strong>ჯგუფი:</strong> ${group}</p>
-     <p><strong>სივრცე:</strong> აუდიტ. ${room}</p>`,
-    `<button class="btn btn-outline" onclick="closeModal();go('journal',null,'ჟურნალი')">📋 ჟურნალი</button>
-     <button class="btn btn-ghost" onclick="closeModal()">დახურვა</button>`
-  )
-}
-function schedView(view,btn){
-  document.querySelectorAll('[id^=sched-chip]').forEach(c=>c.classList.remove('active'))
-  btn.classList.add('active')
-  document.getElementById('sched-week-view').style.display = view==='week'?'block':'none'
-  document.getElementById('sched-month-view').style.display = view==='month'?'block':'none'
-  if(view==='month') buildMonthGrid()
-}
-function buildMonthGrid(){
-  const grid = document.getElementById('sched-month-grid')
-  if(!grid||grid.children.length>0) return
-  const days=['კვ','ორ','სამ','ოთხ','ხუთ','პარ','შაბ']
-  days.forEach(d=>{
-    const h=document.createElement('div')
-    h.style.cssText='text-align:center;font-size:11px;font-weight:700;color:var(--muted);padding:4px'
-    h.textContent=d; grid.appendChild(h)
-  })
-  for(let d=1;d<=30;d++){
-    const cell=document.createElement('div')
-    cell.style.cssText='border:1px solid var(--border);border-radius:6px;padding:6px;min-height:72px;background:var(--surface)'
-    const dow=(d+1)%7
-    const hasClass = schedBlocks.some(b=>b.day===dow)
-    let html=`<div style="font-size:11px;font-weight:700;color:${d===2?'var(--blue)':'var(--text)'}">${d}</div>`
-    if(hasClass){
-      const blocks = schedBlocks.filter(b=>b.day===dow)
-      blocks.slice(0,2).forEach(b=>{
-        html+=`<div style="background:${b.color}15;color:${b.color};border-radius:4px;padding:2px 4px;font-size:9px;font-weight:700;margin-top:2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${b.group}</div>`
-      })
-    }
-    cell.innerHTML=html
-    grid.appendChild(cell)
-  }
-}
-function schedPrev(){toast('◀ წინა კვირა')}
-function schedNext(){toast('შემდ. კვირა ▶')}
-
-
 // ── MODULES ──
 const moduleSurveys = ['','','https://forms.google.com/neuro-survey',''];
 function manageSurvey(i, modName, group){
@@ -1518,9 +1207,10 @@ function manageSurvey(i, modName, group){
   )
 }
 function openModuleDetail(i){
-  go('journal',null,'ჟურნალი')
-  document.getElementById('journal-module-sel').selectedIndex = i
-  buildJournal()
+  go('journal',null,'ჟურნალი — მეცადინეობა და შეფასება')
+  const sel=document.getElementById('journal-module-sel')
+  if(sel){if(!sel.options.length)buildSessionList();sel.value=String(i)}
+  buildSessionList()
 }
 function weekHoursModal(i,name){
   const m=moduleData[i]; if(!m)return;
@@ -1533,64 +1223,27 @@ function weekHoursModal(i,name){
 }
 function moduleStats(i){
   const m = moduleData[i]
-  const conf=journalStudents.reduce((a,s)=>a+moduleOutcomes.filter(o=>(outcomeMatrix[s.id]||{})[o.no]==='confirmed').length,0);
-  const totalCells=journalStudents.length*moduleOutcomes.length;
-  const notConf=journalStudents.reduce((a,s)=>a+moduleOutcomes.filter(o=>(outcomeMatrix[s.id]||{})[o.no]==='not_confirmed').length,0);
-  const fullyDone=journalStudents.filter(s=>moduleOutcomes.every(o=>(outcomeMatrix[s.id]||{})[o.no]==='confirmed')).length;
+  const sess = modSessions(i)
+  const lec = sess.filter(x=>x.kind==='lecture'), ass = sess.filter(x=>x.kind==='assessment')
+  const attDone = lec.filter(x=>attFilled(x.id)===journalStudents.length).length
+  const outDone = ass.filter(x=>outFilled(x.id)===journalStudents.length).length
+  const conf = ass.reduce((a,x)=>a+journalStudents.filter(s=>(sessionOut[x.id]||{})[s.id]==='confirmed').length,0)
+  const nconf = ass.reduce((a,x)=>a+journalStudents.filter(s=>(sessionOut[x.id]||{})[s.id]==='not_confirmed').length,0)
   showModal(`სტატისტიკა: ${m.name} — ${m.group}`,
     `<div class="stat-grid" style="grid-template-columns:repeat(2,1fr)">
        <div class="stat-card"><div class="sc-label">პროფ. სტუდენტი</div><div class="sc-value">${m.students}</div></div>
-       <div class="stat-card"><div class="sc-label">ჩატარებული მეცადინეობა</div><div class="sc-value">${m.conducted}</div><div class="sc-sub">/${m.totalLectures}</div></div>
-       <div class="stat-card"><div class="sc-label">დადასტურებული შედეგი</div><div class="sc-value" style="color:var(--green)">${conf}</div><div class="sc-sub">/${totalCells}</div></div>
-       <div class="stat-card"><div class="sc-label">ვერ დადასტურდა</div><div class="sc-value" style="color:var(--red)">${notConf}</div></div>
+       <div class="stat-card"><div class="sc-label">მეცადინეობის საათი</div><div class="sc-value">${attDone}</div><div class="sc-sub">/${lec.length} დასწრება შეტანილია</div></div>
+       <div class="stat-card"><div class="sc-label">დადასტურებული შედეგი</div><div class="sc-value" style="color:var(--green)">${conf}</div></div>
+       <div class="stat-card"><div class="sc-label">ვერ დადასტურდა</div><div class="sc-value" style="color:var(--red)">${nconf}</div></div>
      </div>
      <div style="margin-top:14px">
        <p style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">ᏚᎪᎪᎢᎬᏴᏆᏚ ᎦᎪᏁᎪᏔᏞᎬᏴᎪ ᏦᏙᏆᎡᎬᏴᏆᏚ ᎷᏆᎻᎬᎠᏙᏆᎢ</p>
        ${weekHoursTable(m.intakeId,m.programId,m.moduleId)}
      </div>
-     <div style="margin-top:14px">
-       <p style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">ᏚᏔᎪᏙᏞᏆᏚ ᏚᎻᎬᎠᎬᏳᏆᏚ ᎠᎪᎠᎪᏚᎢᏌᎡᎬᏴᎪ</p>
-       ${moduleOutcomes.map(o=>{const c=journalStudents.filter(s=>(outcomeMatrix[s.id]||{})[o.no]==='confirmed').length;
-         const pct=Math.round(c/journalStudents.length*100);
-         return `<div class="grade-bar-wrap"><div class="grade-bar-label"><span>შედეგი ${o.no}</span><span>${c}/${journalStudents.length}</span></div><div class="grade-bar-bg"><div class="grade-bar-fill" style="width:${pct}%;background:${pct===100?'var(--green)':pct>=50?'var(--blue)':'var(--amber)'}"></div></div></div>`}).join('')}
-     </div>
      <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--muted);margin-top:12px">
-       ყველა შედეგი დადასტურებული: <strong>${fullyDone}</strong> პროფესიული სტუდენტი — საკვალიფიკაციო გამოცდაზე დაშვების პირობა (+ შუალედურ შეფასებაში მონაწილეობა). — [სპწ] 21.28, 21.30</div>`,
-    `<button class="btn btn-outline" onclick="closeModal();go('journal',null,'ჟურნალი — დასწრების რეგისტრი')">📋 ჟურნალი</button>
+       შეფასების საათი: <strong>${outDone}</strong> / ${ass.length} შეტანილია სრულად. შეფასება ბინარულია — დადასტურდა / ვერ დადასტურდა.</div>`,
+    `<button class="btn btn-outline" onclick="closeModal();openModuleDetail(${i})">📋 ჟურნალი</button>
      <button class="btn btn-ghost" onclick="closeModal()">დახურვა</button>`
-  )
-}
-
-// ── MATERIALS ──
-function uploadMaterial(){
-  showModal('მასალის ატვირთვა',
-    `<div class="field"><label>მოდული</label>
-       <select style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
-         <option>ანატომია I — ყველა ჯგუფი</option>
-         <option>ანატომია I — ჯგუფი 101</option>
-         <option>ნეირო-ანატომია — ჯგუფი 301</option>
-         <option>კლინიკური ანატომია — ჯგუფი 401</option>
-       </select>
-     </div>
-     <div class="field"><label>სახელი</label><input type="text" placeholder="მასალის სახელი..." style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none"></div>
-     <div class="field"><label>ფაილი ან ბმული</label>
-       <div style="display:flex;gap:8px;margin-bottom:8px">
-         <button class="btn btn-outline btn-sm" onclick="toast('ფაილის ატვირთვა...')">📄 ფაილი</button>
-         <button class="btn btn-ghost btn-sm" onclick="toast('ბმულის ველი')">🔗 ბმული</button>
-       </div>
-       <input type="file" style="font-size:13px">
-     </div>`,
-    `<button class="btn btn-ghost" onclick="closeModal()">გაუქმება</button>
-     <button class="btn btn-blue" onclick="closeModal();toast('მასალა ატვირთულია ✓','success')">ატვირთვა</button>`
-  )
-}
-function previewMat(){toast('პრევიუ იხსნება...')}
-function editMat(){toast('რედაქტირების რეჟიმი')}
-function deleteMat(){
-  showModal('მასალის წაშლა',
-    '<p style="font-size:13px">დარწმუნებული ხართ, რომ გინდათ წაშლა? ეს ოპერაცია შეუქცევადია.</p>',
-    `<button class="btn btn-ghost" onclick="closeModal()">გაუქმება</button>
-     <button class="btn btn-red" onclick="closeModal();toast('მასალა წაიშალა','error')">წაშლა</button>`
   )
 }
 
@@ -1642,12 +1295,8 @@ function changeSMS(){
 }
 
 // ── INIT ──
-buildJournal()
-buildOutcomes()
-buildOutcomeList()
+buildSessionList()
 renderMyModules()
-buildRegisters()
-buildScheduleWeek()
 </script>
 
 <script>

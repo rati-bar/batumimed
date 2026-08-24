@@ -260,6 +260,7 @@ textarea.fi{resize:vertical;min-height:80px}
       <button class="ni" onclick="go('library',this,'ბიბლიოთეკა')"><span class="ni-icon">📖</span>ბიბლიოთეკა</button>
       <button class="ni" onclick="go('news',this,'სიახლეები')"><span class="ni-icon">📰</span>სიახლეები</button>
       <button class="ni" onclick="go('surveys',this,'გამოკითხვები')"><span class="ni-icon">📝</span>გამოკითხვები</button>
+      <button class="ni" onclick="go('clubs',this,'კლუბები')"><span class="ni-icon">🎭</span>კლუბები</button>
       <button class="ni" onclick="go('career',this,'კარიერა')"><span class="ni-icon">💼</span>კარიერა</button>
 
       <div class="sb-section">სისტემა</div>
@@ -547,7 +548,7 @@ textarea.fi{resize:vertical;min-height:80px}
   <div class="card">
     <div class="ch"><div class="ct">სწავლის შედეგები <span id="out-count" style="font-size:12px;font-weight:400;color:var(--text3)"></span></div></div>
     <div class="tw"><table>
-      <thead><tr><th>ID</th><th>პროფესიული სტუდენტი</th><th>ჯგუფი</th><th>მოდული</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>მტკიც.</th><th>შედეგი</th><th>უწყისი</th><th></th></tr></thead>
+      <thead><tr><th>ID</th><th>პროფესიული სტუდენტი</th><th>ჯგუფი</th><th>მოდული</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>შედეგი</th><th>უწყისი</th><th></th></tr></thead>
       <tbody id="outcomes-tbody"></tbody>
     </table></div>
     <div class="note">კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>. ვერ დაძლევის შემთხვევაში სტუდენტი მოდულს ხელახლა გადის <strong>სხვა ჯგუფთან ერთად</strong> — 🔁 ღილაკით.</div>
@@ -647,6 +648,16 @@ textarea.fi{resize:vertical;min-height:80px}
 </div>
 
 <!-- ══ CAREER ══ -->
+<!-- ══ CLUBS ══ -->
+<div class="screen" id="screen-clubs">
+  <div class="page-head">
+    <div><h2>კლუბები</h2>
+      <div class="ph-sub">სტუდენტური კლუბები — შექმნა, რედაქტირება, წაშლა, ღონისძიებები და წევრები</div></div>
+    <button class="btn btn-b" onclick="addClubModal()">➕ კლუბის შექმნა</button>
+  </div>
+  <div class="grid-3" id="clubs-grid"></div>
+</div>
+
 <div class="screen" id="screen-career">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
     <div style="font-size:14px;color:var(--text2)">ვაკანსიები და სტაჟირება</div>
@@ -881,7 +892,7 @@ const rolesData=[
   {id:'director',label:'დირექტორი',scope:'ბრძანებები, დამტკიცებები, კომისიები',users:1,special:true},
   {id:'spms_head',label:'სასწავლო პროცესის მართვის სამსახურის უფროსი',scope:'კალენდარული გეგმის/ინსტრუმენტის ვალიდაცია, ცხრილის ხელმოწერა, უწყისების ჟურნალი',users:1,special:true},
   {id:'spms_specialist',label:'სასწავლო პროცესის სპეციალისტი',scope:'სასწავლო პროცესის ყოველდღიური ადმინისტრირება',users:3,special:false},
-  {id:'spms_coordinator',label:'სასწავლო პროცესის კოორდინატორი',scope:'პორტფოლიო, მტკიცებულება, ჩატარების ვერიფიკაცია, არქივი',users:2,special:false},
+  {id:'spms_coordinator',label:'სასწავლო პროცესის კოორდინატორი',scope:'პორტფოლიო, ჩატარების ვერიფიკაცია, არქივი',users:2,special:false},
   {id:'program_head',label:'პროგრამის ხელმძღვანელი',scope:'ინსტრუმენტის თანა-ვალიდაცია, ისგ, ანგარიშვალდებულება',users:4,special:true},
   {id:'qa_manager',label:'ხარისხის უზრუნველყოფის მენეჯერი',scope:'კალენდარული გეგმის ანალიზი, მეცადინეობაზე დასწრება, ანგარიშები',users:1,special:false},
   {id:'inclusive_specialist',label:'ინკლუზიური პროფესიული განათლების სპეციალისტი',scope:'სსსმ/შშმ შეფასება, ისგ',users:1,special:true},
@@ -1355,16 +1366,16 @@ const retakesData=[
 const RETAKE_LBL={pending:['ჯგუფი დასანიშნია','bd-a'],in_progress:['ხელახლა გადის','bd-b'],confirmed:['დადასტურდა','bd-g'],failed:['ვერ დადასტურდა','bd-r']};
 // ── ASSESSMENT SPINE (§1.8) — ბინარული: confirmed | not_confirmed ──
 const outcomeResults=[
-  {id:'OR-001',studentId:'BMA-2401',name:'ნინო მამულაძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:1,outcomeTitle:'აღწერს უჯრედის ქიმიურ შემადგენლობას',result:'confirmed',attemptNo:1,assessedOn:'20.03.2026',direction:'survey',source:'assessment',registerId:'REG-001',evidence:2},
-  {id:'OR-002',studentId:'BMA-2401',name:'ნინო მამულაძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:2,outcomeTitle:'ახასიათებს ცილების სტრუქტურასა და ფუნქციას',result:'confirmed',attemptNo:1,assessedOn:'03.04.2026',direction:'survey',source:'assessment',registerId:'REG-001',evidence:1},
-  {id:'OR-003',studentId:'BMA-2401',name:'ნინო მამულაძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:6,outcomeTitle:'ატარებს ბიოქიმიურ ანალიზს ლაბორატორიაში',result:'confirmed',attemptNo:2,assessedOn:'15.05.2026',direction:'practical_task_observed',source:'assessment',registerId:'REG-001',evidence:3},
-  {id:'OR-004',studentId:'BMA-2402',name:'გიორგი ბერიძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:1,outcomeTitle:'აღწერს უჯრედის ქიმიურ შემადგენლობას',result:'confirmed',attemptNo:1,assessedOn:'20.03.2026',direction:'survey',source:'assessment',registerId:'REG-001',evidence:1},
-  {id:'OR-005',studentId:'BMA-2402',name:'გიორგი ბერიძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,outcomeTitle:'აღწერს ფერმენტების მოქმედების მექანიზმს',result:'not_confirmed',attemptNo:2,assessedOn:'10.05.2026',direction:'practical_task',source:'assessment',registerId:'REG-001',evidence:1},
-  {id:'OR-006',studentId:'BMA-2403',name:'მარიამ ჩხეიძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:1,outcomeTitle:'აღწერს უჯრედის ქიმიურ შემადგენლობას',result:'confirmed',attemptNo:1,assessedOn:'20.03.2026',direction:'survey',source:'assessment',registerId:'REG-001',evidence:2},
-  {id:'OR-007',studentId:'BMA-2404',name:'ლუკა კვარაცხელია',moduleCode:'MOD-106',module:'ბიოქიმია',outcomeNo:1,outcomeTitle:'აღწერს უჯრედის ქიმიურ შემადგენლობას',result:'confirmed',attemptNo:1,assessedOn:'25.03.2026',direction:'survey',source:'formal_recognition',registerId:null,evidence:1},
-  {id:'OR-008',studentId:'BMA-2301',name:'ანა გელაშვილი',moduleCode:'MOD-104',module:'კლინიკური პრაქტიკა',outcomeNo:1,outcomeTitle:'ახორციელებს პაციენტის მოვლას ზედამხედველობით',result:'confirmed',attemptNo:1,assessedOn:'15.04.2026',direction:'practical_task_observed',source:'assessment',registerId:'REG-002',evidence:4},
-  {id:'OR-009',studentId:'BMA-2303',name:'სოფო ნიჟარაძე',moduleCode:'MOD-104',module:'კლინიკური პრაქტიკა',outcomeNo:1,outcomeTitle:'ახორციელებს პაციენტის მოვლას ზედამხედველობით',result:'not_confirmed',attemptNo:3,assessedOn:'20.05.2026',direction:'practical_task_observed',source:'assessment',registerId:'REG-002',evidence:2,feePaid:true},
-  {id:'OR-010',studentId:'BMA-2202',name:'ეკა თავდგირიძე',moduleCode:'MOD-105',module:'მიკრობიოლოგია',outcomeNo:2,outcomeTitle:'ახასიათებს მიკროორგანიზმების კლასიფიკაციას',result:'confirmed',attemptNo:1,assessedOn:'02.05.2026',direction:'survey',source:'mobility_transfer',registerId:null,evidence:1},
+  {id:'OR-001',studentId:'BMA-2401',name:'ნინო მამულაძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:1,outcomeTitle:'აღწერს უჯრედის ქიმიურ შემადგენლობას',result:'confirmed',attemptNo:1,assessedOn:'20.03.2026',direction:'survey',source:'assessment',registerId:'REG-001'},
+  {id:'OR-002',studentId:'BMA-2401',name:'ნინო მამულაძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:2,outcomeTitle:'ახასიათებს ცილების სტრუქტურასა და ფუნქციას',result:'confirmed',attemptNo:1,assessedOn:'03.04.2026',direction:'survey',source:'assessment',registerId:'REG-001'},
+  {id:'OR-003',studentId:'BMA-2401',name:'ნინო მამულაძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:6,outcomeTitle:'ატარებს ბიოქიმიურ ანალიზს ლაბორატორიაში',result:'confirmed',attemptNo:2,assessedOn:'15.05.2026',direction:'practical_task_observed',source:'assessment',registerId:'REG-001'},
+  {id:'OR-004',studentId:'BMA-2402',name:'გიორგი ბერიძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:1,outcomeTitle:'აღწერს უჯრედის ქიმიურ შემადგენლობას',result:'confirmed',attemptNo:1,assessedOn:'20.03.2026',direction:'survey',source:'assessment',registerId:'REG-001'},
+  {id:'OR-005',studentId:'BMA-2402',name:'გიორგი ბერიძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,outcomeTitle:'აღწერს ფერმენტების მოქმედების მექანიზმს',result:'not_confirmed',attemptNo:2,assessedOn:'10.05.2026',direction:'practical_task',source:'assessment',registerId:'REG-001'},
+  {id:'OR-006',studentId:'BMA-2403',name:'მარიამ ჩხეიძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:1,outcomeTitle:'აღწერს უჯრედის ქიმიურ შემადგენლობას',result:'confirmed',attemptNo:1,assessedOn:'20.03.2026',direction:'survey',source:'assessment',registerId:'REG-001'},
+  {id:'OR-007',studentId:'BMA-2404',name:'ლუკა კვარაცხელია',moduleCode:'MOD-106',module:'ბიოქიმია',outcomeNo:1,outcomeTitle:'აღწერს უჯრედის ქიმიურ შემადგენლობას',result:'confirmed',attemptNo:1,assessedOn:'25.03.2026',direction:'survey',source:'formal_recognition',registerId:null},
+  {id:'OR-008',studentId:'BMA-2301',name:'ანა გელაშვილი',moduleCode:'MOD-104',module:'კლინიკური პრაქტიკა',outcomeNo:1,outcomeTitle:'ახორციელებს პაციენტის მოვლას ზედამხედველობით',result:'confirmed',attemptNo:1,assessedOn:'15.04.2026',direction:'practical_task_observed',source:'assessment',registerId:'REG-002'},
+  {id:'OR-009',studentId:'BMA-2303',name:'სოფო ნიჟარაძე',moduleCode:'MOD-104',module:'კლინიკური პრაქტიკა',outcomeNo:1,outcomeTitle:'ახორციელებს პაციენტის მოვლას ზედამხედველობით',result:'not_confirmed',attemptNo:3,assessedOn:'20.05.2026',direction:'practical_task_observed',source:'assessment',registerId:'REG-002',feePaid:true},
+  {id:'OR-010',studentId:'BMA-2202',name:'ეკა თავდგირიძე',moduleCode:'MOD-105',module:'მიკრობიოლოგია',outcomeNo:2,outcomeTitle:'ახასიათებს მიკროორგანიზმების კლასიფიკაციას',result:'confirmed',attemptNo:1,assessedOn:'02.05.2026',direction:'survey',source:'mobility_transfer',registerId:null},
 ];
 // შეფასების ინსტრუმენტი (§2.6) — author ≠ validator
 const instrumentsData=[
@@ -1964,7 +1975,6 @@ function renderOutcomes(){
       <td style="text-align:center">${att}</td>
       <td style="font-size:11px">${o.assessedOn}</td>
       <td style="font-size:11px">${SOURCE_LBL[o.source]||o.source}</td>
-      <td style="text-align:center">${o.evidence?`<span class="bd bd-b">${o.evidence}</span>`:'<span class="bd bd-r">0</span>'}</td>
       <td><span class="bd ${r[1]}">${r[0]}</span></td>
       <td>${o.registerId?`<span style="font-size:10px;color:var(--blue);cursor:pointer" onclick="viewRegister('${o.registerId}')">${o.registerId} ↗</span>`:'<span style="color:var(--text3)">—</span>'}</td>
       <td>${o.result==='not_confirmed'?`<button class="btn btn-xs btn-a" onclick="openRetakeFor('${o.id}')" title="ხელახალი გავლა სხვა ჯგუფთან">🔁</button>`:''}</td>
@@ -2279,6 +2289,135 @@ function removeProgram(id){
       moduleTemplates.forEach(t=>{t.programs=t.programs.filter(x=>x!=='${id}')});
       for(let k=periodWeeks.length-1;k>=0;k--)if(periodWeeks[k].programId==='${id}')periodWeeks.splice(k,1);
       renderPrograms();closeModal();toast('პროგრამა წაშლილია','warn')})()">✕ წაშლა</button>`);
+}
+// ══ კლუბები ══
+let clubSeq=5, clubEvSeq=6;
+const clubsAdminData=[
+  {id:'CLB-1',icon:'🩺',name:'პირველი დახმარება',desc:'სასწრაფო დახმარება, BLS/AED ტრენინგი',lead:'მარინე ცეცხლაძე',members:18,active:true},
+  {id:'CLB-2',icon:'🔬',name:'სამეცნიერო კლუბი',desc:'კვლევა, კონფერენციები, პუბლიკაციები',lead:'ნანა ანანიძე',members:12,active:true},
+  {id:'CLB-3',icon:'♟',name:'ინტელექტი',desc:'ჭადრაკი, ლოგიკური თამაშები',lead:'დავით სვანიძე',members:24,active:true},
+  {id:'CLB-4',icon:'🎭',name:'სათეატრო სტუდია',desc:'თეატრი, ვოკალი, სპექტაკლები',lead:'ლაურა ცენტერაძე',members:16,active:true},
+  {id:'CLB-5',icon:'⚽',name:'სპორტული კლუბი',desc:'ფეხბურთი, კალათბურთი, ჩოგბურთი',lead:'ზვიად ქობულია',members:30,active:true},
+];
+const clubEvents=[
+  {id:'CEV-1',clubId:'CLB-1',title:'BLS ტრენინგი',on:'21.06.2026'},
+  {id:'CEV-2',clubId:'CLB-1',title:'პირველი დახმარების ღია დღე',on:'05.07.2026'},
+  {id:'CEV-3',clubId:'CLB-2',title:'სტუდენტური სამეცნიერო კონფერენცია',on:'28.07.2026'},
+  {id:'CEV-4',clubId:'CLB-3',title:'სხდომა — ყოველ ოთხშაბათს 18:00',on:'ყოველ ოთხშაბათს'},
+  {id:'CEV-5',clubId:'CLB-4',title:'სპექტაკლი «ბათუმის სანაპიროზე»',on:'10.07.2026'},
+  {id:'CEV-6',clubId:'CLB-5',title:'ვარჯიში — ყოველ ხუთშაბათს 17:30',on:'ყოველ ხუთშაბათს'},
+];
+const clubEvs=id=>clubEvents.filter(x=>x.clubId===id);
+const clubName=id=>(clubsAdminData.find(x=>x.id===id)||{}).name||'—';
+function renderClubs(){
+  const el=document.getElementById('clubs-grid');
+  if(!el)return;
+  el.innerHTML=clubsAdminData.map(c=>`<div class="card">
+    <div class="ch"><div class="ct">${c.icon} ${c.name}</div>
+      <span class="bd ${c.active?'bd-g':'bd-n'}">${c.active?'აქტიური':'არააქტიური'}</span></div>
+    <div class="cb">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:10px">${c.desc}</div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>ხელმძღვანელი</span><strong style="font-size:12px;text-align:right">${c.lead||'—'}</strong></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>წევრები</span><strong>${c.members}</strong></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px"><span>ღონისძიებები</span><strong>${clubEvs(c.id).length}</strong></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-xs btn-o" onclick="viewClub('${c.id}')">👁 დეტალები</button>
+        <button class="btn btn-xs btn-ghost" onclick="editClubModal('${c.id}')">✏</button>
+        <button class="btn btn-xs btn-r" onclick="removeClub('${c.id}')">✕</button>
+      </div>
+    </div></div>`).join('');
+}
+function clubForm(c){
+  return `<div class="fg2"><div><label class="fl">ხატულა (emoji)</label><input class="fi" id="cl-icon" value="${c?c.icon:'🎭'}" maxlength="4"></div>
+      <div><label class="fl">წევრების რაოდენობა</label><input class="fi" id="cl-members" type="number" min="0" value="${c?c.members:0}"></div></div>
+    <div class="fg"><label class="fl">დასახელება</label><input class="fi" id="cl-name" value="${c?c.name:''}" placeholder="კლუბის დასახელება"></div>
+    <div class="fg"><label class="fl">აღწერა</label><input class="fi" id="cl-desc" value="${c?c.desc:''}" placeholder="მოკლე აღწერა"></div>
+    <div class="fg"><label class="fl">ხელმძღვანელი</label><select class="fi" id="cl-lead"><option value="">— არ არის —</option>${teachers.map(t=>`<option value="${t.name}" ${c&&c.lead===t.name?'selected':''}>${t.name}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">სტატუსი</label><select class="fi" id="cl-active">
+      <option value="1" ${!c||c.active?'selected':''}>აქტიური</option><option value="0" ${c&&!c.active?'selected':''}>არააქტიური</option></select></div>`;
+}
+function addClubModal(){
+  showModal('კლუბის შექმნა',clubForm(null),
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveNewClub()">✓ შექმნა</button>`,'lg');
+}
+function saveNewClub(){
+  const name=document.getElementById('cl-name').value.trim();
+  if(!name){toast('შეავსეთ დასახელება','error');return;}
+  if(clubsAdminData.some(c=>c.name===name)){toast('ამ დასახელებით კლუბი უკვე არსებობს','error');return;}
+  clubsAdminData.push({id:'CLB-'+(++clubSeq),icon:document.getElementById('cl-icon').value||'🎭',name,
+    desc:document.getElementById('cl-desc').value,lead:document.getElementById('cl-lead').value,
+    members:+document.getElementById('cl-members').value,active:document.getElementById('cl-active').value==='1'});
+  renderClubs();closeModal();toast('კლუბი შექმნილია ✓','success');
+}
+function editClubModal(id){
+  const c=clubsAdminData.find(x=>x.id===id);if(!c)return;
+  showModal('კლუბის რედაქტირება',clubForm(c),
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveClub('${id}')">💾 შენახვა</button>`,'lg');
+}
+function saveClub(id){
+  const c=clubsAdminData.find(x=>x.id===id);if(!c)return;
+  const name=document.getElementById('cl-name').value.trim();
+  if(!name){toast('შეავსეთ დასახელება','error');return;}
+  if(clubsAdminData.some(x=>x.id!==id&&x.name===name)){toast('ამ დასახელებით კლუბი უკვე არსებობს','error');return;}
+  c.icon=document.getElementById('cl-icon').value||'🎭'; c.name=name;
+  c.desc=document.getElementById('cl-desc').value; c.lead=document.getElementById('cl-lead').value;
+  c.members=+document.getElementById('cl-members').value;
+  c.active=document.getElementById('cl-active').value==='1';
+  renderClubs();closeModal();toast('კლუბი განახლდა ✓','success');
+}
+function removeClub(id){
+  const c=clubsAdminData.find(x=>x.id===id);if(!c)return;
+  showModal('კლუბის წაშლა',
+    `<p style="font-size:13px">გსურთ კლუბის <strong>${c.name}</strong> წაშლა?</p>
+     <div class="note note-a">⚠ წაიშლება კლუბის ${clubEvs(id).length} ღონისძიება; ${c.members} წევრის გაწევრიანება გაუქმდება.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="(function(){
+      for(let k=clubEvents.length-1;k>=0;k--)if(clubEvents[k].clubId==='${id}')clubEvents.splice(k,1);
+      const i=clubsAdminData.findIndex(x=>x.id==='${id}');if(i>-1)clubsAdminData.splice(i,1);
+      renderClubs();closeModal();toast('კლუბი წაშლილია','warn')})()">✕ წაშლა</button>`);
+}
+function viewClub(id){
+  const c=clubsAdminData.find(x=>x.id===id);if(!c)return;
+  const evs=clubEvs(id);
+  const F=(l,v)=>`<div><label class="fl">${l}</label><div class="fv">${v||'—'}</div></div>`;
+  showModal(`${c.icon} ${c.name}`,`
+    <div class="dhead"><div><div class="dhead-name">${c.icon} ${c.name}</div>
+      <div class="dhead-meta">${c.id} · ${c.desc||''}</div></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-o" onclick="closeModal();editClubModal('${id}')">✏ რედაქტირება</button>
+        <button class="btn btn-r" onclick="removeClub('${id}')">✕ წაშლა</button></div></div>
+    <div class="chips"><span class="bd ${c.active?'bd-g':'bd-n'}">${c.active?'აქტიური':'არააქტიური'}</span>
+      <span class="bd bd-b">${c.members} წევრი</span><span class="bd bd-n">${evs.length} ღონისძიება</span></div>
+    <div class="f3">${F('ხელმძღვანელი',c.lead)}${F('წევრები',c.members)}${F('ღონისძიებები',evs.length)}</div>
+    <div class="card" style="margin-top:16px">
+      <div class="ch"><div class="ct">ღონისძიებები</div>
+        <button class="btn btn-b btn-sm" onclick="addClubEvent('${id}')">➕ ღონისძიების დამატება</button></div>
+      ${evs.length?`<div class="tw"><table>
+        <thead><tr><th style="width:90px">ID</th><th>ღონისძიება</th><th style="width:180px">თარიღი / პერიოდულობა</th><th style="width:60px"></th></tr></thead>
+        <tbody>${evs.map(e=>`<tr><td class="row-id">${e.id}</td><td style="font-size:12px">${e.title}</td>
+          <td style="font-size:12px">${e.on}</td>
+          <td><button class="btn btn-xs btn-r" onclick="removeClubEvent('${e.id}','${id}')">✕</button></td></tr>`).join('')}
+        </tbody></table></div>`:'<div class="cb" style="color:var(--text3);font-size:12px">ღონისძიება არ არის</div>'}
+    </div>
+    <div class="note">კლუბები და მათი ღონისძიებები ჩანს <strong>პროფესიული სტუდენტის პორტალში</strong> — გაწევრიანება ხდება სტუდენტის მხრიდან.</div>`,
+    '','xl');
+}
+function addClubEvent(clubId){
+  showModal('ღონისძიების დამატება',
+    `<div class="fg"><label class="fl">კლუბი</label><div class="fv">${clubName(clubId)}</div></div>
+     <div class="fg"><label class="fl">დასახელება</label><input class="fi" id="ce-title" placeholder="ღონისძიების დასახელება"></div>
+     <div class="fg"><label class="fl">თარიღი ან პერიოდულობა</label><input class="fi" id="ce-on" placeholder="დდ.თთ.წწწწ ან „ყოველ ოთხშაბათს“"></div>`,
+    `<button class="btn btn-n" onclick="viewClub('${clubId}')">უკან</button><button class="btn btn-b" onclick="saveClubEvent('${clubId}')">✓ დამატება</button>`,'lg');
+}
+function saveClubEvent(clubId){
+  const t=document.getElementById('ce-title').value.trim();
+  if(!t){toast('შეავსეთ დასახელება','error');return;}
+  clubEvents.push({id:'CEV-'+(++clubEvSeq),clubId,title:t,on:document.getElementById('ce-on').value||'—'});
+  renderClubs();viewClub(clubId);toast('ღონისძიება დამატებულია ✓','success');
+}
+function removeClubEvent(id,clubId){
+  const i=clubEvents.findIndex(x=>x.id===id);
+  if(i>-1)clubEvents.splice(i,1);
+  renderClubs();viewClub(clubId);toast('ღონისძიება წაშლილია','warn');
 }
 // ══════════ აუდიტორიები და სივრცეები ══════════
 let venSeq=6;
@@ -3093,12 +3232,11 @@ function studentProgress(s){
       const c=m.rows.filter(r=>r.result==='confirmed').length;
       return `<div class="card"><div class="ch"><div class="ct">${m.name} <span style="font-size:11px;font-weight:400;color:var(--text3)">${code}</span></div>
         <span class="bd ${c===m.rows.length?'bd-g':'bd-b'}">${c}/${m.rows.length} დადასტურდა</span></div>
-        <div class="tw"><table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>მტკიც.</th><th>შედეგი</th></tr></thead><tbody>
+        <div class="tw"><table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>შედეგი</th></tr></thead><tbody>
         ${m.rows.map(o=>{const r=RESULT_LBL[o.result];return `<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${o.outcomeNo}</td>
           <td style="font-size:12px">${o.outcomeTitle}</td><td style="text-align:center">${o.attemptNo>=3?`<span class="bd bd-a">${o.attemptNo}</span>`:o.attemptNo}</td>
           <td style="font-size:11px">${o.assessedOn}</td><td style="font-size:11px">${SOURCE_LBL[o.source]}</td>
-          <td style="text-align:center">${o.evidence?`<span class="bd bd-b">${o.evidence}</span>`:'<span class="bd bd-r">0</span>'}</td>
-          <td><span class="bd ${r[1]}">${r[0]}</span></td></tr>`}).join('')}
+              <td><span class="bd ${r[1]}">${r[0]}</span></td></tr>`}).join('')}
         </tbody></table></div></div>`;
     }).join(''):'<div class="card"><div class="cb" style="color:var(--text3)">შეფასების ჩანაწერი არ არის</div></div>'}
     ${retakesData.filter(r=>r.studentId===s.id).length?`<div class="card"><div class="ch"><div class="ct">მოდულის ხელახალი გავლა</div></div>
@@ -3604,6 +3742,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderRoles();
   renderAudit();
   renderVenues();
+  renderClubs();
   renderRegistry();
   renderIntakes();
   renderPrograms();
