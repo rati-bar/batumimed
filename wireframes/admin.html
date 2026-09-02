@@ -553,7 +553,9 @@ textarea.fi{resize:vertical;min-height:80px}
       <thead><tr><th>ID</th><th>პროფესიული სტუდენტი</th><th>ჯგუფი</th><th>მოდული</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>შედეგი</th><th>უწყისი</th><th></th></tr></thead>
       <tbody id="outcomes-tbody"></tbody>
     </table></div>
-    <div class="note">კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>. ვერ დაძლევის შემთხვევაში სტუდენტი მოდულს ხელახლა გადის <strong>სხვა ჯგუფთან ერთად</strong> — 🔁 ღილაკით.</div>
+    <div class="note">კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>.
+      ვერ დაძლევისას პირველ რიგში ინიშნება <strong>📝 გადაბარება</strong> — სტუდენტი თავიდან გადის მხოლოდ შეფასების საათებს (I უფასო, II ფასიანი) და საკუთარ ჯგუფში რჩება.
+      მხოლოდ მაშინ, როცა გადაბარებითაც ვერ დააბარებს და მოდული არ ჩაეთვლება, ინიშნება <strong>🔁 მოდულის ხელახლა გავლა სხვა ჯგუფთან ერთად</strong>.</div>
   </div>
 </div>
 
@@ -1430,27 +1432,56 @@ const modTeacherId=code=>{const im=modIm(code);const m=modulesData.find(x=>x.cod
 const modWeeks=code=>{const im=modIm(code);return im?imWeeks(im.id):[]};
 const modWeekTotals=code=>{const im=modIm(code);return im?imTotals(im.id):{contactH:0,selfH:0,assessH:0}};
 const modHours=code=>{const t=modWeekTotals(code);return t.contactH+t.selfH+t.assessH};
-// ── ხელახალი გავლა: მოდულის ვერ დაძლევა → სხვა ჯგუფთან ერთად ──
-let rtSeq=2;
-const retakesData=[
-  {id:'RT-1',studentId:'BMA-2402',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,imId:'IM-1',
-   failedInGroupId:'GRP-101',retakeWithGroupId:'GRP-102',retakeModuleCode:'MOD-107',attemptNo:1,feePaid:false,
-   orderId:'ORD-8',decidedOn:'20.05.2026',dueOn:'27.05.2026',status:'in_progress'},
-  {id:'RT-2',studentId:'BMA-2303',moduleCode:'MOD-104',module:'კლინიკური პრაქტიკა',outcomeNo:1,imId:'IM-12',
-   failedInGroupId:'GRP-201',retakeWithGroupId:null,retakeModuleCode:null,attemptNo:1,feePaid:false,
-   orderId:null,decidedOn:null,dueOn:null,status:'pending'},
+// ══ ორი განსხვავებული პროცესი ══
+// 1. გადაბარება (reassessment) — სწავლის შედეგის ვერ დაძლევისას სტუდენტი თავიდან გადის
+//    მხოლოდ შეფასების საათებს, რომ ლექტორმა დაუდასტუროს მოდული. I უფასო, II ფასიანი.
+// 2. მოდულის ხელახლა გავლა (module repeat) — ხდება მხოლოდ მაშინ, როცა გადაბარებითაც
+//    ვერ დააბარა და მოდული არ ჩაეთვალა: სტუდენტი მოდულს თავიდან გადის სხვა ჯგუფთან ერთად.
+const REASSESS_FEE=120; // ლარი — მეორე გადაბარება ფასიანია
+const reassessFee=n=>n>=2?REASSESS_FEE:0;
+const reassessFeeLbl=n=>n>=2?`ფასიანი — ₾${REASSESS_FEE}`:'უფასო';
+const REASSESS_MAX_ATTEMPTS=2; // ორი გადაბარება; შემდეგ — მოდულის ხელახლა გავლა
+const REASSESS_LBL={
+  scheduled:['დანიშნულია','bd-a'],
+  in_progress:['შეფასების საათებს გადის','bd-b'],
+  confirmed:['დადასტურდა','bd-g'],
+  failed:['ვერ დააბარა','bd-r']};
+// გადაბარება — მხოლოდ შეფასების საათები
+let raSeq=3;
+const reassessments=[
+  {id:'RA-1',studentId:'BMA-2402',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,imId:'IM-1',
+   groupId:'GRP-101',attemptNo:1,feePaid:false,orderId:null,scheduledOn:'20.05.2026',dueOn:'27.05.2026',status:'failed'},
+  {id:'RA-2',studentId:'BMA-2402',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,imId:'IM-1',
+   groupId:'GRP-101',attemptNo:2,feePaid:true,orderId:null,scheduledOn:'03.06.2026',dueOn:'10.06.2026',status:'failed'},
+  {id:'RA-3',studentId:'BMA-2303',moduleCode:'MOD-104',module:'კლინიკური პრაქტიკა',outcomeNo:1,imId:'IM-12',
+   groupId:'GRP-201',attemptNo:1,feePaid:false,orderId:null,scheduledOn:'20.05.2026',dueOn:null,status:'in_progress'},
 ];
-// სტუდენტი ჩანს გადაბარების ჯგუფშიც — რეალურად რჩება საკუთარ ჯგუფში
-const retakesInGroup=gid=>retakesData.filter(r=>r.retakeWithGroupId===gid&&r.status==='in_progress');
-const studentRetakes=sid=>retakesData.filter(r=>r.studentId===sid);
+const reassessOf=(sid,code,no)=>reassessments.filter(x=>x.studentId===sid&&x.moduleCode===code&&x.outcomeNo===no).sort((a,b)=>a.attemptNo-b.attemptNo);
+const lastReassess=(sid,code,no)=>{const l=reassessOf(sid,code,no);return l.length?l[l.length-1]:null};
+const studentReassessments=sid=>reassessments.filter(x=>x.studentId===sid);
+// გადაბარების შესაძლებლობა ამოიწურა → მოდული არ ჩაეთვალა
+const reassessExhausted=(sid,code,no)=>{
+  const l=reassessOf(sid,code,no);
+  return l.length>=REASSESS_MAX_ATTEMPTS&&l.every(x=>x.status==='failed');};
+
+// მოდულის ხელახლა გავლა სხვა ჯგუფთან — მხოლოდ გადაბარების ამოწურვის შემდეგ
+const REPEAT_LBL={
+  pending:['ჯგუფი დასანიშნია','bd-a'],
+  in_progress:['ხელახლა გადის მოდულს','bd-b'],
+  confirmed:['დადასტურდა','bd-g'],
+  failed:['ვერ დადასტურდა','bd-r']};
+let mrSeqRepeat=1;
+const moduleRepeats=[
+  {id:'MRP-1',studentId:'BMA-2402',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,imId:'IM-1',
+   failedInGroupId:'GRP-101',repeatWithGroupId:'GRP-102',orderId:'ORD-8',decidedOn:'20.06.2026',status:'in_progress'},
+];
+// სტუდენტი ჩანს მასპინძელ ჯგუფშიც — რეალურად რჩება საკუთარ ჯგუფში
+const repeatsInGroup=gid=>moduleRepeats.filter(r=>r.repeatWithGroupId===gid&&r.status==='in_progress');
+const studentRepeats=sid=>moduleRepeats.filter(r=>r.studentId===sid);
+const repeatOf=(sid,code,no)=>moduleRepeats.find(x=>x.studentId===sid&&x.moduleCode===code&&x.outcomeNo===no)||null;
 const imOfModuleCode=code=>{const m=modulesData.find(x=>x.code===code);if(!m)return null;
   const ip=ipOf(m.intakeId,m.programId); if(!ip)return null;
   return intakeModules.find(x=>x.ipId===ip.id&&x.moduleId===m.moduleId)||null;};
-const RETAKE_FEE=120; // ლარი — მეორე გადაბარება ფასიანია
-// გადაბარების ნომერი: 1 — უფასო, 2 და ზემოთ — ფასიანი
-const retakeFee=n=>n>=2?RETAKE_FEE:0;
-const retakeFeeLbl=n=>n>=2?`ფასიანი — ₾${RETAKE_FEE}`:'უფასო';
-const RETAKE_LBL={pending:['ჯგუფი დასანიშნია','bd-a'],in_progress:['ხელახლა გადის','bd-b'],confirmed:['დადასტურდა','bd-g'],failed:['ვერ დადასტურდა','bd-r']};
 // ── ASSESSMENT SPINE (§1.8) — ბინარული: confirmed | not_confirmed ──
 const outcomeResults=[
   {id:'OR-001',studentId:'BMA-2401',name:'ნინო მამულაძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:1,outcomeTitle:'აღწერს უჯრედის ქიმიურ შემადგენლობას',result:'confirmed',attemptNo:1,assessedOn:'20.03.2026',direction:'survey',source:'assessment',registerId:'REG-001'},
@@ -2063,7 +2094,11 @@ function renderOutcomes(){
       <td style="font-size:11px">${SOURCE_LBL[o.source]||o.source}</td>
       <td><span class="bd ${r[1]}">${r[0]}</span></td>
       <td>${o.registerId?`<span style="font-size:10px;color:var(--blue);cursor:pointer" onclick="viewRegister('${o.registerId}')">${o.registerId} ↗</span>`:'<span style="color:var(--text3)">—</span>'}</td>
-      <td>${o.result==='not_confirmed'?`<button class="btn btn-xs btn-a" onclick="openRetakeFor('${o.id}')" title="ხელახალი გავლა სხვა ჯგუფთან">🔁</button>`:''}</td>
+      <td style="white-space:nowrap">${o.result!=='not_confirmed'?'':(()=>{
+        const ex=reassessExhausted(o.studentId,o.moduleCode,o.outcomeNo);
+        const rp=repeatOf(o.studentId,o.moduleCode,o.outcomeNo);
+        return `<button class="btn btn-xs btn-a" onclick="openReassessFor('${o.id}')" title="გადაბარება — შეფასების საათების თავიდან გავლა">📝</button>
+        ${ex||rp?`<button class="btn btn-xs btn-r" onclick="openRepeatFor('${o.id}')" title="მოდულის ხელახლა გავლა სხვა ჯგუფთან">🔁</button>`:''}`})()}</td>
     </tr>`;
   }).join(''):'<tr><td colspan="12" style="text-align:center;color:var(--text3);padding:24px">ამ ფილტრით ჩანაწერი არ მოიძებნა</td></tr>';
   const c=document.getElementById('out-count');
@@ -2529,80 +2564,154 @@ function removePrereq(id,ipId){
   if(i>-1)modulePrereqs.splice(i,1);
   viewIntakeProgram(ipId);toast('წინაპირობა წაშლილია','warn');
 }
-// ══════════ გადაბარება: I უფასო · II ფასიანი · წინაპირობაზე 1 კვირა ══════════
-function openRetakeFor(outcomeId){
+// ══════════ 1. გადაბარება — მხოლოდ შეფასების საათების თავიდან გავლა ══════════
+// I გადაბარება უფასო · II ფასიანი · წინაპირობის შემთხვევაში ვადა 1 კვირა
+function openReassessFor(outcomeId){
   const o=outcomeResults.find(x=>x.id===outcomeId);if(!o)return;
-  let r=retakesData.find(x=>x.studentId===o.studentId&&x.moduleCode===o.moduleCode&&x.outcomeNo===o.outcomeNo);
-  if(!r){
-    const im=imOfModuleCode(o.moduleCode);
-    const prev=retakesData.filter(x=>x.studentId===o.studentId&&x.moduleCode===o.moduleCode).length;
-    r={id:'RT-'+(++rtSeq),studentId:o.studentId,moduleCode:o.moduleCode,module:o.module,outcomeNo:o.outcomeNo,
-       imId:im?im.id:null,failedInGroupId:(groupsData.find(g=>g.name===stuGroupOf(o.studentId))||{}).id||null,
-       retakeWithGroupId:null,retakeModuleCode:null,attemptNo:prev+1,feePaid:false,
-       orderId:null,decidedOn:null,dueOn:null,status:'pending'};
-    retakesData.push(r);
-  }
-  retakePage(r.id);
+  const prev=reassessOf(o.studentId,o.moduleCode,o.outcomeNo);
+  const open=prev.find(x=>x.status==='scheduled'||x.status==='in_progress');
+  if(open){reassessPage(open.id);return;}
+  if(prev.length>=REASSESS_MAX_ATTEMPTS&&prev.every(x=>x.status==='failed')){
+    toast(`გადაბარების ${REASSESS_MAX_ATTEMPTS} ცდა ამოიწურა — მოდული არ ჩაეთვალა. საჭიროა მოდულის ხელახლა გავლა სხვა ჯგუფთან.`,'error');
+    openRepeatFor(outcomeId);return;}
+  const im=imOfModuleCode(o.moduleCode);
+  const r={id:'RA-'+(++raSeq),studentId:o.studentId,moduleCode:o.moduleCode,module:o.module,outcomeNo:o.outcomeNo,
+    imId:im?im.id:null,groupId:(groupsData.find(g=>g.name===stuGroupOf(o.studentId))||{}).id||null,
+    attemptNo:prev.length+1,feePaid:false,orderId:null,scheduledOn:null,dueOn:null,status:'scheduled'};
+  reassessments.push(r);
+  reassessPage(r.id);
 }
-function retakePage(rid){
-  const r=retakesData.find(x=>x.id===rid);if(!r)return;
-  const st=RETAKE_LBL[r.status]||[r.status,'bd-n'];
+function reassessPage(rid){
+  const r=reassessments.find(x=>x.id===rid);if(!r)return;
+  const st=REASSESS_LBL[r.status]||[r.status,'bd-n'];
   const im=r.imId?intakeModules.find(x=>x.id===r.imId):null;
   const prereq=im?isPrereq(im.id):false;
   const deps=im?dependentsOf(im.id):[];
-  const fee=retakeFee(r.attemptNo);
-  const homeGroup=r.failedInGroupId?groupName(r.failedInGroupId):stuGroupOf(r.studentId);
-  const cand=groupsData.filter(g=>g.active&&g.id!==r.failedInGroupId);
-  showModal(`ხელახალი გავლა — ${r.module}`,`
+  const fee=reassessFee(r.attemptNo);
+  const hist=reassessOf(r.studentId,r.moduleCode,r.outcomeNo);
+  // შეფასების საათები — სწორედ ისინი გადის თავიდან
+  const assHours=im?imWeeks(im.id).filter(w=>w.assessH>0):[];
+  const assTotal=assHours.reduce((a,w)=>a+w.assessH,0);
+  showModal(`გადაბარება — ${r.module}`,`
     <div class="dhead"><div><div class="dhead-name">${stuName(r.studentId)}</div>
       <div class="dhead-meta">${r.studentId} · ${r.module} · სწავლის შედეგი №${r.outcomeNo}</div></div>
       <span class="bd ${st[1]}">${st[0]}</span></div>
     <div class="chips">
-      <span class="bd bd-n">გადაბარება №${r.attemptNo}</span>
-      <span class="bd ${fee?'bd-a':'bd-g'}">${retakeFeeLbl(r.attemptNo)}</span>
+      <span class="bd bd-p">გადაბარება №${r.attemptNo} / ${REASSESS_MAX_ATTEMPTS}</span>
+      <span class="bd ${fee?'bd-a':'bd-g'}">${reassessFeeLbl(r.attemptNo)}</span>
+      <span class="bd bd-n">${groupName(r.groupId)}</span>
       ${prereq?`<span class="bd bd-r">წინაპირობაა — ვადა ${RETAKE_DEADLINE_WEEKS} კვირა</span>`
               :'<span class="bd bd-b">არაფრის წინაპირობა არ არის — ვადა შეუზღუდავი</span>'}
     </div>
+    <div class="note">📝 <strong>გადაბარება</strong> ნიშნავს მხოლოდ <strong>შეფასების საათების თავიდან გავლას</strong>, რომ ლექტორმა
+      დაუდასტუროს სტუდენტს მოდული. სტუდენტი <strong>რჩება საკუთარ ჯგუფში</strong> — მოდულს თავიდან არ გადის.</div>
+    ${assHours.length?`<div class="fg"><label class="fl">გასავლელი შეფასების საათები (მოდულის განაწილებიდან)</label>
+      <div class="tw"><table><thead><tr><th style="width:80px">კვირა</th><th style="width:140px">შეფასების საათი</th></tr></thead>
+      <tbody>${assHours.map(w=>`<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${w.week}</td>
+        <td style="text-align:center">${w.assessH} სთ</td></tr>`).join('')}
+      <tr style="background:var(--blue-lt)"><td style="font-weight:700;font-size:12px">სულ</td>
+        <td style="text-align:center;font-weight:800;color:var(--blue)">${assTotal} სთ</td></tr></tbody></table></div></div>`
+      :'<div class="note note-a">⚠ ამ მოდულს შეფასების საათები ჯერ არ აქვს გაწერილი — განაწილება იწერება მენიუში „მიღებები".</div>'}
     <div class="note ${fee?'note-a':''}">
       ${r.attemptNo===1?'<strong>პირველი გადაბარება უფასოა.</strong> მეორე გადაბარება ფასიანია.'
-        :`<strong>მეორე (ან შემდგომი) გადაბარება ფასიანია — ₾${RETAKE_FEE}.</strong> ${r.feePaid?'✓ გადახდილია.':'გადახდა ჯერ არ არის დადასტურებული.'}`}
+        :`<strong>მეორე გადაბარება ფასიანია — ₾${REASSESS_FEE}.</strong> ${r.feePaid?'✓ გადახდილია.':'გადახდა ჯერ არ არის დადასტურებული.'}`}
     </div>
-    ${prereq?`<div class="note note-a">⚠ მოდული <strong>${deps.map(d=>regName((intakeModules.find(m=>m.id===d.dependentImId)||{}).moduleId)).join(', ')}</strong>-ის წინაპირობაა — დადასტურება უნდა მოხდეს <strong>${RETAKE_DEADLINE_WEEKS} კვირაში</strong>, თორემ სტუდენტი მომდევნო სემესტრში დამოკიდებულ მოდულს ვერ გაივლის.</div>`
-      :'<div class="note">მოდული არაფრის წინაპირობა არ არის — სტუდენტს <strong>ნებისმიერ დროს</strong> შეუძლია ხელახლა დადასტურება.</div>'}
-    <div class="f3">
-      <div><label class="fl">საკუთარი ჯგუფი</label><div class="fv">${homeGroup}</div></div>
-      <div><label class="fl">გადაბარების ვადა</label><div class="fv">${r.dueOn||(prereq?'ჯერ არ არის დაწყებული':'შეუზღუდავი')}</div></div>
-      <div><label class="fl">ბრძანება</label><div class="fv">${r.orderId?orderRef(r.orderId):'—'}</div></div>
-    </div>
+    ${prereq?`<div class="note note-a">⚠ მოდული <strong>${deps.map(d=>regName((intakeModules.find(m=>m.id===d.dependentImId)||{}).moduleId)).join(', ')}</strong>-ის წინაპირობაა — გადაბარებით დადასტურება უნდა მოხდეს <strong>${RETAKE_DEADLINE_WEEKS} კვირაში</strong>, თორემ სტუდენტი მომდევნო სემესტრში დამოკიდებულ მოდულს ვერ გაივლის.</div>`:''}
+    ${hist.length>1?`<div class="fg"><label class="fl">გადაბარებების ისტორია</label>
+      <div class="tw"><table><thead><tr><th style="width:70px">ცდა</th><th style="width:130px">გადახდა</th><th style="width:130px">დანიშვნა</th><th style="width:120px">ვადა</th><th>შედეგი</th></tr></thead>
+      <tbody>${hist.map(h=>{const hs=REASSESS_LBL[h.status]||[h.status,'bd-n'];
+        return `<tr><td style="text-align:center;font-weight:700">№${h.attemptNo}</td>
+          <td><span class="bd ${reassessFee(h.attemptNo)?(h.feePaid?'bd-g':'bd-a'):'bd-g'}">${reassessFee(h.attemptNo)?(h.feePaid?'გადახდილი':'გადაუხდელი'):'უფასო'}</span></td>
+          <td style="font-size:11px">${h.scheduledOn||'—'}</td><td style="font-size:11px">${h.dueOn||'შეუზღუდავი'}</td>
+          <td><span class="bd ${hs[1]}">${hs[0]}</span></td></tr>`}).join('')}</tbody></table></div></div>`:''}
+    ${fee?`<div class="fg"><label class="fl">გადახდა (₾${REASSESS_FEE})</label>
+      <select class="fi" id="ra-fee"><option value="0" ${!r.feePaid?'selected':''}>ჯერ არ არის გადახდილი</option><option value="1" ${r.feePaid?'selected':''}>გადახდილია</option></select></div>`:''}
+    <div class="fg"><label class="fl">გადაბარების შედეგი</label>
+      <select class="fi" id="ra-status">
+        <option value="scheduled" ${r.status==='scheduled'?'selected':''}>დანიშნულია</option>
+        <option value="in_progress" ${r.status==='in_progress'?'selected':''}>შეფასების საათებს გადის</option>
+        <option value="confirmed" ${r.status==='confirmed'?'selected':''}>დადასტურდა — მოდული ჩაეთვალა</option>
+        <option value="failed" ${r.status==='failed'?'selected':''}>ვერ დააბარა</option>
+      </select></div>`,
+    `<button class="btn btn-n" onclick="closeModal()">უკან</button>
+     <button class="btn btn-b" onclick="saveReassess('${rid}')">💾 შენახვა</button>`,'xl');
+}
+function saveReassess(rid){
+  const r=reassessments.find(x=>x.id===rid);if(!r)return;
+  const feeSel=document.getElementById('ra-fee');
+  const fee=reassessFee(r.attemptNo);
+  if(feeSel)r.feePaid=feeSel.value==='1';
+  if(fee&&!r.feePaid){toast(`მეორე გადაბარება ფასიანია — ₾${REASSESS_FEE} გადახდა უნდა დადასტურდეს`,'error');return;}
+  r.status=document.getElementById('ra-status').value;
+  if(!r.scheduledOn)r.scheduledOn=TODAY;
+  const im=r.imId?intakeModules.find(x=>x.id===r.imId):null;
+  if(!r.dueOn&&im&&isPrereq(im.id))r.dueOn=addWeeks(r.scheduledOn,RETAKE_DEADLINE_WEEKS);
+  renderOutcomes();closeModal();
+  if(r.status==='confirmed'){toast('გადაბარება დადასტურდა — მოდული ჩაეთვალა ✓','success');return;}
+  if(r.status==='failed'&&reassessExhausted(r.studentId,r.moduleCode,r.outcomeNo)){
+    toast(`გადაბარების ${REASSESS_MAX_ATTEMPTS} ცდა ამოიწურა — მოდული არ ჩაეთვალა. საჭიროა მოდულის ხელახლა გავლა სხვა ჯგუფთან.`,'warn');
+    return;}
+  toast(`გადაბარება შენახულია${r.dueOn?' · ვადა '+r.dueOn:''} ✓`,'success');
+}
+// ══════════ 2. მოდულის ხელახლა გავლა სხვა ჯგუფთან — გადაბარების ამოწურვის შემდეგ ══════════
+function openRepeatFor(outcomeId){
+  const o=outcomeResults.find(x=>x.id===outcomeId);if(!o)return;
+  let r=repeatOf(o.studentId,o.moduleCode,o.outcomeNo);
+  if(!r){
+    if(!reassessExhausted(o.studentId,o.moduleCode,o.outcomeNo)){
+      const done=reassessOf(o.studentId,o.moduleCode,o.outcomeNo).filter(x=>x.status==='failed').length;
+      toast(`მოდულის ხელახლა გავლა ხდება მხოლოდ გადაბარების ამოწურვის შემდეგ — ${done}/${REASSESS_MAX_ATTEMPTS} ცდა ვერ დააბარა`,'error');
+      return;}
+    const im=imOfModuleCode(o.moduleCode);
+    r={id:'MRP-'+(++mrSeqRepeat),studentId:o.studentId,moduleCode:o.moduleCode,module:o.module,outcomeNo:o.outcomeNo,
+      imId:im?im.id:null,failedInGroupId:(groupsData.find(g=>g.name===stuGroupOf(o.studentId))||{}).id||null,
+      repeatWithGroupId:null,orderId:null,decidedOn:null,status:'pending'};
+    moduleRepeats.push(r);
+  }
+  repeatPage(r.id);
+}
+function repeatPage(rid){
+  const r=moduleRepeats.find(x=>x.id===rid);if(!r)return;
+  const st=REPEAT_LBL[r.status]||[r.status,'bd-n'];
+  const hist=reassessOf(r.studentId,r.moduleCode,r.outcomeNo);
+  const homeGroup=r.failedInGroupId?groupName(r.failedInGroupId):stuGroupOf(r.studentId);
+  const cand=groupsData.filter(g=>g.active&&g.id!==r.failedInGroupId);
+  showModal(`მოდულის ხელახლა გავლა — ${r.module}`,`
+    <div class="dhead"><div><div class="dhead-name">${stuName(r.studentId)}</div>
+      <div class="dhead-meta">${r.studentId} · ${r.module} · სწავლის შედეგი №${r.outcomeNo}</div></div>
+      <span class="bd ${st[1]}">${st[0]}</span></div>
+    <div class="chips"><span class="bd bd-r">მოდული არ ჩაეთვალა</span>
+      <span class="bd bd-n">საკუთარი ჯგუფი — ${homeGroup}</span>
+      <span class="bd bd-a">გადაბარება ამოიწურა (${hist.filter(x=>x.status==='failed').length}/${REASSESS_MAX_ATTEMPTS})</span></div>
+    <div class="note note-a">🔁 <strong>მოდულის ხელახლა გავლა</strong> ხდება მხოლოდ მაშინ, როცა სტუდენტმა <strong>გადაბარებითაც ვერ დააბარა</strong>
+      და მოდული არ ჩაეთვალა. სტუდენტი მოდულს <strong>თავიდან გადის სხვა ჯგუფთან ერთად</strong> — მეცადინეობებითა და შეფასებით.</div>
+    ${hist.length?`<div class="fg"><label class="fl">გადაბარებების ისტორია</label>
+      <div class="tw"><table><thead><tr><th style="width:70px">ცდა</th><th style="width:130px">გადახდა</th><th style="width:130px">დანიშვნა</th><th>შედეგი</th></tr></thead>
+      <tbody>${hist.map(h=>{const hs=REASSESS_LBL[h.status]||[h.status,'bd-n'];
+        return `<tr><td style="text-align:center;font-weight:700">№${h.attemptNo}</td>
+          <td><span class="bd ${reassessFee(h.attemptNo)?(h.feePaid?'bd-g':'bd-a'):'bd-g'}">${reassessFee(h.attemptNo)?(h.feePaid?'გადახდილი':'გადაუხდელი'):'უფასო'}</span></td>
+          <td style="font-size:11px">${h.scheduledOn||'—'}</td>
+          <td><span class="bd ${hs[1]}">${hs[0]}</span></td></tr>`}).join('')}</tbody></table></div></div>`:''}
     <div class="fg"><label class="fl">ჯგუფი, რომელთან ერთად გაივლის მოდულს ხელახლა</label>
-      <select class="fi" id="rt-group">
+      <select class="fi" id="mr-group">
         <option value="">— ჯგუფი ასარჩევია —</option>
-        ${cand.map(g=>`<option value="${g.id}" ${r.retakeWithGroupId===g.id?'selected':''}>${g.name} · ${progName(g.programId)}</option>`).join('')}
+        ${cand.map(g=>`<option value="${g.id}" ${r.repeatWithGroupId===g.id?'selected':''}>${g.name} · ${progName(g.programId)}</option>`).join('')}
       </select></div>
     <div class="fg"><label class="fl">ბრძანება</label>
-      <select class="fi" id="rt-order"><option value="">— ბრძანება ასარჩევია —</option>
+      <select class="fi" id="mr-order"><option value="">— ბრძანება ასარჩევია —</option>
         ${ordersData.map(o=>`<option value="${o.id}" ${r.orderId===o.id?'selected':''}>№${o.no} · ${o.date} — ${o.subject.substring(0,44)}</option>`).join('')}</select></div>
-    ${fee?`<div class="fg"><label class="fl">გადახდა (₾${RETAKE_FEE})</label>
-      <select class="fi" id="rt-fee"><option value="0" ${!r.feePaid?'selected':''}>ჯერ არ არის გადახდილი</option><option value="1" ${r.feePaid?'selected':''}>გადახდილია</option></select></div>`:''}
-    <div class="note">სტუდენტი გამოჩნდება <strong>არჩეულ ჯგუფშიც</strong> — ნიშნულით „ხელახლა გადის"; რეალურად რჩება <strong>${homeGroup}</strong>-ის სტუდენტად.</div>`,
+    <div class="note">სტუდენტი გამოჩნდება <strong>არჩეულ ჯგუფშიც</strong> — ნიშნულით „ხელახლა გადის მოდულს"; რეალურად რჩება <strong>${homeGroup}</strong>-ის სტუდენტად.</div>`,
     `<button class="btn btn-n" onclick="closeModal()">უკან</button>
-     <button class="btn btn-b" onclick="saveRetake('${rid}')">💾 შენახვა</button>`,'xl');
+     <button class="btn btn-b" onclick="saveRepeat('${rid}')">💾 შენახვა</button>`,'xl');
 }
-function saveRetake(rid){
-  const r=retakesData.find(x=>x.id===rid);if(!r)return;
-  const gid=document.getElementById('rt-group').value, oid=document.getElementById('rt-order').value;
-  const feeSel=document.getElementById('rt-fee');
-  const fee=retakeFee(r.attemptNo);
-  if(!gid){toast('აირჩიეთ ჯგუფი, რომელთან ერთად გაივლის მოდულს','error');return;}
-  if(!oid){toast('ხელახალი გავლა ფორმდება ბრძანებით — აირჩიეთ ბრძანება','error');return;}
-  if(feeSel)r.feePaid=feeSel.value==='1';
-  if(fee&&!r.feePaid){toast(`მეორე გადაბარება ფასიანია — ₾${RETAKE_FEE} გადახდა უნდა დადასტურდეს`,'error');return;}
-  r.retakeWithGroupId=gid; r.orderId=oid; r.status='in_progress';
-  r.decidedOn=TODAY;
-  const im=r.imId?intakeModules.find(x=>x.id===r.imId):null;
-  r.dueOn=(im&&isPrereq(im.id))?addWeeks(TODAY,RETAKE_DEADLINE_WEEKS):null;
+function saveRepeat(rid){
+  const r=moduleRepeats.find(x=>x.id===rid);if(!r)return;
+  const gid=document.getElementById('mr-group').value, oid=document.getElementById('mr-order').value;
+  if(!gid){toast('აირჩიეთ ჯგუფი, რომელთან ერთად გაივლის მოდულს ხელახლა','error');return;}
+  if(!oid){toast('მოდულის ხელახლა გავლა ფორმდება ბრძანებით — აირჩიეთ ბრძანება','error');return;}
+  r.repeatWithGroupId=gid; r.orderId=oid; r.status='in_progress'; r.decidedOn=TODAY;
   renderOutcomes();renderGroups();closeModal();
-  toast(`ხელახალი გავლა დაფიქსირდა — ${groupName(gid)}${r.dueOn?' · ვადა '+r.dueOn:''} ✓`,'success');
+  toast(`მოდულის ხელახლა გავლა დაფიქსირდა — ${groupName(gid)} ✓`,'success');
 }
 // ══════════ ელექტრონული ჟურნალი — ადმინისტრატორი (სრული უფლებები) ══════════
 const EJ_KIND_LBL={lecture:['მეცადინეობა','bd-b'],assessment:['შეფასება','bd-a']};
@@ -3736,16 +3845,30 @@ function studentProgress(s){
               <td><span class="bd ${r[1]}">${r[0]}</span></td></tr>`}).join('')}
         </tbody></table></div></div>`;
     }).join(''):'<div class="card"><div class="cb" style="color:var(--text3)">შეფასების ჩანაწერი არ არის</div></div>'}
-    ${retakesData.filter(r=>r.studentId===s.id).length?`<div class="card"><div class="ch"><div class="ct">მოდულის ხელახალი გავლა</div></div>
-      <div class="tw"><table><thead><tr><th>მოდული</th><th>სწ. შედეგი</th><th>ვერ დაძლია ჯგუფში</th><th>ხელახლა გადის ჯგუფთან</th><th>სტატუსი</th></tr></thead><tbody>
-      ${retakesData.filter(r=>r.studentId===s.id).map(r=>{const st=RETAKE_LBL[r.status];
+    ${studentReassessments(s.id).length?`<div class="card"><div class="ch"><div class="ct">გადაბარება — შეფასების საათების თავიდან გავლა</div></div>
+      <div class="tw"><table><thead><tr><th>მოდული</th><th style="width:80px">სწ. შედეგი</th><th style="width:70px">ცდა</th><th style="width:130px">გადახდა</th><th style="width:120px">ვადა</th><th>შედეგი</th><th style="width:50px"></th></tr></thead><tbody>
+      ${studentReassessments(s.id).map(r=>{const st=REASSESS_LBL[r.status]||[r.status,'bd-n'];const fee=reassessFee(r.attemptNo);
+        return `<tr><td>${r.module}<div style="font-size:10px;color:var(--text3)">${r.moduleCode}</div></td>
+          <td style="text-align:center">№${r.outcomeNo}</td>
+          <td style="text-align:center;font-weight:700">№${r.attemptNo}</td>
+          <td><span class="bd ${fee?(r.feePaid?'bd-g':'bd-a'):'bd-g'}">${fee?(r.feePaid?`გადახდილი ₾${REASSESS_FEE}`:`გადაუხდელი ₾${REASSESS_FEE}`):'უფასო'}</span></td>
+          <td style="font-size:11px">${r.dueOn?`<span class="bd bd-r">${r.dueOn}</span>`:'<span style="color:var(--text3)">შეუზღუდავი</span>'}</td>
+          <td><span class="bd ${st[1]}">${st[0]}</span></td>
+          <td><button class="btn btn-xs btn-ghost" onclick="reassessPage('${r.id}')">👁</button></td></tr>`}).join('')}
+      </tbody></table></div>
+      <div class="note">📝 გადაბარებაზე სტუდენტი თავიდან გადის <strong>მხოლოდ შეფასების საათებს</strong> — მოდულს თავიდან არ გადის და საკუთარ ჯგუფში რჩება. I ცდა უფასოა, II ფასიანი.</div></div>`:''}
+    ${studentRepeats(s.id).length?`<div class="card"><div class="ch"><div class="ct">მოდულის ხელახლა გავლა სხვა ჯგუფთან</div></div>
+      <div class="tw"><table><thead><tr><th>მოდული</th><th style="width:80px">სწ. შედეგი</th><th>ვერ დაძლია ჯგუფში</th><th>ხელახლა გადის ჯგუფთან</th><th style="width:120px">ბრძანება</th><th>სტატუსი</th><th style="width:50px"></th></tr></thead><tbody>
+      ${studentRepeats(s.id).map(r=>{const st=REPEAT_LBL[r.status]||[r.status,'bd-n'];
         return `<tr><td>${r.module}<div style="font-size:10px;color:var(--text3)">${r.moduleCode}</div></td>
           <td style="text-align:center">№${r.outcomeNo}</td>
           <td style="font-size:12px">${groupName(r.failedInGroupId)}</td>
-          <td>${r.retakeWithGroupId?`<strong style="color:var(--blue)">${groupName(r.retakeWithGroupId)}</strong>`:'<span class="bd bd-a">ჯერ არ არის დანიშნული</span>'}</td>
-          <td><span class="bd ${st[1]}">${st[0]}</span></td></tr>`}).join('')}
+          <td>${r.repeatWithGroupId?`<strong style="color:var(--blue)">${groupName(r.repeatWithGroupId)}</strong>`:'<span class="bd bd-a">ჯერ არ არის დანიშნული</span>'}</td>
+          <td style="font-size:11px">${r.orderId?orderRef(r.orderId):'—'}</td>
+          <td><span class="bd ${st[1]}">${st[0]}</span></td>
+          <td><button class="btn btn-xs btn-ghost" onclick="repeatPage('${r.id}')">👁</button></td></tr>`}).join('')}
       </tbody></table></div>
-      <div class="note">მოდულის ვერ დაძლევის შემთხვევაში სტუდენტი მოდულს ხელახლა გადის <strong>სხვა ჯგუფთან ერთად</strong>.</div></div>`:''}
+      <div class="note">🔁 მოდულის ხელახლა გავლა ხდება მხოლოდ მაშინ, როცა <strong>გადაბარებითაც ვერ დააბარა</strong> და მოდული არ ჩაეთვალა — სტუდენტი მოდულს თავიდან გადის <strong>სხვა ჯგუფთან ერთად</strong>.</div></div>`:''}
     <div class="note">კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>. ქულა, საშუალო და გამსვლელობა არ არსებობს; დასწრება რეგისტრია. — [სპწ] 21.10, 21.11</div>`;
 }
 const studentFilesData={};
@@ -3887,20 +4010,20 @@ function viewGroup(id){
               <button class="btn btn-xs btn-r" onclick="removeFromGroup('${id}','${s.id}')">მოხსნა</button></td>
           </tr>`}).join('')}</tbody></table></div>`
         :'<div class="cb" style="color:var(--text3);font-size:12px">სტუდენტი არ არის ჩარიცხული</div>'}
-      ${(()=>{const rt=retakesInGroup(id);return rt.length?`
-        <div class="ch" style="border-top:1px solid var(--border)"><div class="ct">ხელახლა გამვლელი პროფესიული სტუდენტები</div></div>
+      ${(()=>{const rt=repeatsInGroup(id);return rt.length?`
+        <div class="ch" style="border-top:1px solid var(--border)"><div class="ct">მოდულს ხელახლა გამვლელი პროფესიული სტუდენტები</div></div>
         <div class="tw"><table>
-          <thead><tr><th>პროფესიული სტუდენტი</th><th style="width:120px">საკუთარი ჯგუფი</th><th>მოდული</th><th style="width:110px">გადაბარება</th><th style="width:120px">ვადა</th><th style="width:60px"></th></tr></thead>
+          <thead><tr><th>პროფესიული სტუდენტი</th><th style="width:120px">საკუთარი ჯგუფი</th><th>მოდული</th><th style="width:160px">გადაბარების ცდები</th><th style="width:120px">ბრძანება</th><th style="width:60px"></th></tr></thead>
           <tbody>${rt.map(r=>`<tr style="background:var(--amber-lt)">
             <td><div class="row-id">${avatar(stuName(r.studentId),r.studentId)}<div><div class="rn">${stuName(r.studentId)}</div>
-              <div class="ri">${r.studentId} · <span style="color:var(--amber);font-weight:700">ხელახლა გადის</span></div></div></div></td>
+              <div class="ri">${r.studentId} · <span style="color:var(--amber);font-weight:700">ხელახლა გადის მოდულს</span></div></div></div></td>
             <td style="font-size:12px"><strong>${groupName(r.failedInGroupId)}</strong></td>
             <td style="font-size:12px">${r.module}<div style="font-size:10px;color:var(--text3)">სწ. შედეგი №${r.outcomeNo}</div></td>
-            <td><span class="bd ${retakeFee(r.attemptNo)?'bd-a':'bd-g'}">№${r.attemptNo} · ${retakeFeeLbl(r.attemptNo)}</span></td>
-            <td style="font-size:11px">${r.dueOn?`<span class="bd bd-r">${r.dueOn}</span>`:'<span style="color:var(--text3)">შეუზღუდავი</span>'}</td>
-            <td><button class="btn btn-xs btn-ghost" onclick="retakePage('${r.id}')">👁</button></td>
+            <td><span class="bd bd-r">${reassessOf(r.studentId,r.moduleCode,r.outcomeNo).filter(x=>x.status==='failed').length}/${REASSESS_MAX_ATTEMPTS} ვერ დააბარა</span></td>
+            <td style="font-size:11px">${r.orderId?orderRef(r.orderId):'—'}</td>
+            <td><button class="btn btn-xs btn-ghost" onclick="repeatPage('${r.id}')">👁</button></td>
           </tr>`).join('')}</tbody></table></div>
-        <div class="note">ეს სტუდენტები <strong>რეალურად სხვა ჯგუფის</strong> სტუდენტები არიან — აქ მხოლოდ კონკრეტულ მოდულს გადიან ხელახლა.</div>`:''})()}</div>
+        <div class="note">ეს სტუდენტები <strong>რეალურად სხვა ჯგუფის</strong> სტუდენტები არიან — აქ მხოლოდ კონკრეტულ მოდულს გადიან თავიდან, რადგან <strong>გადაბარებით ვერ დააბარეს</strong>.</div>`:''})()}</div>
     <div class="card"><div class="ch"><div class="ct">ჯგუფის მოდულები</div></div>
       ${mods.length?`<div class="tw"><table><thead><tr><th>კოდი</th><th>მოდული</th><th>მასწავლებელი</th><th>პერიოდი</th><th>ჩატარებული</th><th></th></tr></thead><tbody>
       ${mods.map(m=>{return `<tr><td style="font-size:11px;color:var(--blue);font-weight:700">${m.code}</td><td>${m.name}</td>

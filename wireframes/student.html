@@ -1087,6 +1087,17 @@ const moduleRegistry=[
 const ipOf=(intakeId,programId)=>intakePrograms.find(x=>x.intakeId===intakeId&&x.programId===programId);
 // მასწავლებლის შეფასება ხდება მოდულის ბოლოს — მანამდე შეფასების ბმული არ ჩანს
 const moduleFinished=m=>m.outcomes.length>0&&m.outcomes.every(o=>o.result);
+// ორი განსხვავებული პროცესი: გადაბარება (მხოლოდ შეფასების საათები) და მოდულის ხელახლა გავლა (სხვა ჯგუფთან)
+const REASSESS_FEE=120;
+const REASSESS_MAX_ATTEMPTS=2;
+const REASSESS_LBL={scheduled:['დანიშნულია','bd-a'],in_progress:['შეფასების საათებს გავდივარ','bd-b'],confirmed:['დადასტურდა','bd-g'],failed:['ვერ დავაბარე','bd-r']};
+const REPEAT_LBL={pending:['ჯგუფი დასანიშნია','bd-a'],in_progress:['მოდულს ხელახლა გავდივარ','bd-b'],confirmed:['დადასტურდა','bd-g'],failed:['ვერ დადასტურდა','bd-r']};
+const myReassessments=[
+  {id:'RA-1',moduleCode:'MOD-107',module:'ფარმაკოლოგია',outcomeNo:2,attemptNo:1,feePaid:false,scheduledOn:'25.04.2026',dueOn:'02.05.2026',status:'failed'},
+  {id:'RA-2',moduleCode:'MOD-107',module:'ფარმაკოლოგია',outcomeNo:2,attemptNo:2,feePaid:true,scheduledOn:'10.05.2026',dueOn:'17.05.2026',status:'in_progress'},
+];
+const myModuleRepeats=[];
+const reassessFee=n=>n>=2?REASSESS_FEE:0;
 const myModules=[
   {code:'MOD-101',regNo:'0910919',moduleId:'MR-1',intakeId:'INT-2',programId:'PRG-1',name:'ბიოქიმია',teacher:'ლია გოგიაშვილი',credits:4,startsOn:'10.02.2026',endsOn:'25.05.2026',
    present:22,absent:1,survey:true,surveyUrl:'https://forms.google.com/biochem-survey',
@@ -1144,6 +1155,25 @@ function showModuleModal(idx){
     <td style="font-size:11px">${o.on||'—'}</td>
     <td style="font-size:11px">${o.source?SOURCE_LBL[o.source]:'—'}</td>
     <td>${modResultBadge(o)}</td></tr>`).join('');
+  const ra=myReassessments.filter(x=>x.moduleCode===m.code);
+  const rp=myModuleRepeats.filter(x=>x.moduleCode===m.code);
+  const raBlock=ra.length?`<div style="margin-top:16px">
+      <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:6px">📝 გადაბარება — შეფასების საათების თავიდან გავლა</div>
+      <table style="font-size:12px"><thead><tr><th style="width:70px">ცდა</th><th style="width:80px">სწ. შედეგი</th><th style="width:130px">გადახდა</th><th style="width:110px">ვადა</th><th>შედეგი</th></tr></thead>
+      <tbody>${ra.map(x=>{const st=REASSESS_LBL[x.status]||[x.status,'bd-n'];const fee=reassessFee(x.attemptNo);
+        return `<tr><td style="text-align:center;font-weight:700">№${x.attemptNo}</td><td style="text-align:center">№${x.outcomeNo}</td>
+        <td><span class="bd ${fee?(x.feePaid?'bd-g':'bd-a'):'bd-g'}">${fee?(x.feePaid?`გადახდილი ₾${REASSESS_FEE}`:`გადაუხდელი ₾${REASSESS_FEE}`):'უფასო'}</span></td>
+        <td style="font-size:11px">${x.dueOn||'შეუზღუდავი'}</td><td><span class="bd ${st[1]}">${st[0]}</span></td></tr>`}).join('')}</tbody></table>
+      <div style="background:var(--blue-lt);border-radius:6px;padding:9px;font-size:11px;color:var(--text2);margin-top:8px">გადაბარებაზე თავიდან გაივლი <strong>მხოლოდ შეფასების საათებს</strong> — მოდულს თავიდან არ გადი და საკუთარ ჯგუფში რჩები.</div>
+    </div>`:'';
+  const rpBlock=rp.length?`<div style="margin-top:16px">
+      <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:6px">🔁 მოდულის ხელახლა გავლა სხვა ჯგუფთან</div>
+      <table style="font-size:12px"><thead><tr><th style="width:80px">სწ. შედეგი</th><th>ხელახლა გავდივარ ჯგუფთან</th><th>სტატუსი</th></tr></thead>
+      <tbody>${rp.map(x=>{const st=REPEAT_LBL[x.status]||[x.status,'bd-n'];
+        return `<tr><td style="text-align:center">№${x.outcomeNo}</td><td><strong style="color:var(--blue)">${x.repeatWithGroup||'ჯერ არ არის დანიშნული'}</strong></td>
+        <td><span class="bd ${st[1]}">${st[0]}</span></td></tr>`}).join('')}</tbody></table>
+      <div style="background:var(--amber-lt);border-radius:6px;padding:9px;font-size:11px;color:var(--text2);margin-top:8px">მოდულს თავიდან გადი <strong>სხვა ჯგუფთან ერთად</strong>, რადგან გადაბარებით ვერ დააბარე.</div>
+    </div>`:'';
   const surveyBtn=!m.survey?''
     :moduleFinished(m)
       ?`<div style="margin-top:16px;background:var(--blue-lt);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:13px;font-weight:600;color:var(--blue)">📊 მასწავლებლის შეფასება</div><a href="${m.surveyUrl}" target="_blank" class="btn btn-b btn-sm" onclick="event.stopPropagation()">შეფასებაზე გადასვლა ↗</a></div>`
@@ -1160,8 +1190,11 @@ function showModuleModal(idx){
     </div>
     <div style="font-size:12px;color:var(--text2);margin-bottom:10px">პროფესიული განათლების მასწავლებელი: <b>${m.teacher}</b></div>
     <table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>შედეგი</th></tr></thead><tbody>${rows}</tbody></table>
+    ${raBlock}${rpBlock}
     <div style="background:var(--blue-lt);border-radius:8px;padding:10px;font-size:12px;color:var(--text2);margin-top:12px">
-      კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>. 2 ცდა მოდულის დასრულებიდან 2 კვირაში; III ცდა ფასიანია, თუ მიზეზი არასაპატიოა. — [სპწ] 21.9–21.16</div>
+      კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>.
+      ვერ დაძლევისას ინიშნება <strong>📝 გადაბარება</strong> — თავიდან გაივლი <strong>მხოლოდ შეფასების საათებს</strong>, რომ ლექტორმა დაგიდასტუროს მოდული; საკუთარ ჯგუფში რჩები. I გადაბარება უფასოა, II ფასიანი.
+      თუ გადაბარებითაც ვერ დააბარებ და მოდული არ ჩაითვლება, მოდულს <strong>🔁 თავიდან გაივლი სხვა ჯგუფთან ერთად</strong>. — [სპწ] 21.9–21.16</div>
     ${surveyBtn}
   `,'<button class="btn btn-n" onclick="closeModal()">დახურვა</button><button class="btn btn-b" onclick="closeModal();toast(\'PDF ჩამოიტვირთა\',\'success\')">↓ PDF გადმოწერა</button>');
 }
