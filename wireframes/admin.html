@@ -243,12 +243,14 @@ textarea.fi{resize:vertical;min-height:80px}
       <button class="ni" onclick="go('programs',this,'საგანმანათლებლო პროგრამები')"><span class="ni-icon">🎯</span>პროგრამები</button>
       <button class="ni" onclick="go('registry',this,'მოდულების რეესტრი')"><span class="ni-icon">📗</span>მოდულების რეესტრი</button>
       <button class="ni" onclick="go('intakes',this,'მიღებები')"><span class="ni-icon">🗂️</span>მიღებები</button>
+      <button class="ni" onclick="go('partners',this,'პარტნიორი ორგანიზაციები')"><span class="ni-icon">🏥</span>პარტნიორი ორგანიზაციები</button>
       <button class="ni" onclick="go('schedule',this,'განრიგი')"><span class="ni-icon">📅</span>განრიგი</button>
 
       <div class="sb-section">სასწავლო პროცესი</div>
       <button class="ni" onclick="go('students',this,'პროფესიული სტუდენტები')"><span class="ni-icon">🎓</span>პროფესიული სტუდენტები</button>
       <button class="ni" onclick="go('teachers',this,'პროფესიული განათლების მასწავლებლები')"><span class="ni-icon">👨‍🏫</span>მასწავლებლები</button>
       <button class="ni" onclick="go('groups',this,'ჯგუფები')"><span class="ni-icon">👥</span>ჯგუფები</button>
+      <button class="ni" onclick="go('ejournal',this,'ელექტრონული ჟურნალი')"><span class="ni-icon">📋</span>ელექტრონული ჟურნალი</button>
       <button class="ni" onclick="go('grades',this,'სწავლის შედეგები')"><span class="ni-icon">🎯</span>სწავლის შედეგები</button>
 
       <div class="sb-section">ფინანსები და განაცხადები</div>
@@ -608,18 +610,17 @@ textarea.fi{resize:vertical;min-height:80px}
     </div>
     <div style="display:flex;gap:8px">
       <button class="btn btn-n btn-sm" onclick="exportLibrary()">⬇ Excel</button>
-      <button class="btn btn-b" onclick="addBookModal()">➕ წიგნის დამატება</button>
+      <a class="btn btn-o" href="https://lib.bmeda.edu.ge/catalog" target="_blank">🔗 ბეჭდური წიგნების კატალოგი ↗</a>
+      <button class="btn btn-b" onclick="addBookModal()">➕ ელ. დოკუმენტის დამატება</button>
     </div>
   </div>
-  <div style="display:flex;gap:8px;margin-bottom:16px">
-    <button class="chip active" id="lib-chip-all" onclick="filterLibraryType('all',this)">ყველა</button>
-    <button class="chip" id="lib-chip-printed" onclick="filterLibraryType('printed',this)">📚 ბეჭდური</button>
-    <button class="chip" id="lib-chip-digital" onclick="filterLibraryType('digital',this)">💻 ელექტრონული</button>
-  </div>
+  <div class="note" style="margin-bottom:16px">📚 <strong>ბეჭდური წიგნები</strong> სისტემაში ცალკე არ ემატება — ისინი უკვე არსებულ პლატფორმაზეა და მოიძებნება
+    <a href="https://lib.bmeda.edu.ge/catalog" target="_blank" style="color:var(--blue);font-weight:700">ბეჭდური წიგნების კატალოგში ↗</a>.
+    აქ იმართება მხოლოდ <strong>ელექტრონული დოკუმენტები</strong>, რომლებიც მიებმება სასწავლო მასალებს.</div>
   <div class="card">
     <div class="ch"><div class="ct">კატალოგი</div></div>
     <div class="tw"><table>
-      <thead><tr><th>ISBN</th><th>სათაური</th><th>ავტორი</th><th>კატეგორია</th><th>ასლები</th><th>ხელმისაწვდომი</th><th>ტიპი</th><th>მოქმედება</th></tr></thead>
+      <thead><tr><th style="width:110px">კოდი</th><th>სათაური</th><th style="width:170px">ავტორი</th><th style="width:190px">კატეგორია</th><th style="width:170px">მოდული</th><th style="width:90px">ბმული</th><th style="width:110px">მოქმედება</th></tr></thead>
       <tbody id="library-tbody"></tbody>
     </table></div>
   </div>
@@ -648,6 +649,41 @@ textarea.fi{resize:vertical;min-height:80px}
 </div>
 
 <!-- ══ CAREER ══ -->
+<!-- ══ ELECTRONIC JOURNAL (ADMIN — FULL ACCESS) ══ -->
+<div class="screen" id="screen-ejournal">
+  <div class="page-head">
+    <div><h2>ელექტრონული ჟურნალი</h2>
+      <div class="ph-sub">ადმინისტრატორს <strong>ყველა მოდულის</strong> ჟურნალზე სრული წვდომა აქვს — დასწრებისა და შეფასების შეტანა, შეცვლა და მოხსნა</div></div>
+    <button class="btn btn-n" onclick="toast('ჟურნალი Excel-ში ჩამოიტვირთა ✓','success')">⬇ ექსპორტი</button>
+  </div>
+  <div class="filter-card">
+    <div class="filter-row">
+      <select class="fi" id="ej-module" onchange="setEjModule(this.value)"></select>
+      <select class="fi" id="ej-kind" onchange="setEjKind(this.value)">
+        <option value="">სახეობა: ყველა</option><option value="lecture">მეცადინეობა</option><option value="assessment">შეფასება</option>
+      </select>
+      <span class="filter-hint" id="ej-hint"></span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">საათების ჩამონათვალი <span id="ej-count" style="font-size:12px;font-weight:400;color:var(--text3)"></span></div></div>
+    <div class="tw"><table>
+      <thead><tr><th style="width:70px">კვირა</th><th style="width:130px">სახეობა</th><th>საათი</th><th style="width:120px">დასწრება</th><th style="width:130px">შეფასება</th><th style="width:130px"></th></tr></thead>
+      <tbody id="ej-tbody"></tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ══ PARTNER ORGANISATIONS ══ -->
+<div class="screen" id="screen-partners">
+  <div class="page-head">
+    <div><h2>პარტნიორი ორგანიზაციები</h2>
+      <div class="ph-sub">კლინიკები და სააფთიაქო ქსელი — <strong>აუდიტორიები არ არის</strong>, აქ მხოლოდ პრაქტიკული მეცადინეობა ტარდება. ორგანიზაციაში ემატება მასწავლებლები, რომლებიც პრაქტიკას ხელმძღვანელობენ.</div></div>
+    <button class="btn btn-b" onclick="addPartnerModal()">➕ ორგანიზაციის დამატება</button>
+  </div>
+  <div class="grid-3" id="partners-grid"></div>
+</div>
+
 <!-- ══ CLUBS ══ -->
 <div class="screen" id="screen-clubs">
   <div class="page-head">
@@ -705,7 +741,7 @@ textarea.fi{resize:vertical;min-height:80px}
   <div class="card">
     <div class="ch"><div class="ct">მოდულები <span id="reg-count" style="font-size:12px;font-weight:400;color:var(--text3)"></span></div></div>
     <div class="tw"><table>
-      <thead><tr><th style="width:90px">ID</th><th>დასახელება</th><th style="width:150px">გამოყენება</th><th style="width:120px">მოქმედება</th></tr></thead>
+      <thead><tr><th style="width:90px">ID</th><th>დასახელება</th><th style="width:190px">ტიპი</th><th style="width:150px">გამოყენება</th><th style="width:120px">მოქმედება</th></tr></thead>
       <tbody id="registry-tbody"></tbody>
     </table></div>
   </div>
@@ -1057,6 +1093,30 @@ const partnersData=[
   {id:'PO-2',name:'აჭარის სამედიცინო ცენტრი',agreementNo:'თ-19/2025',agreementDate:'22.09.2025',kind:'cooperative',active:true},
   {id:'PO-3',name:'აფთიაქი „ავერსი" — ბათუმი',agreementNo:'თ-23/2025',agreementDate:'01.10.2025',kind:'cooperative',active:true},
 ];
+// პარტნიორი ორგანიზაციის მასწავლებლები — პრაქტიკას ხელმძღვანელობენ ორგანიზაციაში
+let poTeacherSeq=6;
+const partnerTeachers=[
+  {id:'PT-1',partnerId:'PO-1',name:'დავით ხარაბაძე',spec:'ზოგადი ქირურგია',phone:'+995 555 201 001',active:true},
+  {id:'PT-2',partnerId:'PO-1',name:'ქეთევან ნაკაშიძე',spec:'თერაპია',phone:'+995 555 201 002',active:true},
+  {id:'PT-3',partnerId:'PO-2',name:'ირაკლი ბერიძე',spec:'რეანიმაცია',phone:'+995 555 202 001',active:true},
+  {id:'PT-4',partnerId:'PO-2',name:'თამარ დევაძე',spec:'პედიატრია',phone:'+995 555 202 002',active:true},
+  {id:'PT-5',partnerId:'PO-3',name:'ნათია ცინცაძე',spec:'ფარმაცია',phone:'+995 555 203 001',active:true},
+  {id:'PT-6',partnerId:'PO-3',name:'ლევან მგელაძე',spec:'სააფთიაქო საქმე',phone:'+995 555 203 002',active:true},
+];
+const poTeachers=id=>partnerTeachers.filter(x=>x.partnerId===id);
+const partnerName=id=>(partnersData.find(x=>x.id===id)||{}).name||'—';
+const ptName=id=>(partnerTeachers.find(x=>x.id===id)||{}).name||'—';
+const PARTNER_KIND_LBL={dual:'დუალური',cooperative:'კოოპერაციული'};
+// პრაქტიკული მოდულის განაწილება: სტუდენტი → პარტნიორი ორგანიზაცია + ამავე ორგანიზაციის მასწავლებელი
+let ppSeq=4;
+const practicePlacements=[
+  {id:'PP-1',imId:'IM-3',studentId:'BMA-2401',partnerId:'PO-1',partnerTeacherId:'PT-1'},
+  {id:'PP-2',imId:'IM-3',studentId:'BMA-2402',partnerId:'PO-1',partnerTeacherId:'PT-2'},
+  {id:'PP-3',imId:'IM-3',studentId:'BMA-2403',partnerId:'PO-2',partnerTeacherId:'PT-3'},
+  {id:'PP-4',imId:'IM-12',studentId:'BMA-2301',partnerId:'PO-2',partnerTeacherId:'PT-4'},
+];
+const imPlacements=imId=>practicePlacements.filter(x=>x.imId===imId);
+const ppOf=(imId,studentId)=>practicePlacements.find(x=>x.imId===imId&&x.studentId===studentId);
 // ── PEOPLE ──
 // სტატუსი (§1.13): applicant | active | suspended | terminated — მხოლოდ ბრძანებით
 const students=[
@@ -1104,19 +1164,24 @@ const moduleTemplates=[
   {id:'MT-5',regNo:'0910905',title:'მიკრობიოლოგია',titleEn:'Microbiology',credits:4,kind:'theoretical',kindLabel:'საბაზო მეცნიერებები',prerequisite:null,revisions:'21.05.2018',orderId:'ORD-4',outcomes:5,contactH:64,selfH:12,assessH:10,programs:['PRG-1','PRG-2','PRG-3']},
 ];
 // ══ მოდულის რეესტრი — მოდულს მხოლოდ დასახელება აქვს ══
+// მოდულის ტიპი: theoretical — ლექტორი ეთითება ცხრილში; practical — ჯგუფი იშლება, სტუდენტი
+// ნაწილდება პარტნიორ ორგანიზაციებში (კლინიკებში) და ლექტორი ეთითება თითოეულ სტუდენტზე
+const MODULE_TYPE_LBL={theoretical:['თეორიული','bd-p'],practical:['პრაქტიკული მეცადინეობა','bd-a']};
 const moduleRegistry=[
-  {id:'MR-1',title:'ბიოქიმია'},
-  {id:'MR-2',title:'შინმოვლა'},
-  {id:'MR-3',title:'ფარმაკოლოგია'},
-  {id:'MR-4',title:'კლინიკური პრაქტიკა'},
-  {id:'MR-5',title:'მიკრობიოლოგია'},
-  {id:'MR-6',title:'ანატომია და ფიზიოლოგია'},
-  {id:'MR-7',title:'ინფექციის კონტროლი'},
-  {id:'MR-8',title:'პირველადი გადაუდებელი დახმარება'},
-  {id:'MR-9',title:'ინტერპერსონალური კომუნიკაცია'},
+  {id:'MR-1',title:'ბიოქიმია',type:'theoretical'},
+  {id:'MR-2',title:'შინმოვლა',type:'theoretical'},
+  {id:'MR-3',title:'ფარმაკოლოგია',type:'theoretical'},
+  {id:'MR-4',title:'კლინიკური პრაქტიკა',type:'practical'},
+  {id:'MR-5',title:'მიკრობიოლოგია',type:'theoretical'},
+  {id:'MR-6',title:'ანატომია და ფიზიოლოგია',type:'theoretical'},
+  {id:'MR-7',title:'ინფექციის კონტროლი',type:'theoretical'},
+  {id:'MR-8',title:'პირველადი გადაუდებელი დახმარება',type:'theoretical'},
+  {id:'MR-9',title:'ინტერპერსონალური კომუნიკაცია',type:'theoretical'},
 ];
 let mrSeq=9;
 const regName=id=>(moduleRegistry.find(x=>x.id===id)||{}).title||'—';
+const regType=id=>(moduleRegistry.find(x=>x.id===id)||{}).type||'theoretical';
+const isPractical=id=>regType(id)==='practical';
 // ══ მიღება → პროგრამა (პროგრამა ემატება წინასწარ განსაზღვრული ჩამონათვალიდან) ══
 const intakePrograms=[
   {id:'IP-1',intakeId:'INT-2',programId:'PRG-1'},
@@ -1260,6 +1325,17 @@ let iwSeq=109;
 const ipsOf=intakeId=>intakePrograms.filter(x=>x.intakeId===intakeId);
 const ipOf=(intakeId,programId)=>intakePrograms.find(x=>x.intakeId===intakeId&&x.programId===programId);
 const ipModules=ipId=>intakeModules.filter(x=>x.ipId===ipId);
+// წინაპირობა: prereqImId → მოდული, რომლის დაძლევის გარეშე dependentImId ვერ გაივლის
+let prSeq=2;
+const modulePrereqs=[
+  {id:'PR-1',prereqImId:'IM-1',dependentImId:'IM-3'},
+  {id:'PR-2',prereqImId:'IM-2',dependentImId:'IM-3'},
+];
+const prereqsOf=imId=>modulePrereqs.filter(x=>x.dependentImId===imId);
+const dependentsOf=imId=>modulePrereqs.filter(x=>x.prereqImId===imId);
+// მოდული სხვა მოდულის წინაპირობაა → გადაბარება 1 კვირაში; თუ არაფრის წინაპირობა არ არის — ნებისმიერ დროს
+const isPrereq=imId=>dependentsOf(imId).length>0;
+const RETAKE_DEADLINE_WEEKS=1;
 const imWeeks=imId=>intakeModuleWeeks.filter(x=>x.imId===imId).sort((a,b)=>a.week-b.week);
 const imTotals=imId=>imWeeks(imId).reduce((a,x)=>({contactH:a.contactH+x.contactH,selfH:a.selfH+x.selfH,assessH:a.assessH+x.assessH}),{contactH:0,selfH:0,assessH:0});
 const imSum=imId=>{const t=imTotals(imId);return t.contactH+t.selfH+t.assessH};
@@ -1355,14 +1431,25 @@ const modWeeks=code=>{const im=modIm(code);return im?imWeeks(im.id):[]};
 const modWeekTotals=code=>{const im=modIm(code);return im?imTotals(im.id):{contactH:0,selfH:0,assessH:0}};
 const modHours=code=>{const t=modWeekTotals(code);return t.contactH+t.selfH+t.assessH};
 // ── ხელახალი გავლა: მოდულის ვერ დაძლევა → სხვა ჯგუფთან ერთად ──
+let rtSeq=2;
 const retakesData=[
-  {id:'RT-1',studentId:'BMA-2402',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,
-   failedInGroupId:'GRP-101',retakeWithGroupId:'GRP-102',retakeModuleCode:'MOD-107',
-   orderId:'ORD-8',decidedOn:'20.05.2026',status:'in_progress'},
-  {id:'RT-2',studentId:'BMA-2303',moduleCode:'MOD-104',module:'კლინიკური პრაქტიკა',outcomeNo:1,
-   failedInGroupId:'GRP-201',retakeWithGroupId:null,retakeModuleCode:null,
-   orderId:null,decidedOn:null,status:'pending'},
+  {id:'RT-1',studentId:'BMA-2402',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,imId:'IM-1',
+   failedInGroupId:'GRP-101',retakeWithGroupId:'GRP-102',retakeModuleCode:'MOD-107',attemptNo:1,feePaid:false,
+   orderId:'ORD-8',decidedOn:'20.05.2026',dueOn:'27.05.2026',status:'in_progress'},
+  {id:'RT-2',studentId:'BMA-2303',moduleCode:'MOD-104',module:'კლინიკური პრაქტიკა',outcomeNo:1,imId:'IM-12',
+   failedInGroupId:'GRP-201',retakeWithGroupId:null,retakeModuleCode:null,attemptNo:1,feePaid:false,
+   orderId:null,decidedOn:null,dueOn:null,status:'pending'},
 ];
+// სტუდენტი ჩანს გადაბარების ჯგუფშიც — რეალურად რჩება საკუთარ ჯგუფში
+const retakesInGroup=gid=>retakesData.filter(r=>r.retakeWithGroupId===gid&&r.status==='in_progress');
+const studentRetakes=sid=>retakesData.filter(r=>r.studentId===sid);
+const imOfModuleCode=code=>{const m=modulesData.find(x=>x.code===code);if(!m)return null;
+  const ip=ipOf(m.intakeId,m.programId); if(!ip)return null;
+  return intakeModules.find(x=>x.ipId===ip.id&&x.moduleId===m.moduleId)||null;};
+const RETAKE_FEE=120; // ლარი — მეორე გადაბარება ფასიანია
+// გადაბარების ნომერი: 1 — უფასო, 2 და ზემოთ — ფასიანი
+const retakeFee=n=>n>=2?RETAKE_FEE:0;
+const retakeFeeLbl=n=>n>=2?`ფასიანი — ₾${RETAKE_FEE}`:'უფასო';
 const RETAKE_LBL={pending:['ჯგუფი დასანიშნია','bd-a'],in_progress:['ხელახლა გადის','bd-b'],confirmed:['დადასტურდა','bd-g'],failed:['ვერ დადასტურდა','bd-r']};
 // ── ASSESSMENT SPINE (§1.8) — ბინარული: confirmed | not_confirmed ──
 const outcomeResults=[
@@ -1423,12 +1510,11 @@ const appsData=[
   {id:'APP-006',studentId:'BMA-2202',name:'ეკა თავდგირიძე',type:'ცნობა',desc:'ცნობა პროფესიული სტუდენტის სტატუსის შესახებ',date:'28.06.2026',status:'approved'},
   {id:'APP-007',studentId:'BMA-2201',name:'ვახო ლომიძე',type:'აღდგენა',desc:'სტატუსის აღდგენა შეჩერების ვადის ამოწურვამდე',date:'20.06.2026',status:'rejected'},
 ];
+// ბეჭდური წიგნები ცალკე აღარ ემატება — ისინი უკვე არსებულ პლატფორმაზეა და ბმულით მოიძებნება
+const PRINTED_CATALOG_URL='https://lib.bmeda.edu.ge/catalog';
 const libraryData=[
-  {isbn:'978-9941-28-001-2',title:'ბიოქიმია — სახელმძღვანელო',author:'გ. სინაური',cat:'საბაზო მეცნიერებები',moduleCode:'MOD-101',copies:12,avail:5,type:'printed',url:''},
-  {isbn:'978-9941-28-002-9',title:'შინმოვლის საფუძვლები',author:'ნ. გელაშვილი',cat:'პრაქტიკული',moduleCode:'MOD-102',copies:10,avail:3,type:'printed',url:''},
-  {isbn:'PDF-001',title:'ფარმაკოლოგია — ელექტრონული კურსი',author:'მ. ლომთაძე',cat:'საბაზო მეცნიერებები',moduleCode:'MOD-103',copies:0,avail:0,type:'digital',url:'https://lib.bmeda.edu.ge/pharm'},
-  {isbn:'978-9941-28-004-3',title:'მიკრობიოლოგია',author:'ნ. ჯაფარიძე',cat:'საბაზო მეცნიერებები',moduleCode:'MOD-105',copies:8,avail:8,type:'printed',url:''},
-  {isbn:'PDF-002',title:'კლინიკური პრაქტიკის გზამკვლევი',author:'ზ. ქობულია',cat:'პრაქტიკული',moduleCode:'MOD-104',copies:0,avail:0,type:'digital',url:'https://lib.bmeda.edu.ge/clinical'},
+  {isbn:'PDF-001',title:'ფარმაკოლოგია — ელექტრონული კურსი',author:'მ. ლომთაძე',cat:'საბაზო მეცნიერებები',moduleCode:'MOD-103',type:'digital',url:'https://lib.bmeda.edu.ge/pharm'},
+  {isbn:'PDF-002',title:'კლინიკური პრაქტიკის გზამკვლევი',author:'ზ. ქობულია',cat:'პრაქტიკული',moduleCode:'MOD-104',type:'digital',url:'https://lib.bmeda.edu.ge/clinical'},
 ];
 const newsAdminData=[
   {id:'NEWS-001',title:'ბათუმის სამედიცინო აკადემიის 16 წლის იუბილე',tag:'ღონისძიება',date:'15.05.2026',status:'published',views:1240},
@@ -1666,7 +1752,8 @@ const spAt=(week,day,slot,venueId)=>schedPlacements.find(x=>x.week===week&&x.day
 const spPlaced=(week,groupId,imId)=>schedPlacements.filter(x=>x.week===week&&x.groupId===groupId&&x.imId===imId).length;
 const groupBusy=(week,day,slot,groupId)=>schedPlacements.some(x=>x.week===week&&x.day===day&&x.slot===slot&&x.groupId===groupId);
 const teacherBusy=(week,day,slot,teacherId)=>!!teacherId&&schedPlacements.some(x=>x.week===week&&x.day===day&&x.slot===slot&&(intakeModules.find(m=>m.id===x.imId)||{}).teacherId===teacherId);
-const imTeacher=imId=>teacherName((intakeModules.find(x=>x.id===imId)||{}).teacherId);
+const imTeacher=imId=>{const im=intakeModules.find(x=>x.id===imId)||{};
+  return isPractical(im.moduleId)?'პრაქტიკა — კლინიკებში':teacherName(im.teacherId);};
 function renderSchedule(){
   const wsel=document.getElementById('sched-week');
   if(!wsel)return;
@@ -1752,8 +1839,8 @@ function placeHere(day,slot,venueId){
   if(!schedPick){toast('პირველ რიგში აირჩიეთ საათი','info');return;}
   if(spAt(schedWeek,day,slot,venueId)){toast('აუდიტორია ამ საათზე დაკავებულია','error');return;}
   if(groupBusy(schedWeek,day,slot,schedPick.groupId)){toast('ამ საათზე ჯგუფს უკვე აქვს მეცადინეობა','error');return;}
-  const tid=(intakeModules.find(x=>x.id===schedPick.imId)||{}).teacherId;
-  if(teacherBusy(schedWeek,day,slot,tid)){toast('ლექტორს ამ საათზე უკვე აქვს მეცადინეობა','error');return;}
+  const pim=intakeModules.find(x=>x.id===schedPick.imId)||{};
+  if(!isPractical(pim.moduleId)&&teacherBusy(schedWeek,day,slot,pim.teacherId)){toast('ლექტორს ამ საათზე უკვე აქვს მეცადინეობა','error');return;}
   const d=schedDemand(schedWeek).find(x=>x.groupId===schedPick.groupId&&x.imId===schedPick.imId);
   if(d&&spPlaced(schedWeek,schedPick.groupId,schedPick.imId)>=d.need){toast('ამ მოდულის ყველა საათი გაწერილია','error');return;}
   schedPlacements.push({id:'SP-'+(++spSeq),week:schedWeek,day,slot,venueId,groupId:schedPick.groupId,imId:schedPick.imId});
@@ -1771,7 +1858,8 @@ function autoFillWeek(){
   let placed=0, skipped=0;
   dem.forEach(d=>{
     let left=d.need-spPlaced(schedWeek,d.groupId,d.imId);
-    const tid=(intakeModules.find(x=>x.id===d.imId)||{}).teacherId;
+    const dim=intakeModules.find(x=>x.id===d.imId)||{};
+    const tid=isPractical(dim.moduleId)?null:dim.teacherId;
     const vens=activeVenues();
     for(let day=1;day<=5&&left>0;day++)
       for(let slot=1;slot<=slotTemplates.length&&left>0;slot++){
@@ -1842,32 +1930,29 @@ function filterApps(f,el){
   renderApps(f);
 }
 
-let libTypeFilter='all', libCatFilter='', libSearchQ='';
+let libCatFilter='', libSearchQ='';
 function renderLibrary(list){
   const tb=document.getElementById('library-tbody');
   if(!tb)return;
   if(!list)list=libraryData;
-  tb.innerHTML=list.map(b=>`<tr>
+  tb.innerHTML=list.length?list.map(b=>`<tr>
     <td style="font-size:11px;color:var(--text3)">${b.isbn}</td>
-    <td><strong>${b.title}</strong>${b.url?` <a href="${b.url}" target="_blank" style="font-size:10px;color:var(--blue)">↗</a>`:''}</td>
-    <td>${b.author}</td>
+    <td><strong>${b.title}</strong></td>
+    <td style="font-size:12px">${b.author}</td>
     <td><span class="bd bd-n">${b.cat}</span></td>
-    <td style="text-align:center">${b.type==='digital'?'∞':b.copies}</td>
-    <td style="text-align:center">${b.type==='digital'?'<span class="bd bd-g">ყოველთვის</span>':`<span class="bd ${b.avail>0?'bd-g':'bd-r'}">${b.avail}</span>`}</td>
-    <td>${b.type==='digital'?'<span class="bd bd-p">💻 ელ.</span>':'<span class="bd bd-b">📚 ბეჭ.</span>'}</td>
+    <td style="font-size:11px">${b.moduleCode?`${b.moduleCode} · ${(modulesData.find(m=>m.code===b.moduleCode)||{}).name||''}`:'<span style="color:var(--text3)">—</span>'}</td>
+    <td>${b.url?`<a href="${b.url}" target="_blank" class="bd bd-b" style="text-decoration:none">გახსნა ↗</a>`:'<span style="color:var(--text3)">—</span>'}</td>
     <td style="white-space:nowrap">
       <button class="btn btn-xs btn-ghost" onclick="editBookModal('${b.isbn}')">✏</button>
       <button class="btn btn-xs btn-r" onclick="removeBook('${b.isbn}')">✕</button>
-    </td></tr>`).join('');
+    </td></tr>`).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:24px">ელექტრონული დოკუმენტი არ არის</td></tr>';
 }
 function applyLibFilters(){
   let list=libraryData;
-  if(libTypeFilter!=='all') list=list.filter(b=>b.type===libTypeFilter);
   if(libCatFilter) list=list.filter(b=>b.cat===libCatFilter);
   if(libSearchQ) list=list.filter(b=>b.title.includes(libSearchQ)||b.author.includes(libSearchQ)||b.isbn.includes(libSearchQ));
   renderLibrary(list);
 }
-function filterLibraryType(t,el){libTypeFilter=t;document.querySelectorAll('.chip[id^="lib-chip"]').forEach(c=>c.classList.remove('active'));if(el)el.classList.add('active');applyLibFilters();}
 function filterLibraryCat(v){libCatFilter=v;applyLibFilters();}
 function filterLibrary(q){libSearchQ=q;applyLibFilters();}
 
@@ -1943,6 +2028,7 @@ function renderCareerAdmin(){
 
 // ── სწავლის შედეგები (§1.8) — ბინარული, ქულის გარეშე ──
 let outF={prog:'',group:'',mod:'',res:''};
+const stuName=id=>(students.find(x=>x.id===id)||{}).name||id;
 function stuGroupOf(sid){const st=students.find(x=>x.id===sid);return st?st.group:'—'}
 function stuProgOf(sid){const st=students.find(x=>x.id===sid);return st?st.programId:''}
 function buildOutFilters(){
@@ -2419,6 +2505,392 @@ function removeClubEvent(id,clubId){
   if(i>-1)clubEvents.splice(i,1);
   renderClubs();viewClub(clubId);toast('ღონისძიება წაშლილია','warn');
 }
+// ══════════ წინაპირობები ══════════
+function addPrereq(ipId){
+  const mods=ipModules(ipId);
+  showModal('წინაპირობის დამატება',
+    `<div class="fg"><label class="fl">მოდული (რომელსაც წინაპირობა ესაჭიროება)</label>
+       <select class="fi" id="pr-dep">${mods.map(m=>`<option value="${m.id}">${regName(m.moduleId)}</option>`).join('')}</select></div>
+     <div class="fg"><label class="fl">წინაპირობა (რომელიც უნდა დაძლიოს ადრე)</label>
+       <select class="fi" id="pr-pre">${mods.map(m=>`<option value="${m.id}">${regName(m.moduleId)}</option>`).join('')}</select></div>
+     <div class="note">წინაპირობის ვერ დაძლევის შემთხვევაში სტუდენტი <strong>მომდევნო სემესტრში დამოკიდებულ მოდულს ვერ გაივლის</strong>.</div>`,
+    `<button class="btn btn-n" onclick="viewIntakeProgram('${ipId}')">უკან</button><button class="btn btn-b" onclick="savePrereq('${ipId}')">✓ დამატება</button>`,'lg');
+}
+function savePrereq(ipId){
+  const dep=document.getElementById('pr-dep').value, pre=document.getElementById('pr-pre').value;
+  if(dep===pre){toast('მოდული საკუთარი თავის წინაპირობა ვერ იქნება','error');return;}
+  if(modulePrereqs.some(x=>x.dependentImId===dep&&x.prereqImId===pre)){toast('ეს წინაპირობა უკვე განსაზღვრულია','error');return;}
+  if(modulePrereqs.some(x=>x.dependentImId===pre&&x.prereqImId===dep)){toast('ციკლური წინაპირობა დაუშვებელია','error');return;}
+  modulePrereqs.push({id:'PR-'+(++prSeq),prereqImId:pre,dependentImId:dep});
+  viewIntakeProgram(ipId);toast('წინაპირობა დამატებულია ✓','success');
+}
+function removePrereq(id,ipId){
+  const i=modulePrereqs.findIndex(x=>x.id===id);
+  if(i>-1)modulePrereqs.splice(i,1);
+  viewIntakeProgram(ipId);toast('წინაპირობა წაშლილია','warn');
+}
+// ══════════ გადაბარება: I უფასო · II ფასიანი · წინაპირობაზე 1 კვირა ══════════
+function openRetakeFor(outcomeId){
+  const o=outcomeResults.find(x=>x.id===outcomeId);if(!o)return;
+  let r=retakesData.find(x=>x.studentId===o.studentId&&x.moduleCode===o.moduleCode&&x.outcomeNo===o.outcomeNo);
+  if(!r){
+    const im=imOfModuleCode(o.moduleCode);
+    const prev=retakesData.filter(x=>x.studentId===o.studentId&&x.moduleCode===o.moduleCode).length;
+    r={id:'RT-'+(++rtSeq),studentId:o.studentId,moduleCode:o.moduleCode,module:o.module,outcomeNo:o.outcomeNo,
+       imId:im?im.id:null,failedInGroupId:(groupsData.find(g=>g.name===stuGroupOf(o.studentId))||{}).id||null,
+       retakeWithGroupId:null,retakeModuleCode:null,attemptNo:prev+1,feePaid:false,
+       orderId:null,decidedOn:null,dueOn:null,status:'pending'};
+    retakesData.push(r);
+  }
+  retakePage(r.id);
+}
+function retakePage(rid){
+  const r=retakesData.find(x=>x.id===rid);if(!r)return;
+  const st=RETAKE_LBL[r.status]||[r.status,'bd-n'];
+  const im=r.imId?intakeModules.find(x=>x.id===r.imId):null;
+  const prereq=im?isPrereq(im.id):false;
+  const deps=im?dependentsOf(im.id):[];
+  const fee=retakeFee(r.attemptNo);
+  const homeGroup=r.failedInGroupId?groupName(r.failedInGroupId):stuGroupOf(r.studentId);
+  const cand=groupsData.filter(g=>g.active&&g.id!==r.failedInGroupId);
+  showModal(`ხელახალი გავლა — ${r.module}`,`
+    <div class="dhead"><div><div class="dhead-name">${stuName(r.studentId)}</div>
+      <div class="dhead-meta">${r.studentId} · ${r.module} · სწავლის შედეგი №${r.outcomeNo}</div></div>
+      <span class="bd ${st[1]}">${st[0]}</span></div>
+    <div class="chips">
+      <span class="bd bd-n">გადაბარება №${r.attemptNo}</span>
+      <span class="bd ${fee?'bd-a':'bd-g'}">${retakeFeeLbl(r.attemptNo)}</span>
+      ${prereq?`<span class="bd bd-r">წინაპირობაა — ვადა ${RETAKE_DEADLINE_WEEKS} კვირა</span>`
+              :'<span class="bd bd-b">არაფრის წინაპირობა არ არის — ვადა შეუზღუდავი</span>'}
+    </div>
+    <div class="note ${fee?'note-a':''}">
+      ${r.attemptNo===1?'<strong>პირველი გადაბარება უფასოა.</strong> მეორე გადაბარება ფასიანია.'
+        :`<strong>მეორე (ან შემდგომი) გადაბარება ფასიანია — ₾${RETAKE_FEE}.</strong> ${r.feePaid?'✓ გადახდილია.':'გადახდა ჯერ არ არის დადასტურებული.'}`}
+    </div>
+    ${prereq?`<div class="note note-a">⚠ მოდული <strong>${deps.map(d=>regName((intakeModules.find(m=>m.id===d.dependentImId)||{}).moduleId)).join(', ')}</strong>-ის წინაპირობაა — დადასტურება უნდა მოხდეს <strong>${RETAKE_DEADLINE_WEEKS} კვირაში</strong>, თორემ სტუდენტი მომდევნო სემესტრში დამოკიდებულ მოდულს ვერ გაივლის.</div>`
+      :'<div class="note">მოდული არაფრის წინაპირობა არ არის — სტუდენტს <strong>ნებისმიერ დროს</strong> შეუძლია ხელახლა დადასტურება.</div>'}
+    <div class="f3">
+      <div><label class="fl">საკუთარი ჯგუფი</label><div class="fv">${homeGroup}</div></div>
+      <div><label class="fl">გადაბარების ვადა</label><div class="fv">${r.dueOn||(prereq?'ჯერ არ არის დაწყებული':'შეუზღუდავი')}</div></div>
+      <div><label class="fl">ბრძანება</label><div class="fv">${r.orderId?orderRef(r.orderId):'—'}</div></div>
+    </div>
+    <div class="fg"><label class="fl">ჯგუფი, რომელთან ერთად გაივლის მოდულს ხელახლა</label>
+      <select class="fi" id="rt-group">
+        <option value="">— ჯგუფი ასარჩევია —</option>
+        ${cand.map(g=>`<option value="${g.id}" ${r.retakeWithGroupId===g.id?'selected':''}>${g.name} · ${progName(g.programId)}</option>`).join('')}
+      </select></div>
+    <div class="fg"><label class="fl">ბრძანება</label>
+      <select class="fi" id="rt-order"><option value="">— ბრძანება ასარჩევია —</option>
+        ${ordersData.map(o=>`<option value="${o.id}" ${r.orderId===o.id?'selected':''}>№${o.no} · ${o.date} — ${o.subject.substring(0,44)}</option>`).join('')}</select></div>
+    ${fee?`<div class="fg"><label class="fl">გადახდა (₾${RETAKE_FEE})</label>
+      <select class="fi" id="rt-fee"><option value="0" ${!r.feePaid?'selected':''}>ჯერ არ არის გადახდილი</option><option value="1" ${r.feePaid?'selected':''}>გადახდილია</option></select></div>`:''}
+    <div class="note">სტუდენტი გამოჩნდება <strong>არჩეულ ჯგუფშიც</strong> — ნიშნულით „ხელახლა გადის"; რეალურად რჩება <strong>${homeGroup}</strong>-ის სტუდენტად.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">უკან</button>
+     <button class="btn btn-b" onclick="saveRetake('${rid}')">💾 შენახვა</button>`,'xl');
+}
+function saveRetake(rid){
+  const r=retakesData.find(x=>x.id===rid);if(!r)return;
+  const gid=document.getElementById('rt-group').value, oid=document.getElementById('rt-order').value;
+  const feeSel=document.getElementById('rt-fee');
+  const fee=retakeFee(r.attemptNo);
+  if(!gid){toast('აირჩიეთ ჯგუფი, რომელთან ერთად გაივლის მოდულს','error');return;}
+  if(!oid){toast('ხელახალი გავლა ფორმდება ბრძანებით — აირჩიეთ ბრძანება','error');return;}
+  if(feeSel)r.feePaid=feeSel.value==='1';
+  if(fee&&!r.feePaid){toast(`მეორე გადაბარება ფასიანია — ₾${RETAKE_FEE} გადახდა უნდა დადასტურდეს`,'error');return;}
+  r.retakeWithGroupId=gid; r.orderId=oid; r.status='in_progress';
+  r.decidedOn=TODAY;
+  const im=r.imId?intakeModules.find(x=>x.id===r.imId):null;
+  r.dueOn=(im&&isPrereq(im.id))?addWeeks(TODAY,RETAKE_DEADLINE_WEEKS):null;
+  renderOutcomes();renderGroups();closeModal();
+  toast(`ხელახალი გავლა დაფიქსირდა — ${groupName(gid)}${r.dueOn?' · ვადა '+r.dueOn:''} ✓`,'success');
+}
+// ══════════ ელექტრონული ჟურნალი — ადმინისტრატორი (სრული უფლებები) ══════════
+const EJ_KIND_LBL={lecture:['მეცადინეობა','bd-b'],assessment:['შეფასება','bd-a']};
+const ejAtt={}, ejOut={};
+let ejModule='', ejKind='';
+// საათები გენერირდება მოდულის კვირეული განაწილებიდან: საკონტაქტო → მეცადინეობა, შეფასება → შეფასების საათი
+function ejSessions(code){
+  const im=modIm(code); if(!im)return [];
+  const out=[];
+  imWeeks(im.id).forEach(w=>{
+    for(let k=1;k<=Math.round(w.contactH);k++)out.push({id:`${code}-W${w.week}-L${k}`,week:w.week,kind:'lecture',no:k,total:Math.round(w.contactH)});
+    for(let k=1;k<=Math.round(w.assessH);k++)out.push({id:`${code}-W${w.week}-A${k}`,week:w.week,kind:'assessment',no:k,total:Math.round(w.assessH)});
+  });
+  return out;
+}
+const ejStudents=code=>{const m=modulesData.find(x=>x.code===code);if(!m)return [];
+  const g=groupsData.find(x=>x.id===m.groupId);
+  return g?students.filter(x=>x.group===g.name&&x.status==='active'):[];};
+const ejA=sid=>ejAtt[sid]||(ejAtt[sid]={});
+const ejO=sid=>ejOut[sid]||(ejOut[sid]={});
+const ejAttDone=(sid,code)=>ejStudents(code).filter(s=>ejA(sid)[s.id]).length;
+const ejOutDone=(sid,code)=>ejStudents(code).filter(s=>ejO(sid)[s.id]).length;
+function renderEjournal(){
+  const sel=document.getElementById('ej-module');
+  if(!sel)return;
+  sel.innerHTML=modulesData.map(m=>`<option value="${m.code}" ${m.code===ejModule?'selected':''}>${m.code} · ${m.name} — ${groupName(m.groupId)}</option>`).join('');
+  if(!ejModule&&modulesData.length){ejModule=modulesData[0].code;sel.value=ejModule;}
+  const code=ejModule;
+  const tb=document.getElementById('ej-tbody'); if(!tb)return;
+  let list=ejSessions(code);
+  if(ejKind)list=list.filter(x=>x.kind===ejKind);
+  const n=ejStudents(code).length;
+  const c=document.getElementById('ej-count'); if(c)c.textContent=`${list.length} საათი · ${n} სტუდენტი`;
+  const h=document.getElementById('ej-hint');
+  if(h)h.textContent=modIm(code)?'':'ამ მოდულს საათები ჯერ არ აქვს გაწერილი';
+  tb.innerHTML=list.length?list.map(x=>{
+    const k=EJ_KIND_LBL[x.kind], af=ejAttDone(x.id,code), of=ejOutDone(x.id,code);
+    return `<tr>
+      <td style="text-align:center;font-weight:700;color:var(--blue)">${x.week}</td>
+      <td><span class="bd ${k[1]}">${k[0]}</span></td>
+      <td style="font-size:12px">${x.kind==='lecture'?'მეცადინეობა':'შეფასების საათი'} ${x.no}/${x.total}<div style="font-size:10px;color:var(--text3)">${x.id}</div></td>
+      <td style="text-align:center"><span class="bd ${af===n&&n?'bd-g':af?'bd-a':'bd-n'}">${af}/${n}</span></td>
+      <td style="text-align:center">${x.kind==='assessment'?`<span class="bd ${of===n&&n?'bd-g':of?'bd-a':'bd-n'}">${of}/${n}</span>`:'<span style="color:var(--text3);font-size:11px">—</span>'}</td>
+      <td><button class="btn btn-xs btn-o" onclick="ejSessionPage('${code}','${x.id}')">გახსნა →</button></td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px">ამ მოდულს საათები ჯერ არ აქვს გაწერილი — განაწილება იწერება მენიუში „მიღებები"</td></tr>';
+}
+function setEjModule(v){ejModule=v;renderEjournal();}
+function setEjKind(v){ejKind=v;renderEjournal();}
+function ejSessionPage(code,sid){
+  const m=modulesData.find(x=>x.code===code); const x=ejSessions(code).find(y=>y.id===sid);
+  if(!m||!x)return;
+  showModal(`${m.name} — ${EJ_KIND_LBL[x.kind][0]} ${x.no}/${x.total} (კვირა ${x.week})`,
+    ejSessionBody(code,sid),
+    `<button class="btn btn-n" onclick="closeModal()">უკან</button>
+     <button class="btn btn-g" onclick="ejMarkAll('${code}','${sid}','present')">✓ ყველა დაესწრო</button>
+     <button class="btn btn-r" onclick="ejClearSession('${code}','${sid}')">✕ ჩანაწერების მოხსნა</button>`,'xl');
+}
+function ejSessionBody(code,sid){
+  const m=modulesData.find(x=>x.code===code); const x=ejSessions(code).find(y=>y.id===sid);
+  const a=ejA(sid), o=ejO(sid), stus=ejStudents(code);
+  return `<div class="chips">
+      <span class="bd ${EJ_KIND_LBL[x.kind][1]}">${EJ_KIND_LBL[x.kind][0]}</span>
+      <span class="bd bd-n">${groupName(m.groupId)}</span><span class="bd bd-n">კვირა ${x.week}</span>
+      <span class="bd bd-p">${teacherName(modTeacherId(code))}</span></div>
+    ${stus.length?`<div class="tw"><table>
+      <thead><tr><th>პროფესიული სტუდენტი</th><th style="width:210px">დასწრება</th>${x.kind==='assessment'?'<th style="width:280px">შეფასების შედეგი</th>':''}</tr></thead>
+      <tbody>${stus.map(st=>`<tr>
+        <td><div class="row-id">${avatar(st.name,st.id)}<div><div class="rn">${st.name}</div><div class="ri">${st.id}</div></div></div></td>
+        <td><div style="display:flex;gap:5px">
+          <button class="btn btn-xs ${a[st.id]==='present'?'btn-g':'btn-n'}" onclick="ejSetAtt('${code}','${sid}','${st.id}','present')">დაესწრო</button>
+          <button class="btn btn-xs ${a[st.id]==='absent'?'btn-r':'btn-n'}" onclick="ejSetAtt('${code}','${sid}','${st.id}','absent')">გააცდინა</button>
+        </div></td>
+        ${x.kind==='assessment'?`<td><div style="display:flex;gap:5px">
+          <button class="btn btn-xs ${o[st.id]==='confirmed'?'btn-g':'btn-n'}" onclick="ejSetOut('${code}','${sid}','${st.id}','confirmed')">დადასტურდა</button>
+          <button class="btn btn-xs ${o[st.id]==='not_confirmed'?'btn-r':'btn-n'}" onclick="ejSetOut('${code}','${sid}','${st.id}','not_confirmed')">ვერ დადასტურდა</button>
+        </div></td>`:''}
+      </tr>`).join('')}</tbody></table></div>`
+      :'<div style="color:var(--text3);font-size:12px">ამ მოდულის ჯგუფში აქტიური სტუდენტი არ არის</div>'}
+    <div class="note">${x.kind==='assessment'
+      ? 'შეფასების საათზე ფიქსირდება, <strong>დაუდასტურდა თუ არა</strong> სწავლის შედეგი. შეფასება ბინარულია. ადმინისტრატორს <strong>შეცვლის და მოხსნის</strong> უფლებაც აქვს.'
+      : 'მეცადინეობის საათზე ფიქსირდება <strong>დასწრება</strong>. დასწრება რეგისტრია — პროცენტული ზღვარი და ქულა არ არსებობს.'}</div>`;
+}
+function ejRefresh(code,sid){
+  const b=document.getElementById('modal-body');
+  if(b)b.innerHTML=ejSessionBody(code,sid);
+  renderEjournal();
+}
+function ejSetAtt(code,sid,stu,v){
+  const a=ejA(sid); if(a[stu]===v)delete a[stu]; else a[stu]=v;
+  ejRefresh(code,sid);
+}
+function ejSetOut(code,sid,stu,v){
+  const o=ejO(sid); if(o[stu]===v)delete o[stu]; else o[stu]=v;
+  ejRefresh(code,sid);
+  toast(v==='confirmed'?'შედეგი დადასტურდა ✓':'შედეგი ვერ დადასტურდა','info');
+}
+function ejMarkAll(code,sid,v){
+  const a=ejA(sid); ejStudents(code).forEach(s=>a[s.id]=v);
+  ejRefresh(code,sid);
+  toast('ყველა მონიშნულია დასწრებულად ✓','success');
+}
+function ejClearSession(code,sid){
+  delete ejAtt[sid]; delete ejOut[sid];
+  ejRefresh(code,sid);
+  toast('საათის ჩანაწერები მოხსნილია','warn');
+}
+// ══════════ პარტნიორი ორგანიზაციები ══════════
+let poSeq=3;
+function partnerUse(id){return practicePlacements.filter(x=>x.partnerId===id).length}
+function renderPartners(){
+  const el=document.getElementById('partners-grid');
+  if(!el)return;
+  el.innerHTML=partnersData.map(o=>`<div class="card">
+    <div class="ch"><div class="ct">🏥 ${o.name}</div>
+      <span class="bd ${o.active?'bd-g':'bd-n'}">${o.active?'აქტიური':'არააქტიური'}</span></div>
+    <div class="cb">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:10px">${o.id} · ${PARTNER_KIND_LBL[o.kind]||o.kind}</div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>ხელშეკრულება</span><strong style="font-size:12px">${o.agreementNo||'—'}</strong></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>თარიღი</span><strong style="font-size:12px">${o.agreementDate||'—'}</strong></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>მასწავლებლები</span><strong>${poTeachers(o.id).length}</strong></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px"><span>განაწილებული სტუდენტი</span><strong>${partnerUse(o.id)}</strong></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-xs btn-o" onclick="viewPartner('${o.id}')">👁 დეტალები</button>
+        <button class="btn btn-xs btn-ghost" onclick="editPartnerModal('${o.id}')">✏</button>
+        <button class="btn btn-xs btn-r" onclick="removePartner('${o.id}')">✕</button>
+      </div>
+    </div></div>`).join('');
+}
+function partnerForm(o){
+  return `<div class="fg"><label class="fl">დასახელება</label><input class="fi" id="po-name" value="${o?o.name:''}" placeholder="მაგ: ბათუმის რესპუბლიკური საავადმყოფო"></div>
+    <div class="fg2"><div><label class="fl">ხელშეკრულების №</label><input class="fi" id="po-agno" value="${o?(o.agreementNo||''):''}" placeholder="თ-00/2026"></div>
+      <div><label class="fl">ხელშეკრულების თარიღი</label><input class="fi" id="po-agdate" value="${o?(o.agreementDate||''):''}" placeholder="დდ.თთ.წწწწ"></div></div>
+    <div class="fg"><label class="fl">თანამშრომლობის სახეობა</label><select class="fi" id="po-kind">${Object.entries(PARTNER_KIND_LBL).map(([k,v])=>`<option value="${k}" ${o&&o.kind===k?'selected':''}>${v}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">სტატუსი</label><select class="fi" id="po-active">
+      <option value="1" ${!o||o.active?'selected':''}>აქტიური</option><option value="0" ${o&&!o.active?'selected':''}>არააქტიური</option></select></div>`;
+}
+function addPartnerModal(){
+  showModal('პარტნიორი ორგანიზაციის დამატება',partnerForm(null),
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveNewPartner()">✓ დამატება</button>`,'lg');
+}
+function saveNewPartner(){
+  const name=document.getElementById('po-name').value.trim();
+  if(!name){toast('შეავსეთ დასახელება','error');return;}
+  if(partnersData.some(o=>o.name===name)){toast('ამ დასახელებით ორგანიზაცია უკვე არსებობს','error');return;}
+  partnersData.push({id:'PO-'+(++poSeq),name,agreementNo:document.getElementById('po-agno').value,
+    agreementDate:document.getElementById('po-agdate').value,kind:document.getElementById('po-kind').value,
+    active:document.getElementById('po-active').value==='1'});
+  renderPartners();closeModal();toast('ორგანიზაცია დამატებულია ✓','success');
+}
+function editPartnerModal(id){
+  const o=partnersData.find(x=>x.id===id);if(!o)return;
+  showModal('ორგანიზაციის რედაქტირება',partnerForm(o),
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="savePartner('${id}')">💾 შენახვა</button>`,'lg');
+}
+function savePartner(id){
+  const o=partnersData.find(x=>x.id===id);if(!o)return;
+  const name=document.getElementById('po-name').value.trim();
+  if(!name){toast('შეავსეთ დასახელება','error');return;}
+  o.name=name; o.agreementNo=document.getElementById('po-agno').value;
+  o.agreementDate=document.getElementById('po-agdate').value;
+  o.kind=document.getElementById('po-kind').value;
+  o.active=document.getElementById('po-active').value==='1';
+  renderPartners();closeModal();toast('ორგანიზაცია განახლდა ✓','success');
+}
+function removePartner(id){
+  const o=partnersData.find(x=>x.id===id);if(!o)return;
+  const u=partnerUse(id);
+  if(u){toast(`ვერ იშლება — ორგანიზაციაში განაწილებულია ${u} სტუდენტი`,'error');return;}
+  showModal('ორგანიზაციის წაშლა',
+    `<p style="font-size:13px">გსურთ ორგანიზაციის <strong>${o.name}</strong> წაშლა?</p>
+     <div class="note note-a">⚠ წაიშლება ორგანიზაციის ${poTeachers(id).length} მასწავლებელი.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="(function(){
+      for(let k=partnerTeachers.length-1;k>=0;k--)if(partnerTeachers[k].partnerId==='${id}')partnerTeachers.splice(k,1);
+      const i=partnersData.findIndex(x=>x.id==='${id}');if(i>-1)partnersData.splice(i,1);
+      renderPartners();closeModal();toast('ორგანიზაცია წაშლილია','warn')})()">✕ წაშლა</button>`);
+}
+function viewPartner(id){
+  const o=partnersData.find(x=>x.id===id);if(!o)return;
+  const ts=poTeachers(id);
+  const F=(l,v)=>`<div><label class="fl">${l}</label><div class="fv">${v||'—'}</div></div>`;
+  showModal(o.name,`
+    <div class="dhead"><div><div class="dhead-name">🏥 ${o.name}</div>
+      <div class="dhead-meta">${o.id} · ${PARTNER_KIND_LBL[o.kind]||o.kind} · ხელშ. ${o.agreementNo||'—'}</div></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-o" onclick="closeModal();editPartnerModal('${id}')">✏ რედაქტირება</button>
+        <button class="btn btn-r" onclick="removePartner('${id}')">✕ წაშლა</button></div></div>
+    <div class="chips"><span class="bd ${o.active?'bd-g':'bd-n'}">${o.active?'აქტიური':'არააქტიური'}</span>
+      <span class="bd bd-b">${ts.length} მასწავლებელი</span><span class="bd bd-n">${partnerUse(id)} განაწილებული სტუდენტი</span></div>
+    <div class="f3">${F('ხელშეკრულების №',o.agreementNo)}${F('ხელშეკრულების თარიღი',o.agreementDate)}${F('სახეობა',PARTNER_KIND_LBL[o.kind])}</div>
+    <div class="card" style="margin-top:16px">
+      <div class="ch"><div class="ct">ორგანიზაციის მასწავლებლები</div>
+        <button class="btn btn-b btn-sm" onclick="addPartnerTeacher('${id}')">➕ მასწავლებლის დამატება</button></div>
+      ${ts.length?`<div class="tw"><table>
+        <thead><tr><th style="width:80px">ID</th><th>სახელი</th><th style="width:180px">სპეციალობა</th><th style="width:160px">ტელეფონი</th><th style="width:100px">სტატუსი</th><th style="width:60px"></th></tr></thead>
+        <tbody>${ts.map(t=>`<tr><td class="row-id">${t.id}</td>
+          <td><strong style="font-size:12px">${t.name}</strong></td>
+          <td style="font-size:12px">${t.spec||'—'}</td>
+          <td style="font-size:11px">${t.phone||'—'}</td>
+          <td><span class="bd ${t.active?'bd-g':'bd-n'}">${t.active?'აქტიური':'არააქტიური'}</span></td>
+          <td><button class="btn btn-xs btn-r" onclick="removePartnerTeacher('${t.id}','${id}')">✕</button></td></tr>`).join('')}
+        </tbody></table></div>`:'<div class="cb" style="color:var(--text3);font-size:12px">მასწავლებელი არ არის დამატებული</div>'}
+      <div class="note">პრაქტიკულ მოდულზე სტუდენტს ენიჭება <strong>ორგანიზაცია და ამავე ორგანიზაციის მასწავლებელი</strong>.</div>
+    </div>`,
+    '','xl');
+}
+function addPartnerTeacher(pid){
+  showModal('მასწავლებლის დამატება ორგანიზაციაში',
+    `<div class="fg"><label class="fl">ორგანიზაცია</label><div class="fv">${partnerName(pid)}</div></div>
+     <div class="fg"><label class="fl">სახელი და გვარი</label><input class="fi" id="pt-name" placeholder="სახელი გვარი"></div>
+     <div class="fg2"><div><label class="fl">სპეციალობა</label><input class="fi" id="pt-spec" placeholder="მაგ: თერაპია"></div>
+       <div><label class="fl">ტელეფონი</label><input class="fi" id="pt-phone" placeholder="+995 ..."></div></div>`,
+    `<button class="btn btn-n" onclick="viewPartner('${pid}')">უკან</button><button class="btn btn-b" onclick="savePartnerTeacher('${pid}')">✓ დამატება</button>`,'lg');
+}
+function savePartnerTeacher(pid){
+  const n=document.getElementById('pt-name').value.trim();
+  if(!n){toast('შეავსეთ სახელი','error');return;}
+  partnerTeachers.push({id:'PT-'+(++poTeacherSeq),partnerId:pid,name:n,
+    spec:document.getElementById('pt-spec').value,phone:document.getElementById('pt-phone').value,active:true});
+  renderPartners();viewPartner(pid);toast('მასწავლებელი დამატებულია ✓','success');
+}
+function removePartnerTeacher(tid,pid){
+  const u=practicePlacements.filter(x=>x.partnerTeacherId===tid).length;
+  if(u){toast(`ვერ იშლება — მასწავლებელს მიმაგრებულია ${u} სტუდენტი`,'error');return;}
+  const i=partnerTeachers.findIndex(x=>x.id===tid);
+  if(i>-1)partnerTeachers.splice(i,1);
+  renderPartners();viewPartner(pid);toast('მასწავლებელი მოხსნილია','warn');
+}
+// ══════════ პრაქტიკული მოდული: სტუდენტების განაწილება კლინიკებში ══════════
+function practicePage(imId){
+  const im=intakeModules.find(x=>x.id===imId);if(!im)return;
+  const ip=intakePrograms.find(y=>y.id===im.ipId)||{};
+  const grps=groupsData.filter(g=>g.intakeId===ip.intakeId&&g.programId===ip.programId&&g.active);
+  const stus=students.filter(x=>grps.some(g=>g.name===x.group)&&x.status==='active');
+  const done=stus.filter(x=>ppOf(imId,x.id)).length;
+  showModal(`პრაქტიკის განაწილება — ${regName(im.moduleId)}`,`
+    <div class="dhead"><div><div class="dhead-name">${regName(im.moduleId)}</div>
+      <div class="dhead-meta">${intakeName(ip.intakeId)} · ${progName(ip.programId)} · პრაქტიკული მეცადინეობა</div></div></div>
+    <div class="chips"><span class="bd bd-a">პრაქტიკული მეცადინეობა</span>
+      <span class="bd bd-b">${stus.length} სტუდენტი</span><span class="bd ${done===stus.length?'bd-g':'bd-a'}">${done} განაწილებულია</span></div>
+    <div class="note">პრაქტიკის დაწყებისას <strong>ჯგუფი იშლება</strong> — თითოეული სტუდენტი მიდის კონკრეტულ პარტნიორ ორგანიზაციაში და ეთითება <strong>ამავე ორგანიზაციის მასწავლებელი</strong>. ლექტორი ცხრილში არ ეთითება.</div>
+    ${stus.length?`<div class="tw"><table>
+      <thead><tr><th>პროფესიული სტუდენტი</th><th style="width:100px">ჯგუფი</th><th style="width:260px">პარტნიორი ორგანიზაცია</th><th style="width:240px">ორგანიზაციის მასწავლებელი</th><th style="width:50px"></th></tr></thead>
+      <tbody>${stus.map(st=>{const pp=ppOf(imId,st.id);
+        const orgs=partnersData.filter(o=>o.active);
+        const avail=pp?poTeachers(pp.partnerId).filter(t=>t.active):[];
+        return `<tr>
+        <td><strong style="font-size:12px">${st.name}</strong><div style="font-size:10px;color:var(--text3)">${st.id}</div></td>
+        <td style="font-size:11px">${st.group}</td>
+        <td><select class="fi" onchange="setPlacementOrg('${imId}','${st.id}',this.value)" style="padding:5px 6px;font-size:11px">
+          <option value="">— არ არის განაწილებული —</option>
+          ${orgs.map(o=>`<option value="${o.id}" ${pp&&pp.partnerId===o.id?'selected':''}>${o.name}</option>`).join('')}</select></td>
+        <td>${pp?`<select class="fi" onchange="setPlacementTeacher('${imId}','${st.id}',this.value)" style="padding:5px 6px;font-size:11px">
+            <option value="">— მასწავლებელი ასარჩევია —</option>
+            ${avail.map(t=>`<option value="${t.id}" ${pp.partnerTeacherId===t.id?'selected':''}>${t.name} · ${t.spec||''}</option>`).join('')}</select>
+            ${avail.length?'':'<div style="font-size:10px;color:var(--red)">ამ ორგანიზაციაში მასწავლებელი არ არის</div>'}`
+          :'<span style="font-size:11px;color:var(--text3)">პირველ რიგში აირჩიეთ ორგანიზაცია</span>'}</td>
+        <td>${pp?`<button class="btn btn-xs btn-r" onclick="clearPlacement('${imId}','${st.id}')" title="განაწილების მოხსნა">✕</button>`:''}</td>
+      </tr>`}).join('')}</tbody></table></div>`
+      :'<div style="color:var(--text3);font-size:12px">ამ მიღების პროგრამაზე აქტიური სტუდენტი არ არის</div>'}`,
+    `<button class="btn btn-n" onclick="closeModal()">უკან</button>`,'xl');
+}
+function refreshPractice(imId){
+  practicePage(imId);
+  renderPartners();
+}
+function setPlacementOrg(imId,studentId,pid){
+  const pp=ppOf(imId,studentId);
+  if(!pid){ if(pp)practicePlacements.splice(practicePlacements.indexOf(pp),1); refreshPractice(imId); return; }
+  if(pp){ if(pp.partnerId!==pid){pp.partnerId=pid; pp.partnerTeacherId=null;} }
+  else practicePlacements.push({id:'PP-'+(++ppSeq),imId,studentId,partnerId:pid,partnerTeacherId:null});
+  refreshPractice(imId);
+  toast('ორგანიზაცია მინიჭებულია — აირჩიეთ მასწავლებელი ✓','success');
+}
+function setPlacementTeacher(imId,studentId,tid){
+  const pp=ppOf(imId,studentId); if(!pp)return;
+  const t=partnerTeachers.find(x=>x.id===tid);
+  if(tid&&(!t||t.partnerId!==pp.partnerId)){toast('მასწავლებელი უნდა იყოს იმავე ორგანიზაციიდან','error');refreshPractice(imId);return;}
+  pp.partnerTeacherId=tid||null;
+  refreshPractice(imId);
+  toast(tid?'მასწავლებელი მინიჭებულია ✓':'მასწავლებელი მოხსნილია','info');
+}
+function clearPlacement(imId,studentId){
+  const pp=ppOf(imId,studentId);
+  if(pp)practicePlacements.splice(practicePlacements.indexOf(pp),1);
+  refreshPractice(imId);
+  toast('განაწილება მოხსნილია','warn');
+}
 // ══════════ აუდიტორიები და სივრცეები ══════════
 let venSeq=6;
 function venueUse(id){return schedPlacements.filter(x=>x.venueId===id).length}
@@ -2488,6 +2960,7 @@ function renderRegistry(){
     return `<tr>
       <td class="row-id">${m.id}</td>
       <td><strong style="font-size:13px">${m.title}</strong></td>
+      <td><span class="bd ${MODULE_TYPE_LBL[m.type||'theoretical'][1]}">${MODULE_TYPE_LBL[m.type||'theoretical'][0]}</span></td>
       <td>${u?`<span class="bd bd-b">${u} პროგრამა/მიღება</span>`:'<span style="color:var(--text3);font-size:12px">არ არის გამოყენებული</span>'}</td>
       <td style="white-space:nowrap">
         <button class="btn btn-xs btn-ghost" onclick="editRegModal('${m.id}')" title="დასახელების რედაქტირება">✏</button>
@@ -2499,27 +2972,30 @@ function renderRegistry(){
 function addRegModal(){
   showModal('მოდულის შექმნა',
     `<div class="fg"><label class="fl">მოდულის დასახელება</label><input class="fi" id="mr-title" placeholder="მაგ: ბიოქიმია"></div>
-     <div class="note">მოდულს რეესტრში <strong>მხოლოდ დასახელება</strong> აქვს. საათები და კვირები განისაზღვრება მიღების კონკრეტულ პროგრამაში.</div>`,
+     <div class="fg"><label class="fl">ტიპი</label><select class="fi" id="mr-type">${Object.entries(MODULE_TYPE_LBL).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join('')}</select></div>
+     <div class="note">საათები და კვირები განისაზღვრება მიღების კონკრეტულ პროგრამაში. <strong>პრაქტიკულ მეცადინეობაზე</strong> ლექტორი ცხრილში არ ეთითება — ჯგუფი იშლება და თითოეული სტუდენტი ნაწილდება პარტნიორ ორგანიზაციაში ამავე ორგანიზაციის მასწავლებელთან.</div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveNewReg()">✓ შექმნა</button>`);
 }
 function saveNewReg(){
   const t=document.getElementById('mr-title').value.trim();
   if(!t){toast('შეავსეთ დასახელება','error');return;}
   if(moduleRegistry.some(x=>x.title===t)){toast('ამ დასახელებით მოდული უკვე არსებობს','error');return;}
-  moduleRegistry.push({id:'MR-'+(++mrSeq),title:t});
+  moduleRegistry.push({id:'MR-'+(++mrSeq),title:t,type:document.getElementById('mr-type').value});
   renderRegistry();closeModal();toast('მოდული შექმნილია ✓','success');
 }
 function editRegModal(id){
   const m=moduleRegistry.find(x=>x.id===id);if(!m)return;
   showModal('მოდულის რედაქტირება',
-    `<div class="fg"><label class="fl">მოდულის დასახელება</label><input class="fi" id="mr-title" value="${m.title}"></div>`,
+    `<div class="fg"><label class="fl">მოდულის დასახელება</label><input class="fi" id="mr-title" value="${m.title}"></div>
+     <div class="fg"><label class="fl">ტიპი</label><select class="fi" id="mr-type">${Object.entries(MODULE_TYPE_LBL).map(([k,v])=>`<option value="${k}" ${(m.type||'theoretical')===k?'selected':''}>${v[0]}</option>`).join('')}</select></div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveReg('${id}')">💾 შენახვა</button>`);
 }
 function saveReg(id){
   const m=moduleRegistry.find(x=>x.id===id);if(!m)return;
   const t=document.getElementById('mr-title').value.trim();
   if(!t){toast('შეავსეთ დასახელება','error');return;}
-  m.title=t; renderRegistry();closeModal();toast('მოდული განახლდა ✓','success');
+  m.title=t; m.type=document.getElementById('mr-type').value;
+  renderRegistry();renderSchedule();closeModal();toast('მოდული განახლდა ✓','success');
 }
 function removeReg(id){
   const m=moduleRegistry.find(x=>x.id===id);if(!m)return;
@@ -2614,18 +3090,39 @@ function viewIntakeProgram(ipId){
       <thead><tr><th style="width:80px">ID</th><th>მოდული</th><th style="width:180px">ლექტორი</th><th style="width:70px">კვირა</th><th style="width:90px">საკონტაქტო</th><th style="width:104px">დამოუკიდებელი</th><th style="width:84px">შეფასება</th><th style="width:56px">სულ</th><th style="width:150px">მოქმედება</th></tr></thead>
       <tbody>${mods.map(im=>{const t=imTotals(im.id);return `<tr>
         <td class="row-id">${im.id}</td>
-        <td><strong style="font-size:13px">${regName(im.moduleId)}</strong><div style="font-size:10px;color:var(--text3)">${im.moduleId}</div></td>
-        <td><select class="fi" onchange="setImTeacher('${im.id}',this.value)" style="padding:5px 6px;font-size:11px">
-          <option value="">— არ არის მითითებული —</option>
-          ${teachers.filter(t=>t.status==='active').map(t=>`<option value="${t.id}" ${t.id===im.teacherId?'selected':''}>${t.name}</option>`).join('')}</select></td>
+        <td><strong style="font-size:13px">${regName(im.moduleId)}</strong>
+          <div style="font-size:10px;color:var(--text3)">${im.moduleId} · <span style="color:${isPractical(im.moduleId)?'var(--amber)':'var(--text3)'}">${MODULE_TYPE_LBL[regType(im.moduleId)][0]}</span></div></td>
+        <td>${isPractical(im.moduleId)
+          ? `<span class="bd bd-a" style="font-size:10px">პრაქტიკული — ლექტორი არ ეთითება</span>
+             <div style="font-size:10px;color:var(--text3);margin-top:3px">${imPlacements(im.id).length} სტუდენტი განაწილებულია</div>`
+          : `<select class="fi" onchange="setImTeacher('${im.id}',this.value)" style="padding:5px 6px;font-size:11px">
+            <option value="">— არ არის მითითებული —</option>
+            ${teachers.filter(t=>t.status==='active').map(t=>`<option value="${t.id}" ${t.id===im.teacherId?'selected':''}>${t.name}</option>`).join('')}</select>`}</td>
         <td style="text-align:center">${imWeeks(im.id).length}</td>
         <td style="text-align:center">${t.contactH}</td><td style="text-align:center">${t.selfH}</td><td style="text-align:center">${t.assessH}</td>
         <td style="text-align:center;font-weight:700">${t.contactH+t.selfH+t.assessH}</td>
         <td style="white-space:nowrap">
           <button class="btn btn-xs btn-o" onclick="imWeeksPage('${im.id}')" title="საათების განაწილება">🗓️ საათები</button>
+          ${isPractical(im.moduleId)?`<button class="btn btn-xs btn-o" onclick="practicePage('${im.id}')" title="პრაქტიკის განაწილება კლინიკებში">🏥 კლინიკები</button>`:''}
           <button class="btn btn-xs btn-r" onclick="removeIntakeModule('${im.id}')">✕</button>
         </td></tr>`}).join('')}</tbody></table></div>`
       :'<div style="color:var(--text3);font-size:12px">მოდული ჯერ არ არის დამატებული</div>'}
+    <div class="card" style="margin-top:16px">
+      <div class="ch"><div class="ct">მოდულების წინაპირობები</div>
+        ${mods.length>1?`<button class="btn btn-b btn-sm" onclick="addPrereq('${ipId}')">➕ წინაპირობის დამატება</button>`:''}</div>
+      ${(()=>{const prs=modulePrereqs.filter(x=>mods.some(m=>m.id===x.dependentImId));
+        return prs.length?`<div class="tw"><table>
+        <thead><tr><th>მოდული</th><th style="width:40px"></th><th>წინაპირობა</th><th style="width:150px">გადაბარების ვადა</th><th style="width:50px"></th></tr></thead>
+        <tbody>${prs.map(x=>`<tr>
+          <td><strong style="font-size:12px">${regName((intakeModules.find(m=>m.id===x.dependentImId)||{}).moduleId)}</strong></td>
+          <td style="text-align:center;color:var(--blue);font-weight:700">←</td>
+          <td style="font-size:12px">${regName((intakeModules.find(m=>m.id===x.prereqImId)||{}).moduleId)}</td>
+          <td><span class="bd bd-a">${RETAKE_DEADLINE_WEEKS} კვირა</span></td>
+          <td><button class="btn btn-xs btn-r" onclick="removePrereq('${x.id}','${ipId}')">✕</button></td>
+        </tr>`).join('')}</tbody></table></div>`
+        :'<div class="cb" style="color:var(--text3);font-size:12px">წინაპირობა არ არის განსაზღვრული</div>'})()}
+      <div class="note">თუ მოდული <strong>სხვა მოდულის წინაპირობაა</strong>, გადაბარებით დადასტურება უნდა მოხდეს <strong>${RETAKE_DEADLINE_WEEKS} კვირაში</strong> — წინააღმდეგ შემთხვევაში სტუდენტი მომდევნო სემესტრში დამოკიდებულ მოდულს ვერ გაივლის. თუ მოდული არაფრის წინაპირობა არ არის, დადასტურება <strong>ნებისმიერ დროს</strong> შეიძლება.</div>
+    </div>
     <div class="note">მოდული ემატება <strong>რეესტრიდან</strong> და ენიჭება <strong>ლექტორი</strong>; საათები (ლექციები — საკონტაქტო, დამოუკიდებელი სამუშაო, შეფასება) იწერება <strong>კვირების მიხედვით</strong>, ამ მიღების ამ პროგრამისთვის.</div>`,
     '','xl');
 }
@@ -3389,7 +3886,21 @@ function viewGroup(id){
             <td style="white-space:nowrap"><button class="btn btn-xs btn-o" onclick="closeModal();viewStudent('${s.id}')">პროფილი →</button>
               <button class="btn btn-xs btn-r" onclick="removeFromGroup('${id}','${s.id}')">მოხსნა</button></td>
           </tr>`}).join('')}</tbody></table></div>`
-        :'<div class="cb" style="color:var(--text3);font-size:12px">სტუდენტი არ არის ჩარიცხული</div>'}</div>
+        :'<div class="cb" style="color:var(--text3);font-size:12px">სტუდენტი არ არის ჩარიცხული</div>'}
+      ${(()=>{const rt=retakesInGroup(id);return rt.length?`
+        <div class="ch" style="border-top:1px solid var(--border)"><div class="ct">ხელახლა გამვლელი პროფესიული სტუდენტები</div></div>
+        <div class="tw"><table>
+          <thead><tr><th>პროფესიული სტუდენტი</th><th style="width:120px">საკუთარი ჯგუფი</th><th>მოდული</th><th style="width:110px">გადაბარება</th><th style="width:120px">ვადა</th><th style="width:60px"></th></tr></thead>
+          <tbody>${rt.map(r=>`<tr style="background:var(--amber-lt)">
+            <td><div class="row-id">${avatar(stuName(r.studentId),r.studentId)}<div><div class="rn">${stuName(r.studentId)}</div>
+              <div class="ri">${r.studentId} · <span style="color:var(--amber);font-weight:700">ხელახლა გადის</span></div></div></div></td>
+            <td style="font-size:12px"><strong>${groupName(r.failedInGroupId)}</strong></td>
+            <td style="font-size:12px">${r.module}<div style="font-size:10px;color:var(--text3)">სწ. შედეგი №${r.outcomeNo}</div></td>
+            <td><span class="bd ${retakeFee(r.attemptNo)?'bd-a':'bd-g'}">№${r.attemptNo} · ${retakeFeeLbl(r.attemptNo)}</span></td>
+            <td style="font-size:11px">${r.dueOn?`<span class="bd bd-r">${r.dueOn}</span>`:'<span style="color:var(--text3)">შეუზღუდავი</span>'}</td>
+            <td><button class="btn btn-xs btn-ghost" onclick="retakePage('${r.id}')">👁</button></td>
+          </tr>`).join('')}</tbody></table></div>
+        <div class="note">ეს სტუდენტები <strong>რეალურად სხვა ჯგუფის</strong> სტუდენტები არიან — აქ მხოლოდ კონკრეტულ მოდულს გადიან ხელახლა.</div>`:''})()}</div>
     <div class="card"><div class="ch"><div class="ct">ჯგუფის მოდულები</div></div>
       ${mods.length?`<div class="tw"><table><thead><tr><th>კოდი</th><th>მოდული</th><th>მასწავლებელი</th><th>პერიოდი</th><th>ჩატარებული</th><th></th></tr></thead><tbody>
       ${mods.map(m=>{return `<tr><td style="font-size:11px;color:var(--blue);font-weight:700">${m.code}</td><td>${m.name}</td>
@@ -3528,34 +4039,61 @@ function viewAppDetail(id){
 }
 
 function addBookModal(){
-  showModal('წიგნის დამატება',`
-    <div class="fg"><label class="fl">სათაური</label><input class="fi" id="nb-title" placeholder="სათაური"></div>
-    <div class="fg2"><div><label class="fl">ავტორი</label><input class="fi" id="nb-author"></div><div><label class="fl">ISBN</label><input class="fi" id="nb-isbn"></div></div>
-    <div class="fg2"><div><label class="fl">კატეგორია</label><select class="fi" id="nb-cat"><option>ანატომია</option><option>ფიზიოლოგია</option><option>ფარმაკოლოგია</option><option>ეთიკა</option><option>მიკრობიოლოგია</option></select></div><div><label class="fl">ტიპი</label><select class="fi" id="nb-type" onchange="document.getElementById('nb-url-row').style.display=this.value==='digital'?'block':'none'"><option value="printed">ბეჭდური</option><option value="digital">ელ. წიგნი</option></select></div></div>
-    <div id="nb-url-row" style="display:none"><div class="fg"><label class="fl">წიგნის ბმული (URL)</label><input class="fi" id="nb-url" placeholder="https://..."></div></div>
-    <div class="fg"><label class="fl">ასლების რაოდენობა</label><input class="fi" id="nb-copies" type="number" value="1"></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveNewBook()">✓ დამატება</button>`);
+  showModal('ელექტრონული დოკუმენტის დამატება',`
+    <div class="fg"><label class="fl">სათაური</label><input class="fi" id="nb-title" placeholder="დოკუმენტის სათაური"></div>
+    <div class="fg2"><div><label class="fl">ავტორი</label><input class="fi" id="nb-author"></div>
+      <div><label class="fl">კოდი</label><input class="fi" id="nb-isbn" placeholder="PDF-000"></div></div>
+    <div class="fg2"><div><label class="fl">კატეგორია</label><select class="fi" id="nb-cat">
+        <option>საბაზო მეცნიერებები</option><option>პრაქტიკული</option><option>ზოგადი მოდულები</option><option>ეთიკა და კომუნიკაცია</option></select></div>
+      <div><label class="fl">მოდული</label><select class="fi" id="nb-mod"><option value="">— არ არის —</option>
+        ${modulesData.map(m=>`<option value="${m.code}">${m.code} · ${m.name}</option>`).join('')}</select></div></div>
+    <div class="fg"><label class="fl">დოკუმენტის ბმული (URL)</label><input class="fi" id="nb-url" placeholder="https://lib.bmeda.edu.ge/..."></div>
+    <div class="note">📚 ბეჭდური წიგნები აქ არ ემატება — ისინი უკვე არსებულ პლატფორმაზეა.
+      ელ. დოკუმენტი შეიძლება <strong>მიებმას სასწავლო მასალებს</strong> მასწავლებლის პროფილიდან.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveNewBook()">✓ დამატება</button>`,'lg');
 }
 function saveNewBook(){
   const title=document.getElementById('nb-title').value.trim();
   if(!title){toast('შეავსეთ სათაური','error');return;}
-  const copies=+document.getElementById('nb-copies').value||1;
-  const nbType=document.getElementById('nb-type').value;
-  libraryData.push({isbn:document.getElementById('nb-isbn').value||'N/A',title,author:document.getElementById('nb-author').value,cat:document.getElementById('nb-cat').value,copies,avail:copies,type:nbType,url:nbType==='digital'?document.getElementById('nb-url').value:''});
-  renderLibrary();closeModal();toast('წიგნი დამატებულია ✓','success');
+  const code=document.getElementById('nb-isbn').value.trim()||('PDF-'+String(libraryData.length+1).padStart(3,'0'));
+  if(libraryData.some(b=>b.isbn===code)){toast('ამ კოდით დოკუმენტი უკვე არსებობს','error');return;}
+  libraryData.push({isbn:code,title,author:document.getElementById('nb-author').value,
+    cat:document.getElementById('nb-cat').value,moduleCode:document.getElementById('nb-mod').value,
+    type:'digital',url:document.getElementById('nb-url').value});
+  renderLibrary();closeModal();toast('ელექტრონული დოკუმენტი დამატებულია ✓','success');
 }
 function editBookModal(isbn){
   const b=libraryData.find(x=>x.isbn===isbn);if(!b)return;
-  showModal('წიგნის რედ. — '+b.title,`
-    <div class="fg"><label class="fl">ISBN / ID</label><input class="fi" value="${b.isbn}" readonly></div>
+  showModal('დოკუმენტის რედაქტირება — '+b.title,`
+    <div class="fg"><label class="fl">კოდი</label><input class="fi" value="${b.isbn}" readonly></div>
     <div class="fg"><label class="fl">სათაური</label><input class="fi" id="eb-title" value="${b.title}"></div>
-    <div class="fg"><label class="fl">ავტორი</label><input class="fi" id="eb-author" value="${b.author}"></div>
-    <div class="fg"><label class="fl">ასლები</label><input class="fi" id="eb-copies" type="number" value="${b.copies}"></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const b=libraryData.find(x=>x.isbn===${JSON.stringify(isbn)});if(b){b.title=document.getElementById('eb-title').value;b.author=document.getElementById('eb-author').value;b.copies=+document.getElementById('eb-copies').value;}renderLibrary();closeModal();toast('განახლდა ✓','success')})()">💾 შენახვა</button>`);
+    <div class="fg2"><div><label class="fl">ავტორი</label><input class="fi" id="eb-author" value="${b.author||''}"></div>
+      <div><label class="fl">კატეგორია</label><input class="fi" id="eb-cat" value="${b.cat||''}"></div></div>
+    <div class="fg"><label class="fl">მოდული</label><select class="fi" id="eb-mod"><option value="">— არ არის —</option>
+      ${modulesData.map(m=>`<option value="${m.code}" ${b.moduleCode===m.code?'selected':''}>${m.code} · ${m.name}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">დოკუმენტის ბმული (URL)</label><input class="fi" id="eb-url" value="${b.url||''}"></div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveBook('${isbn}')">💾 შენახვა</button>`,'lg');
+}
+function saveBook(isbn){
+  const b=libraryData.find(x=>x.isbn===isbn);if(!b)return;
+  b.title=document.getElementById('eb-title').value;
+  b.author=document.getElementById('eb-author').value;
+  b.cat=document.getElementById('eb-cat').value;
+  b.moduleCode=document.getElementById('eb-mod').value;
+  b.url=document.getElementById('eb-url').value;
+  renderLibrary();closeModal();toast('დოკუმენტი განახლდა ✓','success');
 }
 function removeBook(isbn){
-  showModal('წიგნის წაშლა','<p style="color:var(--red)">⚠ გსურთ ამ ჩანაწერის წაშლა?</p>',
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="const i=libraryData.findIndex(x=>x.isbn===${JSON.stringify(isbn)});if(i>-1)libraryData.splice(i,1);renderLibrary();closeModal();toast('წაშლილია','warn')">✕ წაშლა</button>`);
+  const b=libraryData.find(x=>x.isbn===isbn);if(!b)return;
+  showModal('დოკუმენტის წაშლა',
+    `<p style="font-size:13px">გსურთ ელექტრონული დოკუმენტის <strong>${b.title}</strong> წაშლა?</p>
+     <div class="note note-a">⚠ დოკუმენტი მოიხსნება ბიბლიოთეკიდან და მიბმული სასწავლო მასალებიდან.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="doRemoveBook('${isbn}')">✕ წაშლა</button>`);
+}
+function doRemoveBook(isbn){
+  const i=libraryData.findIndex(x=>x.isbn===isbn);
+  if(i>-1)libraryData.splice(i,1);
+  renderLibrary();closeModal();toast('დოკუმენტი წაშლილია','warn');
 }
 
 function addNewsModal(){
@@ -3742,6 +4280,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderRoles();
   renderAudit();
   renderVenues();
+  renderPartners();
+  renderEjournal();
   renderClubs();
   renderRegistry();
   renderIntakes();

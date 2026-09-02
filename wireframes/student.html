@@ -284,7 +284,6 @@ tr:hover td{background:#eff8f1}
     </div>
     <div class="sb-section">პირადი</div>
     <button class="ni on" onclick="go('profile',this,'პროფილი')"><span class="ni-ic">👤</span>პროფილი</button>
-    <button class="ni" onclick="go('card',this,'სტუდენტური ბარათი')"><span class="ni-ic">🪪</span>სტუდენტური ბარათი</button>
     <button class="ni" onclick="go('docs',this,'დოკუმენტები')"><span class="ni-ic">📁</span>დოკუმენტები</button>
     <button class="ni" onclick="go('orders',this,'ბრძანებები')"><span class="ni-ic">📋</span>ბრძანებები</button>
     <button class="ni" onclick="go('payments',this,'გადახდები')"><span class="ni-ic">💳</span>გადახდები</button>
@@ -403,57 +402,7 @@ tr:hover td{background:#eff8f1}
   </div>
 </div>
 
-<!-- ── STUDENT CARD ── -->
-<div id="screen-card" class="screen">
-  <div class="ph fb"><div><div class="pt">სტუდენტური ბარათი</div><div class="ps">ციფრული სტუდენტური ID · ძალაშია 2026 წლამდე</div></div>
-    <div class="fc">
-      <button class="btn btn-o" onclick="toast('QR კოდი გაიხსნა','info')">📱 QR კოდი</button>
-      <button class="btn btn-b" onclick="printCard()">🖨 ბეჭდვა / PDF</button>
-    </div>
-  </div>
-  <div class="g2">
-    <div>
-      <div class="scard mb16">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;position:relative;z-index:1">
-          <div><div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:.7">Student ID Card</div><div style="font-size:18px;font-weight:800;margin-top:2px">Batumi Medical Academy</div></div>
-          <div style="font-size:24px">⚕</div>
-        </div>
-        <div style="display:flex;gap:16px;align-items:center;position:relative;z-index:1">
-          <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;border:2px solid rgba(255,255,255,.4)">ნ</div>
-          <div><div style="font-size:16px;font-weight:700">ნინო კვარაცხელია</div><div style="font-size:12px;opacity:.8;margin-top:2px">საექთნო განათლება · პრაქტიკოსი ექთანი</div><div style="font-size:11px;opacity:.6;margin-top:1px">ჯგუფი 101 · II სასწავლო წელი · საშემოდგომო მიღება 2025</div></div>
-        </div>
-        <div style="display:flex;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.2);position:relative;z-index:1">
-          <div><div style="font-size:10px;opacity:.6">სტუდ. ID</div><div style="font-size:13px;font-weight:700;font-variant-numeric:tabular-nums">STU-2024-0042</div></div>
-          <div style="text-align:right"><div style="font-size:10px;opacity:.6">ძალაშია</div><div style="font-size:13px;font-weight:700">31.08.2026</div></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ch"><div class="ct">ბარათის სტატუსი</div></div>
-        <div class="cb">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;color:var(--text2)">სტატუსი</span><span class="bd bd-g">✓ აქტიური</span></div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;color:var(--text2)">გაცემის თარიღი</span><span>01.09.2024</span></div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0"><span style="font-size:13px;color:var(--text2)">ვალიდობა</span><span>31.08.2026</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ch"><div class="ct">QR კოდი</div></div>
-      <div class="cb" style="text-align:center">
-        <div style="width:140px;height:140px;background:var(--bg);border-radius:8px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;border:2px dashed var(--border)">
-          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:3px;padding:8px">
-            <div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div><div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div><div style="width:16px;height:16px;background:transparent"></div><div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div><div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div>
-            <div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div><div style="width:16px;height:16px;background:transparent"></div><div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div><div style="width:16px;height:16px;background:transparent"></div><div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div>
-            <div style="width:16px;height:16px;background:transparent"></div><div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div><div style="width:16px;height:16px;background:transparent"></div><div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div><div style="width:16px;height:16px;background:transparent"></div>
-            <div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div><div style="width:16px;height:16px;background:transparent"></div><div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div><div style="width:16px;height:16px;background:transparent"></div><div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div>
-            <div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div><div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div><div style="width:16px;height:16px;background:transparent"></div><div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div><div style="width:16px;height:16px;background:var(--navy);border-radius:2px"></div>
-          </div>
-        </div>
-        <div style="font-size:12px;color:var(--text3)">STU-2024-0042</div>
-        <button class="btn btn-o btn-sm" style="margin-top:12px" onclick="toast('QR კოდი კოპირებულია','success')">📋 კოდის კოპირება</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <!-- ── DOCUMENTS ── -->
 <div id="screen-docs" class="screen">
@@ -541,6 +490,8 @@ tr:hover td{background:#eff8f1}
             <div style="font-size:12px;color:var(--text2);margin-bottom:10px">შაბლონის არჩევა:</div>
             <div style="display:flex;flex-direction:column;gap:7px" id="tmpl-list">
               <div class="tmpl on" onclick="pickTmpl(this,'ცნობა სწავლის შესახებ','BMA ადასტუდენტი, რომ ნინო კვ. II სასწავლო წ. სტუდ. MA-24B ჯ.-ში.')">📋 ცნობა სწავლის შესახებ</div>
+              <div class="tmpl" onclick="pickTmpl(this,'სტატუსის შეჩერება','სტუდენტი ითხოვს პროფესიული სტუდენტის სტატუსის შეჩერებას პირადი განცხადების საფუძველზე. სტატუსი შეჩერდება დირექტორის ბრძანებით.')">⏸ სტატუსის შეჩერება</div>
+              <div class="tmpl" onclick="pickTmpl(this,'სტატუსის აღდგენა','სტუდენტი ითხოვს შეჩერებული სტატუსის აღდგენას.')">▶ სტატუსის აღდგენა</div>
               <div class="tmpl" onclick="pickTmpl(this,'შვებულების შ.','სტუდ. ითხ. აკ. შვ. მითით. ვ.-ით.')">✈ შვებულების შ.</div>
               <div class="tmpl" onclick="pickTmpl(this,'ჩარიცხვის ცნობა','სტუდენტი ჩარ. 2024 სექ.-ში.')">📌 ჩარიცხვის ცნობა</div>
               <div class="tmpl" onclick="pickTmpl(this,'გამ. გადადება','სტუდენტი ითხ. გამ. ვ. გადად.')">📆 გამოცდის გადადება</div>
@@ -953,20 +904,6 @@ function showPassModal(){
 }
 
 // ══ STUDENT CARD ══
-function printCard(){
-  showModal('ბიბლიოთეკის ბარათი / PDF',`
-    <div style="background:var(--navy);border-radius:12px;padding:20px;color:#fff;margin-bottom:14px">
-      <div style="font-size:11px;opacity:.7;margin-bottom:4px">Student ID · BMA</div>
-      <div style="font-size:16px;font-weight:800">ნინო კვ.</div>
-      <div style="display:flex;justify-content:space-between;margin-top:12px;font-size:12px">
-        <div><div style="opacity:.6">ID</div><b>STU-2024-0042</b></div>
-        <div><div style="opacity:.6">ჯ.</div><b>MA-24B</b></div>
-        <div><div style="opacity:.6">ვ.</div><b>31.08.2026</b></div>
-      </div>
-    </div>
-  `,'<button class="btn btn-n" onclick="closeModal()">გ.</button><button class="btn btn-b" onclick="closeModal();toast(\'PDF გ.\',\'success\')">↓ PDF გადმოწერა</button>');
-}
-
 // ══ DOCUMENTS ══
 function filterDocs(chip,type){
   document.querySelectorAll('#doc-chips .chip').forEach(c=>c.classList.remove('on'));chip.classList.add('on');
@@ -1148,6 +1085,8 @@ const moduleRegistry=[
   {id:'IW-109',imId:'IM-13',week:8,contactH:8,selfH:0,assessH:4},
 ];const regName=id=>(moduleRegistry.find(x=>x.id===id)||{}).title||'—';
 const ipOf=(intakeId,programId)=>intakePrograms.find(x=>x.intakeId===intakeId&&x.programId===programId);
+// მასწავლებლის შეფასება ხდება მოდულის ბოლოს — მანამდე შეფასების ბმული არ ჩანს
+const moduleFinished=m=>m.outcomes.length>0&&m.outcomes.every(o=>o.result);
 const myModules=[
   {code:'MOD-101',regNo:'0910919',moduleId:'MR-1',intakeId:'INT-2',programId:'PRG-1',name:'ბიოქიმია',teacher:'ლია გოგიაშვილი',credits:4,startsOn:'10.02.2026',endsOn:'25.05.2026',
    present:22,absent:1,survey:true,surveyUrl:'https://forms.google.com/biochem-survey',
@@ -1205,7 +1144,10 @@ function showModuleModal(idx){
     <td style="font-size:11px">${o.on||'—'}</td>
     <td style="font-size:11px">${o.source?SOURCE_LBL[o.source]:'—'}</td>
     <td>${modResultBadge(o)}</td></tr>`).join('');
-  const surveyBtn=m.survey?`<div style="margin-top:16px;background:var(--blue-lt);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:13px;font-weight:600;color:var(--blue)">📊 გამოკითხვა მოდულზე</div><a href="${m.surveyUrl}" target="_blank" class="btn btn-b btn-sm" onclick="event.stopPropagation()">გამოკითხვაზე გადასვლა ↗</a></div>`:'';
+  const surveyBtn=!m.survey?''
+    :moduleFinished(m)
+      ?`<div style="margin-top:16px;background:var(--blue-lt);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:13px;font-weight:600;color:var(--blue)">📊 მასწავლებლის შეფასება</div><a href="${m.surveyUrl}" target="_blank" class="btn btn-b btn-sm" onclick="event.stopPropagation()">შეფასებაზე გადასვლა ↗</a></div>`
+      :`<div style="margin-top:16px;background:var(--amber-lt);border-radius:8px;padding:12px;font-size:12px;color:var(--text2)">⏳ <strong>მასწავლებლის შეფასება ტარდება მოდულის ბოლოს</strong> — შეფასების ბმული გამოჩნდება მაშინ, როცა მოდულის ყველა სწავლის შედეგი შეფასდება.</div>`;
   showModal(m.name+' — სწავლის შედეგები',`
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
       <span class="bd bd-n">სარეგ. № ${m.regNo}</span><span class="bd bd-b">${m.credits} კრედიტი</span>
@@ -1240,9 +1182,11 @@ if(jEl) myModules.forEach((m,idx)=>{
   const notConf=m.outcomes.filter(o=>o.result==='not_confirmed').length;
   const pct=Math.round(conf/m.outcomes.length*100);
   const bc=pct===100?'var(--green)':pct>=50?'var(--blue)':'var(--amber)';
-  const surveyCell=m.survey
-    ?`<div style="display:flex;justify-content:center;padding:0 4px"><a href="${m.surveyUrl}" target="_blank" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;padding:4px 8px;background:var(--blue-lt);color:var(--blue);border-radius:6px;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap">📊 გამ. ↗</a></div>`
-    :`<div style="display:flex;justify-content:center;padding:0 4px"><span style="font-size:11px;color:var(--text3)">—</span></div>`;
+  const surveyCell=m.survey&&moduleFinished(m)
+    ?`<div style="display:flex;justify-content:center;padding:0 4px"><a href="${m.surveyUrl}" target="_blank" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;padding:4px 8px;background:var(--blue-lt);color:var(--blue);border-radius:6px;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap">📊 შეფ. ↗</a></div>`
+    :m.survey
+      ?`<div style="display:flex;justify-content:center;padding:0 4px"><span style="font-size:11px;color:var(--text3)" title="შეფასება მოდულის ბოლოს">🔒</span></div>`
+      :`<div style="display:flex;justify-content:center;padding:0 4px"><span style="font-size:11px;color:var(--text3)">—</span></div>`;
   jEl.innerHTML+=`<div style="display:grid;grid-template-columns:1fr 130px 64px 64px 64px 90px;gap:0;align-items:center;padding:11px 0;border-bottom:1px solid #eff8f1;cursor:pointer" onclick="showModuleModal(${idx})">
     <div><div style="font-size:13px;font-weight:600">${m.name}</div><div style="font-size:11px;color:var(--text3)">სარეგ. № ${m.regNo} · ${m.teacher}</div></div>
     <div style="padding:0 8px"><div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${bc};border-radius:3px"></div></div><span style="font-size:11px;color:var(--text2);width:32px;text-align:right">${conf}/${m.outcomes.length}</span></div></div>

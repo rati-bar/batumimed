@@ -979,8 +979,16 @@ function exportJournal(){
   )
 }
 
+// ბიბლიოთეკის ელექტრონული დოკუმენტები — მიბმადია სასწავლო მასალებში
+const libraryDocs=[
+  {isbn:'PDF-001',title:'ფარმაკოლოგია — ელექტრონული კურსი',author:'მ. ლომთაძე',cat:'საბაზო მეცნიერებები',url:'https://lib.bmeda.edu.ge/pharm'},
+  {isbn:'PDF-002',title:'კლინიკური პრაქტიკის გზამკვლევი',author:'ზ. ქობულია',cat:'პრაქტიკული',url:'https://lib.bmeda.edu.ge/clinical'},
+  {isbn:'PDF-003',title:'ბიოქიმია — ლაბორატორიული პრაქტიკუმი',author:'ნ. კაპანაძე',cat:'საბაზო მეცნიერებები',url:'https://lib.bmeda.edu.ge/biochem-lab'},
+  {isbn:'PDF-004',title:'ინფექციის კონტროლის სახელმძღვანელო',author:'ნ. ჯაფარიძე',cat:'პრაქტიკული',url:'https://lib.bmeda.edu.ge/infection'},
+];
+const libDoc=isbn=>libraryDocs.find(x=>x.isbn===isbn);
 // ══════════ სასწავლო მასალები — მიბმა მოდულზე ══════════
-const MATERIAL_LBL={presentation:'პრეზენტაცია',document:'დოკუმენტი',video:'ვიდეო',link:'ბმული',other:'სხვა'};
+const MATERIAL_LBL={presentation:'პრეზენტაცია',document:'დოკუმენტი',video:'ვიდეო',link:'ბმული',library:'ბიბლიოთეკის დოკუმენტი',other:'სხვა'};
 let matSeq=3;
 const moduleMaterials=[
   {id:'MAT-1',moduleCode:'MOD-101',type:'presentation',title:'უჯრედის ქიმიური შემადგენლობა — სლაიდები',source:'ფაილი'},
@@ -997,13 +1005,14 @@ function materialsPage(code,name){
        <tbody>${list.map(mt=>`<tr>
          <td><span class="badge ${mt.type==='video'?'badge-amber':'badge-navy'}">${MATERIAL_LBL[mt.type]||mt.type}</span></td>
          <td>${mt.title}</td>
-         <td style="font-size:11px;color:var(--muted)">${mt.source}</td>
+         <td style="font-size:11px;color:var(--muted)">${mt.libIsbn?`<span class="badge badge-blue">📚 ${mt.libIsbn}</span>`:''}${mt.source&&mt.source.startsWith('http')?` <a href="${mt.source}" target="_blank" style="color:var(--blue)">გახსნა ↗</a>`:` ${mt.source}`}</td>
          <td><button class="btn btn-sm btn-red" onclick="removeMaterial('${mt.id}','${code}','${name}')">✕</button></td>
        </tr>`).join('')}</tbody></table></div>`
        :'<div style="font-size:12px;color:var(--subtle)">მასალა ჯერ არ არის მიბმული</div>'}
      <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--muted);margin-top:12px">
        ვიდეო მასალა <strong>მხოლოდ ჩამოტვირთვადია</strong> — ბრაუზერში დაკვრა არ ხდება.</div>`,
     `<button class="btn btn-ghost" onclick="closeModal()">უკან</button>
+     <button class="btn btn-outline" onclick="addLibDocPage('${code}','${name}')">📚 ბიბლიოთეკიდან მიბმა</button>
      <button class="btn btn-blue" onclick="addMaterialPage('${code}','${name}')">➕ მასალის მიბმა</button>`,true);
 }
 function addMaterialPage(code,name){
@@ -1013,6 +1022,28 @@ function addMaterialPage(code,name){
      <div class="fg"><label class="fl">წყარო — ფაილი ან ბმული</label><input class="fi" id="mt-src" placeholder="ფაილის სახელი ან https://..."></div>`,
     `<button class="btn btn-ghost" onclick="materialsPage('${code}','${name}')">უკან</button>
      <button class="btn btn-blue" onclick="saveMaterial('${code}','${name}')">✓ მიბმა</button>`,true);
+}
+function addLibDocPage(code,name){
+  const used=modMaterials(code).filter(x=>x.libIsbn).map(x=>x.libIsbn);
+  const free=libraryDocs.filter(d=>!used.includes(d.isbn));
+  showModal(`ბიბლიოთეკის დოკუმენტის მიბმა — ${name}`,
+    `<div class="fg"><label class="fl">ბიბლიოთეკის ელექტრონული დოკუმენტი</label>
+       ${free.length?`<select class="fi" id="ld-doc">${free.map(d=>`<option value="${d.isbn}">${d.title} · ${d.author}</option>`).join('')}</select>`
+         :'<div style="font-size:12px;color:var(--subtle)">ბიბლიოთეკის ყველა დოკუმენტი უკვე მიბმულია</div>'}</div>
+     ${free.length?`<div style="overflow-x:auto"><table style="font-size:12px">
+       <thead><tr><th style="width:100px">კოდი</th><th>სათაური</th><th style="width:150px">ავტორი</th><th style="width:170px">კატეგორია</th></tr></thead>
+       <tbody>${free.map(d=>`<tr><td style="font-size:11px;color:var(--subtle)">${d.isbn}</td><td>${d.title}</td>
+         <td>${d.author}</td><td><span class="badge badge-navy">${d.cat}</span></td></tr>`).join('')}</tbody></table></div>`:''}
+     <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--muted);margin-top:12px">
+       ბეჭდური წიგნები აქ არ ჩანს — ისინი უკვე არსებულ პლატფორმაზეა და ბმულით მოიძებნება.</div>`,
+    `<button class="btn btn-ghost" onclick="materialsPage('${code}','${name}')">უკან</button>
+     ${free.length?`<button class="btn btn-blue" onclick="saveLibDoc('${code}','${name}')">✓ მიბმა</button>`:''}`,true);
+}
+function saveLibDoc(code,name){
+  const sel=document.getElementById('ld-doc'); if(!sel)return;
+  const d=libDoc(sel.value); if(!d)return;
+  moduleMaterials.push({id:'MAT-'+(++matSeq),moduleCode:code,type:'library',title:d.title,source:d.url||d.isbn,libIsbn:d.isbn});
+  renderMyModules();materialsPage(code,name);toast('ბიბლიოთეკის დოკუმენტი მიბმულია ✓','success');
 }
 function saveMaterial(code,name){
   const t=document.getElementById('mt-title').value.trim();
@@ -1044,7 +1075,7 @@ function renderMyModules(){
         <button class="btn btn-outline btn-sm" onclick="openModuleDetail(${i})">ჟურნალი</button>
         <button class="btn btn-ghost btn-sm" onclick="weekHoursModal(${i},'${m.name}')" title="საათების განაწილება კვირების მიხედვით">🗓️</button>
         <button class="btn btn-ghost btn-sm" onclick="materialsPage('${m.code}','${m.name}')" title="სასწავლო მასალები">📁</button>
-        <button class="btn btn-ghost btn-sm" onclick="manageSurvey(${i},'${m.name}','${m.group}')">📊</button>
+        <button class="btn btn-ghost btn-sm" onclick="manageSurvey(${i},'${m.name}','${m.group}')" title="${moduleFinished(i)?'მოდულის შეფასების ბმული':'შეფასება მოდულის ბოლოს — ჯერ არ არის ხელმისაწვდომი'}" style="${moduleFinished(i)?'':'opacity:.45'}">📊${moduleFinished(i)?'':' 🔒'}</button>
       </td></tr>`;
   }).join('');
   const c=document.getElementById('mod-count'); if(c)c.textContent=moduleData.length+' მოდული';
@@ -1192,7 +1223,33 @@ function studentDetail(si){
 const LESSON_KIND_LBL={theory:'თეორია',practice:'პრაქტიკა',simulation:'სიმულაცია',work_based:'სამუშაოზე დაფუძნებული',consultation:'კონსულტაცია',interim_assessment:'შუალედური შეფასება',summative_assessment:'განმსაზღვრელი შეფასება',qualification_exam:'საკვალიფიკაციო გამოცდა'};
 // ── MODULES ──
 const moduleSurveys = ['','','https://forms.google.com/neuro-survey',''];
+// მოდულის შეფასება (მასწავლებლის შეფასება სტუდენტების მიერ) ხდება მოდულის ბოლოს —
+// მანამდე შეფასების ბმული არ ჩანს
+function moduleFinished(mi){
+  const sess=modSessions(mi);
+  if(!sess.length)return false;
+  const n=journalStudents.length;
+  const lec=sess.filter(x=>x.kind==='lecture'), ass=sess.filter(x=>x.kind==='assessment');
+  const lecDone=lec.every(x=>attFilled(x.id)===n);
+  const assDone=ass.length===0||ass.every(x=>outFilled(x.id)===n);
+  return lecDone&&assDone;
+}
+function surveyBlocked(mi,modName){
+  const sess=modSessions(mi), n=journalStudents.length;
+  const left=sess.filter(x=>x.kind==='lecture'?attFilled(x.id)!==n:outFilled(x.id)!==n).length;
+  showModal(`შეფასება ჯერ არ არის ხელმისაწვდომი — ${modName}`,
+    `<div style="background:var(--amber-lt);border-radius:8px;padding:14px;font-size:13px;color:var(--muted)">
+       ⏳ <strong>მასწავლებლის შეფასება ტარდება მოდულის ბოლოს.</strong> შეფასების ბმული გამოჩნდება მაშინ, როცა
+       მოდულის ყველა საათზე დასწრება და შეფასების შედეგები სრულად შეიტანება.</div>
+     <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);margin-top:14px">
+       <div class="stat-card"><div class="sc-label">სულ საათი</div><div class="sc-value">${sess.length}</div></div>
+       <div class="stat-card"><div class="sc-label">დარჩენილია შესატანი</div><div class="sc-value" style="color:var(--amber)">${left}</div></div>
+     </div>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">დახურვა</button>
+     <button class="btn btn-outline" onclick="closeModal();openModuleDetail(${mi})">📋 ჟურნალი</button>`);
+}
 function manageSurvey(i, modName, group){
+  if(!moduleFinished(i)){surveyBlocked(i,modName);return;}
   const current = moduleSurveys[i] || '';
   showModal(`გამოკითხვის ბმული — ${modName} (${group})`,
     `<p style="font-size:13px;color:var(--muted);margin-bottom:14px">შეიყვანეთ Google Forms-ის ბმული, რომელიც სტუდენტებს გამოუჩნდებათ ელექტრონულ ჟურნალში ამ მოდულის გასწვრივ.</p>
