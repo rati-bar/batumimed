@@ -247,8 +247,8 @@ textarea.fi{resize:vertical;min-height:80px}
       <button class="ni" onclick="go('schedule',this,'განრიგი')"><span class="ni-icon">📅</span>განრიგი</button>
 
       <div class="sb-section">სასწავლო პროცესი</div>
-      <button class="ni" onclick="go('studentsAll()',this,'პროფესიული სტუდენტები')"><span class="ni-icon">🎓</span>პროფესიული სტუდენტები</button>
-      <button class="ni" onclick="go('teachersAll()',this,'პროფესიული განათლების მასწავლებლები')"><span class="ni-icon">👨‍🏫</span>მასწავლებლები</button>
+      <button class="ni" onclick="go('students',this,'პროფესიული სტუდენტები')"><span class="ni-icon">🎓</span>პროფესიული სტუდენტები</button>
+      <button class="ni" onclick="go('teachers',this,'პროფესიული განათლების მასწავლებლები')"><span class="ni-icon">👨‍🏫</span>მასწავლებლები</button>
       <button class="ni" onclick="go('groups',this,'ჯგუფები')"><span class="ni-icon">👥</span>ჯგუფები</button>
       <button class="ni" onclick="go('ejournal',this,'ელექტრონული ჟურნალი')"><span class="ni-icon">📋</span>ელექტრონული ჟურნალი</button>
 
@@ -294,22 +294,22 @@ textarea.fi{resize:vertical;min-height:80px}
   </div>
   <div class="g2" style="margin-bottom:16px">
     <div class="card">
-      <div class="ch"><div class="ct">სტუდენტთა სტატუსი</div><button class="btn btn-n btn-sm" onclick="go('studentsAll()',null,'პროფესიული სტუდენტები')">სრული სია →</button></div>
+      <div class="ch"><div class="ct">სტუდენტთა სტატუსი</div><button class="btn btn-n btn-sm" onclick="go('students',null,'პროფესიული სტუდენტები')">სრული სია →</button></div>
       <div class="cb">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-          <div style="background:var(--green-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('studentsAll()',null,'პროფესიული სტუდენტები')">
+          <div style="background:var(--green-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('students',null,'პროფესიული სტუდენტები')">
             <div style="font-size:28px;font-weight:800;color:var(--green)">287</div>
             <div style="font-size:12px;color:var(--text2);margin-top:2px">● აქტიური</div>
           </div>
-          <div style="background:var(--amber-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('studentsAll()',null,'პროფესიული სტუდენტები')">
+          <div style="background:var(--amber-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('students',null,'პროფესიული სტუდენტები')">
             <div style="font-size:28px;font-weight:800;color:var(--amber)">18</div>
             <div style="font-size:12px;color:var(--text2);margin-top:2px">✓ სულ აქტიური</div>
           </div>
-          <div style="background:#f5e6f3;border-radius:10px;padding:14px;cursor:pointer" onclick="go('studentsAll()',null,'პროფესიული სტუდენტები')">
+          <div style="background:#f5e6f3;border-radius:10px;padding:14px;cursor:pointer" onclick="go('students',null,'პროფესიული სტუდენტები')">
             <div style="font-size:28px;font-weight:800;color:var(--navy)">12</div>
             <div style="font-size:12px;color:var(--text2);margin-top:2px">~ სტატუსი შეჩერებული</div>
           </div>
-          <div style="background:var(--red-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('studentsAll()',null,'პროფესიული სტუდენტები')">
+          <div style="background:var(--red-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('students',null,'პროფესიული სტუდენტები')">
             <div style="font-size:28px;font-weight:800;color:var(--red)">5</div>
             <div style="font-size:12px;color:var(--text2);margin-top:2px">✕ სტატუსი შეწყვეტილი</div>
           </div>
@@ -393,7 +393,7 @@ textarea.fi{resize:vertical;min-height:80px}
   </div>
 </div>
 
-<div class="screen" id="screen-studentsAll()">
+<div class="screen" id="screen-students">
   <div class="page-head">
     <div>
       <h2>პროფესიული სტუდენტების ბაზა</h2>
@@ -430,9 +430,9 @@ textarea.fi{resize:vertical;min-height:80px}
   <div class="card">
     <div class="stabs" id="stu-tabs"></div>
     <div class="tw">
-      <table id="studentsAll()-table">
+      <table id="students-table">
         <thead><tr><th>პროფესიული სტუდენტი</th><th>მიღება</th><th>პროგრამა</th><th>ჯგუფი</th><th>სასწ. წელი</th><th>ნაშთი</th><th>სტატუსი</th><th></th></tr></thead>
-        <tbody id="studentsAll()-tbody"></tbody>
+        <tbody id="students-tbody"></tbody>
       </table>
     </div>
     <div class="note">ℹ️ ჩანართზე გადასვლა აჩვენებს ამ სტატუსისთვის სპეციფიკურ ველებს — შეჩერებული: შეჩერების საფუძველი და ვადა; შეწყვეტილი: საფუძველი და თარიღი.</div>
@@ -441,7 +441,7 @@ textarea.fi{resize:vertical;min-height:80px}
 
 
 <!-- ══ TEACHERS ══ -->
-<div class="screen" id="screen-teachersAll()">
+<div class="screen" id="screen-teachers">
   <div class="page-head">
     <div>
       <h2>პროფესიული განათლების მასწავლებლები</h2>
@@ -461,9 +461,9 @@ textarea.fi{resize:vertical;min-height:80px}
   <div class="card">
     <div class="stabs" id="tch-tabs"></div>
     <div class="tw">
-      <table id="teachersAll()-table">
+      <table id="teachers-table">
         <thead><tr><th>მასწავლებელი</th><th>სპეციალობა</th><th>მოდულები</th><th>მუშაობის დაწყება</th><th>საათი</th><th>სტატუსი</th><th></th></tr></thead>
-        <tbody id="teachersAll()-tbody"></tbody>
+        <tbody id="teachers-tbody"></tbody>
       </table>
     </div>
     <div class="note">ℹ️ მასწავლებელი <strong>ჯგუფს ან მოდულს არ ებმის</strong> — ინიშნება თითო მეცადინეობაზე განრიგის builder-იდან. საათები გამოითვლება ჩატარებული მეცადინეობის ხანგრძლივობიდან.</div>
@@ -1453,9 +1453,9 @@ const newsAdminData=[
   {id:'NEWS-004',title:'რევაზ უზუნაძის სახელობის სტიპენდიის კონკურსი',tag:'სტიპენდია',date:'10.03.2026',status:'draft',views:0},
 ];
 const surveysAdminData=[
-  {id:'SRV-001',name:'სასწავლო პროცესის შეფასება — 2026',target:'all-studentsAll()',deadline:'15.07.2026',responses:47,total:187,status:'active',link:'https://forms.gle/example1'},
-  {id:'SRV-002',name:'აკადემიის სერვისების შეფასება',target:'all-studentsAll()',deadline:'30.06.2026',responses:89,total:187,status:'expired',link:'https://forms.gle/example2'},
-  {id:'SRV-003',name:'მასწავლებელთა გამოკითხვა — I სასწ. წელი',target:'all-teachersAll()',deadline:'10.01.2026',responses:22,total:24,status:'done',link:''},
+  {id:'SRV-001',name:'სასწავლო პროცესის შეფასება — 2026',target:'all-students',deadline:'15.07.2026',responses:47,total:187,status:'active',link:'https://forms.gle/example1'},
+  {id:'SRV-002',name:'აკადემიის სერვისების შეფასება',target:'all-students',deadline:'30.06.2026',responses:89,total:187,status:'expired',link:'https://forms.gle/example2'},
+  {id:'SRV-003',name:'მასწავლებელთა გამოკითხვა — I სასწ. წელი',target:'all-teachers',deadline:'10.01.2026',responses:22,total:24,status:'done',link:''},
   {id:'SRV-004',name:'სასწავლო მასალების შეფასება',target:'grp-101',deadline:'20.12.2025',responses:20,total:24,status:'done',link:''},
 ];
 const jobsAdminData=[
@@ -1535,7 +1535,7 @@ function filterStudentIntake(v){stuF.intake=v;applyStudentFilters()}
 function filterStudentGroup(v){stuF.group=v;applyStudentFilters()}
 function filterStudentStatus(v){stuStatusTab=v;renderStudentTabs();applyStudentFilters()}
 function renderStudents(list){
-  const tb=document.getElementById('studentsAll()-tbody');
+  const tb=document.getElementById('students-tbody');
   if(!tb)return;
   tb.innerHTML=list.length?list.map(s=>{
     const st=STUDENT_STATUS_LBL[s.status]||[s.status,'bd-n'];
@@ -1574,7 +1574,7 @@ function applyTeacherFilters(){
 function filterTeacherImpl(v){tchF.impl=v;applyTeacherFilters()}
 function filterTeacherStatus(v){tchF.status=v;renderTeacherTabs();applyTeacherFilters()}
 function renderTeachers(list){
-  const tb=document.getElementById('teachersAll()-tbody');
+  const tb=document.getElementById('teachers-tbody');
   if(!tb)return;
   tb.innerHTML=list.length?list.map(t=>{
     const mods=modulesData.filter(m=>modTeacherId(m.code)===t.id);
