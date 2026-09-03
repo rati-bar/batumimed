@@ -557,6 +557,11 @@ tr:hover td{background:#eff8f1}
         <div id="subjects"></div>
       </div>
     </div>
+    <div class="card">
+      <div class="ch"><div class="ct">დასწრების აღრიცხვა — ლექციების ჭრილში</div>
+        <select class="fi" style="width:auto" id="att-mod" onchange="renderAttModule(this.value)"></select></div>
+      <div class="cb" id="att-detail"></div>
+    </div>
     <div style="display:flex;flex-direction:column;gap:16px">
       <div class="card">
         <div class="ch"><div class="ct">სწავლის შედეგები</div></div>
@@ -655,46 +660,32 @@ tr:hover td{background:#eff8f1}
 
 <!-- ── LIBRARY ── -->
 <div id="screen-lib" class="screen">
-  <div class="ph fb"><div><div class="pt">ბიბლიოთეკა</div><div class="ps">ფიზიკური და ელექტრონული კატალოგი</div></div></div>
+  <div class="ph fb"><div><div class="pt">ბიბლიოთეკა</div><div class="ps">ელექტრონული სასწავლო დოკუმენტები · ბეჭდური წიგნები — ბიბლიოთეკის პლატფორმაზე</div></div>
+    <a class="btn btn-o" href="https://lib.bmeda.edu.ge/catalog" target="_blank">🔗 ბეჭდური წიგნების კატალოგი ↗</a></div>
+  <div class="card mb16">
+    <div class="cb" style="display:flex;gap:12px;align-items:flex-start">
+      <div style="font-size:22px">📚</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.6">
+        <strong>ბეჭდური წიგნები</strong> ამ სისტემაში არ ემატება — მათი კატალოგი უკვე არსებულ ბიბლიოთეკის პლატფორმაზეა.
+        წიგნის მოსაძებნად და ხელმისაწვდომობის შესამოწმებლად გადადით
+        <a href="https://lib.bmeda.edu.ge/catalog" target="_blank" style="color:var(--blue);font-weight:700">ბიბლიოთეკის კატალოგზე ↗</a>.
+        აქ ხელმისაწვდომია <strong>ელექტრონული სასწავლო დოკუმენტები</strong>, რომლებიც მიბმულია შენს მოდულებს.
+      </div>
+    </div>
+  </div>
   <div class="card mb16">
     <div class="cb">
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <input class="fi" id="lib-search" placeholder="🔍  სახელმძღვ., ავტ., ISBN..." style="flex:1;min-width:200px" oninput="filterBooks(this.value)">
-        <select class="fi" style="width:auto" onchange="filterBooksCat(this.value)"><option value="">ყველა მოდული</option><option>ანატომია</option><option>ფიზიოლოგია</option><option>ფარმაკოლოგია</option></select>
+        <input class="fi" id="lib-search" placeholder="🔍  დოკუმენტი, ავტორი..." style="flex:1;min-width:200px" oninput="filterBooks(this.value)">
+        <select class="fi" style="width:auto" id="lib-cat" onchange="filterBooksCat(this.value)"><option value="">ყველა მოდული</option></select>
       </div>
     </div>
   </div>
-  <div class="g2">
-    <div class="card">
-      <div class="ch"><div class="ct">კატალოგი</div><span id="book-count" style="font-size:12px;color:var(--text3)">7 სახ.</span></div>
-      <div class="cb"><div id="books"></div></div>
-    </div>
-    <div class="card">
-      <div class="ch"><div class="ct">ელ. სახელმძღვანელოები</div></div>
-      <div class="cb">
-        <p style="font-size:12px;color:var(--text3);margin-bottom:14px">ჩამოსატვირთი PDF სახელმძღვანელოები — ხელმისაწვდომია ნებისმიერ მოწყობილობაზე.</p>
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <div style="display:flex;align-items:center;gap:12px;padding:10px;background:var(--bg);border-radius:8px">
-            <div style="font-size:20px">📘</div>
-            <div style="flex:1"><div style="font-size:13px;font-weight:600">ფარმაკოლოგია</div><div style="font-size:11px;color:var(--text3)">ბენია მარინა · PDF · 4.2 MB</div></div>
-            <button class="btn btn-g btn-sm" onclick="toast('PDF ↓ «ფარმაკოლოგია»','success')">↓ PDF</button>
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;padding:10px;background:var(--bg);border-radius:8px">
-            <div style="font-size:20px">📗</div>
-            <div style="flex:1"><div style="font-size:13px;font-weight:600">Medical Ethics</div><div style="font-size:11px;color:var(--text3)">Hope, Tony · PDF · 2.8 MB</div></div>
-            <button class="btn btn-g btn-sm" onclick="toast('PDF ↓ «Medical Ethics»','success')">↓ PDF</button>
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;padding:10px;background:var(--bg);border-radius:8px">
-            <div style="font-size:20px">📙</div>
-            <div style="flex:1"><div style="font-size:13px;font-weight:600">Clinical Anatomy Review</div><div style="font-size:11px;color:var(--text3)">Moore, K. · PDF · 6.1 MB</div></div>
-            <button class="btn btn-g btn-sm" onclick="toast('PDF ↓ «Clinical Anatomy Review»','success')">↓ PDF</button>
-          </div>
-        </div>
-        <div style="margin-top:14px;font-size:12px;color:var(--text3)">ყველა ელ. სახელმძღვ. — გადადით <b>💻 ელექტრონული</b> ჩანართზე.</div>
-      </div>
-    </div>
-    </div>
+  <div class="card">
+    <div class="ch"><div class="ct">ელექტრონული დოკუმენტები</div><span id="book-count" style="font-size:12px;color:var(--text3)"></span></div>
+    <div class="cb"><div id="books"></div></div>
   </div>
+</div>
 </div>
 
 <!-- ── CLUBS ── -->
@@ -1087,6 +1078,58 @@ const moduleRegistry=[
 const ipOf=(intakeId,programId)=>intakePrograms.find(x=>x.intakeId===intakeId&&x.programId===programId);
 // მასწავლებლის შეფასება ხდება მოდულის ბოლოს — მანამდე შეფასების ბმული არ ჩანს
 const moduleFinished=m=>m.outcomes.length>0&&m.outcomes.every(o=>o.result);
+// ── დასწრების აღრიცხვა თითოეულ ლექციაზე ──
+// საათები გენერირდება მოდულის კვირეული განაწილებიდან: საკონტაქტო → ლექცია, შეფასება → შეფასების საათი
+const imOfMod=m=>{const ip=ipOf(m.intakeId,m.programId);return ip?intakeModules.find(x=>x.ipId===ip.id&&x.moduleId===m.moduleId)||null:null};
+const SESSION_KIND_LBL={lecture:['ლექცია','bd-b'],assessment:['შეფასება','bd-a']};
+const ATT_LBL={present:['დავესწარი','bd-g'],absent:['გავაცდინე','bd-r']};
+function modSessions(m){
+  const im=imOfMod(m); if(!im)return [];
+  const out=[];
+  intakeModuleWeeks.filter(w=>w.imId===im.id).sort((a,b)=>a.week-b.week).forEach(w=>{
+    for(let k=1;k<=Math.round(w.contactH);k++)out.push({id:`${m.code}-W${w.week}-L${k}`,week:w.week,kind:'lecture',no:k,total:Math.round(w.contactH)});
+    for(let k=1;k<=Math.round(w.assessH);k++)out.push({id:`${m.code}-W${w.week}-A${k}`,week:w.week,kind:'assessment',no:k,total:Math.round(w.assessH)});
+  });
+  return out;
+}
+// დასწრების ჩანაწერები — რასაც ლექტორი ან ადმინისტრატორი შეიტანს ჟურნალში
+const myAttendance={};
+function seedAttendance(){
+  myModules.forEach(m=>{
+    const sess=modSessions(m);
+    const marked=Math.min(sess.length,m.present+m.absent);
+    let absLeft=m.absent;
+    sess.slice(0,marked).forEach((x,k)=>{
+      // გაცდენები თანაბრად გადანაწილებული
+      const isAbs=absLeft>0&&(k+1)%Math.max(2,Math.ceil(marked/Math.max(1,m.absent)))===0;
+      if(isAbs)absLeft--;
+      myAttendance[x.id]=isAbs?'absent':'present';
+    });
+  });
+}
+const attOf=id=>myAttendance[id]||null;
+const modAttCount=(m,v)=>modSessions(m).filter(x=>attOf(x.id)===v).length;
+const modAttMarked=m=>modSessions(m).filter(x=>attOf(x.id)).length;
+function attTable(m){
+  const sess=modSessions(m);
+  if(!sess.length)return '<div style="font-size:12px;color:var(--text3)">ამ მოდულს საათები ჯერ არ აქვს გაწერილი</div>';
+  const pres=modAttCount(m,'present'), abs=modAttCount(m,'absent');
+  return `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+      <span class="bd bd-n">${sess.length} საათი</span>
+      <span class="bd bd-g">${pres} დავესწარი</span>
+      <span class="bd ${abs?'bd-r':'bd-n'}">${abs} გავაცდინე</span>
+      <span class="bd bd-a">${sess.length-modAttMarked(m)} ჯერ არ ჩატარებულა</span></div>
+    <div style="overflow-x:auto"><table style="font-size:12px">
+      <thead><tr><th style="width:56px">კვირა</th><th style="width:110px">სახეობა</th><th>საათი</th><th style="width:150px">დასწრება</th></tr></thead>
+      <tbody>${sess.map(x=>{const a=attOf(x.id);const al=a?ATT_LBL[a]:null;
+        return `<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${x.week}</td>
+          <td><span class="bd ${SESSION_KIND_LBL[x.kind][1]}" style="font-size:10px">${SESSION_KIND_LBL[x.kind][0]}</span></td>
+          <td>${SESSION_KIND_LBL[x.kind][0]} ${x.no}/${x.total}<div style="font-size:10px;color:var(--text3)">${x.id}</div></td>
+          <td>${al?`<span class="bd ${al[1]}">${al[0]}</span>`:'<span style="font-size:11px;color:var(--text3)">ჯერ არ ჩატარებულა</span>'}</td></tr>`}).join('')}
+      </tbody></table></div>
+    <div style="background:var(--blue-lt);border-radius:6px;padding:9px;font-size:11px;color:var(--text2);margin-top:8px">
+      დასწრება <strong>რეგისტრია</strong> — პროცენტული ზღვარი და ქულა არ არსებობს. აღრიცხვას აწარმოებს ლექტორი თითოეულ საათზე.</div>`;
+}
 // ორი განსხვავებული პროცესი: გადაბარება (მხოლოდ შეფასების საათები) და მოდულის ხელახლა გავლა (სხვა ჯგუფთან)
 const REASSESS_FEE=120;
 const REASSESS_MAX_ATTEMPTS=2;
@@ -1145,6 +1188,7 @@ function modResultBadge(o){
   const r=RESULT_LBL[o.result];
   return `<span class="bd ${r[1]}">${o.result==='confirmed'?'✓':'✕'} ${r[0]}</span>`;
 }
+seedAttendance();
 function showModuleModal(idx){
   const m=myModules[idx];
   const conf=m.outcomes.filter(o=>o.result==='confirmed').length;
@@ -1185,11 +1229,13 @@ function showModuleModal(idx){
     </div>
     <div style="display:flex;gap:12px;margin-bottom:16px">
       <div class="stat-box" style="flex:1"><div class="stat-num" style="color:var(--green)">${conf}<span style="font-size:16px;color:var(--text3)">/${m.outcomes.length}</span></div><div class="stat-lbl">დადასტურებული შედეგი</div></div>
-      <div class="stat-box" style="flex:1"><div class="stat-num">${m.present}</div><div class="stat-lbl">დაესწრო</div></div>
-      <div class="stat-box" style="flex:1"><div class="stat-num" style="color:${m.absent?'var(--red)':'var(--green)'}">${m.absent}</div><div class="stat-lbl">გააცდინა</div></div>
+      <div class="stat-box" style="flex:1"><div class="stat-num">${modAttCount(m,'present')}</div><div class="stat-lbl">დავესწარი</div></div>
+      <div class="stat-box" style="flex:1"><div class="stat-num" style="color:${modAttCount(m,'absent')?'var(--red)':'var(--green)'}">${modAttCount(m,'absent')}</div><div class="stat-lbl">გავაცდინე</div></div>
     </div>
     <div style="font-size:12px;color:var(--text2);margin-bottom:10px">პროფესიული განათლების მასწავლებელი: <b>${m.teacher}</b></div>
     <table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>შედეგი</th></tr></thead><tbody>${rows}</tbody></table>
+    <div style="font-size:12px;font-weight:700;color:var(--text2);margin:16px 0 6px">📋 დასწრების აღრიცხვა — თითოეული ლექცია</div>
+    ${attTable(m)}
     ${raBlock}${rpBlock}
     <div style="background:var(--blue-lt);border-radius:8px;padding:10px;font-size:12px;color:var(--text2);margin-top:12px">
       კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>.
@@ -1206,8 +1252,8 @@ function updateJournalSummary(){
   const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
   set('oc-conf',conf+'/'+allOut.length); set('oc-pct',pct+'%');
   const bar=document.getElementById('oc-bar'); if(bar)bar.style.width=pct+'%';
-  set('at-p',myModules.reduce((a,m)=>a+m.present,0));
-  set('at-a',myModules.reduce((a,m)=>a+m.absent,0));
+  set('at-p',myModules.reduce((a,m)=>a+modAttCount(m,'present'),0));
+  set('at-a',myModules.reduce((a,m)=>a+modAttCount(m,'absent'),0));
 }
 const jEl=document.getElementById('subjects');
 if(jEl) myModules.forEach((m,idx)=>{
@@ -1225,11 +1271,22 @@ if(jEl) myModules.forEach((m,idx)=>{
     <div style="padding:0 8px"><div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${bc};border-radius:3px"></div></div><span style="font-size:11px;color:var(--text2);width:32px;text-align:right">${conf}/${m.outcomes.length}</span></div></div>
     <div style="display:flex;justify-content:center"><span class="bd bd-g" style="font-size:11px">${conf}</span></div>
     <div style="display:flex;justify-content:center">${notConf?`<span class="bd bd-r" style="font-size:11px">${notConf}</span>`:'<span style="font-size:11px;color:var(--text3)">—</span>'}</div>
-    <div style="display:flex;justify-content:center"><span style="font-size:11px;color:var(--text2)">✓${m.present} ✕${m.absent}</span></div>
+    <div style="display:flex;justify-content:center"><span style="font-size:11px;color:var(--text2)" title="დავესწარი / გავაცდინე — ${modSessions(m).length} საათიდან">✓${modAttCount(m,'present')} ✕${modAttCount(m,'absent')}</span></div>
     ${surveyCell}
   </div>`;
 });
 updateJournalSummary();
+function renderAttModule(idx){
+  const sel=document.getElementById('att-mod');
+  if(sel&&!sel.options.length){
+    sel.innerHTML=myModules.map((m,i)=>`<option value="${i}">${m.name}</option>`).join('');
+    if(idx===undefined||idx===null||idx==='')idx=0;
+  }
+  const el=document.getElementById('att-detail'); if(!el)return;
+  const m=myModules[+idx||0]; if(!m)return;
+  el.innerHTML=attTable(m);
+}
+renderAttModule(0);
 
 // ══ SCHEDULE ══
 const schedClasses=[
@@ -1240,6 +1297,8 @@ const schedClasses=[
   {name:'კლინიკური პრაქტიკა',rm:'სიმულ.1',lect:'ვასო ლომიძე',color:'g',topic:'ვენური პუნქცია',mat:'–'},
   {name:'ინგლისური ენა',rm:'108',lect:'ირინა კობახიძე',color:'a',topic:'Medical Terminology',mat:'Oxford Medical English'},
 ];
+const WEEK_DAYS=['ორშაბათი','სამშაბათი','ოთხშაბათი','ხუთშაბათი','პარასკევი'];
+const MY_GROUP='ჯგუფი 101';
 const weekSlots=['09:00–10:30','10:45–12:15','13:00–14:30','14:45–16:15'];
 const weekData=[
   [schedClasses[0],null,schedClasses[2],null],
@@ -1254,25 +1313,34 @@ weekSlots.forEach((slot,si)=>{
   let r=`<tr><td style="background:#eff8f1;padding:9px 10px;font-size:11px;font-variant-numeric:tabular-nums;color:var(--text3);font-weight:600;border:1px solid var(--border)">${slot}</td>`;
   for(let di=0;di<5;di++){
     const d=weekData[di][si];
-    if(d)r+=`<td style="border:1px solid var(--border);padding:0;cursor:pointer" onclick='showClassModal(${JSON.stringify({slot,name:d.name,rm:d.rm,lect:d.lect,topic:d.topic,mat:d.mat,color:d.color}).replace(/'/g,"\\'")})'><div style="padding:7px 9px;height:100%;${cmap[d.color]}"><div style="font-size:12px;font-weight:700">${d.name}</div><div style="font-size:11px;color:var(--text3)">დ. ${d.rm}</div></div></td>`;
+    if(d)r+=`<td style="border:1px solid var(--border);padding:0;cursor:pointer" onclick="showClassModal(${si},${di})"><div style="padding:7px 9px;height:100%;${cmap[d.color]}"><div style="font-size:12px;font-weight:700">${d.name}</div><div style="font-size:11px;color:var(--text3)">🚪 ${d.rm} · ${d.lect.split(' ')[0]}</div></div></td>`;
     else r+=`<td style="border:1px solid var(--border)"></td>`;
   }
   r+='</tr>';swb.innerHTML+=r;
 });
 buildMonthGrid();
-function showClassModal(o){
+function showClassModal(si,di){
+  const d=weekData[di][si]; if(!d)return;
+  const o={slot:weekSlots[si],day:WEEK_DAYS[di],name:d.name,rm:d.rm,lect:d.lect,topic:d.topic,mat:d.mat,color:d.color,group:MY_GROUP};
   const bg={b:'var(--blue-lt)',g:'var(--green-lt)',a:'var(--amber-lt)'};
-  showModal(o.name+' · '+o.slot,`
+  const F=(l,v)=>`<div><label class="fl">${l}</label><div class="fv">${v||'—'}</div></div>`;
+  showModal(`${o.name} · ${o.slot}`,`
     <div style="background:${bg[o.color]||'var(--bg)'};border-radius:8px;padding:14px;margin-bottom:16px">
-      <div style="font-size:16px;font-weight:800">${o.name}</div><div style="font-size:13px;opacity:.8">${o.slot}</div>
+      <div style="font-size:17px;font-weight:800">${o.name}</div>
+      <div style="font-size:13px;opacity:.85;margin-top:2px">🕐 ${o.slot}${o.day?' · '+o.day:''}</div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:10px;font-size:13px">
-      <div style="display:flex;gap:12px"><span style="color:var(--text3);min-width:80px">პ. მ.</span><b>${o.lect}</b></div>
-      <div style="display:flex;gap:12px"><span style="color:var(--text3);min-width:80px">დ.</span><b>${o.rm}</b></div>
-      <div style="display:flex;gap:12px"><span style="color:var(--text3);min-width:80px">თ.</span><b>${o.topic}</b></div>
-      <div style="display:flex;gap:12px"><span style="color:var(--text3);min-width:80px">მ.</span><b>${o.mat}</b></div>
+    <div class="g2" style="gap:12px">
+      ${F('👨‍🏫 პროფესიული განათლების მასწავლებელი',o.lect)}
+      ${F('🕐 საათი',o.slot)}
+      ${F('🚪 აუდიტორია',o.rm)}
+      ${F('👥 ჯგუფი',o.group||'ჯგუფი 101')}
     </div>
-  `,'<button class="btn btn-n" onclick="closeModal()">დახურვა</button><button class="btn btn-b" onclick="closeModal();toast(\'შ. დ.\',\'success\')">🔔 შ.</button>');
+    <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px;font-size:13px">
+      <div><label class="fl">თემატიკა</label><div class="fv">${o.topic||'—'}</div></div>
+      <div><label class="fl">სასწავლო მასალა</label><div class="fv">${o.mat||'—'}</div></div>
+    </div>
+  `,`<button class="btn btn-n" onclick="closeModal()">დახურვა</button>
+     <button class="btn btn-b" onclick="closeModal();go('journal',null,'ელექტრონული ჟურნალი')">📋 ჟურნალი</button>`);
 }
 function schedView(view,btn){
   document.getElementById('sched-week-view').style.display=view==='week'?'block':'none';
@@ -1302,53 +1370,47 @@ function buildMonthGrid(){
 
 <script>
 // ══ LIBRARY ══
+// ბეჭდური წიგნები აქ არ ინახება — ისინი ბიბლიოთეკის პლატფორმაზეა (PRINTED_CATALOG_URL)
+const PRINTED_CATALOG_URL='https://lib.bmeda.edu.ge/catalog';
 const booksData=[
-  {title:"Gray's Anatomy, 42nd",auth:"Gray, Henry",cat:"ანატომია",col:"#881176",type:"phys",avail:true,code:"GRY-001",loc:"B-3-14"},
-  {title:"Guyton Physiology",auth:"Hall, John E.",cat:"ფიზიოლოგია",col:"#1E8A5E",type:"phys",avail:false,code:"GUY-002",loc:"C-1-08"},
-  {title:"ფარმაკოლოგია (PDF)",auth:"ბენია მარინა",cat:"ფარმაკოლოგია",col:"#C96A00",type:"dig",avail:true,code:"FARM-003",loc:"ელ."},
-  {title:"Clinical Medicine",auth:"Kumar, Clark",cat:"კლინიკური მედიცინა",col:"#9e2189",type:"phys",avail:true,code:"CLI-004",loc:"A-2-05"},
-  {title:"Medical Ethics",auth:"Hope, Tony",cat:"ეთიკა",col:"#7d1e6d",type:"dig",avail:true,code:"ETH-005",loc:"ელ."},
-  {title:"Anatomy Atlas",auth:"Netter, F.H.",cat:"ანატომია",col:"#C0392B",type:"phys",avail:true,code:"NET-006",loc:"B-3-21"},
-  {title:"Harrison's Internal Medicine",auth:"Loscalzo, J.",cat:"კლინიკური მედიცინა",col:"#881176",type:"phys",avail:false,code:"HAR-007",loc:"A-2-11"},
+  {code:'PDF-001',title:'ფარმაკოლოგია — ელექტრონული კურსი',auth:'მარინა ბერიძე',cat:'ფარმაკოლოგია',moduleCode:'MOD-107',col:'#C96A00',url:'https://lib.bmeda.edu.ge/pharm'},
+  {code:'PDF-002',title:'კლინიკური პრაქტიკის გზამკვლევი',auth:'ვასო ლომიძე',cat:'კლინიკური პრაქტიკა',moduleCode:'MOD-108',col:'#1E8A5E',url:'https://lib.bmeda.edu.ge/clinical'},
+  {code:'PDF-003',title:'ბიოქიმია — ლაბორატორიული პრაქტიკუმი',auth:'ლია გოგიაშვილი',cat:'ბიოქიმია',moduleCode:'MOD-101',col:'#881176',url:'https://lib.bmeda.edu.ge/biochem-lab'},
+  {code:'PDF-004',title:'მიკრობიოლოგია — ატლასი',auth:'ნინო ახვლედიანი',cat:'მიკრობიოლოგია',moduleCode:'MOD-105',col:'#9e2189',url:'https://lib.bmeda.edu.ge/micro-atlas'},
+  {code:'PDF-005',title:'ინფექციის კონტროლი — სახელმძღვანელო',auth:'ნინო ახვლედიანი',cat:'მიკრობიოლოგია',moduleCode:'MOD-105',col:'#7d1e6d',url:'https://lib.bmeda.edu.ge/infection'},
 ];
-let libMode='phys';
 function renderBooks(data){
-  const el=document.getElementById('books');el.innerHTML='';
-  document.getElementById('book-count').textContent=data.length+' სახ.';
-  if(!data.length){el.innerHTML='<div style="padding:20px;text-align:center;color:var(--text3)">ვ. ა. ნ.</div>';return}
+  const el=document.getElementById('books');if(!el)return;
+  el.innerHTML='';
+  const c=document.getElementById('book-count');if(c)c.textContent=data.length+' დოკუმენტი';
+  if(!data.length){el.innerHTML='<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">დოკუმენტი ვერ მოიძებნა</div>';return}
   data.forEach(b=>{
-    const isElec=b.type==='dig';
     el.innerHTML+=`<div class="book-item">
       <div class="book-spine" style="background:${b.col}"><span>${b.cat}</span></div>
       <div style="flex:1">
         <div style="font-size:13px;font-weight:600">${b.title}</div>
         <div style="font-size:12px;color:var(--text2);margin-top:2px">${b.auth}</div>
-        ${isElec?'<span class="bd bd-g" style="margin-top:4px;display:inline-block;font-size:10px">💻 ელექტრონული</span>':'<div style="font-size:11px;color:var(--text3);margin-top:3px">📍 '+b.loc+' · '+b.code+'</div>'}
-        ${!b.avail&&!isElec?'<span class="bd bd-r" style="margin-top:4px;display:inline-block;font-size:10px">სახ. არ.</span>':''}
+        <div style="font-size:11px;color:var(--text3);margin-top:3px">💻 ${b.code}${b.moduleCode?' · მოდული '+b.moduleCode:''}</div>
       </div>
-      ${isElec?`<button class="btn btn-g btn-sm" onclick="toast('PDF ↓ «${b.title}»','success')">↓ PDF გადმოწერა</button>`:''}
+      ${b.url?`<a class="btn btn-g btn-sm" href="${b.url}" target="_blank">↓ გახსნა ↗</a>`:''}
     </div>`;
   });
 }
-function libFilter(type,chip){
-  libMode=type;
-  document.querySelectorAll('#screen-lib .chip').forEach(c=>c.classList.remove('on'));chip.classList.add('on');
-  const q=document.getElementById('lib-search').value;
-  filterBooks(q);
+function libCats(){
+  const sel=document.getElementById('lib-cat');if(!sel||sel.options.length>1)return;
+  [...new Set(booksData.map(b=>b.cat))].forEach(c=>{
+    const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o)});
 }
 function filterBooks(q){
   let data=booksData;
-  if(libMode!=='all')data=data.filter(b=>libMode==='phys'?b.type==='phys':b.type==='dig');
   if(q)data=data.filter(b=>b.title.toLowerCase().includes(q.toLowerCase())||b.auth.toLowerCase().includes(q.toLowerCase()));
   renderBooks(data);
 }
 function filterBooksCat(cat){
-  let data=booksData;
-  if(libMode!=='all')data=data.filter(b=>libMode==='phys'?b.type==='phys':b.type==='dig');
-  if(cat)data=data.filter(b=>b.cat===cat);
-  renderBooks(data);
+  renderBooks(cat?booksData.filter(b=>b.cat===cat):booksData);
 }
-renderBooks(booksData.filter(b=>b.type==='phys'));
+libCats();
+renderBooks(booksData);
 
 // ══ CLUBS ══
 const clubsData=[
