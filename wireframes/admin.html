@@ -247,11 +247,10 @@ textarea.fi{resize:vertical;min-height:80px}
       <button class="ni" onclick="go('schedule',this,'განრიგი')"><span class="ni-icon">📅</span>განრიგი</button>
 
       <div class="sb-section">სასწავლო პროცესი</div>
-      <button class="ni" onclick="go('students',this,'პროფესიული სტუდენტები')"><span class="ni-icon">🎓</span>პროფესიული სტუდენტები</button>
-      <button class="ni" onclick="go('teachers',this,'პროფესიული განათლების მასწავლებლები')"><span class="ni-icon">👨‍🏫</span>მასწავლებლები</button>
+      <button class="ni" onclick="go('studentsAll()',this,'პროფესიული სტუდენტები')"><span class="ni-icon">🎓</span>პროფესიული სტუდენტები</button>
+      <button class="ni" onclick="go('teachersAll()',this,'პროფესიული განათლების მასწავლებლები')"><span class="ni-icon">👨‍🏫</span>მასწავლებლები</button>
       <button class="ni" onclick="go('groups',this,'ჯგუფები')"><span class="ni-icon">👥</span>ჯგუფები</button>
       <button class="ni" onclick="go('ejournal',this,'ელექტრონული ჟურნალი')"><span class="ni-icon">📋</span>ელექტრონული ჟურნალი</button>
-      <button class="ni" onclick="go('grades',this,'სწავლის შედეგები')"><span class="ni-icon">🎯</span>სწავლის შედეგები</button>
 
       <div class="sb-section">ფინანსები და განაცხადები</div>
       <button class="ni" onclick="go('orders',this,'ბრძანებები')"><span class="ni-icon">📜</span>ბრძანებები</button>
@@ -295,22 +294,22 @@ textarea.fi{resize:vertical;min-height:80px}
   </div>
   <div class="g2" style="margin-bottom:16px">
     <div class="card">
-      <div class="ch"><div class="ct">სტუდენტთა სტატუსი</div><button class="btn btn-n btn-sm" onclick="go('students',null,'პროფესიული სტუდენტები')">სრული სია →</button></div>
+      <div class="ch"><div class="ct">სტუდენტთა სტატუსი</div><button class="btn btn-n btn-sm" onclick="go('studentsAll()',null,'პროფესიული სტუდენტები')">სრული სია →</button></div>
       <div class="cb">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-          <div style="background:var(--green-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('students',null,'პროფესიული სტუდენტები')">
+          <div style="background:var(--green-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('studentsAll()',null,'პროფესიული სტუდენტები')">
             <div style="font-size:28px;font-weight:800;color:var(--green)">287</div>
             <div style="font-size:12px;color:var(--text2);margin-top:2px">● აქტიური</div>
           </div>
-          <div style="background:var(--amber-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('students',null,'პროფესიული სტუდენტები')">
+          <div style="background:var(--amber-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('studentsAll()',null,'პროფესიული სტუდენტები')">
             <div style="font-size:28px;font-weight:800;color:var(--amber)">18</div>
             <div style="font-size:12px;color:var(--text2);margin-top:2px">✓ სულ აქტიური</div>
           </div>
-          <div style="background:#f5e6f3;border-radius:10px;padding:14px;cursor:pointer" onclick="go('students',null,'პროფესიული სტუდენტები')">
+          <div style="background:#f5e6f3;border-radius:10px;padding:14px;cursor:pointer" onclick="go('studentsAll()',null,'პროფესიული სტუდენტები')">
             <div style="font-size:28px;font-weight:800;color:var(--navy)">12</div>
             <div style="font-size:12px;color:var(--text2);margin-top:2px">~ სტატუსი შეჩერებული</div>
           </div>
-          <div style="background:var(--red-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('students',null,'პროფესიული სტუდენტები')">
+          <div style="background:var(--red-lt);border-radius:10px;padding:14px;cursor:pointer" onclick="go('studentsAll()',null,'პროფესიული სტუდენტები')">
             <div style="font-size:28px;font-weight:800;color:var(--red)">5</div>
             <div style="font-size:12px;color:var(--text2);margin-top:2px">✕ სტატუსი შეწყვეტილი</div>
           </div>
@@ -361,9 +360,9 @@ textarea.fi{resize:vertical;min-height:80px}
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
         <input class="fi" style="width:240px" placeholder="🔍  სახელი, ID, ელ. ფოსტა..." oninput="renderUsers()" id="usr-search">
         <button class="chip active" id="usr-chip-all" onclick="filterUsersRole('',this)">ყველა</button>
-        <button class="chip" id="usr-chip-student" onclick="filterUsersRole('პროფესიული სტუდენტი',this)">🎓 პროფ. სტუდენტი</button>
-        <button class="chip" id="usr-chip-lecturer" onclick="filterUsersRole('პროფესიული განათლების მასწავლებელი',this)">👨‍🏫 მასწავლებელი</button>
-        <button class="chip" id="usr-chip-admin" onclick="filterUsersRole('ადმინისტრაციული პერსონალი',this)">🛡️ ადმინისტრაცია</button>
+        <button class="chip" id="usr-chip-student" onclick="filterUsersRole('student',this)">🎓 სტუდენტის ინტერფეისი</button>
+        <button class="chip" id="usr-chip-lecturer" onclick="filterUsersRole('teacher',this)">👨‍🏫 მასწავლებლის ინტერფეისი</button>
+        <button class="chip" id="usr-chip-admin" onclick="filterUsersRole('admin',this)">🛡️ ადმინისტრირების პანელი</button>
       </div>
       <button class="btn btn-b" onclick="addUserModal()">➕ მომხმარებლის დამატება</button>
     </div>
@@ -394,7 +393,7 @@ textarea.fi{resize:vertical;min-height:80px}
   </div>
 </div>
 
-<div class="screen" id="screen-students">
+<div class="screen" id="screen-studentsAll()">
   <div class="page-head">
     <div>
       <h2>პროფესიული სტუდენტების ბაზა</h2>
@@ -408,10 +407,6 @@ textarea.fi{resize:vertical;min-height:80px}
       <select class="fi" onchange="filterStudentStatus(this.value)" id="stu-status-filter">
         <option value="">სტატუსი: ყველა</option>
         <option value="active">აქტიური</option><option value="suspended">სტატუსი შეჩერებული</option><option value="terminated">სტატუსი შეწყვეტილი</option>
-      </select>
-      <select class="fi" onchange="filterStudentBranch(this.value)" id="stu-branch-filter">
-        <option value="">ფილიალი: ყველა</option>
-        <option value="BR-1">მთავარი კამპუსი</option><option value="BR-2">სტომ. პოლიკლინიკა</option><option value="BR-3">სიმულაციური ცენტრი</option>
       </select>
       <select class="fi" onchange="filterStudentProgram(this.value)" id="stu-prog-filter">
         <option value="">პროგრამა: ყველა</option>
@@ -435,22 +430,22 @@ textarea.fi{resize:vertical;min-height:80px}
   <div class="card">
     <div class="stabs" id="stu-tabs"></div>
     <div class="tw">
-      <table id="students-table">
-        <thead><tr><th>პროფესიული სტუდენტი</th><th>მიღება</th><th>პროგრამა</th><th>ჯგუფი</th><th>სასწ. წელი</th><th>ფილიალი</th><th>ნაშთი</th><th>სტატუსი</th><th></th></tr></thead>
-        <tbody id="students-tbody"></tbody>
+      <table id="studentsAll()-table">
+        <thead><tr><th>პროფესიული სტუდენტი</th><th>მიღება</th><th>პროგრამა</th><th>ჯგუფი</th><th>სასწ. წელი</th><th>ნაშთი</th><th>სტატუსი</th><th></th></tr></thead>
+        <tbody id="studentsAll()-tbody"></tbody>
       </table>
     </div>
-    <div class="note">ℹ️ ჩანართზე გადასვლა აჩვენებს ამ სტატუსისთვის სპეციფიკურ ველებს — შეჩერებული: შეჩერების საფუძველი, ვადა და ბრძანება; შეწყვეტილი: საფუძველი, თარიღი და ბრძანება. სტატუსი იცვლება <strong>მხოლოდ დირექტორის ბრძანებით</strong>.</div>
+    <div class="note">ℹ️ ჩანართზე გადასვლა აჩვენებს ამ სტატუსისთვის სპეციფიკურ ველებს — შეჩერებული: შეჩერების საფუძველი და ვადა; შეწყვეტილი: საფუძველი და თარიღი.</div>
   </div>
 </div>
 
 
 <!-- ══ TEACHERS ══ -->
-<div class="screen" id="screen-teachers">
+<div class="screen" id="screen-teachersAll()">
   <div class="page-head">
     <div>
       <h2>პროფესიული განათლების მასწავლებლები</h2>
-      <div class="ph-sub">სასწავლო პერსონალის ცნობარი — განმახორციელებლის ტიპი, სპეციალობა და ფილიალი · დეტალები პროფილში</div>
+      <div class="ph-sub">სასწავლო პერსონალის ცნობარი — განმახორციელებლის ტიპი და სპეციალობა · დეტალები პროფილში</div>
     </div>
     <button class="btn btn-n" onclick="exportTeachers()">⬇ ექსპორტი</button>
   </div>
@@ -466,9 +461,9 @@ textarea.fi{resize:vertical;min-height:80px}
   <div class="card">
     <div class="stabs" id="tch-tabs"></div>
     <div class="tw">
-      <table id="teachers-table">
-        <thead><tr><th>მასწავლებელი</th><th>სპეციალობა</th><th>მოდულები</th><th>ფილიალი</th><th>მუშაობის დაწყება</th><th>საათი</th><th>სტატუსი</th><th></th></tr></thead>
-        <tbody id="teachers-tbody"></tbody>
+      <table id="teachersAll()-table">
+        <thead><tr><th>მასწავლებელი</th><th>სპეციალობა</th><th>მოდულები</th><th>მუშაობის დაწყება</th><th>საათი</th><th>სტატუსი</th><th></th></tr></thead>
+        <tbody id="teachersAll()-tbody"></tbody>
       </table>
     </div>
     <div class="note">ℹ️ მასწავლებელი <strong>ჯგუფს ან მოდულს არ ებმის</strong> — ინიშნება თითო მეცადინეობაზე განრიგის builder-იდან. საათები გამოითვლება ჩატარებული მეცადინეობის ხანგრძლივობიდან.</div>
@@ -485,7 +480,7 @@ textarea.fi{resize:vertical;min-height:80px}
     <button class="btn btn-b" onclick="addGroupModal()">➕ ჯგუფის შექმნა</button>
   </div>
   <div id="groups-grid" class="g3"></div>
-  <div class="note">ℹ️ ჯგუფის პროგრამა და მიღება განსაზღვრავს მის კურიკულუმს. სტუდენტის დამატება/მოხსნა ხდება <strong>ჯგუფის გვერდიდან</strong>; მოხსნა მიმართავს შეჩერებაზე, შეწყვეტაზე, მობილობაზე ან სხვა ჯგუფზე — ყოველთვის ბრძანებით.</div>
+  <div class="note">ℹ️ ჯგუფის პროგრამა და მიღება განსაზღვრავს მის კურიკულუმს. სტუდენტის დამატება/მოხსნა ხდება <strong>ჯგუფის გვერდიდან</strong>; მოხსნა მიმართავს შეჩერებაზე, შეწყვეტაზე, მობილობაზე ან სხვა ჯგუფზე.</div>
 </div>
 
 
@@ -527,37 +522,7 @@ textarea.fi{resize:vertical;min-height:80px}
   </div>
 </div>
 
-<!-- ══ GRADES ══ -->
-<div class="screen" id="screen-grades">
-  <div class="page-head">
-    <div>
-      <h2>სწავლის შედეგები</h2>
-      <div class="ph-sub">ბინარული შეფასება — დადასტურდა / ვერ დადასტურდა, სწავლის შედეგის მიხედვით</div>
-    </div>
-    <button class="btn btn-n" onclick="exportGrades()">⬇ ექსპორტი</button>
-  </div>
-  <div class="filter-card">
-    <div class="filter-row">
-      <select class="fi" id="out-prog" onchange="setOutFilter('prog',this.value)"><option value="">პროგრამა: ყველა</option></select>
-      <select class="fi" id="out-group" onchange="setOutFilter('group',this.value)"><option value="">ჯგუფი: ყველა</option></select>
-      <select class="fi" id="out-mod" onchange="setOutFilter('mod',this.value)"><option value="">მოდული: ყველა</option></select>
-      <select class="fi" id="out-res" onchange="setOutFilter('res',this.value)">
-        <option value="">შედეგი: ყველა</option><option value="confirmed">დადასტურდა</option><option value="not_confirmed">ვერ დადასტურდა</option>
-      </select>
-      <span class="filter-hint">ფილტრი — პროგრამა · ჯგუფი · მოდული</span>
-    </div>
-  </div>
-  <div class="card">
-    <div class="ch"><div class="ct">სწავლის შედეგები <span id="out-count" style="font-size:12px;font-weight:400;color:var(--text3)"></span></div></div>
-    <div class="tw"><table>
-      <thead><tr><th>ID</th><th>პროფესიული სტუდენტი</th><th>ჯგუფი</th><th>მოდული</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>შედეგი</th><th>უწყისი</th><th></th></tr></thead>
-      <tbody id="outcomes-tbody"></tbody>
-    </table></div>
-    <div class="note">კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>.
-      ვერ დაძლევისას პირველ რიგში ინიშნება <strong>📝 გადაბარება</strong> — სტუდენტი თავიდან გადის მხოლოდ შეფასების საათებს (I უფასო, II ფასიანი) და საკუთარ ჯგუფში რჩება.
-      მხოლოდ მაშინ, როცა გადაბარებითაც ვერ დააბარებს და მოდული არ ჩაეთვლება, ინიშნება <strong>🔁 მოდულის ხელახლა გავლა სხვა ჯგუფთან ერთად</strong>.</div>
-  </div>
-</div>
+
 
 <!-- ══ PAYMENTS ══ -->
 <div class="screen" id="screen-payments">
@@ -710,8 +675,8 @@ textarea.fi{resize:vertical;min-height:80px}
 <!-- ══ ORDERS (§7.1) ══ -->
 <div class="screen" id="screen-orders">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-    <div style="font-size:13px;color:var(--text2)">ბრძანება — სისტემის ჩანაწერის საფუძველი. ნომერი = ციფრები, თანმიმდევრობით კალენდარულ წელში. ცვლილება = <strong>ახალი ბრძანება</strong>.</div>
-    <button class="btn btn-b" onclick="addOrderModal()">➕ ბრძანების რეგისტრაცია</button>
+    <div style="font-size:13px;color:var(--text2)">ბრძანებები <strong>აიტვირთება და იკითხება</strong>. სისტემაში ბრძანება სხვა ჩანაწერს არ ებმევა — არაფრის წინაპირობა არ არის.</div>
+    <button class="btn btn-b" onclick="addOrderModal()">⬆ ბრძანების ატვირთვა</button>
   </div>
   <div class="card">
     <div class="ch"><div class="ct">ბრძანებების რეგისტრი</div><span style="font-size:11px;color:var(--text3)">ინახება უსასრულოდ · [სეწ] მუხ. 2, 6, 10</span></div>
@@ -754,6 +719,7 @@ textarea.fi{resize:vertical;min-height:80px}
   <div class="page-head">
     <div><h2>მიღებები</h2>
       <div class="ph-sub">მიღება → პროგრამები → მოდულები რეესტრიდან → საათების განაწილება კვირების მიხედვით</div></div>
+    <button class="btn btn-b" onclick="addIntakeModal()">➕ მიღების დამატება</button>
   </div>
   <div class="grid-3" id="intakes-grid"></div>
 </div>
@@ -914,7 +880,7 @@ function toast(msg,type){
 }
 
 // ══ DATA ══
-// ── GOVERNANCE (§7.1) — ბრძანება = system of record ──
+// ── ბრძანებები (§7.1) — აიტვირთება და იკითხება; სისტემაში სხვა ჩანაწერს არ ებმევა ──
 const ordersData=[
   {id:'ORD-1',no:'2587',date:'19.02.2025',index:'general_01',subject:'სასწავლო პროცესის მარეგულირებელი წესის დამტკიცება',eflow:'EF-2025-2587',eSign:true,pSign:true,amends:null},
   {id:'ORD-2',no:'5794',date:'25.04.2025',index:'general_01',subject:'ცვლილება სასწავლო პროცესის მარეგულირებელ წესში',eflow:'EF-2025-5794',eSign:true,pSign:true,amends:'ORD-1'},
@@ -945,8 +911,8 @@ const rolesData=[
 ];
 // ── CRUD წვდომის რესურსები (§7.2) ──
 const PERM_RESOURCES=[
-  {key:'students',    label:'პროფესიული სტუდენტები', group:'სასწავლო პროცესი'},
-  {key:'teachers',    label:'მასწავლებლები',          group:'სასწავლო პროცესი'},
+  {key:'studentsAll()',    label:'პროფესიული სტუდენტები', group:'სასწავლო პროცესი'},
+  {key:'teachersAll()',    label:'მასწავლებლები',          group:'სასწავლო პროცესი'},
   {key:'groups',      label:'ჯგუფები',                group:'სასწავლო პროცესი'},
   {key:'programs',    label:'საგანმანათლებლო პროგრამები', group:'სასწავლო პროცესი'},
   {key:'templates',   label:'მოდულის შაბლონები',      group:'სასწავლო პროცესი'},
@@ -1025,10 +991,10 @@ const auditLog=[
 ];
 // ── REFERENCE DATA (§2.1) ──
 const programsData=[
-  {id:'PRG-1',name:'საექთნო განათლება',nameEn:'Nursing',type:'higher_vocational',nqf:5,qualification:'პრაქტიკოსი ექთანი',durationYears:3,totalCredits:180,orderId:'ORD-4',status:'active',students:96},
-  {id:'PRG-2',name:'ექთნის თანაშემწე',nameEn:'Nurse Assistant',type:'secondary_vocational',nqf:4,qualification:'ექთნის თანაშემწე',durationYears:2,totalCredits:120,orderId:'ORD-4',status:'active',students:41},
-  {id:'PRG-3',name:'ფარმაცია (სააფთიაქო)',nameEn:'Pharmacy',type:'secondary_vocational',nqf:4,qualification:'ფარმაციის სპეციალისტი',durationYears:2,totalCredits:120,orderId:'ORD-4',status:'active',students:32},
-  {id:'PRG-4',name:'კბილის სატექნიკო საქმე',nameEn:'Dental Technology',type:'secondary_vocational',nqf:4,qualification:'კბილის ტექნიკოსი',durationYears:2,totalCredits:120,orderId:'ORD-4',status:'active',students:18},
+  {id:'PRG-1',name:'საექთნო განათლება',nameEn:'Nursing',type:'higher_vocational',nqf:5,qualification:'პრაქტიკოსი ექთანი',durationYears:3,totalCredits:180,status:'active',students:96},
+  {id:'PRG-2',name:'ექთნის თანაშემწე',nameEn:'Nurse Assistant',type:'secondary_vocational',nqf:4,qualification:'ექთნის თანაშემწე',durationYears:2,totalCredits:120,status:'active',students:41},
+  {id:'PRG-3',name:'ფარმაცია (სააფთიაქო)',nameEn:'Pharmacy',type:'secondary_vocational',nqf:4,qualification:'ფარმაციის სპეციალისტი',durationYears:2,totalCredits:120,status:'active',students:32},
+  {id:'PRG-4',name:'კბილის სატექნიკო საქმე',nameEn:'Dental Technology',type:'secondary_vocational',nqf:4,qualification:'კბილის ტექნიკოსი',durationYears:2,totalCredits:120,status:'active',students:18},
 ];
 const intakesData=[
   {id:'INT-1',name:'საგაზაფხულო მიღება 2026',season:'spring',year:2026},
@@ -1036,37 +1002,12 @@ const intakesData=[
   {id:'INT-3',name:'საგაზაფხულო მიღება 2025',season:'spring',year:2025},
 ];
 // ── სასწავლო პერიოდი: განისაზღვრება მხოლოდ დაწყების თარიღით.
-//    დასრულება გამოითვლება, როცა პროგრამისთვის მინიჭებული კვირები ამოიწურება.
-const studyYearsData=[
-  {id:'SY-1',name:'2025–2026 სასწავლო პერიოდი',intakeId:'INT-2',startsOn:'15.09.2025',orderId:'ORD-5',breaks:'31.12.2025–10.01.2026 (ზამთრის არდადეგები)'},
-  {id:'SY-2',name:'2025 საგაზაფხულო პერიოდი',intakeId:'INT-3',startsOn:'10.02.2025',orderId:'ORD-5',breaks:'—'},
-  {id:'SY-3',name:'2026 საგაზაფხულო პერიოდი',intakeId:'INT-1',startsOn:'09.02.2026',orderId:'ORD-5',breaks:'—'},
-];
-// კვირების რაოდენობა — თითოეული პროგრამისთვის, თითოეულ პერიოდზე
-const periodWeeks=[
-  {periodId:'SY-1',programId:'PRG-1',weeks:36},
-  {periodId:'SY-1',programId:'PRG-2',weeks:32},
-  {periodId:'SY-1',programId:'PRG-3',weeks:30},
-  {periodId:'SY-1',programId:'PRG-4',weeks:30},
-  {periodId:'SY-2',programId:'PRG-1',weeks:34},
-  {periodId:'SY-2',programId:'PRG-3',weeks:28},
-  {periodId:'SY-3',programId:'PRG-1',weeks:36},
-];
+
+
 // dd.mm.yyyy არითმეტიკა
 function parseGeoDate(d){const [dd,mm,yy]=String(d).split('.').map(Number);return new Date(yy,mm-1,dd)}
 function fmtGeoDate(dt){const p=n=>String(n).padStart(2,'0');return `${p(dt.getDate())}.${p(dt.getMonth()+1)}.${dt.getFullYear()}`}
 function addWeeks(d,w){const dt=parseGeoDate(d);dt.setDate(dt.getDate()+w*7);return fmtGeoDate(dt)}
-function weeksFor(periodId,programId){const r=periodWeeks.find(x=>x.periodId===periodId&&x.programId===programId);return r?r.weeks:null}
-// დასრულების თარიღი = დაწყება + მინიჭებული კვირები (გამოთვლილი, არა შენახული)
-function periodEnd(periodId,programId){
-  const per=studyYearsData.find(x=>x.id===periodId); const w=weeksFor(periodId,programId);
-  return (per&&w)?addWeeks(per.startsOn,w):null;
-}
-function currentWeekOf(periodId){
-  const per=studyYearsData.find(x=>x.id===periodId); if(!per)return null;
-  const diff=Math.floor((parseGeoDate(TODAY)-parseGeoDate(per.startsOn))/(7*24*3600*1000))+1;
-  return diff>0?diff:null;
-}
 const TODAY='09.07.2026';
 const venuesData=[
   {id:'VEN-1',code:'603',type:'auditorium',capacity:30,active:true},
@@ -1085,11 +1026,7 @@ const slotTemplates=[
   {id:'SL-6',ordinal:'VI',startsAt:'14:45',endsAt:'15:25'},
   {id:'SL-7',ordinal:'VII',startsAt:'15:30',endsAt:'16:10'},
 ];
-const branchesData=[
-  {id:'BR-1',name:'მთავარი კამპუსი — ტბეთის ქ. 4',address:'ბათუმი, ტბეთის ქ. 4',active:true},
-  {id:'BR-2',name:'სტომატოლოგიური პოლიკლინიკა',address:'ბათუმი, ტბეთის ქ. 4 (კორპ. B)',active:true},
-  {id:'BR-3',name:'სიმულაციური ცენტრი',address:'ბათუმი, ტბეთის ქ. 4 (III სართ.)',active:true},
-];
+
 const partnersData=[
   {id:'PO-1',name:'ბათუმის რესპუბლიკური საავადმყოფო',agreementNo:'თ-14/2025',agreementDate:'10.09.2025',kind:'dual',active:true},
   {id:'PO-2',name:'აჭარის სამედიცინო ცენტრი',agreementNo:'თ-19/2025',agreementDate:'22.09.2025',kind:'cooperative',active:true},
@@ -1120,50 +1057,61 @@ const practicePlacements=[
 const imPlacements=imId=>practicePlacements.filter(x=>x.imId===imId);
 const ppOf=(imId,studentId)=>practicePlacements.find(x=>x.imId===imId&&x.studentId===studentId);
 // ── PEOPLE ──
-// სტატუსი (§1.13): applicant | active | suspended | terminated — მხოლოდ ბრძანებით
-const students=[
-  {id:'BMA-2401',branchId:'BR-1',name:'ნინო მამულაძე',group:'ჯგუფი 101',programId:'PRG-1',intakeId:'INT-2',studyYear:2,balance:0,status:'active',email:'n.mamuladze@student.bmeda.edu.ge',phone:'+995 555 111 001',enrolOrderId:'ORD-4',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2402',branchId:'BR-1',name:'გიორგი ბერიძე',group:'ჯგუფი 101',programId:'PRG-1',intakeId:'INT-2',studyYear:2,balance:3100,status:'active',email:'g.beridze@student.bmeda.edu.ge',phone:'+995 555 111 002',enrolOrderId:'ORD-4',hasSen:false,socialStatus:['socially_vulnerable'],legalRepName:'ლალი ბერიძე',legalRepRelation:'დედა',legalRepPhone:'+995 555 911 002'},
-  {id:'BMA-2403',branchId:'BR-1',name:'მარიამ ჩხეიძე',group:'ჯგუფი 102',programId:'PRG-1',intakeId:'INT-2',studyYear:2,balance:0,status:'active',email:'m.chkheidze@student.bmeda.edu.ge',phone:'+995 555 111 003',enrolOrderId:'ORD-4',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2404',branchId:'BR-1',name:'ლუკა კვარაცხელია',group:'ჯგუფი 102',programId:'PRG-3',intakeId:'INT-2',studyYear:1,balance:0,status:'active',email:'l.kvaratskhelia@student.bmeda.edu.ge',phone:'+995 555 111 004',enrolOrderId:'ORD-4',hasSen:true,socialStatus:['sen'],legalRepName:'ზაზა კვარაცხელია',legalRepRelation:'მამა',legalRepPhone:'+995 555 911 004'},
-  {id:'BMA-2301',branchId:'BR-1',name:'ანა გელაშვილი',group:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,balance:0,status:'active',email:'a.gelashvili@student.bmeda.edu.ge',phone:'+995 555 222 001',enrolOrderId:'ORD-4',hasSen:false,socialStatus:['state_grant'],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2302',branchId:'BR-1',name:'დავით ხაჭაპურიძე',group:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,balance:6200,status:'terminated',email:'d.khachapuridze@student.bmeda.edu.ge',phone:'+995 555 222 002',enrolOrderId:'ORD-4',terminatedOn:'10.03.2026',terminationReason:'financial_debt',terminationOrderId:'ORD-8',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2303',branchId:'BR-1',name:'სოფო ნიჟარაძე',group:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,balance:0,status:'active',email:'s.nizharadze@student.bmeda.edu.ge',phone:'+995 555 222 003',enrolOrderId:'ORD-4',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2201',branchId:'BR-1',name:'ვახო ლომიძე',group:'ჯგუფი 301',programId:'PRG-3',intakeId:'INT-3',studyYear:2,balance:1550,status:'suspended',email:'v.lomidze@student.bmeda.edu.ge',phone:'+995 555 333 001',enrolOrderId:'ORD-4',suspendedOn:'12.02.2026',suspensionReason:'own_application',suspensionExpiresOn:'12.02.2031',suspensionOrderId:'ORD-6',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2202',branchId:'BR-1',name:'ეკა თავდგირიძე',group:'ჯგუფი 301',programId:'PRG-4',intakeId:'INT-3',studyYear:2,balance:0,status:'active',email:'e.tavdgiridze@student.bmeda.edu.ge',phone:'+995 555 333 002',enrolOrderId:'ORD-4',hasSen:false,socialStatus:['idp'],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2101',branchId:'BR-1',name:'ბექა ჩიტიძე',group:'ჯგუფი 401',programId:'PRG-2',intakeId:'INT-3',studyYear:2,balance:0,status:'active',email:'b.chitidze@student.bmeda.edu.ge',phone:'+995 555 444 001',enrolOrderId:'ORD-4',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
-  {id:'BMA-2601',branchId:'BR-1',name:'თეონა აბაშიძე',group:'—',programId:'PRG-1',intakeId:'INT-1',studyYear:1,balance:0,status:'active',email:'t.abashidze@student.bmeda.edu.ge',phone:'+995 555 555 011',hasSen:false,socialStatus:[],legalRepName:'ნათია აბაშიძე',legalRepRelation:'დედა',legalRepPhone:'+995 555 955 011'},
+
+
+
+// ══ ერთიანი მომხმარებლების ცხრილი ══
+// ყველა მომხმარებელი ერთ სიაშია; ინტერფეისი განისაზღვრება როლით:
+//   student → სტუდენტის პორტალი · teacher → მასწავლებლის პორტალი · დანარჩენი → ადმინისტრირების პანელი
+const usersData=[
+
+  {role:'student',id:'BMA-2401',name:'ნინო მამულაძე',group:'ჯგუფი 101',programId:'PRG-1',intakeId:'INT-2',studyYear:2,balance:0,status:'active',email:'n.mamuladze@student.bmeda.edu.ge',phone:'+995 555 111 001',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {role:'student',id:'BMA-2402',name:'გიორგი ბერიძე',group:'ჯგუფი 101',programId:'PRG-1',intakeId:'INT-2',studyYear:2,balance:3100,status:'active',email:'g.beridze@student.bmeda.edu.ge',phone:'+995 555 111 002',hasSen:false,socialStatus:['socially_vulnerable'],legalRepName:'ლალი ბერიძე',legalRepRelation:'დედა',legalRepPhone:'+995 555 911 002'},
+  {role:'student',id:'BMA-2403',name:'მარიამ ჩხეიძე',group:'ჯგუფი 102',programId:'PRG-1',intakeId:'INT-2',studyYear:2,balance:0,status:'active',email:'m.chkheidze@student.bmeda.edu.ge',phone:'+995 555 111 003',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {role:'student',id:'BMA-2404',name:'ლუკა კვარაცხელია',group:'ჯგუფი 102',programId:'PRG-3',intakeId:'INT-2',studyYear:1,balance:0,status:'active',email:'l.kvaratskhelia@student.bmeda.edu.ge',phone:'+995 555 111 004',hasSen:true,socialStatus:['sen'],legalRepName:'ზაზა კვარაცხელია',legalRepRelation:'მამა',legalRepPhone:'+995 555 911 004'},
+  {role:'student',id:'BMA-2301',name:'ანა გელაშვილი',group:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,balance:0,status:'active',email:'a.gelashvili@student.bmeda.edu.ge',phone:'+995 555 222 001',hasSen:false,socialStatus:['state_grant'],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {role:'student',id:'BMA-2302',name:'დავით ხაჭაპურიძე',group:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,balance:6200,status:'terminated',email:'d.khachapuridze@student.bmeda.edu.ge',phone:'+995 555 222 002',terminatedOn:'10.03.2026',terminationReason:'financial_debt',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {role:'student',id:'BMA-2303',name:'სოფო ნიჟარაძე',group:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,balance:0,status:'active',email:'s.nizharadze@student.bmeda.edu.ge',phone:'+995 555 222 003',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {role:'student',id:'BMA-2201',name:'ვახო ლომიძე',group:'ჯგუფი 301',programId:'PRG-3',intakeId:'INT-3',studyYear:2,balance:1550,status:'suspended',email:'v.lomidze@student.bmeda.edu.ge',phone:'+995 555 333 001',suspendedOn:'12.02.2026',suspensionReason:'own_application',suspensionExpiresOn:'12.02.2031',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {role:'student',id:'BMA-2202',name:'ეკა თავდგირიძე',group:'ჯგუფი 301',programId:'PRG-4',intakeId:'INT-3',studyYear:2,balance:0,status:'active',email:'e.tavdgiridze@student.bmeda.edu.ge',phone:'+995 555 333 002',hasSen:false,socialStatus:['idp'],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {role:'student',id:'BMA-2101',name:'ბექა ჩიტიძე',group:'ჯგუფი 401',programId:'PRG-2',intakeId:'INT-3',studyYear:2,balance:0,status:'active',email:'b.chitidze@student.bmeda.edu.ge',phone:'+995 555 444 001',hasSen:false,socialStatus:[],legalRepName:'',legalRepRelation:'',legalRepPhone:''},
+  {role:'student',id:'BMA-2601',name:'თეონა აბაშიძე',group:'—',programId:'PRG-1',intakeId:'INT-1',studyYear:1,balance:0,status:'active',email:'t.abashidze@student.bmeda.edu.ge',phone:'+995 555 555 011',hasSen:false,socialStatus:[],legalRepName:'ნათია აბაშიძე',legalRepRelation:'დედა',legalRepPhone:'+995 555 955 011'},
+
+  {role:'teacher',id:'T-001',name:'ნინო კაპანაძე',implementerType:'vocational_teacher',spec:'ანატომია',modules:['ბიოქიმია','ნეირო-ანატომია'],email:'n.kapanadze@bmeda.edu.ge',phone:'+995 555 001 001',workStartedOn:'01.09.2016',qualification:'ბიოლოგიის მეცნიერებათა მაგისტრი, ბათუმის შოთა რუსთაველის სახელმწიფო უნივერსიტეტი (2014). ბიოქიმიის სწავლების 10-წლიანი გამოცდილება.',status:'active'},
+  {role:'teacher',id:'T-002',name:'გიორგი ბახტაძე',implementerType:'vocational_teacher',spec:'ფიზიოლოგია',modules:['ფიზიოლოგია'],email:'g.bakhtadze@bmeda.edu.ge',phone:'+995 555 001 002',workStartedOn:'15.09.2018',qualification:'მედიცინის დოქტორი, თბილისის სახელმწიფო სამედიცინო უნივერსიტეტი (2012).',status:'active'},
+  {role:'teacher',id:'T-003',name:'მარინე ლომთაძე',implementerType:'vocational_teacher',spec:'ფარმაკოლოგია',modules:['ფარმაკოლოგია'],email:'m.lomtadze@bmeda.edu.ge',phone:'+995 555 001 003',workStartedOn:'01.02.2020',qualification:'ფარმაციის მაგისტრი; კლინიკური ფარმაკოლოგიის სერტიფიკატი (2019).',status:'active'},
+  {role:'teacher',id:'T-004',name:'ზვიად ქობულია',implementerType:'vocational_teacher',spec:'შინმოვლა',modules:['შინმოვლა','კლინიკური პრაქტიკა'],email:'z.kobuliya@bmeda.edu.ge',phone:'+995 555 001 004',workStartedOn:'10.09.2021',qualification:'პრაქტიკოსი ექთანი; შინმოვლის ინსტრუქტორის სერტიფიკატი.',status:'active'},
+  {role:'teacher',id:'T-005',name:'ნანა ჯაფარიძე',implementerType:'vocational_teacher',spec:'მიკრობიოლოგია',modules:['მიკრობიოლოგია'],email:'n.japaridze@bmeda.edu.ge',phone:'+995 555 001 005',workStartedOn:'01.09.2022',qualification:'ლაბორატორიული დიაგნოსტიკის სპეციალისტი.',status:'inactive'},
+  {role:'teacher',id:'T-006',name:'ლია გოგიაშვილი',implementerType:'vocational_teacher',spec:'პრაქტიკული სწავლება',modules:['შინმოვლა'],email:'l.gogiashvili@bmeda.edu.ge',phone:'+995 555 001 006',workStartedOn:'05.09.2023',qualification:'პრაქტიკოსი ექთანი; სიმულაციური სწავლების ინსტრუქტორი.',status:'active'},
+
+  {role:'spms_specialist',id:'ADM-001',name:'თამარ ბერიძე',dept:'სასწავლო პროცესის მართვის სამსახური',email:'t.beridze@bmeda.edu.ge',phone:'+995 555 000 001',status:'active'},
+  {role:'finance_manager',id:'ADM-002',name:'ლევან ღოღობერიძე',dept:'ფინანსური სამსახური',email:'finance@bmeda.edu.ge',phone:'+995 555 000 002',status:'active'},
+  {role:'dpo',id:'ADM-003',name:'სალომე მაისურაძე',dept:'პერსონალურ მონაცემთა დაცვა',email:'dpo@bmeda.edu.ge',phone:'+995 555 000 003',status:'active'},
 ];
-// implementer_type (§0.8): vocational_teacher | instructor | clinical_teaching_person | invited_specialist | lab_assistant
-const teachers=[
-  {id:'T-001',branchId:'BR-1',name:'ნინო კაპანაძე',implementerType:'vocational_teacher',spec:'ანატომია',modules:['ბიოქიმია','ნეირო-ანატომია'],email:'n.kapanadze@bmeda.edu.ge',phone:'+995 555 001 001',workStartedOn:'01.09.2016',qualification:'ბიოლოგიის მეცნიერებათა მაგისტრი, ბათუმის შოთა რუსთაველის სახელმწიფო უნივერსიტეტი (2014). ბიოქიმიის სწავლების 10-წლიანი გამოცდილება.',appointOrderId:'ORD-4',status:'active'},
-  {id:'T-002',branchId:'BR-1',name:'გიორგი ბახტაძე',implementerType:'vocational_teacher',spec:'ფიზიოლოგია',modules:['ფიზიოლოგია'],email:'g.bakhtadze@bmeda.edu.ge',phone:'+995 555 001 002',workStartedOn:'15.09.2018',qualification:'მედიცინის დოქტორი, თბილისის სახელმწიფო სამედიცინო უნივერსიტეტი (2012).',appointOrderId:'ORD-4',status:'active'},
-  {id:'T-003',branchId:'BR-1',name:'მარინე ლომთაძე',implementerType:'vocational_teacher',spec:'ფარმაკოლოგია',modules:['ფარმაკოლოგია'],email:'m.lomtadze@bmeda.edu.ge',phone:'+995 555 001 003',workStartedOn:'01.02.2020',qualification:'ფარმაციის მაგისტრი; კლინიკური ფარმაკოლოგიის სერტიფიკატი (2019).',appointOrderId:'ORD-4',status:'active'},
-  {id:'T-004',branchId:'BR-1',name:'ზვიად ქობულია',implementerType:'vocational_teacher',spec:'შინმოვლა',modules:['შინმოვლა','კლინიკური პრაქტიკა'],email:'z.kobuliya@bmeda.edu.ge',phone:'+995 555 001 004',workStartedOn:'10.09.2021',qualification:'პრაქტიკოსი ექთანი; შინმოვლის ინსტრუქტორის სერტიფიკატი.',appointOrderId:'ORD-4',status:'active'},
-  {id:'T-005',branchId:'BR-1',name:'ნანა ჯაფარიძე',implementerType:'vocational_teacher',spec:'მიკრობიოლოგია',modules:['მიკრობიოლოგია'],email:'n.japaridze@bmeda.edu.ge',phone:'+995 555 001 005',workStartedOn:'01.09.2022',qualification:'ლაბორატორიული დიაგნოსტიკის სპეციალისტი.',appointOrderId:'ORD-4',status:'inactive'},
-  {id:'T-006',branchId:'BR-1',name:'ლია გოგიაშვილი',implementerType:'vocational_teacher',spec:'პრაქტიკული სწავლება',modules:['შინმოვლა'],email:'l.gogiashvili@bmeda.edu.ge',phone:'+995 555 001 006',workStartedOn:'05.09.2023',qualification:'პრაქტიკოსი ექთანი; სიმულაციური სწავლების ინსტრუქტორი.',appointOrderId:'ORD-4',status:'active'},
-];
-const admins=[
-  {id:'ADM-001',name:'თამარ ბერიძე',role:'spms_specialist',dept:'სასწავლო პროცესის მართვის სამსახური',email:'t.beridze@bmeda.edu.ge',phone:'+995 555 000 001',status:'active'},
-  {id:'ADM-002',name:'ლევან ღოღობერიძე',role:'finance_manager',dept:'ფინანსური სამსახური',email:'finance@bmeda.edu.ge',phone:'+995 555 000 002',status:'active'},
-  {id:'ADM-003',name:'სალომე მაისურაძე',role:'dpo',dept:'პერსონალურ მონაცემთა დაცვა',email:'dpo@bmeda.edu.ge',phone:'+995 555 000 003',status:'active'},
-];
+const usersOf=r=>usersData.filter(u=>u.role===r);
+const roleUi=r=>((rolesData.find(x=>x.id===r)||{}).ui)||'admin';
+const userUi=u=>roleUi(u.role);
+// წაკითხვის ხედები ერთიან ცხრილზე
+const studentsAll=()=>usersOf('student');
+const teachersAll=()=>usersOf('teacher');
+const adminsAll=()=>usersData.filter(u=>userUi(u)==='admin');
+const userById=id=>usersData.find(u=>u.id===id)||null;
 // ── GROUPS (§1.9) — identity = group number + Program + Intake ──
 const groupsData=[
-  {id:'GRP-101',branchId:'BR-1',name:'ჯგუფი 101',programId:'PRG-1',intakeId:'INT-2',studyYear:2,students:24,active:true},
-  {id:'GRP-102',branchId:'BR-1',name:'ჯგუფი 102',programId:'PRG-1',intakeId:'INT-2',studyYear:2,students:22,active:true},
-  {id:'GRP-201',branchId:'BR-1',name:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,students:26,active:true},
-  {id:'GRP-202',branchId:'BR-1',name:'ჯგუფი 202',programId:'PRG-2',intakeId:'INT-3',studyYear:2,students:23,active:true},
-  {id:'GRP-301',branchId:'BR-1',name:'ჯგუფი 301',programId:'PRG-3',intakeId:'INT-3',studyYear:2,students:20,active:true},
-  {id:'GRP-401',branchId:'BR-1',name:'ჯგუფი 401',programId:'PRG-4',intakeId:'INT-3',studyYear:2,students:18,active:true},
+  {id:'GRP-101',name:'ჯგუფი 101',programId:'PRG-1',intakeId:'INT-2',studyYear:2,students:24,active:true},
+  {id:'GRP-102',name:'ჯგუფი 102',programId:'PRG-1',intakeId:'INT-2',studyYear:2,students:22,active:true},
+  {id:'GRP-201',name:'ჯგუფი 201',programId:'PRG-1',intakeId:'INT-3',studyYear:3,students:26,active:true},
+  {id:'GRP-202',name:'ჯგუფი 202',programId:'PRG-2',intakeId:'INT-3',studyYear:2,students:23,active:true},
+  {id:'GRP-301',name:'ჯგუფი 301',programId:'PRG-3',intakeId:'INT-3',studyYear:2,students:20,active:true},
+  {id:'GRP-401',name:'ჯგუფი 401',programId:'PRG-4',intakeId:'INT-3',studyYear:2,students:18,active:true},
 ];
 // ── MODULE TEMPLATES (§2.5) — national standard masters ──
 const moduleTemplates=[
-  {id:'MT-1',regNo:'0910919',title:'ბიოქიმია',titleEn:'Biochemistry',credits:4,kind:'theoretical',kindLabel:'საბაზო მეცნიერებები',prerequisite:null,revisions:'21.05.2018 / 11.02.2021 / 15.09.2021',orderId:'ORD-4',outcomes:7,contactH:72,selfH:14,assessH:14,programs:['PRG-1','PRG-3']},
-  {id:'MT-2',regNo:'0910917',title:'შინმოვლა',titleEn:'Home Care',credits:6,kind:'practical',kindLabel:null,prerequisite:'MT-1',revisions:'21.05.2018 / 11.02.2021',orderId:'ORD-4',outcomes:5,contactH:90,selfH:20,assessH:16,programs:['PRG-1','PRG-2']},
-  {id:'MT-3',regNo:'0910922',title:'ფარმაკოლოგია',titleEn:'Pharmacology',credits:5,kind:'theoretical',kindLabel:'საბაზო მეცნიერებები',prerequisite:'MT-1',revisions:'15.09.2021',orderId:'ORD-4',outcomes:6,contactH:80,selfH:18,assessH:12,programs:['PRG-1','PRG-3']},
-  {id:'MT-4',regNo:'0910931',title:'კლინიკური პრაქტიკა',titleEn:'Clinical Practice',credits:8,kind:'work_based',kindLabel:null,prerequisite:'MT-2',revisions:'11.02.2021',orderId:'ORD-4',outcomes:4,contactH:120,selfH:10,assessH:20,programs:['PRG-1']},
-  {id:'MT-5',regNo:'0910905',title:'მიკრობიოლოგია',titleEn:'Microbiology',credits:4,kind:'theoretical',kindLabel:'საბაზო მეცნიერებები',prerequisite:null,revisions:'21.05.2018',orderId:'ORD-4',outcomes:5,contactH:64,selfH:12,assessH:10,programs:['PRG-1','PRG-2','PRG-3']},
+  {id:'MT-1',regNo:'0910919',title:'ბიოქიმია',titleEn:'Biochemistry',credits:4,kind:'theoretical',kindLabel:'საბაზო მეცნიერებები',prerequisite:null,revisions:'21.05.2018 / 11.02.2021 / 15.09.2021',outcomes:7,contactH:72,selfH:14,assessH:14,programs:['PRG-1','PRG-3']},
+  {id:'MT-2',regNo:'0910917',title:'შინმოვლა',titleEn:'Home Care',credits:6,kind:'practical',kindLabel:null,prerequisite:'MT-1',revisions:'21.05.2018 / 11.02.2021',outcomes:5,contactH:90,selfH:20,assessH:16,programs:['PRG-1','PRG-2']},
+  {id:'MT-3',regNo:'0910922',title:'ფარმაკოლოგია',titleEn:'Pharmacology',credits:5,kind:'theoretical',kindLabel:'საბაზო მეცნიერებები',prerequisite:'MT-1',revisions:'15.09.2021',outcomes:6,contactH:80,selfH:18,assessH:12,programs:['PRG-1','PRG-3']},
+  {id:'MT-4',regNo:'0910931',title:'კლინიკური პრაქტიკა',titleEn:'Clinical Practice',credits:8,kind:'work_based',kindLabel:null,prerequisite:'MT-2',revisions:'11.02.2021',outcomes:4,contactH:120,selfH:10,assessH:20,programs:['PRG-1']},
+  {id:'MT-5',regNo:'0910905',title:'მიკრობიოლოგია',titleEn:'Microbiology',credits:4,kind:'theoretical',kindLabel:'საბაზო მეცნიერებები',prerequisite:null,revisions:'21.05.2018',outcomes:5,contactH:64,selfH:12,assessH:10,programs:['PRG-1','PRG-2','PRG-3']},
 ];
 // ══ მოდულის რეესტრი — მოდულს მხოლოდ დასახელება აქვს ══
 // მოდულის ტიპი: theoretical — ლექტორი ეთითება ცხრილში; practical — ჯგუფი იშლება, სტუდენტი
@@ -1393,33 +1341,20 @@ const moduleLectures=[
   {id:'ML-16',moduleCode:'MOD-105',templateLectureId:'TL-16',slot:1,seq:1,title:'მიკროორგანიზმების აგებულება',kind:'theory',outcomeNo:1,durationMin:40,conducted:true,conductedOn:'12.03.2026',note:''},
   {id:'ML-17',moduleCode:'MOD-106',templateLectureId:'TL-1',slot:1,seq:1,title:'შესავალი ბიოქიმიაში — უჯრედის ქიმიური შემადგენლობა',kind:'theory',outcomeNo:1,durationMin:40,conducted:false,conductedOn:null,note:''},
 ];
-// ── სასწავლო მასალა მეცადინეობაზე (§1.6) — ვიდეო მხოლოდ ჩამოტვირთვადი ──
-const lectureMaterials=[
-  {id:'LM-1',lectureId:'ML-1',scope:'module',type:'syllabus',title:'ბიოქიმიის სილაბუსი 2026',fileUrl:'/files/biochem-syllabus.pdf',link:'',downloadable:true},
-  {id:'LM-2',lectureId:'ML-1',scope:'module',type:'presentation',title:'უჯრედის ქიმიური შემადგენლობა (სლაიდები)',fileUrl:'/files/cell-chem.pptx',link:'',downloadable:true},
-  {id:'LM-3',lectureId:'ML-1',scope:'module',type:'video',title:'ვიდეო ლექცია — უჯრედის ქიმია',fileUrl:'/files/cell-chem.mp4',link:'',downloadable:true},
-  {id:'LM-4',lectureId:'ML-3',scope:'module',type:'lesson_plan',title:'მეცადინეობის გეგმა — ცილები',fileUrl:'/files/proteins-plan.pdf',link:'',downloadable:true},
-  {id:'LM-5',lectureId:'ML-3',scope:'module',type:'learning_resource',title:'ბიოქიმია — სახელმძღვანელო (ბიბლიოთეკა)',fileUrl:'',link:'978-9941-28-001-2',downloadable:false},
-  {id:'LM-6',lectureId:'ML-8',scope:'module',type:'homework',title:'ლაბორატორიული ოქმის ფორმა',fileUrl:'/files/lab-protocol.docx',link:'',downloadable:true},
-  {id:'LM-7',lectureId:'TL-1',scope:'template',type:'syllabus',title:'ბიოქიმიის სილაბუსი (შაბლონი)',fileUrl:'/files/biochem-syllabus-master.pdf',link:'',downloadable:true},
-  {id:'LM-8',lectureId:'TL-8',scope:'template',type:'exam',title:'ლაბორატორიული შეფასების მასალა',fileUrl:'/files/lab-assessment.pdf',link:'',downloadable:true},
-  {id:'LM-9',lectureId:'ML-11',scope:'module',type:'video',title:'სიმულაცია — პაციენტის მოვლა',fileUrl:'/files/patient-care.mp4',link:'',downloadable:true},
-];
+
 // helpers
 const modLectures=code=>moduleLectures.filter(l=>l.moduleCode===code).sort((a,b)=>a.slot-b.slot||a.seq-b.seq);
 const tplLectures=tid=>templateLectures.filter(l=>l.templateId===tid).sort((a,b)=>a.slot-b.slot||a.seq-b.seq);
-const lecMaterials=(lid,scope)=>lectureMaterials.filter(m=>m.lectureId===lid&&m.scope===scope);
-const branchName=id=>(branchesData.find(b=>b.id===id)||{}).name||'—';
 const progSlots=pid=>(programsData.find(x=>x.id===pid)||{}).durationYears||1;
 
 // ── LEARNING MODULES (§2.6) — instance = კალენდარული გეგმა ──
 const modulesData=[
-  {code:'MOD-101',templateId:'MT-1',moduleId:'MR-1',name:'ბიოქიმია',regNo:'0910919',programId:'PRG-1',intakeId:'INT-2',groupId:'GRP-101',teacherId:'T-001',studyYear:2,credits:4,startsOn:'10.02.2026',endsOn:'25.05.2026',branchId:'BR-1',outcomes:7,conducted:18,totalLectures:24},
-  {code:'MOD-102',templateId:'MT-2',moduleId:'MR-2',name:'შინმოვლა',regNo:'0910917',programId:'PRG-1',intakeId:'INT-2',groupId:'GRP-102',teacherId:'T-004',studyYear:2,credits:6,startsOn:'15.02.2026',endsOn:'10.06.2026',branchId:'BR-1',outcomes:5,conducted:22,totalLectures:30},
-  {code:'MOD-103',templateId:'MT-3',moduleId:'MR-3',name:'ფარმაკოლოგია',regNo:'0910922',programId:'PRG-3',intakeId:'INT-3',groupId:'GRP-301',teacherId:'T-003',studyYear:2,credits:5,startsOn:'01.03.2026',endsOn:'20.06.2026',branchId:'BR-3',outcomes:6,conducted:12,totalLectures:26},
-  {code:'MOD-104',templateId:'MT-4',moduleId:'MR-4',name:'კლინიკური პრაქტიკა',regNo:'0910931',programId:'PRG-1',intakeId:'INT-3',groupId:'GRP-201',teacherId:'T-004',studyYear:3,credits:8,startsOn:'01.02.2026',endsOn:'30.06.2026',branchId:'BR-2',outcomes:4,conducted:28,totalLectures:40},
-  {code:'MOD-105',templateId:'MT-5',moduleId:'MR-5',name:'მიკრობიოლოგია',regNo:'0910905',programId:'PRG-2',intakeId:'INT-3',groupId:'GRP-202',teacherId:'T-005',studyYear:2,credits:4,startsOn:'10.03.2026',endsOn:'15.06.2026',branchId:'BR-1',outcomes:5,conducted:8,totalLectures:22},
-  {code:'MOD-106',templateId:'MT-1',moduleId:'MR-1',name:'ბიოქიმია',regNo:'0910919',programId:'PRG-3',intakeId:'INT-3',groupId:'GRP-401',teacherId:'T-001',studyYear:2,credits:4,startsOn:'12.02.2026',endsOn:'28.05.2026',branchId:'BR-1',outcomes:7,conducted:0,totalLectures:24},
+  {code:'MOD-101',templateId:'MT-1',moduleId:'MR-1',name:'ბიოქიმია',regNo:'0910919',programId:'PRG-1',intakeId:'INT-2',groupId:'GRP-101',teacherId:'T-001',studyYear:2,credits:4,startsOn:'10.02.2026',endsOn:'25.05.2026',outcomes:7,conducted:18,totalLectures:24},
+  {code:'MOD-102',templateId:'MT-2',moduleId:'MR-2',name:'შინმოვლა',regNo:'0910917',programId:'PRG-1',intakeId:'INT-2',groupId:'GRP-102',teacherId:'T-004',studyYear:2,credits:6,startsOn:'15.02.2026',endsOn:'10.06.2026',outcomes:5,conducted:22,totalLectures:30},
+  {code:'MOD-103',templateId:'MT-3',moduleId:'MR-3',name:'ფარმაკოლოგია',regNo:'0910922',programId:'PRG-3',intakeId:'INT-3',groupId:'GRP-301',teacherId:'T-003',studyYear:2,credits:5,startsOn:'01.03.2026',endsOn:'20.06.2026',outcomes:6,conducted:12,totalLectures:26},
+  {code:'MOD-104',templateId:'MT-4',moduleId:'MR-4',name:'კლინიკური პრაქტიკა',regNo:'0910931',programId:'PRG-1',intakeId:'INT-3',groupId:'GRP-201',teacherId:'T-004',studyYear:3,credits:8,startsOn:'01.02.2026',endsOn:'30.06.2026',outcomes:4,conducted:28,totalLectures:40},
+  {code:'MOD-105',templateId:'MT-5',moduleId:'MR-5',name:'მიკრობიოლოგია',regNo:'0910905',programId:'PRG-2',intakeId:'INT-3',groupId:'GRP-202',teacherId:'T-005',studyYear:2,credits:4,startsOn:'10.03.2026',endsOn:'15.06.2026',outcomes:5,conducted:8,totalLectures:22},
+  {code:'MOD-106',templateId:'MT-1',moduleId:'MR-1',name:'ბიოქიმია',regNo:'0910919',programId:'PRG-3',intakeId:'INT-3',groupId:'GRP-401',teacherId:'T-001',studyYear:2,credits:4,startsOn:'12.02.2026',endsOn:'28.05.2026',outcomes:7,conducted:0,totalLectures:24},
 ];
 // ── მოდულის კვირეული გეგმა: რომელ კვირაში, რამდენი საათი ──
 // მოდულის ინსტანციის კვირეული განაწილება = მისი შაბლონის საათების განაწილება
@@ -1450,11 +1385,11 @@ const REASSESS_LBL={
 let raSeq=3;
 const reassessments=[
   {id:'RA-1',studentId:'BMA-2402',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,imId:'IM-1',
-   groupId:'GRP-101',attemptNo:1,feePaid:false,orderId:null,scheduledOn:'20.05.2026',dueOn:'27.05.2026',status:'failed'},
+   groupId:'GRP-101',attemptNo:1,feePaid:false,scheduledOn:'20.05.2026',dueOn:'27.05.2026',status:'failed'},
   {id:'RA-2',studentId:'BMA-2402',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,imId:'IM-1',
-   groupId:'GRP-101',attemptNo:2,feePaid:true,orderId:null,scheduledOn:'03.06.2026',dueOn:'10.06.2026',status:'failed'},
+   groupId:'GRP-101',attemptNo:2,feePaid:true,scheduledOn:'03.06.2026',dueOn:'10.06.2026',status:'failed'},
   {id:'RA-3',studentId:'BMA-2303',moduleCode:'MOD-104',module:'კლინიკური პრაქტიკა',outcomeNo:1,imId:'IM-12',
-   groupId:'GRP-201',attemptNo:1,feePaid:false,orderId:null,scheduledOn:'20.05.2026',dueOn:null,status:'in_progress'},
+   groupId:'GRP-201',attemptNo:1,feePaid:false,scheduledOn:'20.05.2026',dueOn:null,status:'in_progress'},
 ];
 const reassessOf=(sid,code,no)=>reassessments.filter(x=>x.studentId===sid&&x.moduleCode===code&&x.outcomeNo===no).sort((a,b)=>a.attemptNo-b.attemptNo);
 const lastReassess=(sid,code,no)=>{const l=reassessOf(sid,code,no);return l.length?l[l.length-1]:null};
@@ -1473,7 +1408,7 @@ const REPEAT_LBL={
 let mrSeqRepeat=1;
 const moduleRepeats=[
   {id:'MRP-1',studentId:'BMA-2402',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,imId:'IM-1',
-   failedInGroupId:'GRP-101',repeatWithGroupId:'GRP-102',orderId:'ORD-8',decidedOn:'20.06.2026',status:'in_progress'},
+   failedInGroupId:'GRP-101',repeatWithGroupId:'GRP-102',decidedOn:'20.06.2026',status:'in_progress'},
 ];
 // სტუდენტი ჩანს მასპინძელ ჯგუფშიც — რეალურად რჩება საკუთარ ჯგუფში
 const repeatsInGroup=gid=>moduleRepeats.filter(r=>r.repeatWithGroupId===gid&&r.status==='in_progress');
@@ -1482,44 +1417,12 @@ const repeatOf=(sid,code,no)=>moduleRepeats.find(x=>x.studentId===sid&&x.moduleC
 const imOfModuleCode=code=>{const m=modulesData.find(x=>x.code===code);if(!m)return null;
   const ip=ipOf(m.intakeId,m.programId); if(!ip)return null;
   return intakeModules.find(x=>x.ipId===ip.id&&x.moduleId===m.moduleId)||null;};
-// ── ASSESSMENT SPINE (§1.8) — ბინარული: confirmed | not_confirmed ──
-const outcomeResults=[
-  {id:'OR-001',studentId:'BMA-2401',name:'ნინო მამულაძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:1,outcomeTitle:'აღწერს უჯრედის ქიმიურ შემადგენლობას',result:'confirmed',attemptNo:1,assessedOn:'20.03.2026',direction:'survey',source:'assessment',registerId:'REG-001'},
-  {id:'OR-002',studentId:'BMA-2401',name:'ნინო მამულაძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:2,outcomeTitle:'ახასიათებს ცილების სტრუქტურასა და ფუნქციას',result:'confirmed',attemptNo:1,assessedOn:'03.04.2026',direction:'survey',source:'assessment',registerId:'REG-001'},
-  {id:'OR-003',studentId:'BMA-2401',name:'ნინო მამულაძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:6,outcomeTitle:'ატარებს ბიოქიმიურ ანალიზს ლაბორატორიაში',result:'confirmed',attemptNo:2,assessedOn:'15.05.2026',direction:'practical_task_observed',source:'assessment',registerId:'REG-001'},
-  {id:'OR-004',studentId:'BMA-2402',name:'გიორგი ბერიძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:1,outcomeTitle:'აღწერს უჯრედის ქიმიურ შემადგენლობას',result:'confirmed',attemptNo:1,assessedOn:'20.03.2026',direction:'survey',source:'assessment',registerId:'REG-001'},
-  {id:'OR-005',studentId:'BMA-2402',name:'გიორგი ბერიძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:5,outcomeTitle:'აღწერს ფერმენტების მოქმედების მექანიზმს',result:'not_confirmed',attemptNo:2,assessedOn:'10.05.2026',direction:'practical_task',source:'assessment',registerId:'REG-001'},
-  {id:'OR-006',studentId:'BMA-2403',name:'მარიამ ჩხეიძე',moduleCode:'MOD-101',module:'ბიოქიმია',outcomeNo:1,outcomeTitle:'აღწერს უჯრედის ქიმიურ შემადგენლობას',result:'confirmed',attemptNo:1,assessedOn:'20.03.2026',direction:'survey',source:'assessment',registerId:'REG-001'},
-  {id:'OR-007',studentId:'BMA-2404',name:'ლუკა კვარაცხელია',moduleCode:'MOD-106',module:'ბიოქიმია',outcomeNo:1,outcomeTitle:'აღწერს უჯრედის ქიმიურ შემადგენლობას',result:'confirmed',attemptNo:1,assessedOn:'25.03.2026',direction:'survey',source:'formal_recognition',registerId:null},
-  {id:'OR-008',studentId:'BMA-2301',name:'ანა გელაშვილი',moduleCode:'MOD-104',module:'კლინიკური პრაქტიკა',outcomeNo:1,outcomeTitle:'ახორციელებს პაციენტის მოვლას ზედამხედველობით',result:'confirmed',attemptNo:1,assessedOn:'15.04.2026',direction:'practical_task_observed',source:'assessment',registerId:'REG-002'},
-  {id:'OR-009',studentId:'BMA-2303',name:'სოფო ნიჟარაძე',moduleCode:'MOD-104',module:'კლინიკური პრაქტიკა',outcomeNo:1,outcomeTitle:'ახორციელებს პაციენტის მოვლას ზედამხედველობით',result:'not_confirmed',attemptNo:3,assessedOn:'20.05.2026',direction:'practical_task_observed',source:'assessment',registerId:'REG-002',feePaid:true},
-  {id:'OR-010',studentId:'BMA-2202',name:'ეკა თავდგირიძე',moduleCode:'MOD-105',module:'მიკრობიოლოგია',outcomeNo:2,outcomeTitle:'ახასიათებს მიკროორგანიზმების კლასიფიკაციას',result:'confirmed',attemptNo:1,assessedOn:'02.05.2026',direction:'survey',source:'mobility_transfer',registerId:null},
-];
-// შეფასების ინსტრუმენტი (§2.6) — author ≠ validator
-const instrumentsData=[
-  {id:'INS-1',moduleCode:'MOD-101',outcomeNo:5,author:'T-001',authorName:'ნინო კაპანაძე',status:'validated',validatedBy:'სპმს უფროსი',validatedAt:'12.05.2026',submittedAt:'05.05.2026'},
-  {id:'INS-2',moduleCode:'MOD-101',outcomeNo:6,author:'T-001',authorName:'ნინო კაპანაძე',status:'validated',validatedBy:'პროგრამის ხელმძღვანელი',validatedAt:'08.05.2026',submittedAt:'01.05.2026'},
-  {id:'INS-3',moduleCode:'MOD-103',outcomeNo:2,author:'T-003',authorName:'მარინე ლომთაძე',status:'submitted',validatedBy:null,validatedAt:null,submittedAt:'01.06.2026'},
-  {id:'INS-4',moduleCode:'MOD-105',outcomeNo:3,author:'T-005',authorName:'ნანა ჯაფარიძე',status:'rejected',validatedBy:'სპმს უფროსი',validatedAt:'20.05.2026',submittedAt:'14.05.2026',rejectReason:'აპელაციის პირობები და ხარვეზის ნორმა არ არის მითითებული'},
-];
-// უწყისი (§1.8, მუხ. 24) — ≤7 კალენდარული დღე მოდულის დასრულებიდან
-const registersData=[
-  {id:'REG-001',moduleCode:'MOD-101',module:'ბიოქიმია',teacherId:'T-001',compiledOn:'28.05.2026',dueOn:'01.06.2026',signedAt:'29.05.2026',journalNo:'უწყ-014/2026'},
-  {id:'REG-002',moduleCode:'MOD-104',module:'კლინიკური პრაქტიკა',teacherId:'T-004',compiledOn:'02.07.2026',dueOn:'07.07.2026',signedAt:null,journalNo:null},
-];
-// შუალედური შეფასება (§1.8) — ბრძანებით ≥1 თვით ადრე, კომისია ≥3, არ საჩივრდება
-const interimData=[
-  {id:'IA-1',programId:'PRG-1',groupId:'GRP-101',orderId:'ORD-7',heldOn:'15.04.2026',taskType:'complex_task',percentDone:52,commission:3,participated:22,total:24},
-  {id:'IA-2',programId:'PRG-1',groupId:'GRP-201',orderId:'ORD-7',heldOn:'20.04.2026',taskType:'portfolio_presentation',percentDone:58,commission:4,participated:25,total:26},
-];
-// ინდივიდუალური სასწავლო გეგმა (§1.12)
-const ispData=[
-  {id:'ISP-1',studentId:'BMA-2404',name:'ლუკა კვარაცხელია',moduleCode:'MOD-106',ground:'sen_disability',kind:'accommodation',drawnUpOn:'05.03.2026',specialist:'ინკლუზიური სპეციალისტი'},
-];
-// აპელაცია (§1.8, მუხ. 22)
-const appealsData=[
-  {id:'APL-1',studentId:'BMA-2402',name:'გიორგი ბერიძე',targetKind:'outcome_result',targetId:'OR-005',filedOn:'12.05.2026',deadlineOn:'15.05.2026',decision:'rejected',decidedOn:'18.05.2026'},
-];
+
+
+
+
+
+
 const paymentsData=[
   {id:'PAY-001',studentId:'BMA-2401',name:'ნინო მამულაძე',group:'ჯგუფი 101',studyYear:2,fee:3100,paid:3100,rest:0,due:'30.06.2026',status:'paid'},
   {id:'PAY-002',studentId:'BMA-2402',name:'გიორგი ბერიძე',group:'ჯგუფი 101',studyYear:2,fee:3100,paid:0,rest:3100,due:'30.06.2026',status:'overdue'},
@@ -1554,9 +1457,9 @@ const newsAdminData=[
   {id:'NEWS-004',title:'რევაზ უზუნაძის სახელობის სტიპენდიის კონკურსი',tag:'სტიპენდია',date:'10.03.2026',status:'draft',views:0},
 ];
 const surveysAdminData=[
-  {id:'SRV-001',name:'სასწავლო პროცესის შეფასება — 2026',target:'all-students',deadline:'15.07.2026',responses:47,total:187,status:'active',link:'https://forms.gle/example1'},
-  {id:'SRV-002',name:'აკადემიის სერვისების შეფასება',target:'all-students',deadline:'30.06.2026',responses:89,total:187,status:'expired',link:'https://forms.gle/example2'},
-  {id:'SRV-003',name:'მასწავლებელთა გამოკითხვა — I სასწ. წელი',target:'all-teachers',deadline:'10.01.2026',responses:22,total:24,status:'done',link:''},
+  {id:'SRV-001',name:'სასწავლო პროცესის შეფასება — 2026',target:'all-studentsAll()',deadline:'15.07.2026',responses:47,total:187,status:'active',link:'https://forms.gle/example1'},
+  {id:'SRV-002',name:'აკადემიის სერვისების შეფასება',target:'all-studentsAll()',deadline:'30.06.2026',responses:89,total:187,status:'expired',link:'https://forms.gle/example2'},
+  {id:'SRV-003',name:'მასწავლებელთა გამოკითხვა — I სასწ. წელი',target:'all-teachersAll()',deadline:'10.01.2026',responses:22,total:24,status:'done',link:''},
   {id:'SRV-004',name:'სასწავლო მასალების შეფასება',target:'grp-101',deadline:'20.12.2025',responses:20,total:24,status:'done',link:''},
 ];
 const jobsAdminData=[
@@ -1579,15 +1482,7 @@ const schedPlacements=[
 ];
 let spSeq=4, schedWeek=1, schedGroup='', schedPick=null;
 
-// ── ATTENDANCE (§4.5) — რეგისტრი: present | absent | late. პროცენტი/ქულა არ არსებობს
-const attendanceData=[
-  {studentId:'BMA-2401',name:'ნინო მამულაძე',moduleCode:'MOD-101',present:22,absent:1},
-  {studentId:'BMA-2402',name:'გიორგი ბერიძე',moduleCode:'MOD-101',present:18,absent:5},
-  {studentId:'BMA-2403',name:'მარიამ ჩხეიძე',moduleCode:'MOD-101',present:23,absent:0},
-  {studentId:'BMA-2404',name:'ლუკა კვარაცხელია',moduleCode:'MOD-106',present:20,absent:2},
-  {studentId:'BMA-2301',name:'ანა გელაშვილი',moduleCode:'MOD-104',present:27,absent:1},
-  {studentId:'BMA-2303',name:'სოფო ნიჟარაძე',moduleCode:'MOD-104',present:24,absent:3},
-];
+
 // ── LOOKUPS ──
 const PROGRAM_TYPE_LBL={basic_vocational:'საბაზო პროფესიული',secondary_vocational:'საშუალო პროფესიული',higher_vocational:'უმაღლესი პროფესიული',preparation:'მოსამზადებელი',retraining:'გადამზადება'};
 // სისტემაში რეგისტრირდება მხოლოდ პროფესიული განათლების მასწავლებელი
@@ -1600,18 +1495,13 @@ const DIRECTION_LBL={survey:'გამოკითხვა',practical_task:'პ
 const RESULT_LBL={confirmed:['დადასტურდა','bd-g'],not_confirmed:['ვერ დადასტურდა','bd-r']};
 const SOURCE_LBL={assessment:'შეფასება',formal_recognition:'ფორმალური განათლების აღიარება',non_formal_recognition:'არაფორმალური აღიარება',mobility_transfer:'მობილობით გადატანა'};
 const MODULE_KIND_LBL={theoretical:'თეორიული',practical:'პრაქტიკული',work_based:'სამუშაოზე დაფუძნებული',general:'ზოგადი'};
-const INSTRUMENT_STATUS_LBL={draft:['მონახაზი','bd-n'],submitted:['წარდგენილი','bd-b'],validated:['ვალიდირებული','bd-g'],rejected:['უარყოფილი','bd-r']};
 const VENUE_TYPE_LBL={auditorium:'აუდიტორია',cabinet_lab:'კაბინეტ-ლაბორატორია',simulation_lab:'სიმულაციური ლაბორატორია',pharmaco_chem_lab:'ფარმაკო-ქიმიური ლაბორატორია',dental_polyclinic:'სტომატოლოგიური პოლიკლინიკა',partner_workplace:'პარტნიორის სამუშაო გარემო'};
-const INTERIM_TASK_LBL={complex_task:'კომპლექსური დავალება',practical_task:'პრაქტიკული დავალება',presentation:'პრეზენტაცია',portfolio_presentation:'პორტფოლიოს პრეზენტაცია',project:'პროექტი',self_assessment_report:'თვითშეფასების ანგარიში',other:'სხვა'};
-const ISP_GROUND_LBL={sen_disability:'სსსმ / შშმ',recognition:'აღიარება',mobility:'მობილობა',health:'ჯანმრთელობა',other:'სხვა'};
-const ISP_KIND_LBL={modification:'მოდიფიკაცია',accommodation:'აკომოდაცია',both:'მოდიფიკაცია + აკომოდაცია'};
 const COOP_LBL={dual:'დუალური',cooperative:'კოოპერაციული'};
 // helpers
 const progName=id=>(programsData.find(p=>p.id===id)||{}).name||'—';
 const intakeName=id=>(intakesData.find(i=>i.id===id)||{}).name||'—';
 const groupName=id=>(groupsData.find(g=>g.id===id)||{}).name||'—';
-const teacherName=id=>(teachers.find(t=>t.id===id)||{}).name||'—';
-const orderRef=id=>{const o=ordersData.find(x=>x.id===id);return o?`ბრძანება №${o.no} · ${o.date}`:'—'};
+const teacherName=id=>(teachersAll().find(t=>t.id===id)||{}).name||'—';
 const romanYear=n=>['—','I','II','III','IV','V','VI'][n]||n;
 </script>
 <script>
@@ -1629,15 +1519,14 @@ function renderStudentTabs(){
   if(!el)return;
   const defs=[['','ყველა'],['active','აქტიური'],['suspended','სტატუსი შეჩერებული'],['terminated','სტატუსი შეწყვეტილი']];
   el.innerHTML=defs.map(([k,l])=>{
-    const n=k?students.filter(s=>s.status===k).length:students.length;
+    const n=k?studentsAll().filter(s=>s.status===k).length:studentsAll().length;
     return `<button class="stab ${stuStatusTab===k?'on':''}" onclick="stuStatusTab='${k}';renderStudentTabs();applyStudentFilters()">${l}<span class="stab-n">${n}</span></button>`;
   }).join('');
 }
-let stuF={q:'',branch:'',prog:'',intake:'',group:''};
+let stuF={q:'',prog:'',intake:'',group:''};
 function applyStudentFilters(){
-  let l=students;
+  let l=studentsAll();
   if(stuStatusTab) l=l.filter(x=>x.status===stuStatusTab);
-  if(stuF.branch)  l=l.filter(x=>x.branchId===stuF.branch);
   if(stuF.prog)    l=l.filter(x=>x.programId===stuF.prog);
   if(stuF.intake)  l=l.filter(x=>x.intakeId===stuF.intake);
   if(stuF.group)   l=l.filter(x=>x.group===stuF.group);
@@ -1645,17 +1534,15 @@ function applyStudentFilters(){
   renderStudents(l);
 }
 function filterStudents(q){stuF.q=q.trim();applyStudentFilters()}
-function filterStudentBranch(v){stuF.branch=v;applyStudentFilters()}
 function filterStudentProgram(v){stuF.prog=v;applyStudentFilters()}
 function filterStudentIntake(v){stuF.intake=v;applyStudentFilters()}
 function filterStudentGroup(v){stuF.group=v;applyStudentFilters()}
 function filterStudentStatus(v){stuStatusTab=v;renderStudentTabs();applyStudentFilters()}
 function renderStudents(list){
-  const tb=document.getElementById('students-tbody');
+  const tb=document.getElementById('studentsAll()-tbody');
   if(!tb)return;
   tb.innerHTML=list.length?list.map(s=>{
     const st=STUDENT_STATUS_LBL[s.status]||[s.status,'bd-n'];
-    const ord=s.status==='suspended'?orderRef(s.suspensionOrderId):s.status==='terminated'?orderRef(s.terminationOrderId):'';
     const pay=s.balance>0?`<span class="bd bd-a">${s.balance}₾</span>`:'<span class="bd bd-g">✓</span>';
     const it=intakesData.find(x=>x.id===s.intakeId);
     return `<tr>
@@ -1664,9 +1551,8 @@ function renderStudents(list){
       <td style="font-size:12px">${progName(s.programId)}</td>
       <td><div style="display:flex;align-items:center;gap:4px;font-size:12px">${s.group}<button class="btn btn-xs btn-ghost" style="padding:2px 5px" onclick="editStudentGroup('${s.id}')" title="ჯგუფის შეცვლა">✏</button></div></td>
       <td style="text-align:center"><span class="bd bd-n">${romanYear(s.studyYear)}</span></td>
-      <td style="font-size:12px">${branchName(s.branchId).split('—')[0]}</td>
       <td style="text-align:center">${pay}</td>
-      <td><span class="bd ${st[1]}">${st[0]}</span>${ord?`<div style="font-size:10px;color:var(--text3);margin-top:2px">${ord}</div>`:''}</td>
+      <td><span class="bd ${st[1]}">${st[0]}</span></td>
       <td style="white-space:nowrap"><button class="btn btn-xs btn-o" onclick="viewStudent('${s.id}')">პროფილი →</button></td>
     </tr>`;
   }).join(''):'<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:24px">ამ ფილტრით ჩანაწერი არ მოიძებნა</td></tr>';
@@ -1678,12 +1564,12 @@ function renderTeacherTabs(){
   if(!el)return;
   const defs=[['','ყველა'],['active','აქტიური'],['inactive','არააქტიური']];
   el.innerHTML=defs.map(([k,l])=>{
-    const n=k?teachers.filter(t=>t.status===k).length:teachers.length;
+    const n=k?teachersAll().filter(t=>t.status===k).length:teachersAll().length;
     return `<button class="stab ${tchF.status===k?'on':''}" onclick="filterTeacherStatus('${k}')">${l}<span class="stab-n">${n}</span></button>`;
   }).join('');
 }
 function applyTeacherFilters(){
-  let l=teachers;
+  let l=teachersAll();
   if(tchF.status)l=l.filter(t=>t.status===tchF.status);
   if(tchF.impl)l=l.filter(t=>t.implementerType===tchF.impl);
   if(tchF.q)l=l.filter(t=>t.name.includes(tchF.q)||t.spec.includes(tchF.q)||t.modules.join(' ').includes(tchF.q));
@@ -1692,7 +1578,7 @@ function applyTeacherFilters(){
 function filterTeacherImpl(v){tchF.impl=v;applyTeacherFilters()}
 function filterTeacherStatus(v){tchF.status=v;renderTeacherTabs();applyTeacherFilters()}
 function renderTeachers(list){
-  const tb=document.getElementById('teachers-tbody');
+  const tb=document.getElementById('teachersAll()-tbody');
   if(!tb)return;
   tb.innerHTML=list.length?list.map(t=>{
     const mods=modulesData.filter(m=>modTeacherId(m.code)===t.id);
@@ -1700,9 +1586,8 @@ function renderTeachers(list){
     const h=Math.round(myLecs.filter(l=>l.conducted).reduce((a,l)=>a+l.durationMin,0)/60);
     return `<tr>
       <td><div class="row-id">${avatar(t.name,t.id)}<div><div class="rn">${t.name}</div><div class="ri">${t.id}</div></div></div></td>
-      <td style="font-size:12px">${t.spec}</td>
-      <td style="font-size:12px">${t.modules.join(', ')||'—'}</td>
-      <td style="font-size:12px">${branchName(t.branchId).split('—')[0]}</td>
+      <td style="font-size:12px">${t.spec||'—'}</td>
+      <td style="font-size:12px">${(t.modules||[]).join(', ')||'—'}</td>
       <td style="font-size:12px">${t.workStartedOn||'—'}</td>
       <td style="text-align:center"><span class="bd bd-b">${h}</span></td>
       <td><span class="bd ${t.status==='active'?'bd-g':'bd-n'}">${t.status==='active'?'აქტიური':'არააქტიური'}</span></td>
@@ -1733,7 +1618,8 @@ function renderGroups(){
         <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:var(--blue)"></div></div>
         <div style="display:flex;gap:6px;margin-top:12px">
           <button class="btn btn-xs btn-o" onclick="event.stopPropagation();viewGroup('${g.id}')">დეტალები</button>
-          <button class="btn btn-xs btn-ghost" onclick="event.stopPropagation();editGroupModal('${g.id}')">✏ რედ.</button>
+          <button class="btn btn-xs btn-ghost" onclick="event.stopPropagation();editGroupModal('${g.id}')">✏</button>
+          <button class="btn btn-xs btn-r" onclick="event.stopPropagation();removeGroup('${g.id}')">✕</button>
         </div>
       </div>
     </div>`;
@@ -2059,63 +1945,9 @@ function renderCareerAdmin(){
 
 // ── სწავლის შედეგები (§1.8) — ბინარული, ქულის გარეშე ──
 let outF={prog:'',group:'',mod:'',res:''};
-const stuName=id=>(students.find(x=>x.id===id)||{}).name||id;
-function stuGroupOf(sid){const st=students.find(x=>x.id===sid);return st?st.group:'—'}
-function stuProgOf(sid){const st=students.find(x=>x.id===sid);return st?st.programId:''}
-function buildOutFilters(){
-  const pg=document.getElementById('out-prog');
-  if(pg&&pg.options.length<=1)programsData.forEach(x=>pg.add(new Option(x.name,x.id)));
-  const gr=document.getElementById('out-group');
-  if(gr&&gr.options.length<=1)groupsData.forEach(g=>gr.add(new Option(g.name,g.name)));
-  const md=document.getElementById('out-mod');
-  if(md&&md.options.length<=1)[...new Set(outcomeResults.map(o=>o.module))].forEach(m=>md.add(new Option(m,m)));
-}
-function setOutFilter(k,v){outF[k]=v;renderOutcomes()}
-function renderOutcomes(){
-  const tb=document.getElementById('outcomes-tbody');
-  if(!tb)return;
-  buildOutFilters();
-  let list=outcomeResults;
-  if(outF.res)list=list.filter(o=>o.result===outF.res);
-  if(outF.prog)list=list.filter(o=>stuProgOf(o.studentId)===outF.prog);
-  if(outF.group)list=list.filter(o=>stuGroupOf(o.studentId)===outF.group);
-  if(outF.mod)list=list.filter(o=>o.module===outF.mod);
-  tb.innerHTML=list.length?list.map(o=>{
-    const r=RESULT_LBL[o.result]||[o.result,'bd-n'];
-    const att=o.attemptNo>=3?`<span class="bd bd-a">${o.attemptNo}${o.feePaid?' · ფასიანი':''}</span>`:`<span class="bd bd-n">${o.attemptNo}</span>`;
-    return `<tr>
-      <td style="font-size:10px;color:var(--text3)">${o.id}</td>
-      <td><div style="font-weight:600">${o.name}</div><div style="font-size:10px;cursor:pointer;color:var(--blue)" onclick="viewStudent('${o.studentId}')">${o.studentId} ↗</div></td>
-      <td style="font-size:12px">${stuGroupOf(o.studentId)}</td>
-      <td><div style="font-size:11px;font-weight:700;color:var(--blue)">${o.moduleCode}</div><div style="font-size:12px">${o.module}</div></td>
-      <td><div style="font-size:12px"><strong>№${o.outcomeNo}</strong> ${o.outcomeTitle}</div><div style="font-size:10px;color:var(--text3)">${DIRECTION_LBL[o.direction]||o.direction}</div></td>
-      <td style="text-align:center">${att}</td>
-      <td style="font-size:11px">${o.assessedOn}</td>
-      <td style="font-size:11px">${SOURCE_LBL[o.source]||o.source}</td>
-      <td><span class="bd ${r[1]}">${r[0]}</span></td>
-      <td>${o.registerId?`<span style="font-size:10px;color:var(--blue);cursor:pointer" onclick="viewRegister('${o.registerId}')">${o.registerId} ↗</span>`:'<span style="color:var(--text3)">—</span>'}</td>
-      <td style="white-space:nowrap">${o.result!=='not_confirmed'?'':(()=>{
-        const ex=reassessExhausted(o.studentId,o.moduleCode,o.outcomeNo);
-        const rp=repeatOf(o.studentId,o.moduleCode,o.outcomeNo);
-        return `<button class="btn btn-xs btn-a" onclick="openReassessFor('${o.id}')" title="გადაბარება — შეფასების საათების თავიდან გავლა">📝</button>
-        ${ex||rp?`<button class="btn btn-xs btn-r" onclick="openRepeatFor('${o.id}')" title="მოდულის ხელახლა გავლა სხვა ჯგუფთან">🔁</button>`:''}`})()}</td>
-    </tr>`;
-  }).join(''):'<tr><td colspan="12" style="text-align:center;color:var(--text3);padding:24px">ამ ფილტრით ჩანაწერი არ მოიძებნა</td></tr>';
-  const c=document.getElementById('out-count');
-  if(c){const conf=list.filter(o=>o.result==='confirmed').length;c.textContent=`${conf} დადასტურდა / ${list.length-conf} ვერ დადასტურდა`;}
-}
-function viewRegister(id){
-  const r=registersData.find(x=>x.id===id);if(!r)return;
-  const late=!r.signedAt;
-  showModal(`უწყისი — ${r.module}`,`
-    <div class="fg2"><div><label class="fl">უწყისის ID</label><div style="font-weight:700;color:var(--blue)">${r.id}</div></div><div><label class="fl">ჟურნალის №</label><div>${r.journalNo||'<span style="color:var(--amber)">ჯერ არ რეგისტრირებულა</span>'}</div></div></div>
-    <div class="fg2"><div><label class="fl">მოდული</label><div>${r.moduleCode} · ${r.module}</div></div><div><label class="fl">მასწავლებელი</label><div>${teacherName(r.teacherId)}</div></div></div>
-    <div class="fg2"><div><label class="fl">შედგენის თარიღი</label><div>${r.compiledOn}</div></div><div><label class="fl">ვადა (≤7 კალენდ. დღე)</label><div style="color:${late?'var(--red)':'var(--green)'};font-weight:700">${r.dueOn}</div></div></div>
-    <div class="fg"><label class="fl">მასწავლებლის ხელმოწერა</label><div>${r.signedAt?`<span class="bd bd-g">✓ ხელმოწერილი ${r.signedAt}</span>`:'<span class="bd bd-r">✕ ხელმოწერა აკლია</span>'}</div></div>
-    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">უწყისი შედგება მოდულის დასრულებიდან ≤7 კალენდარულ დღეში, ხელს აწერს მასწავლებელი, რეგისტრირდება სპმს-ის უწყისების სარეგისტრაციო ჟურნალში. — [სპწ] მუხ. 24</div>`,
-    `<button class="btn btn-n" onclick="closeModal()">დახურვა</button>${late?'<button class="btn btn-b" onclick="closeModal();toast(\'უწყისი ხელმოწერისთვის გაიგზავნა\',\'success\')">✍ ხელმოწერა</button>':''}`,'lg');
-}
-
+const stuName=id=>(studentsAll().find(x=>x.id===id)||{}).name||id;
+function stuGroupOf(sid){const st=studentsAll().find(x=>x.id===sid);return st?st.group:'—'}
+function stuProgOf(sid){const st=studentsAll().find(x=>x.id===sid);return st?st.programId:''}
 // ── ბრძანებები (§7.1) ──
 function renderOrders(){
   const tb=document.getElementById('orders-tbody');
@@ -2139,7 +1971,7 @@ function viewOrder(id){
     <div class="fg"><label class="fl">სათაური</label><div>${o.subject}</div></div>
     <div class="fg"><label class="fl">ხელმოწერა</label><div>${o.eSign?'<span class="bd bd-g">✓ კვალიფიციური ელ. ხელმოწერა</span> ':''}${o.pSign?'<span class="bd bd-g">✓ ფიზიკური</span>':''}</div></div>
     ${o.amends?`<div class="fg"><label class="fl">ცვლილება ბრძანებაში</label><div style="color:var(--amber)">№${ordersData.find(x=>x.id===o.amends)?.no} · ${ordersData.find(x=>x.id===o.amends)?.date}</div></div>`:''}
-    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">ბრძანება ინახება უსასრულოდ. ცვლილება = <strong>ახალი ბრძანება</strong>, ვერსიები არ არსებობს. — [სეწ] მუხ. 2, 6, 10</div>`,null,'lg');
+    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">ბრძანება ინახება უსასრულოდ და <strong>მხოლოდ იკითხება</strong> — სისტემაში სხვა ჩანაწერს არ ებმევა. ცვლილება = ახალი ბრძანება. — [სეწ] მუხ. 2, 6, 10</div>`,null,'lg');
 }
 function addOrderModal(){
   showModal('ახალი ბრძანება',`
@@ -2348,10 +2180,10 @@ function renderPrograms(){
         <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>კრედიტები</span><strong>${pr.totalCredits}</strong></div>
         <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>მიღებები</span><strong>${ints}</strong></div>
         <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px"><span>სტუდენტები</span><strong>${pr.students}</strong></div>
-        <div style="font-size:11px;color:var(--text3);border-top:1px solid var(--border);padding-top:8px">${orderRef(pr.orderId)}</div>
         <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
           <button class="btn btn-xs btn-o" onclick="viewProgram('${pr.id}')">👁 დეტალები</button>
-          <button class="btn btn-xs btn-r" onclick="removeProgram('${pr.id}')">✕ წაშლა</button>
+          <button class="btn btn-xs btn-ghost" onclick="editProgramModal('${pr.id}')">✏ რედ.</button>
+          <button class="btn btn-xs btn-r" onclick="removeProgram('${pr.id}')">✕</button>
         </div>
       </div>
     </div>`;
@@ -2364,7 +2196,9 @@ function viewProgram(id){
     <div class="dhead">
       <div><div class="dhead-name">${pr.name}</div>
       <div class="dhead-meta">${pr.nameEn||''} · ${PROGRAM_TYPE_LBL[pr.type]} · NQF ${pr.nqf} · ${pr.qualification}</div></div>
-      <button class="btn btn-r" onclick="removeProgram('${id}')">✕ წაშლა</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-o" onclick="closeModal();editProgramModal('${id}')">✏ რედაქტირება</button>
+        <button class="btn btn-r" onclick="removeProgram('${id}')">✕ წაშლა</button></div>
     </div>
     <div class="chips">
       <span class="bd ${pr.status==='active'?'bd-g':pr.status==='phasing_out'?'bd-a':'bd-r'}">${pr.status==='active'?'აქტიური':pr.status==='phasing_out'?'ეტაპობრივად წყდება':'გაუქმებული'}</span>
@@ -2395,20 +2229,48 @@ function saveNewProgram(){
   programsData.push({id:'PRG-'+(programsData.length+1),name,nameEn:document.getElementById('np-nameen').value,
     type:document.getElementById('np-type').value,nqf:+document.getElementById('np-nqf').value,
     qualification:document.getElementById('np-qual').value,durationYears:+document.getElementById('np-years').value,
-    totalCredits:+document.getElementById('np-credits').value,orderId:null,status:'active',students:0});
+    totalCredits:+document.getElementById('np-credits').value,status:'active',students:0});
   renderPrograms();closeModal();toast('პროგრამა დამატებულია ✓','success');
+}
+function editProgramModal(id){
+  const pr=programsData.find(x=>x.id===id);if(!pr)return;
+  showModal('პროგრამის რედაქტირება',`
+    <div class="fg2"><div><label class="fl">დასახელება</label><input class="fi" id="ep-name" value="${pr.name}"></div>
+      <div><label class="fl">დასახელება (EN)</label><input class="fi" id="ep-nameen" value="${pr.nameEn||''}"></div></div>
+    <div class="fg2"><div><label class="fl">ტიპი</label><select class="fi" id="ep-type">${Object.entries(PROGRAM_TYPE_LBL).map(([k,v])=>`<option value="${k}" ${k===pr.type?'selected':''}>${v}</option>`).join('')}</select></div>
+      <div><label class="fl">NQF დონე</label><input class="fi" id="ep-nqf" type="number" min="1" max="8" value="${pr.nqf}"></div></div>
+    <div class="fg"><label class="fl">კვალიფიკაცია</label><input class="fi" id="ep-qual" value="${pr.qualification||''}"></div>
+    <div class="fg2"><div><label class="fl">ხანგრძლივობა (სასწავლო წელი)</label><input class="fi" id="ep-years" type="number" min="1" max="6" value="${pr.durationYears}"></div>
+      <div><label class="fl">კრედიტები სულ</label><input class="fi" id="ep-credits" type="number" min="1" value="${pr.totalCredits}"></div></div>
+    <div class="fg"><label class="fl">სტატუსი</label><select class="fi" id="ep-status">
+      <option value="active" ${pr.status==='active'?'selected':''}>აქტიური</option>
+      <option value="phasing_out" ${pr.status==='phasing_out'?'selected':''}>ეტაპობრივად წყდება</option>
+      <option value="cancelled" ${pr.status==='cancelled'?'selected':''}>გაუქმებული</option></select></div>
+    <div class="note">ხანგრძლივობა განსაზღვრავს <strong>სასწავლო წლების რაოდენობას</strong> და მასთან ერთად კვირების ჯამს — ცალკე პერიოდის ცხრილი არ არსებობს.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveProgram('${id}')">💾 შენახვა</button>`,'lg');
+}
+function saveProgram(id){
+  const pr=programsData.find(x=>x.id===id);if(!pr)return;
+  const name=document.getElementById('ep-name').value.trim();
+  if(!name){toast('შეავსეთ დასახელება','error');return;}
+  pr.name=name; pr.nameEn=document.getElementById('ep-nameen').value;
+  pr.type=document.getElementById('ep-type').value; pr.nqf=+document.getElementById('ep-nqf').value;
+  pr.qualification=document.getElementById('ep-qual').value;
+  pr.durationYears=+document.getElementById('ep-years').value;
+  pr.totalCredits=+document.getElementById('ep-credits').value;
+  pr.status=document.getElementById('ep-status').value;
+  renderPrograms();renderIntakes();closeModal();toast('პროგრამა განახლდა ✓','success');
 }
 function removeProgram(id){
   const pr=programsData.find(x=>x.id===id);if(!pr)return;
-  const stu=students.filter(x=>x.programId===id).length;
+  const stu=studentsAll().filter(x=>x.programId===id).length;
   const grp=groupsData.filter(x=>x.programId===id).length;
   if(stu||grp){toast(`ვერ იშლება — პროგრამაზეა ${stu} სტუდენტი და ${grp} ჯგუფი`,'error');return;}
   showModal('პროგრამის წაშლა',`<p style="font-size:13px">გსურთ პროგრამის <strong>${pr.name}</strong> წაშლა?</p>
-    <div class="note note-a">⚠ წაიშლება პროგრამის მიბმა მოდულებთან და კვირების განაწილება.</div>`,
+    <div class="note note-a">⚠ წაიშლება პროგრამის მიბმა მიღებებთან და მოდულებთან.</div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="(function(){
       const i=programsData.findIndex(x=>x.id==='${id}');if(i>-1)programsData.splice(i,1);
       moduleTemplates.forEach(t=>{t.programs=t.programs.filter(x=>x!=='${id}')});
-      for(let k=periodWeeks.length-1;k>=0;k--)if(periodWeeks[k].programId==='${id}')periodWeeks.splice(k,1);
       renderPrograms();closeModal();toast('პროგრამა წაშლილია','warn')})()">✕ წაშლა</button>`);
 }
 // ══ კლუბები ══
@@ -2453,7 +2315,7 @@ function clubForm(c){
       <div><label class="fl">წევრების რაოდენობა</label><input class="fi" id="cl-members" type="number" min="0" value="${c?c.members:0}"></div></div>
     <div class="fg"><label class="fl">დასახელება</label><input class="fi" id="cl-name" value="${c?c.name:''}" placeholder="კლუბის დასახელება"></div>
     <div class="fg"><label class="fl">აღწერა</label><input class="fi" id="cl-desc" value="${c?c.desc:''}" placeholder="მოკლე აღწერა"></div>
-    <div class="fg"><label class="fl">ხელმძღვანელი</label><select class="fi" id="cl-lead"><option value="">— არ არის —</option>${teachers.map(t=>`<option value="${t.name}" ${c&&c.lead===t.name?'selected':''}>${t.name}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">ხელმძღვანელი</label><select class="fi" id="cl-lead"><option value="">— არ არის —</option>${teachersAll().map(t=>`<option value="${t.name}" ${c&&c.lead===t.name?'selected':''}>${t.name}</option>`).join('')}</select></div>
     <div class="fg"><label class="fl">სტატუსი</label><select class="fi" id="cl-active">
       <option value="1" ${!c||c.active?'selected':''}>აქტიური</option><option value="0" ${c&&!c.active?'selected':''}>არააქტიური</option></select></div>`;
 }
@@ -2566,18 +2428,19 @@ function removePrereq(id,ipId){
 }
 // ══════════ 1. გადაბარება — მხოლოდ შეფასების საათების თავიდან გავლა ══════════
 // I გადაბარება უფასო · II ფასიანი · წინაპირობის შემთხვევაში ვადა 1 კვირა
-function openReassessFor(outcomeId){
-  const o=outcomeResults.find(x=>x.id===outcomeId);if(!o)return;
+// გადაბარება ინიშნება პირდაპირ ჟურნალიდან — ვერ დადასტურებულ სწავლის შედეგზე
+function openReassessFor(studentId,moduleCode,outcomeNo){
+  const o={studentId,moduleCode,outcomeNo,module:(modulesData.find(x=>x.code===moduleCode)||{}).name||moduleCode};
   const prev=reassessOf(o.studentId,o.moduleCode,o.outcomeNo);
   const open=prev.find(x=>x.status==='scheduled'||x.status==='in_progress');
   if(open){reassessPage(open.id);return;}
   if(prev.length>=REASSESS_MAX_ATTEMPTS&&prev.every(x=>x.status==='failed')){
     toast(`გადაბარების ${REASSESS_MAX_ATTEMPTS} ცდა ამოიწურა — მოდული არ ჩაეთვალა. საჭიროა მოდულის ხელახლა გავლა სხვა ჯგუფთან.`,'error');
-    openRepeatFor(outcomeId);return;}
+    openRepeatFor(studentId,moduleCode,outcomeNo);return;}
   const im=imOfModuleCode(o.moduleCode);
   const r={id:'RA-'+(++raSeq),studentId:o.studentId,moduleCode:o.moduleCode,module:o.module,outcomeNo:o.outcomeNo,
     imId:im?im.id:null,groupId:(groupsData.find(g=>g.name===stuGroupOf(o.studentId))||{}).id||null,
-    attemptNo:prev.length+1,feePaid:false,orderId:null,scheduledOn:null,dueOn:null,status:'scheduled'};
+    attemptNo:prev.length+1,feePaid:false,scheduledOn:null,dueOn:null,status:'scheduled'};
   reassessments.push(r);
   reassessPage(r.id);
 }
@@ -2646,7 +2509,7 @@ function saveReassess(rid){
   if(!r.scheduledOn)r.scheduledOn=TODAY;
   const im=r.imId?intakeModules.find(x=>x.id===r.imId):null;
   if(!r.dueOn&&im&&isPrereq(im.id))r.dueOn=addWeeks(r.scheduledOn,RETAKE_DEADLINE_WEEKS);
-  renderOutcomes();closeModal();
+  closeModal();
   if(r.status==='confirmed'){toast('გადაბარება დადასტურდა — მოდული ჩაეთვალა ✓','success');return;}
   if(r.status==='failed'&&reassessExhausted(r.studentId,r.moduleCode,r.outcomeNo)){
     toast(`გადაბარების ${REASSESS_MAX_ATTEMPTS} ცდა ამოიწურა — მოდული არ ჩაეთვალა. საჭიროა მოდულის ხელახლა გავლა სხვა ჯგუფთან.`,'warn');
@@ -2654,8 +2517,8 @@ function saveReassess(rid){
   toast(`გადაბარება შენახულია${r.dueOn?' · ვადა '+r.dueOn:''} ✓`,'success');
 }
 // ══════════ 2. მოდულის ხელახლა გავლა სხვა ჯგუფთან — გადაბარების ამოწურვის შემდეგ ══════════
-function openRepeatFor(outcomeId){
-  const o=outcomeResults.find(x=>x.id===outcomeId);if(!o)return;
+function openRepeatFor(studentId,moduleCode,outcomeNo){
+  const o={studentId,moduleCode,outcomeNo,module:(modulesData.find(x=>x.code===moduleCode)||{}).name||moduleCode};
   let r=repeatOf(o.studentId,o.moduleCode,o.outcomeNo);
   if(!r){
     if(!reassessExhausted(o.studentId,o.moduleCode,o.outcomeNo)){
@@ -2665,7 +2528,7 @@ function openRepeatFor(outcomeId){
     const im=imOfModuleCode(o.moduleCode);
     r={id:'MRP-'+(++mrSeqRepeat),studentId:o.studentId,moduleCode:o.moduleCode,module:o.module,outcomeNo:o.outcomeNo,
       imId:im?im.id:null,failedInGroupId:(groupsData.find(g=>g.name===stuGroupOf(o.studentId))||{}).id||null,
-      repeatWithGroupId:null,orderId:null,decidedOn:null,status:'pending'};
+      repeatWithGroupId:null,decidedOn:null,status:'pending'};
     moduleRepeats.push(r);
   }
   repeatPage(r.id);
@@ -2697,20 +2560,16 @@ function repeatPage(rid){
         <option value="">— ჯგუფი ასარჩევია —</option>
         ${cand.map(g=>`<option value="${g.id}" ${r.repeatWithGroupId===g.id?'selected':''}>${g.name} · ${progName(g.programId)}</option>`).join('')}
       </select></div>
-    <div class="fg"><label class="fl">ბრძანება</label>
-      <select class="fi" id="mr-order"><option value="">— ბრძანება ასარჩევია —</option>
-        ${ordersData.map(o=>`<option value="${o.id}" ${r.orderId===o.id?'selected':''}>№${o.no} · ${o.date} — ${o.subject.substring(0,44)}</option>`).join('')}</select></div>
     <div class="note">სტუდენტი გამოჩნდება <strong>არჩეულ ჯგუფშიც</strong> — ნიშნულით „ხელახლა გადის მოდულს"; რეალურად რჩება <strong>${homeGroup}</strong>-ის სტუდენტად.</div>`,
     `<button class="btn btn-n" onclick="closeModal()">უკან</button>
      <button class="btn btn-b" onclick="saveRepeat('${rid}')">💾 შენახვა</button>`,'xl');
 }
 function saveRepeat(rid){
   const r=moduleRepeats.find(x=>x.id===rid);if(!r)return;
-  const gid=document.getElementById('mr-group').value, oid=document.getElementById('mr-order').value;
+  const gid=document.getElementById('mr-group').value;
   if(!gid){toast('აირჩიეთ ჯგუფი, რომელთან ერთად გაივლის მოდულს ხელახლა','error');return;}
-  if(!oid){toast('მოდულის ხელახლა გავლა ფორმდება ბრძანებით — აირჩიეთ ბრძანება','error');return;}
-  r.repeatWithGroupId=gid; r.orderId=oid; r.status='in_progress'; r.decidedOn=TODAY;
-  renderOutcomes();renderGroups();closeModal();
+  r.repeatWithGroupId=gid; r.status='in_progress'; r.decidedOn=TODAY;
+  renderGroups();closeModal();
   toast(`მოდულის ხელახლა გავლა დაფიქსირდა — ${groupName(gid)} ✓`,'success');
 }
 // ══════════ ელექტრონული ჟურნალი — ადმინისტრატორი (სრული უფლებები) ══════════
@@ -2729,7 +2588,7 @@ function ejSessions(code){
 }
 const ejStudents=code=>{const m=modulesData.find(x=>x.code===code);if(!m)return [];
   const g=groupsData.find(x=>x.id===m.groupId);
-  return g?students.filter(x=>x.group===g.name&&x.status==='active'):[];};
+  return g?studentsAll().filter(x=>x.group===g.name&&x.status==='active'):[];};
 const ejA=sid=>ejAtt[sid]||(ejAtt[sid]={});
 const ejO=sid=>ejOut[sid]||(ejOut[sid]={});
 const ejAttDone=(sid,code)=>ejStudents(code).filter(s=>ejA(sid)[s.id]).length;
@@ -2785,9 +2644,13 @@ function ejSessionBody(code,sid){
           <button class="btn btn-xs ${a[st.id]==='present'?'btn-g':'btn-n'}" onclick="ejSetAtt('${code}','${sid}','${st.id}','present')">დაესწრო</button>
           <button class="btn btn-xs ${a[st.id]==='absent'?'btn-r':'btn-n'}" onclick="ejSetAtt('${code}','${sid}','${st.id}','absent')">გააცდინა</button>
         </div></td>
-        ${x.kind==='assessment'?`<td><div style="display:flex;gap:5px">
+        ${x.kind==='assessment'?`<td><div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center">
           <button class="btn btn-xs ${o[st.id]==='confirmed'?'btn-g':'btn-n'}" onclick="ejSetOut('${code}','${sid}','${st.id}','confirmed')">დადასტურდა</button>
           <button class="btn btn-xs ${o[st.id]==='not_confirmed'?'btn-r':'btn-n'}" onclick="ejSetOut('${code}','${sid}','${st.id}','not_confirmed')">ვერ დადასტურდა</button>
+          ${o[st.id]==='not_confirmed'?(()=>{
+            const outNo=x.week; const ex=reassessExhausted(st.id,'${code}',outNo);
+            return `<button class="btn btn-xs btn-a" onclick="openReassessFor('${st.id}','${code}',${outNo})" title="გადაბარება — შეფასების საათების თავიდან გავლა">📝</button>
+              ${ex?`<button class="btn btn-xs btn-r" onclick="openRepeatFor('${st.id}','${code}',${outNo})" title="მოდულის ხელახლა გავლა სხვა ჯგუფთან">🔁</button>`:''}`})():''}
         </div></td>`:''}
       </tr>`).join('')}</tbody></table></div>`
       :'<div style="color:var(--text3);font-size:12px">ამ მოდულის ჯგუფში აქტიური სტუდენტი არ არის</div>'}
@@ -2912,7 +2775,9 @@ function viewPartner(id){
           <td style="font-size:12px">${t.spec||'—'}</td>
           <td style="font-size:11px">${t.phone||'—'}</td>
           <td><span class="bd ${t.active?'bd-g':'bd-n'}">${t.active?'აქტიური':'არააქტიური'}</span></td>
-          <td><button class="btn btn-xs btn-r" onclick="removePartnerTeacher('${t.id}','${id}')">✕</button></td></tr>`).join('')}
+          <td style="white-space:nowrap">
+            <button class="btn btn-xs btn-ghost" onclick="editPartnerTeacher('${t.id}','${id}')">✏</button>
+            <button class="btn btn-xs btn-r" onclick="removePartnerTeacher('${t.id}','${id}')">✕</button></td></tr>`).join('')}
         </tbody></table></div>`:'<div class="cb" style="color:var(--text3);font-size:12px">მასწავლებელი არ არის დამატებული</div>'}
       <div class="note">პრაქტიკულ მოდულზე სტუდენტს ენიჭება <strong>ორგანიზაცია და ამავე ორგანიზაციის მასწავლებელი</strong>.</div>
     </div>`,
@@ -2933,6 +2798,26 @@ function savePartnerTeacher(pid){
     spec:document.getElementById('pt-spec').value,phone:document.getElementById('pt-phone').value,active:true});
   renderPartners();viewPartner(pid);toast('მასწავლებელი დამატებულია ✓','success');
 }
+function editPartnerTeacher(tid,pid){
+  const t=partnerTeachers.find(x=>x.id===tid);if(!t)return;
+  showModal('ორგანიზაციის მასწავლებლის რედაქტირება',
+    `<div class="fg"><label class="fl">ორგანიზაცია</label><div class="fv">${partnerName(pid)}</div></div>
+     <div class="fg"><label class="fl">სახელი და გვარი</label><input class="fi" id="pt-name" value="${t.name}"></div>
+     <div class="fg2"><div><label class="fl">სპეციალობა</label><input class="fi" id="pt-spec" value="${t.spec||''}"></div>
+       <div><label class="fl">ტელეფონი</label><input class="fi" id="pt-phone" value="${t.phone||''}"></div></div>
+     <div class="fg"><label class="fl">სტატუსი</label><select class="fi" id="pt-active">
+       <option value="1" ${t.active?'selected':''}>აქტიური</option><option value="0" ${!t.active?'selected':''}>არააქტიური</option></select></div>`,
+    `<button class="btn btn-n" onclick="viewPartner('${pid}')">უკან</button><button class="btn btn-b" onclick="savePartnerTeacher2('${tid}','${pid}')">💾 შენახვა</button>`,'lg');
+}
+function savePartnerTeacher2(tid,pid){
+  const t=partnerTeachers.find(x=>x.id===tid);if(!t)return;
+  const n=document.getElementById('pt-name').value.trim();
+  if(!n){toast('შეავსეთ სახელი','error');return;}
+  t.name=n; t.spec=document.getElementById('pt-spec').value;
+  t.phone=document.getElementById('pt-phone').value;
+  t.active=document.getElementById('pt-active').value==='1';
+  renderPartners();viewPartner(pid);toast('მასწავლებელი განახლდა ✓','success');
+}
 function removePartnerTeacher(tid,pid){
   const u=practicePlacements.filter(x=>x.partnerTeacherId===tid).length;
   if(u){toast(`ვერ იშლება — მასწავლებელს მიმაგრებულია ${u} სტუდენტი`,'error');return;}
@@ -2945,7 +2830,7 @@ function practicePage(imId){
   const im=intakeModules.find(x=>x.id===imId);if(!im)return;
   const ip=intakePrograms.find(y=>y.id===im.ipId)||{};
   const grps=groupsData.filter(g=>g.intakeId===ip.intakeId&&g.programId===ip.programId&&g.active);
-  const stus=students.filter(x=>grps.some(g=>g.name===x.group)&&x.status==='active');
+  const stus=studentsAll().filter(x=>grps.some(g=>g.name===x.group)&&x.status==='active');
   const done=stus.filter(x=>ppOf(imId,x.id)).length;
   showModal(`პრაქტიკის განაწილება — ${regName(im.moduleId)}`,`
     <div class="dhead"><div><div class="dhead-name">${regName(im.moduleId)}</div>
@@ -3123,7 +3008,7 @@ function renderIntakes(){
     const ps=ipsOf(it.id);
     const mods=ps.reduce((a,x)=>a+ipModules(x.id).length,0);
     const hrs=ps.reduce((a,x)=>a+ipHours(x.id),0);
-    const stu=students.filter(x=>x.intakeId===it.id).length;
+    const stu=studentsAll().filter(x=>x.intakeId===it.id).length;
     return `<div class="card" style="cursor:pointer" onclick="viewIntake('${it.id}')">
       <div class="ch"><div class="ct">${it.name}</div><span class="bd ${it.season==='autumn'?'bd-a':'bd-g'}">${it.season==='autumn'?'საშემოდგომო':'საგაზაფხულო'}</span></div>
       <div class="cb">
@@ -3132,9 +3017,55 @@ function renderIntakes(){
         <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>მოდულები</span><strong>${mods}</strong></div>
         <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px"><span>საათები სულ</span><strong>${hrs}</strong></div>
         <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px"><span>პროფ. სტუდენტები</span><strong>${stu}</strong></div>
-        <button class="btn btn-xs btn-o" style="width:100%" onclick="event.stopPropagation();viewIntake('${it.id}')">პროგრამები →</button>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-xs btn-o" style="flex:1" onclick="event.stopPropagation();viewIntake('${it.id}')">პროგრამები →</button>
+          <button class="btn btn-xs btn-ghost" onclick="event.stopPropagation();editIntakeModal('${it.id}')">✏</button>
+          <button class="btn btn-xs btn-r" onclick="event.stopPropagation();removeIntake('${it.id}')">✕</button>
+        </div>
       </div></div>`;
   }).join('');
+}
+let intSeq=3;
+function intakeForm(it){
+  return `<div class="fg"><label class="fl">დასახელება</label><input class="fi" id="in-name" value="${it?it.name:''}" placeholder="მაგ: საშემოდგომო მიღება 2026"></div>
+    <div class="fg2"><div><label class="fl">სეზონი</label><select class="fi" id="in-season">
+        <option value="autumn" ${it&&it.season==='autumn'?'selected':''}>საშემოდგომო</option>
+        <option value="spring" ${!it||it.season==='spring'?'selected':''}>საგაზაფხულო</option></select></div>
+      <div><label class="fl">წელი</label><input class="fi" id="in-year" type="number" min="2020" max="2040" value="${it?it.year:2026}"></div></div>`;
+}
+function addIntakeModal(){
+  showModal('მიღების დამატება',intakeForm(null),
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveNewIntake()">✓ დამატება</button>`,'lg');
+}
+function saveNewIntake(){
+  const name=document.getElementById('in-name').value.trim();
+  if(!name){toast('შეავსეთ დასახელება','error');return;}
+  if(intakesData.some(x=>x.name===name)){toast('ამ დასახელებით მიღება უკვე არსებობს','error');return;}
+  intakesData.push({id:'INT-'+(++intSeq),name,season:document.getElementById('in-season').value,
+    year:+document.getElementById('in-year').value});
+  renderIntakes();closeModal();toast('მიღება დამატებულია ✓','success');
+}
+function editIntakeModal(id){
+  const it=intakesData.find(x=>x.id===id);if(!it)return;
+  showModal('მიღების რედაქტირება',intakeForm(it),
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveIntake('${id}')">💾 შენახვა</button>`,'lg');
+}
+function saveIntake(id){
+  const it=intakesData.find(x=>x.id===id);if(!it)return;
+  const name=document.getElementById('in-name').value.trim();
+  if(!name){toast('შეავსეთ დასახელება','error');return;}
+  if(intakesData.some(x=>x.id!==id&&x.name===name)){toast('ამ დასახელებით მიღება უკვე არსებობს','error');return;}
+  it.name=name; it.season=document.getElementById('in-season').value; it.year=+document.getElementById('in-year').value;
+  renderIntakes();renderGroups();closeModal();toast('მიღება განახლდა ✓','success');
+}
+function removeIntake(id){
+  const it=intakesData.find(x=>x.id===id);if(!it)return;
+  const ps=ipsOf(id).length, gs=groupsData.filter(g=>g.intakeId===id).length, st=studentsAll().filter(x=>x.intakeId===id).length;
+  if(ps||gs||st){toast(`ვერ იშლება — მიღებაზეა ${ps} პროგრამა, ${gs} ჯგუფი და ${st} სტუდენტი`,'error');return;}
+  showModal('მიღების წაშლა',`<p style="font-size:13px">გსურთ მიღების <strong>${it.name}</strong> წაშლა?</p>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="(function(){
+      const i=intakesData.findIndex(x=>x.id==='${id}');if(i>-1)intakesData.splice(i,1);
+      renderIntakes();closeModal();toast('მიღება წაშლილია','warn')})()">✕ წაშლა</button>`);
 }
 function viewIntake(id){
   const it=intakesData.find(x=>x.id===id);if(!it)return;
@@ -3206,7 +3137,7 @@ function viewIntakeProgram(ipId){
              <div style="font-size:10px;color:var(--text3);margin-top:3px">${imPlacements(im.id).length} სტუდენტი განაწილებულია</div>`
           : `<select class="fi" onchange="setImTeacher('${im.id}',this.value)" style="padding:5px 6px;font-size:11px">
             <option value="">— არ არის მითითებული —</option>
-            ${teachers.filter(t=>t.status==='active').map(t=>`<option value="${t.id}" ${t.id===im.teacherId?'selected':''}>${t.name}</option>`).join('')}</select>`}</td>
+            ${teachersAll().filter(t=>t.status==='active').map(t=>`<option value="${t.id}" ${t.id===im.teacherId?'selected':''}>${t.name}</option>`).join('')}</select>`}</td>
         <td style="text-align:center">${imWeeks(im.id).length}</td>
         <td style="text-align:center">${t.contactH}</td><td style="text-align:center">${t.selfH}</td><td style="text-align:center">${t.assessH}</td>
         <td style="text-align:center;font-weight:700">${t.contactH+t.selfH+t.assessH}</td>
@@ -3244,7 +3175,7 @@ function addIntakeModule(ipId){
        ${free.length?`<select class="fi" id="im-mod">${free.map(x=>`<option value="${x.id}">${x.title}</option>`).join('')}</select>`
          :'<div style="color:var(--text3);font-size:12px">რეესტრის ყველა მოდული უკვე დამატებულია</div>'}</div>
      <div class="fg"><label class="fl">პროფესიული განათლების მასწავლებელი</label>
-       <select class="fi" id="im-teacher">${teachers.filter(t=>t.status==='active').map(t=>`<option value="${t.id}">${t.name} · ${t.spec}</option>`).join('')}</select></div>
+       <select class="fi" id="im-teacher">${teachersAll().filter(t=>t.status==='active').map(t=>`<option value="${t.id}">${t.name} · ${t.spec}</option>`).join('')}</select></div>
      <div class="note">საათები კვირების მიხედვით დაემატება მოდულის დამატების შემდეგ — ღილაკით <strong>🗓️ საათები</strong>.</div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button>${free.length?`<button class="btn btn-b" onclick="saveIntakeModule('${ipId}')">✓ დამატება</button>`:''}`,'lg');
 }
@@ -3341,14 +3272,13 @@ function viewTemplate(id){
     return `<div class="card" style="margin-bottom:12px">
       <div class="ch"><div class="ct">${romanYear(sl)} სასწავლო წელი <span style="font-size:11px;font-weight:400;color:var(--text3)">${rows.length} მეცადინეობა</span></div></div>
       ${rows.length?`<div class="tw"><table>
-        <thead><tr><th style="width:34px">#</th><th>მეცადინეობა</th><th>სახეობა</th><th>სწ. შედეგი</th><th>ხანგრძ.</th><th>მასალა</th><th></th></tr></thead>
-        <tbody>${rows.map(l=>{const mats=lecMaterials(l.id,'template').length;
+        <thead><tr><th style="width:34px">#</th><th>მეცადინეობა</th><th>სახეობა</th><th>სწ. შედეგი</th><th>ხანგრძ.</th><th></th></tr></thead>
+        <tbody>${rows.map(l=>{
           return `<tr><td style="text-align:center;color:var(--text3)">${l.seq}</td>
             <td style="font-size:12px">${l.title}</td>
             <td style="font-size:11px">${LECTURE_KIND_LBL[l.kind]||l.kind}</td>
             <td style="text-align:center"><span class="bd bd-n" style="font-size:10px">№${l.outcomeNo}</span></td>
             <td style="text-align:center;font-size:11px">${l.durationMin} წთ</td>
-            <td style="text-align:center">${mats?`<span class="bd bd-b">${mats}</span>`:'<span style="color:var(--text3)">—</span>'}</td>
             <td><button class="btn btn-xs btn-ghost" onclick="editLecturePage('${l.id}','template')">✏</button></td></tr>`}).join('')}
         </tbody></table></div>`:'<div class="cb" style="color:var(--text3);font-size:12px">მეცადინეობა არ არის</div>'}
     </div>`;
@@ -3369,13 +3299,12 @@ function viewTemplate(id){
       ${outs.map(o=>`<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${o.no}</td><td style="font-size:12px">${o.title}</td><td style="font-size:11px">${DIRECTION_LBL[o.direction]}</td><td style="text-align:center;font-size:11px">${o.contactH}/${o.selfH}/${o.assessH}</td></tr>`).join('')}
       </tbody></table></div></div>`:''}
     <div class="fg"><label class="fl">სასწავლო წლის სლოტები და მეცადინეობა</label>${slotBlocks}</div>
-    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">${orderRef(t.orderId)} — შაბლონის რედაქტირება მოქმედებს <strong>მხოლოდ ახალ ინსტანციებზე</strong>; უკვე ინსტანცირებული მოდულები იმართება „სასწავლო მოდულებიდან". ცვლილება მოითხოვს დირექტორის ბრძანებას. — [სპწ] 19.3</div>`,
+    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">შაბლონის რედაქტირება მოქმედებს <strong>მხოლოდ ახალ ინსტანციებზე</strong>.</div>`,
     `<button class="btn btn-n" onclick="closeModal()">უკან</button><button class="btn btn-o" onclick="toast('შაბლონი Excel-ში ჩამოიტვირთა ✓','success')">⬇ Excel</button>`,'xl');
 }
 // ── მოდულის დეტალები / კალენდარული გეგმა (§2.6) ──
 function viewModule(code){
   const m=modulesData.find(x=>x.code===code);if(!m)return;
-  const ins=instrumentsData.filter(x=>x.moduleCode===code);
   const outs=templateOutcomes.filter(o=>o.templateId===m.templateId);
   const lecs=modLectures(code);
   const done=lecs.filter(l=>l.conducted).length;
@@ -3385,16 +3314,14 @@ function viewModule(code){
     return `<div class="card" style="margin-bottom:12px">
       <div class="ch"><div class="ct">${romanYear(sl)} სასწავლო წელი <span style="font-size:11px;font-weight:400;color:var(--text3)">${rows.filter(r=>r.conducted).length}/${rows.length} ჩატარებული</span></div></div>
       ${rows.length?`<div class="tw"><table>
-        <thead><tr><th style="width:34px">#</th><th>მეცადინეობა</th><th>სახეობა</th><th>სწ. შედეგი</th><th>ხანგრძ.</th><th>მასალა</th><th>ჩატარება</th><th></th></tr></thead>
+        <thead><tr><th style="width:34px">#</th><th>მეცადინეობა</th><th>სახეობა</th><th>სწ. შედეგი</th><th>ხანგრძ.</th><th>ჩატარება</th><th></th></tr></thead>
         <tbody>${rows.map(l=>{
-          const mats=lecMaterials(l.id,'module').length;
           return `<tr>
             <td style="text-align:center;color:var(--text3)">${l.seq}</td>
             <td><div style="font-size:12px">${l.title}</div>${l.note?`<div style="font-size:10px;color:var(--amber)">⚠ ${l.note}</div>`:''}</td>
             <td style="font-size:11px">${LECTURE_KIND_LBL[l.kind]||l.kind}</td>
             <td style="text-align:center"><span class="bd bd-n" style="font-size:10px">№${l.outcomeNo}</span></td>
             <td style="text-align:center;font-size:11px">${l.durationMin} წთ</td>
-            <td style="text-align:center">${mats?`<span class="bd bd-b">${mats}</span>`:'<span style="color:var(--text3)">—</span>'}</td>
             <td><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:11px">
               <input type="checkbox" ${l.conducted?'checked':''} onchange="toggleConducted('${l.id}',this.checked)" style="width:15px;height:15px;accent-color:var(--green);cursor:pointer">
               ${l.conducted?`<span style="color:var(--green)">${l.conductedOn}</span>`:'<span style="color:var(--text3)">არ ჩატარდა</span>'}
@@ -3408,7 +3335,6 @@ function viewModule(code){
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
       <span class="bd bd-p">${progName(m.programId)}</span><span class="bd bd-b">${intakeName(m.intakeId)}</span>
       <span class="bd bd-n">სარეგ. № ${m.regNo}</span><span class="bd bd-n">${m.credits} კრედიტი</span>
-      <span class="bd bd-n">${branchName(m.branchId)}</span>
     </div>
     <div class="fg2"><div><label class="fl">მოდულის პერიოდი</label><div>${m.startsOn||'—'} – ${m.endsOn||'—'}</div></div><div><label class="fl">მასწავლებელი</label><div>${teacherName(modTeacherId(m.code))}</div></div></div>
     <div class="fg"><label class="fl">ჩატარებული მეცადინეობა (მთელი მოდულის მაჩვენებელი)</label>
@@ -3431,12 +3357,11 @@ function viewModule(code){
       <div class="note">განაწილება მოდულის შაბლონიდან მოდის — რედაქტირება ხდება <strong>პროგრამის მოდულის შიდა გვერდზე</strong>.</div>`
         :'<div style="color:var(--text3);font-size:12px">საათების განაწილება ჯერ არ არის გაწერილი</div>'}</div>
     <div class="fg"><label class="fl">სასწავლო წლის სლოტები და მეცადინეობა</label>${slotBlocks}</div>
-    ${outs.length?`<div class="fg"><label class="fl">სწავლის შედეგები და შეფასების ინსტრუმენტი</label>
-      <div class="tw"><table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>მიმართულება</th><th>ინსტრუმენტი</th></tr></thead><tbody>
-      ${outs.map(o=>{const ii=ins.find(x=>x.outcomeNo===o.no);const st=ii?INSTRUMENT_STATUS_LBL[ii.status]:['არ არის','bd-n'];
-        return `<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${o.no}</td><td style="font-size:12px">${o.title}</td><td style="font-size:11px">${DIRECTION_LBL[o.direction]}</td><td><span class="bd ${st[1]}">${st[0]}</span>${ii&&ii.status==='rejected'?`<div style="font-size:10px;color:var(--red)">${ii.rejectReason}</div>`:''}</td></tr>`}).join('')}
+    ${outs.length?`<div class="fg"><label class="fl">სწავლის შედეგები</label>
+      <div class="tw"><table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>მიმართულება</th></tr></thead><tbody>
+      ${outs.map(o=>`<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${o.no}</td><td style="font-size:12px">${o.title}</td><td style="font-size:11px">${DIRECTION_LBL[o.direction]}</td></tr>`).join('')}
       </tbody></table></div></div>`:''}
-    <div style="background:var(--amber-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">შეფასების ინსტრუმენტი ვალიდირდება <strong>ავტორისგან განსხვავებული</strong> პირის მიერ. მეცადინეობის ჩატარებას აღრიცხავს მასწავლებელი, ვერიფიცირებს სპმს კოორდინატორი. — [სპწ] 21.4–21.8, 34.3.3</div>`,
+    <div style="background:var(--amber-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">მეცადინეობის ჩატარებას აღრიცხავს მასწავლებელი, ვერიფიცირებს სპმს კოორდინატორი. სასწავლო მასალა მიებმება <strong>მოდულს</strong>, არა კონკრეტულ მეცადინეობას. — [სპწ] 21.4–21.8</div>`,
     `<button class="btn btn-n" onclick="closeModal()">უკან</button>
      <button class="btn btn-o" onclick="exportModule('${code}')">⬇ Excel</button>
 `,'xl');
@@ -3454,7 +3379,6 @@ function exportModule(code){toast('მოდული Excel-ში ჩამო�
 // ── მეცადინეობის რედაქტირება: ყველა ველი + მიმაგრებული ფაილები ──
 function editLecturePage(lid,scope){
   const l=(scope==='module'?moduleLectures:templateLectures).find(x=>x.id===lid); if(!l)return;
-  const mats=lecMaterials(lid,scope);
   showModal(`მეცადინეობის რედაქტირება — ${l.title.substring(0,40)}`,`
     <div class="fg"><label class="fl">სათაური (თემატიკა)</label><input class="fi" id="el-title" value="${l.title}"></div>
     <div class="fg2"><div><label class="fl">სახეობა</label>
@@ -3469,22 +3393,6 @@ function editLecturePage(lid,scope){
       <select class="fi" id="el-cond"><option value="0" ${!l.conducted?'selected':''}>არ ჩატარდა</option><option value="1" ${l.conducted?'selected':''}>ჩატარდა</option></select></div>
       <div><label class="fl">ჩატარების თარიღი</label><input class="fi" id="el-condon" value="${l.conductedOn||''}" placeholder="დდ.თთ.წწწწ"></div></div>
     <div class="fg"><label class="fl">შენიშვნა (გადატანა / შემცვლელი)</label><input class="fi" id="el-note" value="${l.note||''}"></div>`:''}
-    <div class="fg"><label class="fl">მიმაგრებული მასალა</label>
-      ${mats.length?`<div class="tw"><table><thead><tr><th>სახეობა</th><th>დასახელება</th><th>წყარო</th><th></th></tr></thead><tbody>
-        ${mats.map(mt=>`<tr>
-          <td><span class="bd ${mt.type==='video'?'bd-p':'bd-n'}" style="font-size:10px">${MATERIAL_LBL[mt.type]||mt.type}</span></td>
-          <td style="font-size:12px">${mt.title}</td>
-          <td style="font-size:11px;color:var(--text3)">${mt.fileUrl?'ფაილი':mt.link?'ბმული: '+mt.link:'—'}</td>
-          <td style="white-space:nowrap">
-            ${mt.downloadable?`<button class="btn btn-xs btn-o" onclick="toast('${mt.type==='video'?'ვიდეო ჩამოიტვირთება — ბრაუზერში დაკვრა გამორთულია':'ფაილი ჩამოიტვირთა'} ✓','success')">⬇</button>`:''}
-            <button class="btn btn-xs btn-r" onclick="removeMaterial('${mt.id}','${lid}','${scope}')">✕</button>
-          </td></tr>`).join('')}
-        </tbody></table></div>`:'<div style="color:var(--text3);font-size:12px;margin-bottom:8px">მასალა არ არის მიმაგრებული</div>'}
-      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
-        <button class="btn btn-xs btn-o" onclick="addMaterialPage('${lid}','${scope}','file')">➕ ფაილის მიმაგრება</button>
-        <button class="btn btn-xs btn-o" onclick="addMaterialPage('${lid}','${scope}','link')">🔗 ბმულის მიმაგრება</button>
-      </div>
-      <div style="background:var(--blue-lt);border-radius:6px;padding:8px;font-size:11px;color:var(--text2);margin-top:8px">ვიდეო მასალა <strong>მხოლოდ ჩამოტვირთვადია</strong> — ბრაუზერში დაკვრა არ ხდება.</div>
     </div>`,
     `<button class="btn btn-n" onclick="closeModal()">უკან</button><button class="btn btn-b" onclick="saveLecture('${lid}','${scope}')">💾 შენახვა</button>`,'lg');
 }
@@ -3508,77 +3416,6 @@ function saveLecture(lid,scope){
   }
   closeModal();toast('მეცადინეობა განახლდა ✓','success');
 }
-function addMaterialPage(lid,scope,mode){
-  showModal(mode==='file'?'ფაილის მიმაგრება':'ბმულის მიმაგრება',`
-    <div class="fg"><label class="fl">სახეობა</label>
-      <select class="fi" id="nm-type">${Object.entries(MATERIAL_LBL).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div>
-    <div class="fg"><label class="fl">დასახელება</label><input class="fi" id="nm-title" placeholder="მასალის დასახელება"></div>
-    ${mode==='file'
-      ?'<div class="fg"><label class="fl">ფაილი</label><input class="fi" type="file" id="nm-file"></div>'
-      :'<div class="fg"><label class="fl">ბმული / ISBN</label><input class="fi" id="nm-link" placeholder="https://... ან 978-9941-..."></div>'}
-    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">ვიდეო ავტომატურად ინიშნება <strong>ჩამოტვირთვადად</strong>. სასწავლო რესურსი უკავშირდება ბიბლიოთეკის კატალოგს.</div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveMaterial('${lid}','${scope}','${mode}')">✓ მიმაგრება</button>`);
-}
-function saveMaterial(lid,scope,mode){
-  const title=document.getElementById('nm-title').value.trim();
-  if(!title){toast('შეავსეთ დასახელება','error');return;}
-  const type=document.getElementById('nm-type').value;
-  lectureMaterials.push({id:'LM-'+(lectureMaterials.length+1),lectureId:lid,scope,type,title,
-    fileUrl:mode==='file'?'/files/'+title:'',link:mode==='link'?(document.getElementById('nm-link').value||''):'',
-    downloadable:mode==='file'});
-  closeModal();editLecturePage(lid,scope);toast('მასალა მიმაგრდა ✓','success');
-}
-function removeMaterial(mid,lid,scope){
-  const i=lectureMaterials.findIndex(x=>x.id===mid);
-  if(i>-1)lectureMaterials.splice(i,1);
-  editLecturePage(lid,scope);toast('მასალა მოხსნილია','warn');
-}
-// ── შუალედური შეფასება / ისგ / აპელაცია ──
-function renderInterim(){
-  const tb=document.getElementById('interim-tbody');
-  if(tb)tb.innerHTML=interimData.map(x=>`<tr>
-    <td style="font-size:11px;font-weight:700;color:var(--blue)">${x.id}</td>
-    <td style="font-size:12px">${progName(x.programId)}</td>
-    <td style="font-size:12px">${groupName(x.groupId)}</td>
-    <td style="font-size:11px">${orderRef(x.orderId)}</td>
-    <td style="font-size:12px">${x.heldOn}</td>
-    <td style="font-size:11px">${INTERIM_TASK_LBL[x.taskType]}</td>
-    <td style="text-align:center"><span class="bd ${x.percentDone>=40&&x.percentDone<=60?'bd-g':'bd-r'}">${x.percentDone}%</span></td>
-    <td style="text-align:center"><span class="bd ${x.commission>=3?'bd-g':'bd-r'}">${x.commission}</span></td>
-    <td style="text-align:center">${x.participated}/${x.total}</td>
-  </tr>`).join('');
-  const it=document.getElementById('isp-tbody');
-  if(it)it.innerHTML=ispData.map(x=>`<tr>
-    <td style="font-size:11px;font-weight:700;color:var(--blue)">${x.id}</td>
-    <td><div style="font-weight:600">${x.name}</div><div style="font-size:10px;color:var(--blue);cursor:pointer" onclick="viewStudent('${x.studentId}')">${x.studentId} ↗</div></td>
-    <td style="font-size:12px">${x.moduleCode}</td>
-    <td style="font-size:12px">${ISP_GROUND_LBL[x.ground]}</td>
-    <td><span class="bd bd-p">${ISP_KIND_LBL[x.kind]}</span></td>
-    <td style="font-size:12px">${x.drawnUpOn}</td>
-    <td style="font-size:11px">${x.specialist}</td>
-  </tr>`).join('');
-  const ap=document.getElementById('appeals-tbody');
-  if(ap)ap.innerHTML=appealsData.map(x=>`<tr>
-    <td style="font-size:11px;font-weight:700;color:var(--blue)">${x.id}</td>
-    <td><div style="font-weight:600">${x.name}</div><div style="font-size:10px;color:var(--text3)">${x.studentId}</div></td>
-    <td style="font-size:12px">${x.targetKind==='outcome_result'?'სწავლის შედეგი':x.targetKind}</td>
-    <td style="font-size:11px;color:var(--blue)">${x.targetId}</td>
-    <td style="font-size:12px">${x.filedOn}</td>
-    <td style="font-size:12px">${x.deadlineOn}</td>
-    <td><span class="bd ${x.decision==='upheld'?'bd-g':x.decision==='rejected'?'bd-r':'bd-n'}">${x.decision==='upheld'?'დაკმაყოფილდა':x.decision==='rejected'?'არ დაკმაყოფილდა':'—'}</span></td>
-    <td style="font-size:12px">${x.decidedOn||'—'}</td>
-  </tr>`).join('');
-}
-function renderAttendance(){
-  const tb=document.getElementById('attendance-tbody');
-  if(!tb)return;
-  tb.innerHTML=attendanceData.map(a=>`<tr>
-    <td><div style="font-weight:600">${a.name}</div><div style="font-size:10px;color:var(--blue);cursor:pointer" onclick="viewStudent('${a.studentId}')">${a.studentId} ↗</div></td>
-    <td style="font-size:12px">${a.moduleCode}</td>
-    <td style="text-align:center"><span class="bd bd-g">${a.present}</span></td>
-    <td style="text-align:center"><span class="bd bd-r">${a.absent}</span></td>
-  </tr>`).join('');
-}
 </script>
 <script>
 // ══ MODAL FORMS ══
@@ -3588,19 +3425,22 @@ function usersAll(){
   const stLbl=x=>x==='active'?['აქტიური','bd-g']
     :x==='suspended'?['შეჩერებული','bd-a']:x==='terminated'?['შეწყვეტილი','bd-r']
     :x==='inactive'?['არააქტიური','bd-n']:[x,'bd-n'];
-  return [
-    ...students.map(x=>({uid:x.id,id:x.id,name:x.name,kind:'პროფესიული სტუდენტი',rc:'bd-b',roleId:'student',
-      info:progName(x.programId)+' · '+x.group,contact:x.email,st:stLbl(x.status)})),
-    ...teachers.map(x=>({uid:x.id,id:x.id,name:x.name,kind:'პროფესიული განათლების მასწავლებელი',rc:'bd-p',roleId:'teacher',
-      info:IMPLEMENTER_LBL[x.implementerType]+' · '+x.spec,contact:x.email,st:stLbl(x.status)})),
-    ...admins.map(x=>({uid:x.id,id:x.id,name:x.name,kind:'ადმინისტრაციული პერსონალი',rc:'bd-a',roleId:x.role,
-      info:x.dept,contact:x.email,st:stLbl(x.status)})),
-  ];
+  // ერთიანი ცხრილი — ჩანაწერი ერთია, განსხვავებულია მხოლოდ როლი და მისი ინტერფეისი
+  return usersData.map(u=>{
+    const r=rolesData.find(x=>x.id===u.role)||{label:u.role||'—',ui:'admin'};
+    const ui=r.ui||'admin';
+    const info = ui==='student' ? progName(u.programId)+' · '+(u.group||'—')
+               : ui==='teacher' ? (IMPLEMENTER_LBL[u.implementerType]||'')+' · '+(u.spec||'')
+               : (u.dept||'—');
+    return {uid:u.id,id:u.id,name:u.name,kind:r.label,ui,
+      rc: ui==='student'?'bd-b':ui==='teacher'?'bd-p':'bd-a',
+      roleId:u.role,info,contact:u.email,st:stLbl(u.status)};
+  });
 }
 function renderUsers(){
   const q=(document.getElementById('usr-search')?.value||'').trim();
   let list=usersAll();
-  if(usrRole) list=list.filter(u=>u.kind===usrRole);
+  if(usrRole) list=list.filter(u=>u.ui===usrRole);
   if(q) list=list.filter(u=>u.name.includes(q)||u.id.includes(q)||(u.contact||'').includes(q));
   const el=document.getElementById('users-tbody'); if(!el) return;
   el.innerHTML=list.map(u=>{
@@ -3618,13 +3458,32 @@ function renderUsers(){
   const c=document.getElementById('usr-count'); if(c)c.textContent=list.length+' მომხმარებელი';
 }
 function assignRoleModal(uid){
-  const a=admins.find(x=>x.id===uid); if(!a)return;
-  showModal('სისტემური როლის მინიჭება',`
-    <div class="fg"><label class="fl">მომხმარებელი</label><div style="font-weight:700">${a.name} · ${a.id}</div></div>
-    <div class="fg"><label class="fl">სისტემური როლი</label>
-      <select class="fi" id="ar-role">${rolesData.filter(r=>!['student','teacher'].includes(r.id)).map(r=>`<option value="${r.id}" ${r.id===a.role?'selected':''}>${r.label}</option>`).join('')}</select></div>
-    <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">როლის ცვლილება ცვლის მომხმარებლის CRUD წვდომებს და აისახება აუდიტის ჟურნალში.</div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const a=admins.find(x=>x.id==='${uid}');const nv=document.getElementById('ar-role').value;a.role=nv;const rr=rolesData.find(r=>r.id===nv);a.dept=rr?rr.label:a.dept;auditLog.unshift({id:'AUD-'+String(auditLog.length+1).padStart(3,'0'),actor:'ადმინისტრატორი',role:'it_manager',action:'UPDATE',entity:'user_role',entityId:'${uid}',at:'დღეს',ip:'10.0.4.18'});renderUsers();renderAudit();closeModal();toast('როლი მინიჭებულია ✓','success')})()">✓ მინიჭება</button>`,'lg');
+  const u=userById(uid); if(!u)return;
+  showModal('როლის მინიჭება',`
+    <div class="fg"><label class="fl">მომხმარებელი</label><div style="font-weight:700">${u.name} · ${u.id}</div></div>
+    <div class="fg"><label class="fl">როლი</label>
+      <select class="fi" id="ar-role">${rolesData.map(r=>`<option value="${r.id}" ${r.id===u.role?'selected':''}>${r.label}${r.predefined?' — საკუთარი ინტერფეისი':''}</option>`).join('')}</select></div>
+    <div class="note">როლი განსაზღვრავს <strong>ინტერფეისსაც</strong>: პროფესიული სტუდენტი → სტუდენტის პორტალი, პროფესიული განათლების მასწავლებელი → მასწავლებლის პორტალი, დანარჩენი → ადმინისტრირების პანელი და CRUD წვდომები.</div>`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveUserRole('${uid}')">✓ მინიჭება</button>`,'lg');
+}
+function saveUserRole(uid){
+  const u=userById(uid); if(!u)return;
+  const nv=document.getElementById('ar-role').value;
+  u.role=nv;
+  const rr=rolesData.find(r=>r.id===nv);
+  const ui=roleUi(nv);
+  // როლის ცვლილებაზე ივსება ამ როლისთვის საჭირო ველები — ჩანაწერი ერთია, იცვლება მხოლოდ როლი
+  if(ui==='admin'){ u.dept=rr?rr.label:(u.dept||'—'); }
+  if(ui==='teacher'){ u.implementerType=u.implementerType||'vocational_teacher'; u.spec=u.spec||'—';
+    u.modules=u.modules||[]; u.workStartedOn=u.workStartedOn||TODAY; }
+  if(ui==='student'){ u.group=u.group||'—'; u.programId=u.programId||programsData[0].id;
+    u.intakeId=u.intakeId||intakesData[0].id; u.studyYear=u.studyYear||1;
+    u.balance=u.balance||0; u.socialStatus=u.socialStatus||[]; u.hasSen=!!u.hasSen; }
+  if(!u.status)u.status='active';
+  auditLog.unshift({id:'AUD-'+String(auditLog.length+1).padStart(3,'0'),actor:'ადმინისტრატორი',role:'it_manager',
+    action:'UPDATE',entity:'user_role',entityId:uid,at:'დღეს',ip:'10.0.4.18'});
+  renderUsers();renderStudents(studentsAll());renderTeachers(teachersAll());renderAudit();closeModal();
+  toast('როლი მინიჭებულია — ინტერფეისი: '+(roleUi(nv)==='student'?'სტუდენტის პორტალი':roleUi(nv)==='teacher'?'მასწავლებლის პორტალი':'ადმინისტრირების პანელი')+' ✓','success');
 }
 function filterUsersRole(role,el){usrRole=role;document.querySelectorAll('[id^=usr-chip]').forEach(c=>c.classList.remove('active'));if(el)el.classList.add('active');renderUsers();}
 function addUserModal(){
@@ -3670,18 +3529,18 @@ function saveNewUser(){
   if(pid && pid.length!==11){toast('პირადი ნომერი უნდა იყოს 11 ციფრი','error');return;}
   const email=document.getElementById('nu-email').value, phone=document.getElementById('nu-phone').value;
   if(role==='პროფესიული სტუდენტი'){
-    students.unshift({id:'BMA-'+(2600+students.length+1),name,group:document.getElementById('nu-group').value,programId:document.getElementById('nu-prog').value,intakeId:document.getElementById('nu-intake').value,studyYear:+document.getElementById('nu-year').value,balance:0,status:'active',email,phone,hasSen:false,socialStatus:[],legalRepName:document.getElementById('nu-lr').value,legalRepRelation:document.getElementById('nu-lrrel').value,legalRepPhone:''});
-    renderStudents(students);
+    usersData.unshift({role:'student',id:'BMA-'+(2600+studentsAll().length+1),name,group:document.getElementById('nu-group').value,programId:document.getElementById('nu-prog').value,intakeId:document.getElementById('nu-intake').value,studyYear:+document.getElementById('nu-year').value,balance:0,status:'active',email,phone,hasSen:false,socialStatus:[],legalRepName:document.getElementById('nu-lr').value,legalRepRelation:document.getElementById('nu-lrrel').value,legalRepPhone:''});
+    renderStudents(studentsAll());
   } else if(role==='პროფესიული განათლების მასწავლებელი'){
-    teachers.unshift({id:'T-0'+String(teachers.length+1).padStart(2,'0'),name,implementerType:document.getElementById('nu-impl').value,spec:document.getElementById('nu-spec').value,modules:[],email,phone,workStartedOn:document.getElementById('nu-start').value,status:'active'});
-    renderTeachers(teachers);
+    usersData.unshift({role:'teacher',id:'T-0'+String(teachersAll().length+1).padStart(2,'0'),name,implementerType:document.getElementById('nu-impl').value,spec:document.getElementById('nu-spec').value,modules:[],email,phone,workStartedOn:document.getElementById('nu-start').value,status:'active'});
+    renderTeachers(teachersAll());
   } else {
-    admins.unshift({id:'ADM-0'+String(admins.length+1).padStart(2,'0'),name,role:null,dept:document.getElementById('nu-dept').value||'—',email,phone,status:'active'});
+    usersData.unshift({role:document.getElementById('nu-adminrole')?document.getElementById('nu-adminrole').value:'spms_specialist',id:'ADM-0'+String(adminsAll().length+1).padStart(2,'0'),name,dept:document.getElementById('nu-dept').value||'—',email,phone,status:'active'});
   }
   renderUsers();closeModal();toast(role+' დამატებულია ✓','success');
 }
 function editStudentModal(id){
-  const s=students.find(x=>x.id===id);if(!s)return;
+  const s=studentsAll().find(x=>x.id===id);if(!s)return;
   showModal('პროფესიული სტუდენტის რედაქტირება',`
     <div class="fg2"><div><label class="fl">სახელი</label><input class="fi" id="es-name" value="${s.name}"></div><div><label class="fl">ID</label><input class="fi" value="${s.id}" disabled></div></div>
     <div class="fg2"><div><label class="fl">პროგრამა</label><select class="fi" id="es-prog">${programsData.map(x=>`<option value="${x.id}" ${x.id===s.programId?'selected':''}>${x.name}</option>`).join('')}</select></div>
@@ -3695,7 +3554,7 @@ function editStudentModal(id){
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveEditStudent('${id}')">💾 შენახვა</button>`,'lg');
 }
 function saveEditStudent(id){
-  const s=students.find(x=>x.id===id);if(!s)return;
+  const s=studentsAll().find(x=>x.id===id);if(!s)return;
   s.name=document.getElementById('es-name').value;
   s.programId=document.getElementById('es-prog').value;
   s.intakeId=document.getElementById('es-intake').value;
@@ -3706,11 +3565,11 @@ function saveEditStudent(id){
   s.balance=+document.getElementById('es-bal').value;
   s.legalRepName=document.getElementById('es-lr').value;
   s.legalRepRelation=document.getElementById('es-lrrel').value;
-  renderStudents(students);renderUsers();closeModal();toast('მონაცემები განახლდა ✓','success');
+  renderStudents(studentsAll());renderUsers();closeModal();toast('მონაცემები განახლდა ✓','success');
 }
 // სტატუსის ცვლილება — მხოლოდ ბრძანებით (§2.2)
 function changeStatusModal(id){
-  const s=students.find(x=>x.id===id);if(!s)return;
+  const s=studentsAll().find(x=>x.id===id);if(!s)return;
   showModal('სტატუსის შეცვლა — ბრძანებით',`
     <div class="fg"><label class="fl">პროფესიული სტუდენტი</label><div style="font-weight:700">${s.name} · ${s.id}</div></div>
     <div class="fg"><label class="fl">მიმდინარე სტატუსი</label><div><span class="bd ${(STUDENT_STATUS_LBL[s.status]||['','bd-n'])[1]}">${(STUDENT_STATUS_LBL[s.status]||[s.status])[0]}</span></div></div>
@@ -3733,28 +3592,27 @@ function updateStatusReason(){
   else box.innerHTML='';
 }
 function applyStatusChange(id){
-  const s=students.find(x=>x.id===id);if(!s)return;
+  const s=studentsAll().find(x=>x.id===id);if(!s)return;
   const ns=document.getElementById('cs-status').value;
-  const ord=null;
   s.status=ns;
   const rs=document.getElementById('cs-reason');
-  if(ns==='suspended'){s.suspensionOrderId=ord;s.suspensionReason=rs?rs.value:null;s.suspensionExpiresOn=(document.getElementById('cs-exp')||{}).value||'';}
-  if(ns==='terminated'){s.terminationOrderId=ord;s.terminationReason=rs?rs.value:null;}
+  if(ns==='suspended'){s.suspensionReason=rs?rs.value:null;s.suspensionExpiresOn=(document.getElementById('cs-exp')||{}).value||'';}
+  if(ns==='terminated'){s.terminationReason=rs?rs.value:null;}
   auditLog.unshift({id:'AUD-'+String(auditLog.length+1).padStart(3,'0'),actor:'ადმინისტრატორი',role:'spms_specialist',action:'UPDATE',entity:'student',entityId:id,at:'დღეს',ip:'10.0.4.18'});
-  renderStudents(students);renderUsers();renderAudit();closeModal();
+  renderStudents(studentsAll());renderUsers();renderAudit();closeModal();
   toast('სტატუსი შეიცვალა ბრძანებით ✓ · EMIS-ზე გადაიგზავნება','success');
 }
 function editStudentGroup(id){
-  const s=students.find(x=>x.id===id);if(!s)return;
+  const s=studentsAll().find(x=>x.id===id);if(!s)return;
   showModal('ჯგუფის შეცვლა',`
     <div class="fg"><label class="fl">პროფესიული სტუდენტი</label><div style="font-weight:700">${s.name}</div></div>
     <div class="fg"><label class="fl">ჯგუფი</label><select class="fi" id="sg-group">${groupsData.map(g=>`<option ${g.name===s.group?'selected':''}>${g.name}</option>`).join('')}</select></div>
     <div style="background:var(--amber-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">მობილობა შესაძლებელია პროგრამის დაწყებიდან <strong>≤2 კვირაში</strong>, კომისიის რეკომენდაციითა და დირექტორის ბრძანებით. — [სპწ] მუხ. 16</div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const s=students.find(x=>x.id==='${id}');if(s){s.group=document.getElementById('sg-group').value;renderStudents(students);}closeModal();toast('ჯგუფი შეიცვალა ✓','success')})()">💾 შენახვა</button>`);
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const s=studentsAll().find(x=>x.id==='${id}');if(s){s.group=document.getElementById('sg-group').value;renderStudents(studentsAll());}closeModal();toast('ჯგუფი შეიცვალა ✓','success')})()">💾 შენახვა</button>`);
 }
 let stuTab='overview';
 function viewStudent(id,tab){
-  const s=students.find(x=>x.id===id);if(!s)return;
+  const s=studentsAll().find(x=>x.id===id);if(!s)return;
   if(tab)stuTab=tab; else stuTab='overview';
   const st=STUDENT_STATUS_LBL[s.status]||[s.status,'bd-n'];
   const it=intakesData.find(x=>x.id===s.intakeId);
@@ -3764,7 +3622,7 @@ function viewStudent(id,tab){
       <div class="dhead-l">
         ${avatar(s.name,s.id,'av-lg')}
         <div><div class="dhead-name">${s.name}</div>
-        <div class="dhead-meta">${branchName(s.branchId).split('—')[0]} · ${s.group} · ${progName(s.programId)} · ${romanYear(s.studyYear)} სასწავლო წელი · ${it?it.name:''}</div></div>
+        <div class="dhead-meta">${s.group} · ${progName(s.programId)} · ${romanYear(s.studyYear)} სასწავლო წელი · ${it?it.name:''}</div></div>
       </div>
       <div style="display:flex;gap:8px">
         <button class="btn btn-o" onclick="closeModal();changeStatusModal('${id}')">⇄ სტატუსის შეცვლა</button>
@@ -3798,79 +3656,90 @@ function studentOverview(s){
       ${F('მიღება',it?it.name:'')}
       ${F('ჯგუფი',s.group)}
       ${F('სასწავლო წელი',romanYear(s.studyYear))}
-      ${F('ფილიალი',branchName(s.branchId))}
       ${F('ნაშთი',s.balance+'₾')}
       ${F('სტატუსი',`<span class="bd ${st[1]}">${st[0]}</span>`)}
-      ${F('ჩარიცხვის ბრძანება',orderRef(s.enrolOrderId))}
       ${F('კანონიერი წარმომადგენელი',s.legalRepName?`${s.legalRepName} (${s.legalRepRelation})<div style="font-size:12px;font-weight:400;color:var(--text2)">${s.legalRepPhone||''}</div>`:'—')}
     </div>
     <div class="note">ℹ️ სტატუსისთვის სპეციფიკური ველები ჩანს <strong>მხოლოდ შესაბამის სტატუსზე</strong>. კანონიერი წარმომადგენელი — <strong>მხოლოდ მონაცემი</strong>, პორტალის ანგარიში არ იქმნება.</div>
     ${s.status==='suspended'?`<div class="card" style="margin-top:14px"><div class="ch"><div class="ct">სტატუსის შეჩერება</div><span class="bd bd-a">შეჩერებული</span></div>
       <div class="cb"><div class="f3">
         ${F('საფუძველი',SUSPENSION_LBL[s.suspensionReason])}${F('შეჩერების თარიღი',s.suspendedOn)}${F('ვადა (5 წელი)',s.suspensionExpiresOn)}
-        ${F('ბრძანება',orderRef(s.suspensionOrderId))}
       </div><div class="note">აღდგენა შესაძლებელია <strong>იმავე პროგრამაზე, იმავე ეტაპიდან</strong>; მოთხოვნა წერილობით ვადის ამოწურვამდე ≥5 სამუშაო დღით ადრე.</div></div></div>`:''}
     ${s.status==='terminated'?`<div class="card" style="margin-top:14px"><div class="ch"><div class="ct">სტატუსის შეწყვეტა</div><span class="bd bd-r">შეწყვეტილი</span></div>
       <div class="cb"><div class="f3">
-        ${F('საფუძველი',TERMINATION_LBL[s.terminationReason])}${F('თარიღი',s.terminatedOn)}${F('ბრძანება',orderRef(s.terminationOrderId))}
+        ${F('საფუძველი',TERMINATION_LBL[s.terminationReason])}${F('თარიღი',s.terminatedOn)}
       </div><div class="note note-a">⚠ სტატუსის შეწყვეტა — <strong>აღდგენის უფლების გარეშე</strong>.</div></div></div>`:''}
     `;
 }
 function studentProgress(s){
-  const outs=outcomeResults.filter(o=>o.studentId===s.id);
-  const conf=outs.filter(o=>o.result==='confirmed').length;
-  const notConf=outs.filter(o=>o.result==='not_confirmed').length;
-  const att=attendanceData.find(a=>a.studentId===s.id);
-  const ia=interimData.find(x=>x.groupId===(groupsData.find(g=>g.name===s.group)||{}).id);
-  const byMod={};
-  outs.forEach(o=>{(byMod[o.moduleCode]=byMod[o.moduleCode]||{name:o.module,rows:[]}).rows.push(o)});
+  // პროგრესი გამოითვლება ელექტრონული ჟურნალის ჩანაწერებიდან — დასწრება და შეფასების შედეგები
+  const mods=modulesData.filter(m=>m.groupId===(groupsData.find(g=>g.name===s.group)||{}).id);
+  const rows=[]; let pres=0, abs=0, conf=0, nconf=0;
+  mods.forEach(m=>{
+    const sess=ejSessions(m.code);
+    const mp=sess.filter(x=>(ejAtt[x.id]||{})[s.id]==='present').length;
+    const ma=sess.filter(x=>(ejAtt[x.id]||{})[s.id]==='absent').length;
+    const ass=sess.filter(x=>x.kind==='assessment');
+    const mc=ass.filter(x=>(ejOut[x.id]||{})[s.id]==='confirmed').length;
+    const mn=ass.filter(x=>(ejOut[x.id]||{})[s.id]==='not_confirmed').length;
+    pres+=mp; abs+=ma; conf+=mc; nconf+=mn;
+    if(sess.length)rows.push({m,sess,ass,mp,ma,mc,mn});
+  });
+  const F=(l,v)=>`<div><label class="fl">${l}</label><div class="fv">${v||'—'}</div></div>`;
   return `<div class="st4">
       <div class="stc"><div class="stc-ic" style="background:var(--green-lt)">✅</div><div class="stc-v" style="color:var(--green)">${conf}</div><div class="stc-l">დადასტურებული სწავლის შედეგი</div></div>
-      <div class="stc"><div class="stc-ic" style="background:var(--red-lt)">✕</div><div class="stc-v" style="color:var(--red)">${notConf}</div><div class="stc-l">ვერ დადასტურდა</div></div>
-      <div class="stc"><div class="stc-ic" style="background:var(--blue-lt)">📋</div><div class="stc-v">${att?att.present:'—'}</div><div class="stc-l">დაესწრო (რეგისტრი)</div></div>
-      <div class="stc"><div class="stc-ic" style="background:var(--amber-lt)">🎯</div><div class="stc-v">${ia&&ia.participated?'✓':'—'}</div><div class="stc-l">შუალედური შეფასება</div></div>
+      <div class="stc"><div class="stc-ic" style="background:var(--red-lt)">✕</div><div class="stc-v" style="color:var(--red)">${nconf}</div><div class="stc-l">ვერ დადასტურდა</div></div>
+      <div class="stc"><div class="stc-ic" style="background:var(--blue-lt)">📋</div><div class="stc-v">${pres}</div><div class="stc-l">დაესწრო (რეგისტრი)</div></div>
+      <div class="stc"><div class="stc-ic" style="background:var(--amber-lt)">📕</div><div class="stc-v" style="color:${abs?'var(--red)':'var(--text)'}">${abs}</div><div class="stc-l">გააცდინა</div></div>
     </div>
-    ${att?`<div class="card"><div class="ch"><div class="ct">დასწრების რეგისტრი</div><span style="font-size:11px;color:var(--text3)">პროცენტული ზღვარი და ქულა არ არსებობს</span></div>
-      <div class="cb"><div style="display:flex;gap:10px;flex-wrap:wrap">
-        <span class="bd bd-g">დაესწრო ${att.present}</span><span class="bd ${att.absent?'bd-r':'bd-n'}">გააცდინა ${att.absent}</span>
-      </div></div></div>`:''}
-    ${Object.keys(byMod).length?Object.entries(byMod).map(([code,m])=>{
-      const c=m.rows.filter(r=>r.result==='confirmed').length;
-      return `<div class="card"><div class="ch"><div class="ct">${m.name} <span style="font-size:11px;font-weight:400;color:var(--text3)">${code}</span></div>
-        <span class="bd ${c===m.rows.length?'bd-g':'bd-b'}">${c}/${m.rows.length} დადასტურდა</span></div>
-        <div class="tw"><table><thead><tr><th>№</th><th>სწავლის შედეგი</th><th>ცდა</th><th>თარიღი</th><th>წყარო</th><th>შედეგი</th></tr></thead><tbody>
-        ${m.rows.map(o=>{const r=RESULT_LBL[o.result];return `<tr><td style="text-align:center;font-weight:700;color:var(--blue)">${o.outcomeNo}</td>
-          <td style="font-size:12px">${o.outcomeTitle}</td><td style="text-align:center">${o.attemptNo>=3?`<span class="bd bd-a">${o.attemptNo}</span>`:o.attemptNo}</td>
-          <td style="font-size:11px">${o.assessedOn}</td><td style="font-size:11px">${SOURCE_LBL[o.source]}</td>
-              <td><span class="bd ${r[1]}">${r[0]}</span></td></tr>`}).join('')}
-        </tbody></table></div></div>`;
-    }).join(''):'<div class="card"><div class="cb" style="color:var(--text3)">შეფასების ჩანაწერი არ არის</div></div>'}
+    ${rows.length?rows.map(({m,sess,ass,mp,ma,mc,mn})=>`
+      <div class="card"><div class="ch"><div class="ct">${m.name} <span style="font-size:11px;font-weight:400;color:var(--text3)">${m.code}</span></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span class="bd bd-g">დაესწრო ${mp}</span><span class="bd ${ma?'bd-r':'bd-n'}">გააცდინა ${ma}</span>
+          <span class="bd ${mn?'bd-r':'bd-g'}">შედეგი ${mc}/${ass.length}</span></div></div>
+      <div class="tw"><table>
+        <thead><tr><th style="width:64px">კვირა</th><th style="width:120px">სახეობა</th><th>საათი</th><th style="width:130px">დასწრება</th><th style="width:250px">შეფასების შედეგი</th></tr></thead>
+        <tbody>${sess.map(x=>{
+          const a=(ejAtt[x.id]||{})[s.id], r=(ejOut[x.id]||{})[s.id];
+          const ex=reassessExhausted(s.id,m.code,x.week);
+          return `<tr>
+            <td style="text-align:center;font-weight:700;color:var(--blue)">${x.week}</td>
+            <td><span class="bd ${EJ_KIND_LBL[x.kind][1]}" style="font-size:10px">${EJ_KIND_LBL[x.kind][0]}</span></td>
+            <td style="font-size:12px">${EJ_KIND_LBL[x.kind][0]} ${x.no}/${x.total}</td>
+            <td>${a?`<span class="bd ${a==='present'?'bd-g':'bd-r'}">${a==='present'?'დაესწრო':'გააცდინა'}</span>`:'<span style="font-size:11px;color:var(--text3)">ჯერ არ ჩატარებულა</span>'}</td>
+            <td>${x.kind!=='assessment'?'<span style="color:var(--text3)">—</span>'
+              :r?`<span class="bd ${r==='confirmed'?'bd-g':'bd-r'}">${r==='confirmed'?'დადასტურდა':'ვერ დადასტურდა'}</span>
+                  ${r==='not_confirmed'?`<button class="btn btn-xs btn-a" onclick="openReassessFor('${s.id}','${m.code}',${x.week})" title="გადაბარება">📝</button>
+                  ${ex?`<button class="btn btn-xs btn-r" onclick="openRepeatFor('${s.id}','${m.code}',${x.week})" title="მოდულის ხელახლა გავლა">🔁</button>`:''}`:''}`
+              :'<span class="bd bd-n">ჯერ არ შეფასებულა</span>'}</td>
+          </tr>`}).join('')}</tbody></table></div></div>`).join('')
+      :'<div class="card"><div class="cb" style="color:var(--text3);font-size:12px">ჟურნალის ჩანაწერი ჯერ არ არის — საათები იწერება ელექტრონულ ჟურნალში</div></div>'}
     ${studentReassessments(s.id).length?`<div class="card"><div class="ch"><div class="ct">გადაბარება — შეფასების საათების თავიდან გავლა</div></div>
       <div class="tw"><table><thead><tr><th>მოდული</th><th style="width:80px">სწ. შედეგი</th><th style="width:70px">ცდა</th><th style="width:130px">გადახდა</th><th style="width:120px">ვადა</th><th>შედეგი</th><th style="width:50px"></th></tr></thead><tbody>
-      ${studentReassessments(s.id).map(r=>{const st=REASSESS_LBL[r.status]||[r.status,'bd-n'];const fee=reassessFee(r.attemptNo);
+      ${studentReassessments(s.id).map(r=>{const rst=REASSESS_LBL[r.status]||[r.status,'bd-n'];const fee=reassessFee(r.attemptNo);
         return `<tr><td>${r.module}<div style="font-size:10px;color:var(--text3)">${r.moduleCode}</div></td>
           <td style="text-align:center">№${r.outcomeNo}</td>
           <td style="text-align:center;font-weight:700">№${r.attemptNo}</td>
           <td><span class="bd ${fee?(r.feePaid?'bd-g':'bd-a'):'bd-g'}">${fee?(r.feePaid?`გადახდილი ₾${REASSESS_FEE}`:`გადაუხდელი ₾${REASSESS_FEE}`):'უფასო'}</span></td>
           <td style="font-size:11px">${r.dueOn?`<span class="bd bd-r">${r.dueOn}</span>`:'<span style="color:var(--text3)">შეუზღუდავი</span>'}</td>
-          <td><span class="bd ${st[1]}">${st[0]}</span></td>
+          <td><span class="bd ${rst[1]}">${rst[0]}</span></td>
           <td><button class="btn btn-xs btn-ghost" onclick="reassessPage('${r.id}')">👁</button></td></tr>`}).join('')}
       </tbody></table></div>
       <div class="note">📝 გადაბარებაზე სტუდენტი თავიდან გადის <strong>მხოლოდ შეფასების საათებს</strong> — მოდულს თავიდან არ გადის და საკუთარ ჯგუფში რჩება. I ცდა უფასოა, II ფასიანი.</div></div>`:''}
     ${studentRepeats(s.id).length?`<div class="card"><div class="ch"><div class="ct">მოდულის ხელახლა გავლა სხვა ჯგუფთან</div></div>
-      <div class="tw"><table><thead><tr><th>მოდული</th><th style="width:80px">სწ. შედეგი</th><th>ვერ დაძლია ჯგუფში</th><th>ხელახლა გადის ჯგუფთან</th><th style="width:120px">ბრძანება</th><th>სტატუსი</th><th style="width:50px"></th></tr></thead><tbody>
-      ${studentRepeats(s.id).map(r=>{const st=REPEAT_LBL[r.status]||[r.status,'bd-n'];
+      <div class="tw"><table><thead><tr><th>მოდული</th><th style="width:80px">სწ. შედეგი</th><th>ვერ დაძლია ჯგუფში</th><th>ხელახლა გადის ჯგუფთან</th><th>სტატუსი</th><th style="width:50px"></th></tr></thead><tbody>
+      ${studentRepeats(s.id).map(r=>{const rst=REPEAT_LBL[r.status]||[r.status,'bd-n'];
         return `<tr><td>${r.module}<div style="font-size:10px;color:var(--text3)">${r.moduleCode}</div></td>
           <td style="text-align:center">№${r.outcomeNo}</td>
           <td style="font-size:12px">${groupName(r.failedInGroupId)}</td>
           <td>${r.repeatWithGroupId?`<strong style="color:var(--blue)">${groupName(r.repeatWithGroupId)}</strong>`:'<span class="bd bd-a">ჯერ არ არის დანიშნული</span>'}</td>
-          <td style="font-size:11px">${r.orderId?orderRef(r.orderId):'—'}</td>
-          <td><span class="bd ${st[1]}">${st[0]}</span></td>
+          <td><span class="bd ${rst[1]}">${rst[0]}</span></td>
           <td><button class="btn btn-xs btn-ghost" onclick="repeatPage('${r.id}')">👁</button></td></tr>`}).join('')}
       </tbody></table></div>
-      <div class="note">🔁 მოდულის ხელახლა გავლა ხდება მხოლოდ მაშინ, როცა <strong>გადაბარებითაც ვერ დააბარა</strong> და მოდული არ ჩაეთვალა — სტუდენტი მოდულს თავიდან გადის <strong>სხვა ჯგუფთან ერთად</strong>.</div></div>`:''}
+      <div class="note">🔁 ხდება მხოლოდ მაშინ, როცა <strong>გადაბარებითაც ვერ დააბარა</strong> და მოდული არ ჩაეთვალა.</div></div>`:''}
     <div class="note">კრედიტი გაიცემა <strong>მხოლოდ სწავლის შედეგის დადასტურებაზე</strong>. ქულა, საშუალო და გამსვლელობა არ არსებობს; დასწრება რეგისტრია. — [სპწ] 21.10, 21.11</div>`;
 }
+
 const studentFilesData={};
 function studentFiles(s){
   const f=studentFilesData[s.id]||(studentFilesData[s.id]=[
@@ -3891,16 +3760,16 @@ function addStudentFile(id){
 }
 function rmStudentFile(id,i){studentFilesData[id].splice(i,1);viewStudent(id,'files');toast('ფაილი მოხსნილია','warn')}
 function editTeacherModal(id){
-  const t=teachers.find(x=>x.id===id);if(!t)return;
+  const t=teachersAll().find(x=>x.id===id);if(!t)return;
   showModal('მასწავლებლის რედაქტირება',`
     <div class="fg2"><div><label class="fl">სახელი</label><input class="fi" id="et-name" value="${t.name}"></div><div><label class="fl">სპეციალობა</label><input class="fi" id="et-spec" value="${t.spec}"></div></div>
     <div class="fg"><label class="fl">ელ. ფოსტა</label><input class="fi" id="et-email" value="${t.email}"></div>
     <div class="fg2"><div><label class="fl">მუშაობის დაწყება</label><input class="fi" id="et-start" value="${t.workStartedOn||''}"></div>
       <div><label class="fl">სტატუსი</label><select class="fi" id="et-status"><option value="active" ${t.status==='active'?'selected':''}>აქტიური</option><option value="inactive" ${t.status==='inactive'?'selected':''}>არააქტიური</option></select></div></div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const t=teachers.find(x=>x.id==='${id}');if(t){t.name=document.getElementById('et-name').value;t.spec=document.getElementById('et-spec').value;t.email=document.getElementById('et-email').value;t.workStartedOn=document.getElementById('et-start').value;t.status=document.getElementById('et-status').value;}renderTeachers(teachers);renderUsers();closeModal();toast('განახლდა ✓','success')})()">💾 შენახვა</button>`,'lg');
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const t=teachersAll().find(x=>x.id==='${id}');if(t){t.name=document.getElementById('et-name').value;t.spec=document.getElementById('et-spec').value;t.email=document.getElementById('et-email').value;t.workStartedOn=document.getElementById('et-start').value;t.status=document.getElementById('et-status').value;}renderTeachers(teachersAll());renderUsers();closeModal();toast('განახლდა ✓','success')})()">💾 შენახვა</button>`,'lg');
 }
 function viewTeacher(id){
-  const t=teachers.find(x=>x.id===id);if(!t)return;
+  const t=teachersAll().find(x=>x.id===id);if(!t)return;
   const mods=modulesData.filter(m=>modTeacherId(m.code)===t.id);
   const myLecs=moduleLectures.filter(l=>mods.some(m=>m.code===l.moduleCode));
   const contactH=Math.round(myLecs.filter(l=>l.conducted).reduce((a,l)=>a+l.durationMin,0)/60);
@@ -3912,7 +3781,7 @@ function viewTeacher(id){
       <div class="dhead-l">
         ${avatar(t.name,t.id,'av-lg')}
         <div><div class="dhead-name">${t.name}</div>
-        <div class="dhead-meta">${IMPLEMENTER_LBL[t.implementerType]} · ${t.spec} · ${branchName(t.branchId).split('—')[0]}</div></div>
+        <div class="dhead-meta">${IMPLEMENTER_LBL[t.implementerType]} · ${t.spec}</div></div>
       </div>
       <button class="btn btn-b" onclick="closeModal();editTeacherModal('${id}')">✏ რედაქტირება</button>
     </div>
@@ -3929,7 +3798,7 @@ function viewTeacher(id){
     </div>
     <div class="f3">
       ${F('ელ. ფოსტა',t.email)}${F('ტელეფონი',t.phone)}${F('პირადი ნომერი (= login)',t.id)}
-      ${F('სპეციალობა',t.spec)}${F('ფილიალი',branchName(t.branchId))}${F('დანიშვნის ბრძანება',orderRef(t.appointOrderId))}
+      ${F('სპეციალობა',t.spec)}
     </div>
     ${t.qualification?`<div class="fg" style="margin-top:18px"><label class="fl">კვალიფიკაცია / ბიოგრაფია</label><div style="font-size:13px;line-height:1.7;color:var(--text2)">${t.qualification}</div></div>`:''}
     <div class="card" style="margin-top:16px"><div class="ch"><div class="ct">მოდულები — კალენდარული გეგმის ავტორი</div></div>
@@ -3958,7 +3827,7 @@ function addGroupModal(){
 }
 function viewGroup(id){
   const g=groupsData.find(x=>x.id===id);if(!g)return;
-  const stuList=students.filter(s=>s.group===g.name);
+  const stuList=studentsAll().filter(s=>s.group===g.name);
   const mods=modulesData.filter(m=>m.groupId===g.id);
   const conducted=mods.reduce((a,m)=>a+m.conducted,0), total=mods.reduce((a,m)=>a+m.totalLectures,0);
   const it=intakesData.find(x=>x.id===g.intakeId);
@@ -3968,7 +3837,7 @@ function viewGroup(id){
   showModal(`${g.name}`,`
     <div class="dhead">
       <div><div class="dhead-name">${g.name} — ${progName(g.programId)}</div>
-      <div class="dhead-meta">${branchName(g.branchId).split('—')[0]} · ${it?it.name:''} · ${romanYear(g.studyYear)} სასწავლო წელი</div></div>
+      <div class="dhead-meta">${it?it.name:''} · ${romanYear(g.studyYear)} სასწავლო წელი</div></div>
       <button class="btn btn-b" onclick="closeModal();editGroupModal('${id}')">✏ რედაქტირება</button>
     </div>
     <div class="st4">
@@ -4013,15 +3882,14 @@ function viewGroup(id){
       ${(()=>{const rt=repeatsInGroup(id);return rt.length?`
         <div class="ch" style="border-top:1px solid var(--border)"><div class="ct">მოდულს ხელახლა გამვლელი პროფესიული სტუდენტები</div></div>
         <div class="tw"><table>
-          <thead><tr><th>პროფესიული სტუდენტი</th><th style="width:120px">საკუთარი ჯგუფი</th><th>მოდული</th><th style="width:160px">გადაბარების ცდები</th><th style="width:120px">ბრძანება</th><th style="width:60px"></th></tr></thead>
+          <thead><tr><th>პროფესიული სტუდენტი</th><th style="width:120px">საკუთარი ჯგუფი</th><th>მოდული</th><th style="width:160px">გადაბარების ცდები</th><th style="width:60px"></th></tr></thead>
           <tbody>${rt.map(r=>`<tr style="background:var(--amber-lt)">
             <td><div class="row-id">${avatar(stuName(r.studentId),r.studentId)}<div><div class="rn">${stuName(r.studentId)}</div>
               <div class="ri">${r.studentId} · <span style="color:var(--amber);font-weight:700">ხელახლა გადის მოდულს</span></div></div></div></td>
             <td style="font-size:12px"><strong>${groupName(r.failedInGroupId)}</strong></td>
             <td style="font-size:12px">${r.module}<div style="font-size:10px;color:var(--text3)">სწ. შედეგი №${r.outcomeNo}</div></td>
             <td><span class="bd bd-r">${reassessOf(r.studentId,r.moduleCode,r.outcomeNo).filter(x=>x.status==='failed').length}/${REASSESS_MAX_ATTEMPTS} ვერ დააბარა</span></td>
-            <td style="font-size:11px">${r.orderId?orderRef(r.orderId):'—'}</td>
-            <td><button class="btn btn-xs btn-ghost" onclick="repeatPage('${r.id}')">👁</button></td>
+              <td><button class="btn btn-xs btn-ghost" onclick="repeatPage('${r.id}')">👁</button></td>
           </tr>`).join('')}</tbody></table></div>
         <div class="note">ეს სტუდენტები <strong>რეალურად სხვა ჯგუფის</strong> სტუდენტები არიან — აქ მხოლოდ კონკრეტულ მოდულს გადიან თავიდან, რადგან <strong>გადაბარებით ვერ დააბარეს</strong>.</div>`:''})()}</div>
     <div class="card"><div class="ch"><div class="ct">ჯგუფის მოდულები</div></div>
@@ -4036,16 +3904,16 @@ function viewGroup(id){
 }
 function addStudentToGroup(gid){
   const g=groupsData.find(x=>x.id===gid);if(!g)return;
-  const free=students.filter(s=>s.group!==g.name&&s.status!=='terminated');
+  const free=studentsAll().filter(s=>s.group!==g.name&&s.status!=='terminated');
   showModal('სტუდენტის დამატება ჯგუფში',`
     <div class="fg"><label class="fl">ჯგუფი</label><div class="fv">${g.name} · ${progName(g.programId)}</div></div>
     <div class="fg"><label class="fl">პროფესიული სტუდენტი</label>
       <select class="fi" id="ag-stu">${free.map(s=>`<option value="${s.id}">${s.name} — ${s.id} (${s.group})</option>`).join('')}</select></div>
     <div class="note">მობილობა შესაძლებელია პროგრამის დაწყებიდან <strong>≤2 კვირაში</strong>, კომისიის რეკომენდაციითა და დირექტორის ბრძანებით.</div>`,
-    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const s=students.find(x=>x.id===document.getElementById('ag-stu').value);if(s){s.group='${g.name}';s.programId='${g.programId}';s.intakeId='${g.intakeId}';}renderStudents(students);renderGroups();closeModal();viewGroup('${gid}');toast('სტუდენტი დაემატა ჯგუფს ✓','success')})()">✓ დამატება</button>`,'lg');
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="(function(){const s=studentsAll().find(x=>x.id===document.getElementById('ag-stu').value);if(s){s.group='${g.name}';s.programId='${g.programId}';s.intakeId='${g.intakeId}';}renderStudents(studentsAll());renderGroups();closeModal();viewGroup('${gid}');toast('სტუდენტი დაემატა ჯგუფს ✓','success')})()">✓ დამატება</button>`,'lg');
 }
 function removeFromGroup(gid,sid){
-  const s=students.find(x=>x.id===sid);if(!s)return;
+  const s=studentsAll().find(x=>x.id===sid);if(!s)return;
   showModal('სტუდენტის მოხსნა ჯგუფიდან',`
     <div class="fg"><label class="fl">პროფესიული სტუდენტი</label><div class="fv">${s.name} · ${s.id}</div></div>
     <div class="fg"><label class="fl">მოხსნის მარშრუტი</label>
@@ -4055,9 +3923,7 @@ function removeFromGroup(gid,sid){
         <option value="mobility">მობილობა — სხვა ჯგუფი / პროგრამა</option>
       </select></div>
     <div id="rg-extra"></div>
-    <div class="fg"><label class="fl">ბრძანება (სავალდებულო)</label>
-      <select class="fi" id="rg-order"><option value="">— აირჩიეთ ბრძანება —</option>${ordersData.filter(o=>o.index==='student_02').map(o=>`<option value="${o.id}">№${o.no} · ${o.date}</option>`).join('')}</select></div>
-    <div class="note note-a">⚠ ჯგუფიდან მოხსნა ყოველთვის მიმართავს სტატუსზე ან მობილობაზე და <strong>მოითხოვს ბრძანებას</strong>. — [სპწ] მუხ. 14–16</div>`,
+    <div class="note note-a">⚠ ჯგუფიდან მოხსნა ყოველთვის მიმართავს <strong>სტატუსზე ან მობილობაზე</strong>. — [სპწ] მუხ. 14–16</div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="applyRemoveFromGroup('${gid}','${sid}')">✓ მოხსნა</button>`,'lg');
   updateRemoveRoute();
 }
@@ -4069,17 +3935,30 @@ function updateRemoveRoute(){
   else box.innerHTML=`<div class="fg"><label class="fl">ახალი ჯგუფი</label><select class="fi" id="rg-newgroup">${groupsData.map(g=>`<option value="${g.id}">${g.name} — ${progName(g.programId)}</option>`).join('')}</select></div>`;
 }
 function applyRemoveFromGroup(gid,sid){
-  const s=students.find(x=>x.id===sid);
-  const ord=document.getElementById('rg-order').value;
-  if(!ord){toast('ბრძანება სავალდებულოა','error');return;}
+  const s=studentsAll().find(x=>x.id===sid);
   const route=document.getElementById('rg-route').value;
   const rs=document.getElementById('rg-reason');
-  if(route==='suspended'){s.status='suspended';s.suspensionOrderId=ord;s.suspensionReason=rs?rs.value:null;s.suspensionExpiresOn=(document.getElementById('rg-exp')||{}).value||'';s.group='—';}
-  else if(route==='terminated'){s.status='terminated';s.terminationOrderId=ord;s.terminationReason=rs?rs.value:null;s.group='—';}
+  if(route==='suspended'){s.status='suspended';s.suspensionReason=rs?rs.value:null;s.suspensionExpiresOn=(document.getElementById('rg-exp')||{}).value||'';s.group='—';}
+  else if(route==='terminated'){s.status='terminated';s.terminationReason=rs?rs.value:null;s.group='—';}
   else {const ng=groupsData.find(g=>g.id===document.getElementById('rg-newgroup').value);if(ng){s.group=ng.name;s.programId=ng.programId;s.intakeId=ng.intakeId;}}
   auditLog.unshift({id:'AUD-'+String(auditLog.length+1).padStart(3,'0'),actor:'ადმინისტრატორი',role:'spms_specialist',action:'UPDATE',entity:'group_membership',entityId:sid,at:'დღეს',ip:'10.0.4.18'});
-  renderStudents(students);renderStudentTabs();renderGroups();renderAudit();closeModal();viewGroup(gid);
-  toast('სტუდენტი მოხსნილია ჯგუფიდან ბრძანებით ✓','success');
+  renderStudents(studentsAll());renderStudentTabs();renderGroups();renderAudit();closeModal();viewGroup(gid);
+  toast('სტუდენტი მოხსნილია ჯგუფიდან ✓','success');
+}
+function removeGroup(id){
+  const g=groupsData.find(x=>x.id===id);if(!g)return;
+  const st=studentsAll().filter(x=>x.group===g.name).length;
+  const mods=modulesData.filter(m=>m.groupId===id).length;
+  const sched=schedPlacements.filter(x=>x.groupId===id).length;
+  const rp=moduleRepeats.filter(x=>x.repeatWithGroupId===id||x.failedInGroupId===id).length;
+  if(st||mods||rp){toast(`ვერ იშლება — ჯგუფშია ${st} სტუდენტი, ${mods} მოდული და ${rp} ხელახლა გავლის ჩანაწერი`,'error');return;}
+  showModal('ჯგუფის წაშლა',
+    `<p style="font-size:13px">გსურთ ჯგუფის <strong>${g.name}</strong> წაშლა?</p>
+     ${sched?`<div class="note note-a">⚠ წაიშლება ჯგუფის ${sched} სლოტი განრიგიდან.</div>`:''}`,
+    `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-r" onclick="(function(){
+      for(let k=schedPlacements.length-1;k>=0;k--)if(schedPlacements[k].groupId==='${id}')schedPlacements.splice(k,1);
+      const i=groupsData.findIndex(x=>x.id==='${id}');if(i>-1)groupsData.splice(i,1);
+      renderGroups();renderSchedule();closeModal();toast('ჯგუფი წაშლილია','warn')})()">✕ წაშლა</button>`);
 }
 function editGroupModal(id){
   const g=groupsData.find(x=>x.id===id);if(!g)return;
@@ -4097,7 +3976,7 @@ function addModuleModal(){
     <div class="fg2"><div><label class="fl">პროგრამა</label><select class="fi" id="nm-prog">${programsData.map(x=>`<option value="${x.id}">${x.name}</option>`).join('')}</select></div>
       <div><label class="fl">მიღება</label><select class="fi" id="nm-intake">${intakesData.map(x=>`<option value="${x.id}">${x.name}</option>`).join('')}</select></div></div>
     <div class="fg2"><div><label class="fl">ჯგუფი</label><select class="fi" id="nm-group">${groupsData.map(g=>`<option value="${g.id}">${g.name}</option>`).join('')}</select></div>
-      <div><label class="fl">მასწავლებელი</label><select class="fi" id="nm-teacher">${teachers.filter(t=>t.status==='active').map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</select></div></div>
+      <div><label class="fl">მასწავლებელი</label><select class="fi" id="nm-teacher">${teachersAll().filter(t=>t.status==='active').map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</select></div></div>
     <div class="fg2"><div><label class="fl">დაწყება</label><input class="fi" id="nm-start" placeholder="დდ.თთ.წწწწ"></div><div><label class="fl">დასრულება</label><input class="fi" id="nm-end" placeholder="დდ.თთ.წწწწ"></div></div>
     <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">ახალი მოდული აქ <strong>არ იქმნება</strong> — მხოლოდ არსებული შაბლონის ინსტანცირება ხდება. ინსტანცია <strong>არის კალენდარული გეგმა</strong>. — [სპწ] მუხ. 23</div>`,
     `<button class="btn btn-n" onclick="closeModal()">გაუქმება</button><button class="btn btn-b" onclick="saveNewModule()">✓ ინსტანცირება</button>`,'lg');
@@ -4115,7 +3994,7 @@ function saveNewModule(){
 
 function addPaymentModal(){
   showModal('გადახდის შეტანა',`
-    <div class="fg"><label class="fl">სტუდენტი</label><select class="fi" id="np-student">${students.map(s=>'<option value="'+s.id+'">'+s.name+' ('+s.group+')</option>').join('')}</select></div>
+    <div class="fg"><label class="fl">სტუდენტი</label><select class="fi" id="np-student">${studentsAll().map(s=>'<option value="'+s.id+'">'+s.name+' ('+s.group+')</option>').join('')}</select></div>
     <div class="fg2"><div><label class="fl">თანხა (₾)</label><input class="fi" id="np-amount" type="number" placeholder="3100"></div><div><label class="fl">გადახდის თარიღი</label><input class="fi" id="np-date" type="date" value="2026-07-09"></div></div>
     <div class="fg"><label class="fl">გადახდის მეთოდი</label><select class="fi"><option>ბანკი</option><option>ნაღდი</option><option>ბარათი</option><option>გადარიცხვა</option></select></div>
     <div class="fg"><label class="fl">შენიშვნა</label><input class="fi" placeholder="სემ. გადახდა..."></div>`,
@@ -4333,7 +4212,6 @@ function exportReport(fmt){toast('ანგარიში ჩამოიტვ
 function exportStudents(){toast('სტუდენტების სია Excel-ში ჩამოიტვირთა ✓','success')}
 function exportTeachers(){toast('მასწავლებლების სია Excel-ში ჩამოიტვირთა ✓','success')}
 function exportPayments(){toast('გადახდების ჟურნალი ჩამოიტვირთა ✓','success')}
-function exportGrades(){toast('შეფასებების ცხრილი ჩამოიტვირთა ✓','success')}
 function exportLibrary(){toast('კატალოგი ჩამოიტვირთა ✓','success')}
 function exportAll(){toast('სრული მონაცემები ჩამოიტვირთება...','info')}
 function saveSettings(s){toast(s+' — შენახულია ✓','success')}
@@ -4391,14 +4269,11 @@ function clearBg(){
 
 // ══ INIT ══
 document.addEventListener('DOMContentLoaded',()=>{
-  renderStudents(students);
-  renderTeachers(teachers);
+  renderStudents(studentsAll());
+  renderTeachers(teachersAll());
   seedPermissions();
   renderUsers();
   renderRoles();
-  renderOutcomes();
-  renderAttendance();
-  renderInterim();
   renderOrders();
   renderRoles();
   renderAudit();
