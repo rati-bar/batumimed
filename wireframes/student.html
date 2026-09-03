@@ -436,14 +436,14 @@ tr:hover td{background:#eff8f1}
   <div class="card">
     <div class="cb" style="padding:0">
       <table>
-        <thead><tr><th>№</th><th>სათაური</th><th>თარიღი</th><th>ხელმოწერა</th><th></th></tr></thead>
+        <thead><tr><th>№</th><th>სათაური</th><th>თარიღი</th><th></th></tr></thead>
         <tbody id="stu-orders-tbody"></tbody>
       </table>
     </div>
   </div>
   <div class="card">
     <div class="cb" style="font-size:12px;color:var(--text2)">
-      რეგისტრში ქვეყნდება <strong>მხოლოდ ზოგადი ბრძანებები</strong>. ბრძანების ნომერი — <strong>ციფრები, თანმიმდევრობით კალენდარულ წელში</strong>; ხელმოწერილია კვალიფიციური ელექტრონული ხელმოწერით <em>და</em> ფიზიკურად; ინახება <strong>უსასრულოდ</strong>. ცვლილება არის <strong>ახალი ბრძანება</strong> — ვერსიები არ არსებობს. — [სეწ] მუხ. 2, 6, 10
+      რეგისტრში ქვეყნდება <strong>მხოლოდ ზოგადი ბრძანებები</strong>. ბრძანების ნომერი — <strong>ციფრები, თანმიმდევრობით კალენდარულ წელში</strong>; ინახება <strong>უსასრულოდ</strong>. ცვლილება არის <strong>ახალი ბრძანება</strong> — ვერსიები არ არსებობს. — [სეწ] მუხ. 2, 6, 10
     </div>
   </div>
 </div>
@@ -915,7 +915,6 @@ function renderStuOrders(){
   tb.innerHTML=generalOrders.map((o,i)=>`<tr>
     <td style="font-variant-numeric:tabular-nums;font-weight:700;color:var(--blue)">№${o.no}</td>
     <td>${o.subject}</td><td>${o.date}</td>
-    <td><span class="bd bd-g">e-ხელმ. + ფიზ.</span></td>
     <td><button class="btn btn-o btn-sm" onclick="openStuOrder(${i})">ნახვა</button></td>
   </tr>`).join('');
 }

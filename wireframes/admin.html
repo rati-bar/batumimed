@@ -490,7 +490,7 @@ textarea.fi{resize:vertical;min-height:80px}
   <div class="page-head">
     <div>
       <h2>განრიგი — კვირის ბადე</h2>
-      <div class="ph-sub">წინასწარ განსაზღვრული საათები დაგენერირებულია <strong>მიღებებზე მიბმული ჯგუფებისა და მოდულების</strong> მიხედვით. აირჩიეთ საათი და დააჭირეთ ცარიელ სლოტს — ან გადაანაწილეთ მთელი კვირა ავტომატურად.</div>
+      <div class="ph-sub">წინასწარ განსაზღვრული საათები დაგენერირებულია <strong>მიღებებზე მიბმული ჯგუფებისა და მოდულების</strong> მიხედვით. აირჩიეთ საათი და დააჭირეთ ცარიელ სლოტს — საათი განთავსდება არჩეულ აუდიტორიაში.</div>
     </div>
     <button class="btn btn-b" onclick="toast('ცხრილს ხელს აწერს სპმს უფროსი','info')">✍ ცხრილის ხელმოწერა</button>
   </div>
@@ -498,7 +498,6 @@ textarea.fi{resize:vertical;min-height:80px}
     <div class="filter-row">
       <select class="fi" id="sched-week" onchange="setSchedWeek(this.value)"></select>
       <select class="fi" id="sched-group" onchange="setSchedGroup(this.value)"><option value="">ჯგუფი: ყველა</option></select>
-      <button class="btn btn-b btn-sm" onclick="autoFillWeek()">🪄 კვირის ავტომატური განაწილება</button>
       <button class="btn btn-n btn-sm" onclick="clearWeek()">🗑 კვირის გასუფთავება</button>
       <span class="filter-hint" id="sched-hint"></span>
     </div>
@@ -681,7 +680,7 @@ textarea.fi{resize:vertical;min-height:80px}
   <div class="card">
     <div class="ch"><div class="ct">ზოგადი ბრძანებების რეგისტრი</div><span style="font-size:11px;color:var(--text3)">ინახება უსასრულოდ · [სეწ] მუხ. 2, 6, 10</span></div>
     <div class="tw"><table>
-      <thead><tr><th>№</th><th>თარიღი</th><th>სათაური</th><th>eflow</th><th>ხელმოწერა</th><th>ცვლილება</th><th></th></tr></thead>
+      <thead><tr><th>№</th><th>თარიღი</th><th>სათაური</th><th>eflow</th><th>ცვლილება</th><th></th></tr></thead>
       <tbody id="orders-tbody"></tbody>
     </table></div>
   </div>
@@ -882,19 +881,19 @@ function toast(msg,type){
 // ══ DATA ══
 // ── ბრძანებები (§7.1) — აიტვირთება და იკითხება; სისტემაში სხვა ჩანაწერს არ ებმევა ──
 const ordersData=[
-  {id:'ORD-1',no:'2587',date:'19.02.2025',subject:'სასწავლო პროცესის მარეგულირებელი წესის დამტკიცება',eflow:'EF-2025-2587',eSign:true,pSign:true,amends:null},
-  {id:'ORD-2',no:'5794',date:'25.04.2025',subject:'ცვლილება სასწავლო პროცესის მარეგულირებელ წესში',eflow:'EF-2025-5794',eSign:true,pSign:true,amends:'ORD-1'},
-  {id:'ORD-3',no:'9777',date:'25.06.2025',subject:'ცვლილება სასწავლო პროცესის მარეგულირებელ წესში',eflow:'EF-2025-9777',eSign:true,pSign:true,amends:'ORD-1'},
-  {id:'ORD-4',no:'1041',date:'15.09.2025',subject:'საექთნო განათლების პროგრამის დამტკიცება',eflow:'EF-2025-1041',eSign:true,pSign:true,amends:null},
-  {id:'ORD-5',no:'1102',date:'01.10.2025',subject:'2025–2026 სასწავლო წლის დამტკიცება',eflow:'EF-2025-1102',eSign:true,pSign:true,amends:null},
-  {id:'ORD-6',no:'0177',date:'20.01.2026',subject:'შინაგანაწესის დამტკიცება',eflow:'EF-2026-0177',eSign:true,pSign:true,amends:null},
-  {id:'ORD-7',no:'0245',date:'18.02.2026',subject:'ბიბლიოთეკით სარგებლობის წესის დამტკიცება',eflow:'EF-2026-0245',eSign:true,pSign:true,amends:null},
-  {id:'ORD-8',no:'0301',date:'10.03.2026',subject:'პარტნიორ ორგანიზაციებთან თანამშრომლობის მემორანდუმის დამტკიცება',eflow:'EF-2026-0301',eSign:true,pSign:true,amends:null},
+  {id:'ORD-1',no:'2587',date:'19.02.2025',subject:'სასწავლო პროცესის მარეგულირებელი წესის დამტკიცება',eflow:'EF-2025-2587',amends:null},
+  {id:'ORD-2',no:'5794',date:'25.04.2025',subject:'ცვლილება სასწავლო პროცესის მარეგულირებელ წესში',eflow:'EF-2025-5794',amends:'ORD-1'},
+  {id:'ORD-3',no:'9777',date:'25.06.2025',subject:'ცვლილება სასწავლო პროცესის მარეგულირებელ წესში',eflow:'EF-2025-9777',amends:'ORD-1'},
+  {id:'ORD-4',no:'1041',date:'15.09.2025',subject:'საექთნო განათლების პროგრამის დამტკიცება',eflow:'EF-2025-1041',amends:null},
+  {id:'ORD-5',no:'1102',date:'01.10.2025',subject:'2025–2026 სასწავლო წლის დამტკიცება',eflow:'EF-2025-1102',amends:null},
+  {id:'ORD-6',no:'0177',date:'20.01.2026',subject:'შინაგანაწესის დამტკიცება',eflow:'EF-2026-0177',amends:null},
+  {id:'ORD-7',no:'0245',date:'18.02.2026',subject:'ბიბლიოთეკით სარგებლობის წესის დამტკიცება',eflow:'EF-2026-0245',amends:null},
+  {id:'ORD-8',no:'0301',date:'10.03.2026',subject:'პარტნიორ ორგანიზაციებთან თანამშრომლობის მემორანდუმის დამტკიცება',eflow:'EF-2026-0301',amends:null},
 ];
 // ── ROLES (§7.2) — least-privilege matrix mirroring [ორგ] ──
 const rolesData=[
   {id:'director',label:'დირექტორი',scope:'ბრძანებები, დამტკიცებები, კომისიები',users:1,special:true},
-  {id:'spms_head',label:'სასწავლო პროცესის მართვის სამსახურის უფროსი',scope:'კალენდარული გეგმის/ინსტრუმენტის ვალიდაცია, ცხრილის ხელმოწერა, უწყისების ჟურნალი',users:1,special:true},
+  {id:'spms_head',label:'სასწავლო პროცესის მართვის სამსახურის უფროსი',scope:'მიღებები, ჯგუფები, განრიგი, ელექტრონული ჟურნალი',users:1,special:true},
   {id:'spms_specialist',label:'სასწავლო პროცესის სპეციალისტი',scope:'სასწავლო პროცესის ყოველდღიური ადმინისტრირება',users:3,special:false},
   {id:'spms_coordinator',label:'სასწავლო პროცესის კოორდინატორი',scope:'პორტფოლიო, ჩატარების ვერიფიკაცია, არქივი',users:2,special:false},
   {id:'program_head',label:'პროგრამის ხელმძღვანელი',scope:'ინსტრუმენტის თანა-ვალიდაცია, ისგ, ანგარიშვალდებულება',users:4,special:true},
@@ -1767,28 +1766,6 @@ function unplace(id){
   renderPalette();renderSchedLoad();renderSchedGrid();
   toast('საათი მოხსნილია განრიგიდან','warn');
 }
-function autoFillWeek(){
-  const dem=schedDemand(schedWeek).filter(d=>!schedGroup||d.groupId===schedGroup);
-  let placed=0, skipped=0;
-  dem.forEach(d=>{
-    let left=d.need-spPlaced(schedWeek,d.groupId,d.imId);
-    const dim=intakeModules.find(x=>x.id===d.imId)||{};
-    const tid=isPractical(dim.moduleId)?null:dim.teacherId;
-    const vens=activeVenues();
-    for(let day=1;day<=5&&left>0;day++)
-      for(let slot=1;slot<=slotTemplates.length&&left>0;slot++){
-        if(groupBusy(schedWeek,day,slot,d.groupId))continue;
-        if(teacherBusy(schedWeek,day,slot,tid))continue;
-        const v=vens.find(x=>!spAt(schedWeek,day,slot,x.id));
-        if(!v)continue;
-        schedPlacements.push({id:'SP-'+(++spSeq),week:schedWeek,day,slot,venueId:v.id,groupId:d.groupId,imId:d.imId});
-        left--; placed++;
-      }
-    skipped+=left;
-  });
-  schedPick=null;renderSchedule();
-  toast(skipped?`განთავსდა ${placed} საათი — ${skipped} საათი ვერ მოთავსდა (აუდიტორიები/სლოტები ამოიწურა)`:`კვირა გადანაწილდა — ${placed} საათი ✓`,skipped?'warn':'success');
-}
 function clearWeek(){
   for(let k=schedPlacements.length-1;k>=0;k--){
     const x=schedPlacements[k];
@@ -1954,7 +1931,6 @@ function renderOrders(){
     <td style="font-size:12px">${o.date}</td>
     <td style="font-size:12px">${o.subject}</td>
     <td style="font-size:11px;color:var(--text3)">${o.eflow||'—'}</td>
-    <td style="white-space:nowrap">${o.eSign?'<span class="bd bd-g" style="font-size:10px">e-ხელმ.</span>':''} ${o.pSign?'<span class="bd bd-g" style="font-size:10px">ფიზ.</span>':''}</td>
     <td style="font-size:11px">${o.amends?`<span style="color:var(--amber)">ცვლილება → ${ordersData.find(x=>x.id===o.amends)?.no||'—'}</span>`:'<span style="color:var(--text3)">—</span>'}</td>
     <td><button class="btn btn-xs btn-ghost" onclick="viewOrder('${o.id}')">👁</button></td>
   </tr>`).join('');
@@ -1965,7 +1941,6 @@ function viewOrder(id){
     <div class="fg2"><div><label class="fl">ნომერი</label><div style="font-weight:700;color:var(--blue)">№${o.no}</div></div><div><label class="fl">თარიღი</label><div>${o.date}</div></div></div>
     <div class="fg"><label class="fl">eflow ID</label><div>${o.eflow||'—'}</div></div>
     <div class="fg"><label class="fl">სათაური</label><div>${o.subject}</div></div>
-    <div class="fg"><label class="fl">ხელმოწერა</label><div>${o.eSign?'<span class="bd bd-g">✓ კვალიფიციური ელ. ხელმოწერა</span> ':''}${o.pSign?'<span class="bd bd-g">✓ ფიზიკური</span>':''}</div></div>
     ${o.amends?`<div class="fg"><label class="fl">ცვლილება ბრძანებაში</label><div style="color:var(--amber)">№${ordersData.find(x=>x.id===o.amends)?.no} · ${ordersData.find(x=>x.id===o.amends)?.date}</div></div>`:''}
     <div style="background:var(--blue-lt);border-radius:6px;padding:10px;font-size:12px;color:var(--text2)">ბრძანება ინახება უსასრულოდ და <strong>მხოლოდ იკითხება</strong> — სისტემაში სხვა ჩანაწერს არ ებმევა. ცვლილება = ახალი ბრძანება. — [სეწ] მუხ. 2, 6, 10</div>`,null,'lg');
 }
@@ -1980,7 +1955,7 @@ function addOrderModal(){
 function saveOrder(){
   const no=document.getElementById('no-no').value.trim();
   if(!no){toast('შეავსეთ ნომერი','error');return;}
-  ordersData.unshift({id:'ORD-'+(ordersData.length+1),no,date:document.getElementById('no-date').value||'—',subject:document.getElementById('no-subj').value,eflow:document.getElementById('no-eflow').value,eSign:true,pSign:false,amends:document.getElementById('no-amends').value||null});
+  ordersData.unshift({id:'ORD-'+(ordersData.length+1),no,date:document.getElementById('no-date').value||'—',subject:document.getElementById('no-subj').value,eflow:document.getElementById('no-eflow').value,amends:document.getElementById('no-amends').value||null});
   renderOrders();closeModal();toast('ბრძანება რეგისტრირდა ✓','success');
 }
 // ── როლები და CRUD წვდომები (§7.2) ──
