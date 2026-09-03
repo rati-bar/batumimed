@@ -432,22 +432,18 @@ tr:hover td{background:#eff8f1}
 
 <!-- ── ORDERS ── -->
 <div id="screen-orders" class="screen">
-  <div class="ph"><div><div class="pt">ბრძანებები</div><div class="ps">დირექტორის ბრძანებები — ჩარიცხვა, სტატუსის შეჩერება/შეწყვეტა, გადაყვანა</div></div></div>
+  <div class="ph"><div><div class="pt">ბრძანებები</div><div class="ps">დირექტორის ზოგადი ბრძანებები — წესები, პროგრამები, სასწავლო წელი</div></div></div>
   <div class="card">
     <div class="cb" style="padding:0">
       <table>
-        <thead><tr><th>№</th><th>სათაური</th><th>თარიღი</th><th>ინდექსი</th><th>ტიპი</th><th>ხელმოწერა</th><th></th></tr></thead>
-        <tbody>
-          <tr><td style="font-variant-numeric:tabular-nums;font-weight:700;color:var(--blue)">№1041</td><td>ჩარიცხვის შესახებ — ჯგუფი 101</td><td>15.09.2025</td><td><span class="bd bd-p">02 სტუდენტი</span></td><td><span class="bd bd-b">ჩარიცხვა</span></td><td><span class="bd bd-g">e-ხელმ. + ფიზ.</span></td><td><button class="btn btn-o btn-sm" onclick="showOrderModal('1041','ჩარიცხვის შესახებ — ჯგუფი 101','15.09.2025','ბათუმის სამედიცინო აკადემია\n\nდირექტორის ბრძანება №1041\n\nთარიღი: 15.09.2025\nრეგისტრის ინდექსი: 02 (სტუდენტი)\n\nვბრძანებ:\n\n1. ჩარიცხულ იქნეს საექთნო განათლების საგანმანათლებლო პროგრამაზე:\n   • ნინო კვარაცხელია — ჯგუფი 101\n\n2. სწავლა დაიწყოს 2025 წ. 15 სექტემბრიდან.\n\n3. სწავლის საფასური: 3 100 ₾ სასწავლო წელიწადში (დადგენილია ბრძანებით, უცვლელია საფეხურის განმავლობაში).\n\n4. მონაცემები აისახოს e-vet.emis.ge-ზე 5 დღეში.\n\nდირექტორი: გ. ჩახავა')">ნახვა</button></td></tr>
-          <tr><td style="font-variant-numeric:tabular-nums;font-weight:700;color:var(--blue)">№0142</td><td>II სასწავლო წელზე გადაყვანა</td><td>10.09.2026</td><td><span class="bd bd-p">02 სტუდენტი</span></td><td><span class="bd bd-g">გადაყვანა</span></td><td><span class="bd bd-g">e-ხელმ. + ფიზ.</span></td><td><button class="btn btn-o btn-sm" onclick="showOrderModal('0142','II სასწავლო წელზე გადაყვანა','10.09.2026','ბათუმის სამედიცინო აკადემია\n\nდირექტორის ბრძანება №0142\n\nთარიღი: 10.09.2026\n\n1. ნინო კვარაცხელია გადავიდეს II სასწავლო წელზე, ჯგუფი 101.\n\n2. საფუძველი: სასწავლო წლის შედეგების დადასტურება.\n\nდირექტორი: გ. ჩახავა')">ნახვა</button></td></tr>
-          <tr><td style="font-variant-numeric:tabular-nums;font-weight:700;color:var(--blue)">№0288</td><td>შუალედური შეფასების ჩატარება და კომისიის შექმნა</td><td>03.03.2026</td><td><span class="bd bd-p">02 სტუდენტი</span></td><td><span class="bd bd-a">შეფასება</span></td><td><span class="bd bd-g">e-ხელმ. + ფიზ.</span></td><td><button class="btn btn-o btn-sm" onclick="showOrderModal('0288','შუალედური შეფასების ჩატარება','03.03.2026','ბათუმის სამედიცინო აკადემია\n\nდირექტორის ბრძანება №0288\n\nთარიღი: 03.03.2026\n\n1. ჩატარდეს შუალედური შეფასება ჯგუფ 101-ში 15.04.2026.\n\n2. შეიქმნას კომისია 3 წევრის შემადგენლობით.\n\n3. დავალების ტიპი: კომპლექსური დავალება.\n\n4. შუალედური შეფასების შედეგი არ საჩივრდება.\n\nდირექტორი: გ. ჩახავა')">ნახვა</button></td></tr>
-        </tbody>
+        <thead><tr><th>№</th><th>სათაური</th><th>თარიღი</th><th>ხელმოწერა</th><th></th></tr></thead>
+        <tbody id="stu-orders-tbody"></tbody>
       </table>
     </div>
   </div>
   <div class="card">
     <div class="cb" style="font-size:12px;color:var(--text2)">
-      ბრძანების ნომერი — <strong>ციფრები, თანმიმდევრობით კალენდარულ წელში</strong>; ინდექსი <strong>01</strong> ზოგადი / <strong>02</strong> სტუდენტი; ხელმოწერილია კვალიფიციური ელექტრონული ხელმოწერით <em>და</em> ფიზიკურად; ინახება <strong>უსასრულოდ</strong>. ცვლილება არის <strong>ახალი ბრძანება</strong> — ვერსიები არ არსებობს. — [სეწ] მუხ. 2, 6, 10
+      რეგისტრში ქვეყნდება <strong>მხოლოდ ზოგადი ბრძანებები</strong>. ბრძანების ნომერი — <strong>ციფრები, თანმიმდევრობით კალენდარულ წელში</strong>; ხელმოწერილია კვალიფიციური ელექტრონული ხელმოწერით <em>და</em> ფიზიკურად; ინახება <strong>უსასრულოდ</strong>. ცვლილება არის <strong>ახალი ბრძანება</strong> — ვერსიები არ არსებობს. — [სეწ] მუხ. 2, 6, 10
     </div>
   </div>
 </div>
@@ -573,19 +569,6 @@ tr:hover td{background:#eff8f1}
             <div class="prw" style="height:10px"><div class="prf" id="oc-bar" style="width:0%;background:var(--green)"></div></div>
           </div>
           <div style="margin-top:12px;font-size:12px;color:var(--text2);background:var(--blue-lt);border-radius:6px;padding:8px">ქულა, GPA და საშუალო არ არსებობს — შეფასება ბინარულია</div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ch"><div class="ct">შუალედური შეფასება</div></div>
-        <div class="cb">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:13px;color:var(--text2)">მონაწილეობა</span><span class="bd bd-g">✓ დადასტურებული</span></div>
-          <table style="font-size:12px">
-            <tr><td style="color:var(--text2)">თარიღი</td><td>15.04.2026</td></tr>
-            <tr><td style="color:var(--text2)">დავალების ტიპი</td><td>კომპლექსური დავალება</td></tr>
-            <tr><td style="color:var(--text2)">შესრულებული</td><td>52% შედეგი</td></tr>
-            <tr><td style="color:var(--text2)">ბრძანება</td><td>№0288 · 03.03.2026</td></tr>
-          </table>
-          <div style="margin-top:10px;font-size:11px;color:var(--text2);background:var(--green-lt);border-radius:6px;padding:8px">✓ შუალედურ შეფასებაში მონაწილეობა — <strong>საკვალიფიკაციო გამოცდაზე დაშვების პირობა</strong> შესრულებულია. შუალედური შეფასება <strong>არ საჩივრდება</strong>. — [სპწ] 21.28, 21.30</div>
         </div>
       </div>
       <div class="card">
@@ -914,6 +897,32 @@ function showUploadModal(){
 function dlDoc(name){toast('«'+name+'» გადმოიტვირთა','success')}
 
 // ══ ORDERS ══
+// რეგისტრში ქვეყნდება მხოლოდ ზოგადი ბრძანებები
+const generalOrders=[
+  {no:'2587',date:'19.02.2025',subject:'სასწავლო პროცესის მარეგულირებელი წესის დამტკიცება',
+   text:'ბათუმის სამედიცინო აკადემია\n\nდირექტორის ბრძანება №2587\n\nთარიღი: 19.02.2025\n\nვბრძანებ:\n\n1. დამტკიცდეს სასწავლო პროცესის მარეგულირებელი წესი.\n\n2. წესი ძალაში შედის გამოქვეყნებისთანავე და ქვეყნდება აკადემიის ვებგვერდზე.\n\nდირექტორი: გ. ჩახავა'},
+  {no:'1041',date:'15.09.2025',subject:'საექთნო განათლების პროგრამის დამტკიცება',
+   text:'ბათუმის სამედიცინო აკადემია\n\nდირექტორის ბრძანება №1041\n\nთარიღი: 15.09.2025\n\nვბრძანებ:\n\n1. დამტკიცდეს საექთნო განათლების საგანმანათლებლო პროგრამა.\n\n2. სწავლის ხანგრძლივობა — 3 სასწავლო წელი.\n\n3. სწავლის საფასური: 3 100 ₾ სასწავლო წელიწადში, უცვლელია საფეხურის განმავლობაში.\n\nდირექტორი: გ. ჩახავა'},
+  {no:'1102',date:'01.10.2025',subject:'2025–2026 სასწავლო წლის დამტკიცება',
+   text:'ბათუმის სამედიცინო აკადემია\n\nდირექტორის ბრძანება №1102\n\nთარიღი: 01.10.2025\n\n1. დამტკიცდეს 2025–2026 სასწავლო წლის განრიგი.\n\n2. სასწავლო წელი იწყება 15 სექტემბერს.\n\nდირექტორი: გ. ჩახავა'},
+  {no:'0177',date:'20.01.2026',subject:'შინაგანაწესის დამტკიცება',
+   text:'ბათუმის სამედიცინო აკადემია\n\nდირექტორის ბრძანება №0177\n\nთარიღი: 20.01.2026\n\n1. დამტკიცდეს აკადემიის შინაგანაწესი.\n\n2. შინაგანაწესი ვრცელდება ყველა პროფესიულ სტუდენტსა და თანამშრომელზე.\n\nდირექტორი: გ. ჩახავა'},
+  {no:'0245',date:'18.02.2026',subject:'ბიბლიოთეკით სარგებლობის წესის დამტკიცება',
+   text:'ბათუმის სამედიცინო აკადემია\n\nდირექტორის ბრძანება №0245\n\nთარიღი: 18.02.2026\n\n1. დამტკიცდეს ბიბლიოთეკით სარგებლობის წესი.\n\n2. ბეჭდური გამოცემების კატალოგი ხელმისაწვდომია ბიბლიოთეკის პლატფორმაზე.\n\nდირექტორი: გ. ჩახავა'},
+];
+function renderStuOrders(){
+  const tb=document.getElementById('stu-orders-tbody'); if(!tb)return;
+  tb.innerHTML=generalOrders.map((o,i)=>`<tr>
+    <td style="font-variant-numeric:tabular-nums;font-weight:700;color:var(--blue)">№${o.no}</td>
+    <td>${o.subject}</td><td>${o.date}</td>
+    <td><span class="bd bd-g">e-ხელმ. + ფიზ.</span></td>
+    <td><button class="btn btn-o btn-sm" onclick="openStuOrder(${i})">ნახვა</button></td>
+  </tr>`).join('');
+}
+function openStuOrder(i){
+  const o=generalOrders[i]; if(!o)return;
+  showOrderModal(o.no,o.subject,o.date,o.text);
+}
 function showOrderModal(num,title,date,text){
   showModal('ბრძანება №'+num,`
     <div style="background:var(--bg);border-radius:8px;padding:14px;margin-bottom:14px">
@@ -1181,8 +1190,6 @@ const myModules=[
      {no:5,title:'ინტერპრეტირებს ანტიბიოტიკოგრამას',direction:'practical_task',result:null,attempt:null,on:null,source:null},
    ]},
 ];
-// შუალედური შეფასება — მონაწილეობა გამოცდაზე დაშვების პირობაა
-const myInterim={heldOn:'15.04.2026',taskType:'კომპლექსური დავალება',participated:true,percentDone:52,orderNo:'0288',orderDate:'03.03.2026'};
 function modResultBadge(o){
   if(!o.result)return '<span class="bd bd-n" style="opacity:.7">◌ ჯერ არ შეფასებულა</span>';
   const r=RESULT_LBL[o.result];
@@ -1287,6 +1294,7 @@ function renderAttModule(idx){
   el.innerHTML=attTable(m);
 }
 renderAttModule(0);
+renderStuOrders();
 
 // ══ SCHEDULE ══
 const schedClasses=[
@@ -1522,7 +1530,7 @@ function openSurvey(link,name){
 
 // ══ NEWS ══
 const newsData=[
-  {id:'NEWS-001',tag:'აუცილებელი',title:'შუალედური გამოცდების ცხრილი — ივლისი 2026',date:'28 ივნისი 2026',icon:'📋',body:'შუალედური გამოცდები ჩატარდება 14–25 ივლისი 2026. MA-24B: ანატომია — 14.07 09:00, 201-ე სალი. ფიზიოლოგია — 16.07, 204-ე სალი. ფარმაკოლოგია — 18.07, 105-ე სალი. სამედიცინო ეთიკა — 21.07. კლინიკური პრაქტიკა — 23.07 სიმულაციურ ლაბორატორიაში. ინგლისური ენა — 25.07. გამოცდაზე გამოცხადება სავალდებულოა პირადობის მოწმობით.',img:null},
+  {id:'NEWS-001',tag:'აუცილებელი',title:'შეფასების საათების ცხრილი — ივლისი 2026',date:'28 ივნისი 2026',icon:'📋',body:'შეფასების საათები ჩატარდება 14–25 ივლისი 2026. MA-24B: ანატომია — 14.07 09:00, 201-ე სალი. ფიზიოლოგია — 16.07, 204-ე სალი. ფარმაკოლოგია — 18.07, 105-ე სალი. სამედიცინო ეთიკა — 21.07. კლინიკური პრაქტიკა — 23.07 სიმულაციურ ლაბორატორიაში. ინგლისური ენა — 25.07. შეფასებაზე გამოცხადება სავალდებულოა პირადობის მოწმობით.',img:null},
   {id:'NEWS-002',tag:'სიახლე',title:'ბათუმის სამედიცინო აკადემია — I ადგილი ოლიმპიადაზე',date:'25 ივნისი 2026',icon:'🏆',body:'ბათუმის სამედიცინო აკადემიის სტუდენტი გახდა «მედიცინის ახალგაზრდა» 2026 ოლიმპიადის I ადგილოსანი 14 უნივერსიტეტს შორის. ოლიმპიადაში მონაწილეობდა 200-ზე მეტი სტუდენტი. ბათუმის სამედიცინო აკადემია ზედიზედ მეორე წელია პირველ ადგილს ინარჩუნებს.',img:null},
   {id:'NEWS-003',tag:'ღონისძიება',title:'ღია კარის დღე — 15 ივლისი',date:'22 ივნისი 2026',icon:'🎉',body:'15 ივლისი 2026, 11:00 — ბათუმის სამედიცინო აკადემიის ღია კარის დღე. სპეციალური სპიკერები: «სამედიცინო კარიერა ევროპაში» და «სამედიცინო გამოწვევები XXI საუკუნეში». ღონისძიება ჩატარდება აკადემიის მთავარ აუდიტორიაში. რეგისტრაცია: students@bmeda.edu.ge.',img:null},
   {id:'NEWS-004',tag:'ბლოგი',title:'სამედიცინო კარიერა ევროპაში — კვალიფიკაციის მფლობელთა გამოცდილება',date:'18 ივნისი 2026',icon:'🌍',body:'ევროკავშირის ქვეყნებში სამედიცინო ლიცენზიის მოპოვება: პოლონეთი (Europejski Rejestr Farmaceutyczny), გერმანია (Approbationsordnung), ფინეთი (Valvira). ბათუმის სამედიცინო აკადემიის კრედიტები არის <strong>ეროვნული კვალიფიკაციების ჩარჩოს კრედიტები</strong> — ისინი ავტომატურად არ გადაიტანება ევროპულ უნივერსიტეტებში; საჭიროა ცალკეული აღიარების პროცედურა.',img:null},

@@ -675,13 +675,13 @@ textarea.fi{resize:vertical;min-height:80px}
 <!-- ══ ORDERS (§7.1) ══ -->
 <div class="screen" id="screen-orders">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-    <div style="font-size:13px;color:var(--text2)">ბრძანებები <strong>აიტვირთება და იკითხება</strong>. სისტემაში ბრძანება სხვა ჩანაწერს არ ებმევა — არაფრის წინაპირობა არ არის.</div>
+    <div style="font-size:13px;color:var(--text2)">რეგისტრში ქვეყნდება <strong>მხოლოდ ზოგადი ბრძანებები</strong>. ბრძანება <strong>აიტვირთება და იკითხება</strong> — სისტემაში სხვა ჩანაწერს არ ებმევა და არაფრის წინაპირობა არ არის.</div>
     <button class="btn btn-b" onclick="addOrderModal()">⬆ ბრძანების ატვირთვა</button>
   </div>
   <div class="card">
-    <div class="ch"><div class="ct">ბრძანებების რეგისტრი</div><span style="font-size:11px;color:var(--text3)">ინახება უსასრულოდ · [სეწ] მუხ. 2, 6, 10</span></div>
+    <div class="ch"><div class="ct">ზოგადი ბრძანებების რეგისტრი</div><span style="font-size:11px;color:var(--text3)">ინახება უსასრულოდ · [სეწ] მუხ. 2, 6, 10</span></div>
     <div class="tw"><table>
-      <thead><tr><th>№</th><th>თარიღი</th><th>ინდექსი</th><th>სათაური</th><th>eflow</th><th>ხელმოწერა</th><th>ცვლილება</th><th></th></tr></thead>
+      <thead><tr><th>№</th><th>თარიღი</th><th>სათაური</th><th>eflow</th><th>ხელმოწერა</th><th>ცვლილება</th><th></th></tr></thead>
       <tbody id="orders-tbody"></tbody>
     </table></div>
   </div>
@@ -882,14 +882,14 @@ function toast(msg,type){
 // ══ DATA ══
 // ── ბრძანებები (§7.1) — აიტვირთება და იკითხება; სისტემაში სხვა ჩანაწერს არ ებმევა ──
 const ordersData=[
-  {id:'ORD-1',no:'2587',date:'19.02.2025',index:'general_01',subject:'სასწავლო პროცესის მარეგულირებელი წესის დამტკიცება',eflow:'EF-2025-2587',eSign:true,pSign:true,amends:null},
-  {id:'ORD-2',no:'5794',date:'25.04.2025',index:'general_01',subject:'ცვლილება სასწავლო პროცესის მარეგულირებელ წესში',eflow:'EF-2025-5794',eSign:true,pSign:true,amends:'ORD-1'},
-  {id:'ORD-3',no:'9777',date:'25.06.2025',index:'general_01',subject:'ცვლილება სასწავლო პროცესის მარეგულირებელ წესში',eflow:'EF-2025-9777',eSign:true,pSign:true,amends:'ORD-1'},
-  {id:'ORD-4',no:'1041',date:'15.09.2025',index:'general_01',subject:'საექთნო განათლების პროგრამის დამტკიცება',eflow:'EF-2025-1041',eSign:true,pSign:true,amends:null},
-  {id:'ORD-5',no:'1102',date:'01.10.2025',index:'general_01',subject:'2025–2026 სასწავლო წლის დამტკიცება',eflow:'EF-2025-1102',eSign:true,pSign:true,amends:null},
-  {id:'ORD-6',no:'0214',date:'12.02.2026',index:'student_02',subject:'პროფესიული სტუდენტის სტატუსის შეჩერება — ვ. ლომიძე',eflow:'EF-2026-0214',eSign:true,pSign:true,amends:null},
-  {id:'ORD-7',no:'0288',date:'03.03.2026',index:'student_02',subject:'შუალედური შეფასების ჩატარება და კომისიის შექმნა',eflow:'EF-2026-0288',eSign:true,pSign:true,amends:null},
-  {id:'ORD-8',no:'0301',date:'10.03.2026',index:'student_02',subject:'პროფესიული სტუდენტის სტატუსის შეწყვეტა — დ. ხაჭაპურიძე',eflow:'EF-2026-0301',eSign:true,pSign:true,amends:null},
+  {id:'ORD-1',no:'2587',date:'19.02.2025',subject:'სასწავლო პროცესის მარეგულირებელი წესის დამტკიცება',eflow:'EF-2025-2587',eSign:true,pSign:true,amends:null},
+  {id:'ORD-2',no:'5794',date:'25.04.2025',subject:'ცვლილება სასწავლო პროცესის მარეგულირებელ წესში',eflow:'EF-2025-5794',eSign:true,pSign:true,amends:'ORD-1'},
+  {id:'ORD-3',no:'9777',date:'25.06.2025',subject:'ცვლილება სასწავლო პროცესის მარეგულირებელ წესში',eflow:'EF-2025-9777',eSign:true,pSign:true,amends:'ORD-1'},
+  {id:'ORD-4',no:'1041',date:'15.09.2025',subject:'საექთნო განათლების პროგრამის დამტკიცება',eflow:'EF-2025-1041',eSign:true,pSign:true,amends:null},
+  {id:'ORD-5',no:'1102',date:'01.10.2025',subject:'2025–2026 სასწავლო წლის დამტკიცება',eflow:'EF-2025-1102',eSign:true,pSign:true,amends:null},
+  {id:'ORD-6',no:'0177',date:'20.01.2026',subject:'შინაგანაწესის დამტკიცება',eflow:'EF-2026-0177',eSign:true,pSign:true,amends:null},
+  {id:'ORD-7',no:'0245',date:'18.02.2026',subject:'ბიბლიოთეკით სარგებლობის წესის დამტკიცება',eflow:'EF-2026-0245',eSign:true,pSign:true,amends:null},
+  {id:'ORD-8',no:'0301',date:'10.03.2026',subject:'პარტნიორ ორგანიზაციებთან თანამშრომლობის მემორანდუმის დამტკიცება',eflow:'EF-2026-0301',eSign:true,pSign:true,amends:null},
 ];
 // ── ROLES (§7.2) — least-privilege matrix mirroring [ორგ] ──
 const rolesData=[
@@ -911,58 +911,55 @@ const rolesData=[
 ];
 // ── CRUD წვდომის რესურსები (§7.2) ──
 const PERM_RESOURCES=[
-  {key:'studentsAll()',    label:'პროფესიული სტუდენტები', group:'სასწავლო პროცესი'},
-  {key:'teachersAll()',    label:'მასწავლებლები',          group:'სასწავლო პროცესი'},
-  {key:'groups',      label:'ჯგუფები',                group:'სასწავლო პროცესი'},
+  {key:'students',    label:'პროფესიული სტუდენტები',   group:'სასწავლო პროცესი'},
+  {key:'teachers',    label:'მასწავლებლები',           group:'სასწავლო პროცესი'},
+  {key:'groups',      label:'ჯგუფები',                 group:'სასწავლო პროცესი'},
   {key:'programs',    label:'საგანმანათლებლო პროგრამები', group:'სასწავლო პროცესი'},
-  {key:'templates',   label:'მოდულის შაბლონები',      group:'სასწავლო პროცესი'},
-  {key:'modules',     label:'სასწავლო მოდულები',      group:'სასწავლო პროცესი'},
-  {key:'plans',       label:'კალენდარული გეგმა',       group:'სასწავლო პროცესი'},
-  {key:'schedule',    label:'განრიგი / მეცადინეობა',  group:'სასწავლო პროცესი'},
-  {key:'outcomes',    label:'სწავლის შედეგები',        group:'შეფასება'},
-  {key:'instruments', label:'შეფასების ინსტრუმენტი',   group:'შეფასება'},
-  {key:'registers',   label:'უწყისი',                 group:'შეფასება'},
-  {key:'attendance',  label:'დასწრების რეგისტრი',      group:'შეფასება'},
-  {key:'interim',     label:'შუალედური შეფასება',      group:'შეფასება'},
-  {key:'isp',         label:'ინდივიდუალური სასწავლო გეგმა', group:'შეფასება'},
-  {key:'appeals',     label:'აპელაცია',               group:'შეფასება'},
-  {key:'payments',    label:'გადახდები',              group:'ფინანსები და განაცხადები'},
-  {key:'applications',label:'განაცხადები',            group:'ფინანსები და განაცხადები'},
-  {key:'library',     label:'ბიბლიოთეკა',             group:'კონტენტი'},
-  {key:'news',        label:'სიახლეები',              group:'კონტენტი'},
-  {key:'surveys',     label:'გამოკითხვები',           group:'კონტენტი'},
-  {key:'career',      label:'კარიერა / ვაკანსიები',    group:'კონტენტი'},
-  {key:'orders',      label:'ბრძანებები',             group:'მმართველობა'},
-  {key:'users_roles', label:'მომხმარებლები და როლები', group:'მმართველობა'},
-  {key:'audit',       label:'აუდიტის ჟურნალი',        group:'მმართველობა'},
-  {key:'reports',     label:'ანგარიშები',             group:'მმართველობა'},
+  {key:'module_registry',label:'მოდულების რეესტრი',    group:'სასწავლო პროცესი'},
+  {key:'intakes',     label:'მიღებები',                group:'სასწავლო პროცესი'},
+  {key:'partners',    label:'პარტნიორი ორგანიზაციები', group:'სასწავლო პროცესი'},
+  {key:'schedule',    label:'განრიგი',                 group:'სასწავლო პროცესი'},
+  {key:'journal',     label:'ელექტრონული ჟურნალი — დასწრება და შეფასება', group:'შეფასება'},
+  {key:'reassessments',label:'გადაბარება',             group:'შეფასება'},
+  {key:'repeats',     label:'მოდულის ხელახლა გავლა',   group:'შეფასება'},
+  {key:'payments',    label:'გადახდები',               group:'ფინანსები და განაცხადები'},
+  {key:'applications',label:'განაცხადები',             group:'ფინანსები და განაცხადები'},
+  {key:'library',     label:'ბიბლიოთეკა',              group:'კონტენტი'},
+  {key:'news',        label:'სიახლეები',               group:'კონტენტი'},
+  {key:'surveys',     label:'გამოკითხვები',            group:'კონტენტი'},
+  {key:'clubs',       label:'კლუბები',                 group:'კონტენტი'},
+  {key:'career',      label:'კარიერა / ვაკანსიები',     group:'კონტენტი'},
+  {key:'orders',      label:'ბრძანებები',              group:'მმართველობა'},
+  {key:'venues',      label:'აუდიტორიები და სივრცეები', group:'მმართველობა'},
+  {key:'users_roles', label:'მომხმარებლები და როლები',  group:'მმართველობა'},
+  {key:'audit',       label:'აუდიტის ჟურნალი',         group:'მმართველობა'},
   {key:'special_data',label:'🔒 სპეც. კატეგორიის მონაცემები', group:'მმართველობა'},
 ];
 const CRUD=[['c','შექმნა'],['r','ნახვა'],['u','რედაქტ.'],['d','წაშლა']];
 // მინიმალური საკმარისი წვდომის საწყისი კონფიგურაცია
 const PERM_SEED={
   director:{'*':'crud'},
-  spms_head:{students:'ru',teachers:'ru',groups:'cru',programs:'r',templates:'r',modules:'cru',plans:'cru',schedule:'crud',
-             outcomes:'r',instruments:'ru',registers:'cru',attendance:'r',interim:'cru',isp:'cru',appeals:'r',
-             orders:'r',reports:'cr',special_data:'r',users_roles:'r'},
-  spms_specialist:{students:'cru',teachers:'r',groups:'cru',programs:'r',templates:'r',modules:'cru',plans:'r',schedule:'cru',
-                   outcomes:'r',registers:'r',attendance:'cru',interim:'r',orders:'cr',reports:'cr',applications:'cru'},
-  spms_coordinator:{students:'r',groups:'r',modules:'r',plans:'r',schedule:'r',outcomes:'ru',registers:'ru',
-                    attendance:'cru',instruments:'r',reports:'cr'},
-  program_head:{students:'r',teachers:'r',groups:'r',programs:'ru',templates:'ru',modules:'ru',plans:'ru',
-                outcomes:'r',instruments:'ru',isp:'cru',interim:'r',reports:'cr',special_data:'r'},
-  qa_manager:{plans:'r',modules:'r',schedule:'r',outcomes:'r',instruments:'r',registers:'r',attendance:'r',reports:'cru'},
-  inclusive_specialist:{students:'ru',isp:'crud',outcomes:'r',attendance:'r',special_data:'crud',reports:'cr'},
-  career_specialist:{students:'r',career:'crud',news:'cru',surveys:'cru',reports:'cr'},
-  teacher:{students:'r',groups:'r',modules:'r',plans:'cru',schedule:'r',outcomes:'cru',instruments:'cru',
-           registers:'cru',attendance:'cru',library:'r',surveys:'r'},
-  librarian:{library:'crud',students:'r',modules:'r',reports:'cr'},
-  dpo:{audit:'r',users_roles:'r',students:'r',teachers:'r',special_data:'r',reports:'cr'},
-  finance_manager:{payments:'crud',students:'r',applications:'r',reports:'cru',programs:'r'},
-  records_manager:{orders:'crud',applications:'cru',students:'r',teachers:'r',reports:'cr'},
-  it_manager:{users_roles:'crud',audit:'r',reports:'r'},
-  student:{outcomes:'r',attendance:'r',schedule:'r',modules:'r',library:'r',surveys:'r',news:'r',career:'r',
-           applications:'cr',payments:'r',orders:'r'},
+  spms_head:{students:'ru',teachers:'ru',groups:'crud',programs:'cru',module_registry:'cru',intakes:'crud',
+             partners:'cru',schedule:'crud',journal:'cru',reassessments:'cru',repeats:'cru',
+             venues:'cru',orders:'r',special_data:'r',users_roles:'r'},
+  spms_specialist:{students:'cru',teachers:'r',groups:'cru',programs:'r',module_registry:'cru',intakes:'ru',
+                   partners:'r',schedule:'cru',journal:'cru',reassessments:'cr',orders:'cr',applications:'cru'},
+  spms_coordinator:{students:'r',groups:'r',module_registry:'r',intakes:'r',schedule:'r',journal:'cru',
+                    reassessments:'r',repeats:'r'},
+  program_head:{students:'r',teachers:'r',groups:'r',programs:'ru',module_registry:'ru',intakes:'ru',
+                partners:'ru',journal:'r',reassessments:'r',repeats:'r',special_data:'r'},
+  qa_manager:{module_registry:'r',intakes:'r',schedule:'r',journal:'r',reassessments:'r',repeats:'r',partners:'r'},
+  inclusive_specialist:{students:'ru',journal:'r',reassessments:'r',special_data:'crud'},
+  career_specialist:{students:'r',career:'crud',news:'cru',surveys:'cru',clubs:'cru'},
+  teacher:{students:'r',groups:'r',module_registry:'r',schedule:'r',journal:'cru',
+           reassessments:'r',repeats:'r',library:'r',surveys:'r'},
+  librarian:{library:'crud',students:'r',module_registry:'r'},
+  dpo:{audit:'r',users_roles:'r',students:'r',teachers:'r',special_data:'r'},
+  finance_manager:{payments:'crud',students:'r',applications:'r',programs:'r',reassessments:'ru'},
+  records_manager:{orders:'crud',applications:'cru',students:'r',teachers:'r'},
+  it_manager:{users_roles:'crud',audit:'r',venues:'cru'},
+  student:{journal:'r',schedule:'r',module_registry:'r',library:'r',surveys:'r',news:'r',career:'r',clubs:'r',
+           applications:'cr',payments:'r',orders:'r',reassessments:'r',repeats:'r'},
 };
 const rolePermissions={};
 function seedPermissions(){
@@ -1955,7 +1952,6 @@ function renderOrders(){
   tb.innerHTML=ordersData.map(o=>`<tr>
     <td style="font-weight:700;color:var(--blue)">№${o.no}</td>
     <td style="font-size:12px">${o.date}</td>
-    <td><span class="bd ${o.index==='general_01'?'bd-b':'bd-p'}">${o.index==='general_01'?'01 ზოგადი':'02 სტუდენტი'}</span></td>
     <td style="font-size:12px">${o.subject}</td>
     <td style="font-size:11px;color:var(--text3)">${o.eflow||'—'}</td>
     <td style="white-space:nowrap">${o.eSign?'<span class="bd bd-g" style="font-size:10px">e-ხელმ.</span>':''} ${o.pSign?'<span class="bd bd-g" style="font-size:10px">ფიზ.</span>':''}</td>
@@ -1967,7 +1963,7 @@ function viewOrder(id){
   const o=ordersData.find(x=>x.id===id);if(!o)return;
   showModal(`ბრძანება №${o.no}`,`
     <div class="fg2"><div><label class="fl">ნომერი</label><div style="font-weight:700;color:var(--blue)">№${o.no}</div></div><div><label class="fl">თარიღი</label><div>${o.date}</div></div></div>
-    <div class="fg2"><div><label class="fl">რეგისტრის ინდექსი</label><div>${o.index==='general_01'?'01 — ზოგადი':'02 — სტუდენტი'}</div></div><div><label class="fl">eflow ID</label><div>${o.eflow||'—'}</div></div></div>
+    <div class="fg"><label class="fl">eflow ID</label><div>${o.eflow||'—'}</div></div>
     <div class="fg"><label class="fl">სათაური</label><div>${o.subject}</div></div>
     <div class="fg"><label class="fl">ხელმოწერა</label><div>${o.eSign?'<span class="bd bd-g">✓ კვალიფიციური ელ. ხელმოწერა</span> ':''}${o.pSign?'<span class="bd bd-g">✓ ფიზიკური</span>':''}</div></div>
     ${o.amends?`<div class="fg"><label class="fl">ცვლილება ბრძანებაში</label><div style="color:var(--amber)">№${ordersData.find(x=>x.id===o.amends)?.no} · ${ordersData.find(x=>x.id===o.amends)?.date}</div></div>`:''}
@@ -1976,7 +1972,6 @@ function viewOrder(id){
 function addOrderModal(){
   showModal('ახალი ბრძანება',`
     <div class="fg2"><div><label class="fl">ნომერი (ციფრები)</label><input class="fi" id="no-no" placeholder="0312"></div><div><label class="fl">თარიღი</label><input class="fi" id="no-date" placeholder="დდ.თთ.წწწწ"></div></div>
-    <div class="fg"><label class="fl">რეგისტრის ინდექსი</label><select class="fi" id="no-index"><option value="general_01">01 — ზოგადი</option><option value="student_02">02 — სტუდენტი</option></select></div>
     <div class="fg"><label class="fl">სათაური</label><textarea class="fi" id="no-subj" style="min-height:70px"></textarea></div>
     <div class="fg"><label class="fl">eflow ID</label><input class="fi" id="no-eflow" placeholder="EF-2026-XXXX"></div>
     <div class="fg"><label class="fl">ცვლილება ბრძანებაში (სურვ.)</label><select class="fi" id="no-amends"><option value="">— არ არის —</option>${ordersData.map(o=>`<option value="${o.id}">№${o.no} · ${o.date}</option>`).join('')}</select></div>`,
@@ -1985,7 +1980,7 @@ function addOrderModal(){
 function saveOrder(){
   const no=document.getElementById('no-no').value.trim();
   if(!no){toast('შეავსეთ ნომერი','error');return;}
-  ordersData.unshift({id:'ORD-'+(ordersData.length+1),no,date:document.getElementById('no-date').value||'—',index:document.getElementById('no-index').value,subject:document.getElementById('no-subj').value,eflow:document.getElementById('no-eflow').value,eSign:true,pSign:false,amends:document.getElementById('no-amends').value||null});
+  ordersData.unshift({id:'ORD-'+(ordersData.length+1),no,date:document.getElementById('no-date').value||'—',subject:document.getElementById('no-subj').value,eflow:document.getElementById('no-eflow').value,eSign:true,pSign:false,amends:document.getElementById('no-amends').value||null});
   renderOrders();closeModal();toast('ბრძანება რეგისტრირდა ✓','success');
 }
 // ── როლები და CRUD წვდომები (§7.2) ──
